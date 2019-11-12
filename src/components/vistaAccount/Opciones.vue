@@ -4,7 +4,7 @@
             <v-layout row wrap justify-center>
                 <v-flex md6 xs3 class="my-4">
                     <v-avatar size="150" color="grey" class="elevation-3">
-                        IG
+                            IG
                         <!-- v-img -->
                     </v-avatar>
                     <div class="text-center mt-2">

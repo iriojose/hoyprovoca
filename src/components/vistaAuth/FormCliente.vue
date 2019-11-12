@@ -88,8 +88,21 @@
                                 </v-btn>
                             </v-col>
                             <v-col cols="12" md="3" lg="3" sm="3" offset="6">
-                                <v-btn @click="register()" color="info" :disabled="!valid2">
+                                <v-btn 
+                                    block 
+                                    type="submit" 
+                                    :disabled="!valid2 || loading" 
+                                    color="#005598" 
+                                    :dark="valid2 && !loading"
+                                    :loading="loading"
+                                    @click="register()"
+                                >
                                     Enviar
+                                    <template v-slot:loader>
+                                        <span class="custom-loader">
+                                        <v-icon light>cached</v-icon>
+                                        </span>
+                                    </template>
                                 </v-btn>
                             </v-col>
                         </v-row>
@@ -133,22 +146,35 @@ import router from '@/router';
                     fecha:'',
                 },
                 ...validations,
-                e1:0
+                e1:0,
+                loading:false,
             }
         },
+
+        watch: {
+            loading() {
+                setTimeout(() => (this.loading = false), 2000)
+            },
+        },
+
         methods:{
             register(){
+                this.loading = true;
+
                 firebase.auth().createUserWithEmailAndPassword(
                     this.user.email, this.user.password
                 ).then(data => {
-                    data.user.updateProfile({
-                        displayName:this.user.nombre+''+this.user.apellido
+                data.user
+                    .updateProfile({
+                        nombre: this.user.nombre,
+                        apellido:this.user.apellido,
+                        imagen:"https://disfi.com/wp-content/uploads/2018/09/foto-bloqueada-300x225.jpg"
                     }).then(() => {
                         this.snackbar=true;
                         setTimeout(() => {
                             this.error=null;
-                            router.push('/login');
-                        },2000)
+                            router.push('/');
+                        },2000);
                     });
                 }).catch(err => {
                     this.snackbar=true;
@@ -158,3 +184,42 @@ import router from '@/router';
         }
     }
 </script>
+
+<style>
+  .custom-loader {
+    animation: loader 1s infinite;
+    display: flex;
+  }
+  @-moz-keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @-webkit-keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @-o-keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+</style>

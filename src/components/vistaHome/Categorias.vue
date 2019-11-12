@@ -15,17 +15,18 @@
                 mandatory
                 show-arrows
             >
-                <v-slide-item v-for="categoria in categorias" :key="categoria.text">
+                <v-slide-item v-for="categoria in categorias" :key="categoria.nombre" class="mx-2">
                     <v-hover v-slot:default="{hover}">
                         <v-card
                             :color="hover ? 'grey lighten-1':'#fff'"
                             height="250"
                             width="200"
+                            class="pa-2"
                             elevation="0"
-                            :to="{name:'aliados', params:{id:categoria.text}}"
+                            :to="{name:'aliados', params:{id:categoria.nombre}}"
                         >
-                            <v-img :src="categoria.img" height="200" width="200" />
-                            <strong class="pa-3">{{categoria.text}}</strong>
+                            <v-img :src="categoria.imagen" height="220" width="220" />
+                            <strong class="pa-3">{{categoria.nombre}}</strong>
                         </v-card>
                     </v-hover>
                 </v-slide-item>
@@ -36,22 +37,11 @@
 
 <script>
     export default {
+        props:['categorias'],
         data(){
             return {
                 model:1,
-                categorias:[
-                    {text:'Tecnologia',img:'@/assets/tecnologia.jpg'},
-                    {text:'Deportes',img:'@/assets/deportes.jpg'},
-                    {text:'Restaurantes',img:'@/assets/restaurantes.jpg'},
-                    {text:'Farmacias',img:'@/assets/farmacias.jpg'},
-                    {text:'Supermercados',img:'@/assets/supermercado.jpg'},
-                    {text:'Ropa',img:'@/assets/ropa.jpg'},
-                ]
             }
         }
     }
 </script>
-
-<style lang="scss" scoped>
-
-</style>

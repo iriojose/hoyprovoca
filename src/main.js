@@ -7,8 +7,11 @@ import '@babel/polyfill'
 import 'roboto-fontface/css/roboto/roboto-fontface.css'
 import '@mdi/font/css/materialdesignicons.css'
 import firebase from 'firebase'
+import firestore from 'firebase/firestore'
 
 Vue.config.productionTip = false;
+
+var setting = {timestampsInSnapshots: true};
 
 var firebaseConfig= {
   apiKey:"AIzaSyB431ZONa59Qxgn_te9cjFWXI8HvHy8b4k",

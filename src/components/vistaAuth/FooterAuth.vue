@@ -16,7 +16,7 @@
 
             <v-flex md4 sm12 xs12 lg4>
                 <v-card elevation="0">
-                    <v-img height="300" src="http://eserrano.com/wp-content/images/global-marketing-logo.png"/>
+                    <v-img height="300" src=""/>
                 </v-card>
             </v-flex>
         </v-layout>

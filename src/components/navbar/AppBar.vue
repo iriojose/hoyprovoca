@@ -101,7 +101,7 @@
 <script>
 import router from '@/router';
 import SubNavbar from './SubNavbar';
-import {mapState,mapActions} from  'vuex';
+import {mapState,mapActions,mapGetters} from  'vuex';
 import BarraLateral from './BarraLateral';
 import firebase from 'firebase';
 
@@ -121,7 +121,11 @@ import firebase from 'firebase';
             }
         },
         computed: {
-            ...mapState(['user','drawer']),
+            ...mapState(['drawer']),
+
+            ...mapGetters({
+                user: "user"
+            })
         },
         methods: {
             ...mapActions(['setDrawer']),
@@ -142,7 +146,7 @@ import firebase from 'firebase';
 
             logOut(){
                 firebase.auth().signOut().then(() => {
-                    router.push('/login');
+                    this.$router.replace({ name: "login" });
                 });
             }
         },

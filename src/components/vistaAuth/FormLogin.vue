@@ -35,12 +35,18 @@
                     <v-btn 
                         block 
                         type="submit" 
-                        :disabled="!valid" 
+                        :disabled="!valid || loading" 
                         color="#005598" 
-                        :dark="valid"
+                        :dark="valid && !loading"
+                        :loading="loading"
                         @click="login()"
                     >
                         Enviar
+                        <template v-slot:loader>
+                            <span class="custom-loader">
+                            <v-icon light>cached</v-icon>
+                            </span>
+                        </template>
                     </v-btn>
                 </v-col>
             </v-row>
@@ -74,12 +80,21 @@ import firebase from 'firebase';
                 valid:false,
                 ...validations,
                 showPassword:false,
-                snackbar:false
+                snackbar:false,
+                loading:false,
             }
+        },
+        
+        watch: {
+            loading() {
+                setTimeout(() => (this.loading = false), 2000)
+            },
         },
 
         methods: {
             login(){
+                this.loading = true;
+
                 firebase.auth().signInWithEmailAndPassword(this.user.email,this.user.password)
                 .then(data => {
                     this.snackbar=true;
@@ -89,9 +104,48 @@ import firebase from 'firebase';
                     },2000);
                 }).catch(err => {
                     this.snackbar=true;
-                    this.error =err.message;
+                    this.error =  err.message;
                 });
             }
         },
     }
 </script>
+
+<style>
+  .custom-loader {
+    animation: loader 1s infinite;
+    display: flex;
+  }
+  @-moz-keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @-webkit-keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @-o-keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+</style>

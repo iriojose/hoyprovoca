@@ -9,7 +9,7 @@
                 <v-row>
                     <v-col cols="12" md="5" offset="1" class="my-2">
                         <v-text-field
-                            v-model="user.nombre"
+                            v-model="users.nombre"
                             label="Nombre(s)"
                             type="text"
                             counter="40"
@@ -26,7 +26,7 @@
 
                     <v-col cols="12" md="5" offset="1" class="my-2">
                         <v-text-field
-                            v-model="user.apellido"
+                            v-model="users.apellido"
                             label="Apellido(s)"
                             type="text"
                             counter="40"
@@ -43,7 +43,7 @@
 
                     <v-col cols="12" md="8" offset="2" class="my-2">
                         <v-text-field
-                            v-model="user.email"
+                            v-model="users.email"
                             label="Email"
                             type="email"
                             counter="40"
@@ -60,7 +60,7 @@
 
                     <v-col cols="12" md="5" offset="1" class="my-2">
                         <v-text-field
-                            v-model="user.telefono"
+                            v-model="users.telefono"
                             label="Telefono"
                             type="number"
                             counter="12"
@@ -88,19 +88,39 @@
 
 <script>
 import validations from '@/validations/validations';
+import firebase from 'firebase';
+import {mapState} from 'vuex';
 
     export default {
         data(){
             return{
                 ...validations,
                 valid:false,
-                user:{
+                users:{
                     nombre:'',
                     apellido:'',
                     telefono:'',
                     email:'',
-                }
+                },
             }
-        }
+        },
+
+        mounted(){
+            console.log(this.user);
+            this.getProfile();
+            console.log(firebase.auth().currentUser);
+        },
+
+        computed:{
+            ...mapState(['user'])
+        },
+
+        methods: {
+            async getProfile(){
+                var ref = await firebase.firestore().collection('profile').where("idUser"== "SZQwxFqm15e5PwAId6pdzZqKZYI3");
+
+                console.log(ref);
+            }
+        },
     }
 </script>
