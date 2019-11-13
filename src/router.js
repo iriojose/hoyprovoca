@@ -2,7 +2,6 @@ import Vue from "vue";
 import Router from "vue-router";
 import store from './store';
 
-
 import Home from "./views/home/Home.vue";
 import NotFound from './views/NotFound';
 
@@ -30,7 +29,6 @@ Vue.use(Router);
 
 const router = new Router({
   mode: 'history', 
-  base: process.env.BASE_URL,
   routes: [
     {
       path: "/",
@@ -46,25 +44,18 @@ const router = new Router({
       path:'/login',
       name:'login',
       component:Login,
+      meta:{
+        auth:false
+      }
     },
     {
       path:'/register',
       name:'register',
       component:Register,
-
-      beforeEnter:(to,from,next) => {
-        try{
-          let isLogged = store.state.user.loggedIn;
-          if(isLogged){
-            next({path:'/'});
-          }else{
-            next();
-          }
-        }catch(error){
-          console.log(error);
-        }
+      meta:{
+        auth:false
       },
-
+      
       children:[
         {
           path:'cliente',
@@ -125,27 +116,35 @@ const router = new Router({
 });
 
 router.beforeEach((to, from, next) => {
-  let isLogged = store.state.user.loggedIn;
-
-  if(isLogged && to.path == '/login'){
-    router.push('/');
-  }else if(isLogged && to.path== '/register/cliente'){
-    router.push('/');
+  const user = store.state.user.loggedIn;
+  
+  if(
+    to.path == '/login' || 
+    to.path == '/register' || 
+    to.path == '/register/cliente' ||
+    to.path == '/register/empresa'
+    && user
+  ){
+    next({name:'home'});
   }else{
     next();
   }
-});
 
-router.beforeResolve((to, from, next) => {
-  let isLogged = store.state.user.loggedIn;
-
-  if(isLogged && to.path == '/login'){
-    router.push('/');
-  }else if(isLogged && to.path== '/register/cliente'){
-    router.push('/');
+  if(
+    to.path == '/account' ||
+    to.path == '/account/profile' ||
+    to.path == '/account/credit-card' ||
+    to.path == '/account/notificaciones' ||
+    to.path == '/account/ayuda' ||
+    to.path == '/account/historial' 
+    && user == false
+  ){
+    next({name:'home'});
   }else{
     next();
   }
+
+
 });
 
 export default router;

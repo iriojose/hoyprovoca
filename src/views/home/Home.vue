@@ -2,9 +2,17 @@
   <div>
       <AppBar />
       <Banner />
-      <Categorias :categorias="categor" v-if="activo" />
+      <Categorias title="Categorias" :categorias="categor" v-if="activo" />
       
-      <v-row v-else>
+      <v-row v-else class="my-5">
+          <v-col cols="12" md="3" v-for="n in 4" :key="n">
+              <SkeletonCard/>
+          </v-col>
+      </v-row>
+
+      <Categorias title="Sugerencias" :categorias="categor" v-if="activo" />
+
+      <v-row v-else class="my-5">
           <v-col cols="12" md="3" v-for="n in 4" :key="n">
               <SkeletonCard/>
           </v-col>
@@ -34,7 +42,7 @@ export default {
   data(){
     return{
       categor:[],
-      activo:false
+      activo:false,
     }
   },
 

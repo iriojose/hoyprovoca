@@ -3,11 +3,10 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import vuetify from './plugins/vuetify';
-import '@babel/polyfill'
-import 'roboto-fontface/css/roboto/roboto-fontface.css'
-import '@mdi/font/css/materialdesignicons.css'
-import firebase from 'firebase'
-import firestore from 'firebase/firestore'
+import '@babel/polyfill';
+import 'roboto-fontface/css/roboto/roboto-fontface.css';
+import '@mdi/font/css/materialdesignicons.css';
+import firebase from 'firebase';
 
 Vue.config.productionTip = false;
 
@@ -26,13 +25,16 @@ var firebaseConfig= {
 
 firebase.initializeApp(firebaseConfig);
 
+let app=null;
+
 firebase.auth().onAuthStateChanged(user => {
   store.dispatch("fetchUser", user);
+  if(!app){
+    new Vue({
+      store,
+      router,
+      vuetify,
+      render: h => h(App)
+    }).$mount("#app");
+  }
 });
-
-new Vue({
-  store,
-  router,
-  vuetify,
-  render: h => h(App)
-}).$mount("#app");

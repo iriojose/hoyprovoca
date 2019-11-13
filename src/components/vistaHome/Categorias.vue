@@ -1,7 +1,7 @@
 <template>
     <div class="my-8 mx-10">
         <div class="headline">
-            Categorias
+            {{title}}
         </div>
         <v-sheet
             class="mx-auto my-4"
@@ -37,7 +37,7 @@
 
 <script>
     export default {
-        props:['categorias'],
+        props:['categorias','title'],
         data(){
             return {
                 model:1,

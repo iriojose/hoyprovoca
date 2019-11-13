@@ -106,9 +106,9 @@ import {mapState} from 'vuex';
         },
 
         mounted(){
-            console.log(this.user);
-            this.getProfile();
-            console.log(firebase.auth().currentUser);
+            var uid = firebase.auth().currentUser.uid;
+            this.getProfile(uid);
+            console.log(uid);
         },
 
         computed:{
@@ -116,10 +116,13 @@ import {mapState} from 'vuex';
         },
 
         methods: {
-            async getProfile(){
-                var ref = await firebase.firestore().collection('profile').where("idUser"== "SZQwxFqm15e5PwAId6pdzZqKZYI3");
+            async getProfile(uid){
+                var ref = await firebase.firestore()
+                    .collection('profile').where('userId','==',uid);
 
-                console.log(ref);
+                ref.onSnapshot(snap => {
+                    console.log(snap.data);
+                });
             }
         },
     }

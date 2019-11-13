@@ -16,7 +16,7 @@
 
             <v-flex md4 sm12 xs12 lg4>
                 <v-card elevation="0">
-                    <v-img height="300" src=""/>
+                    <v-img height="300" src="https://www.designevo.com/res/templates/thumb_small/colorful-centripetal-circle-company.png"/>
                 </v-card>
             </v-flex>
         </v-layout>
