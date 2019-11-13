@@ -114,7 +114,7 @@
         <!--snakbar para mensaje de registro completado o fallido-->
         <v-snackbar v-model="snackbar" :color="error != null? 'red':'green'" right>
             <div v-if="error==null">
-                se ha guardado exitosamente.
+                se ha registrado exitosamente.
             </div>
             <div v-if="error">
                 {{error}}
@@ -164,8 +164,7 @@ import router from '@/router';
                 firebase.auth().createUserWithEmailAndPassword(
                     this.user.email, this.user.password
                 ).then(data => {
-                data.user
-                    .updateProfile({
+                    firebase.firestore().collection('profile').doc(data.user.uid).set({
                         nombre: this.user.nombre,
                         apellido:this.user.apellido,
                         imagen:"https://disfi.com/wp-content/uploads/2018/09/foto-bloqueada-300x225.jpg"

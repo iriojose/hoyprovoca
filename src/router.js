@@ -1,121 +1,121 @@
 import Vue from "vue";
 import Router from "vue-router";
-import store from './store';
+import store from "./store";
 
 import Home from "./views/home/Home.vue";
-import NotFound from './views/NotFound';
+import NotFound from "./views/NotFound";
 
 //auth routes components
-import Login from './views/auth/Login.vue'
-import Register from './views/auth/Register.vue'
-import Cliente from './views/auth/Cliente'
-import Empresa from './views/auth/Empresa'
- 
+import Login from "./views/auth/Login.vue";
+import Register from "./views/auth/Register.vue";
+import Cliente from "./views/auth/Cliente";
+import Empresa from "./views/auth/Empresa";
+
 //rutas del perfil de usuario
-import Account from './views/account/Account'
-import Profile from './views/account/Profile'
-import CreditCard from './views/account/CreditCard'
-import Notificaciones from './views/account/Notificaciones'
-import Ayuda from './views/account/Ayuda'
-import Historial from './views/account/Historial'
+import Account from "./views/account/Account";
+import Profile from "./views/account/Profile";
+import CreditCard from "./views/account/CreditCard";
+import Notificaciones from "./views/account/Notificaciones";
+import Ayuda from "./views/account/Ayuda";
+import Historial from "./views/account/Historial";
 
 //ruta de busqueda
-import Search from './views/search/Search'
+import Search from "./views/search/Search";
 
 //ruta de perfil de aliados
-import Aliados from './views/aliados/Aliados'
+import Aliados from "./views/aliados/Aliados";
 
 Vue.use(Router);
 
 const router = new Router({
-  mode: 'history', 
+  mode: "history",
   routes: [
     {
       path: "/",
       name: "home",
-      component: Home,
+      component: Home
     },
     {
-      path:'/search',
-      name:'search',
-      component:Search
+      path: "/search",
+      name: "search",
+      component: Search
     },
     {
-      path:'/login',
-      name:'login',
-      component:Login,
-      meta:{
-        auth:false
+      path: "/login",
+      name: "login",
+      component: Login,
+      meta: {
+        auth: false
       }
     },
     {
-      path:'/register',
-      name:'register',
-      component:Register,
-      meta:{
-        auth:false
+      path: "/register",
+      name: "register",
+      component: Register,
+      meta: {
+        auth: false
       },
-      
-      children:[
-        {
-          path:'cliente',
-          name:'cliente',
-          component:Cliente
-        },
-        {
-          path:'empresa',
-          name:'empresa',
-          component:Empresa
-        }
-      ]
-    },
-    {
-      path:'/account',
-      name:'account',
-      component:Account,
 
-      children:[
+      children: [
         {
-          path:'profile',
-          name:'profile',
-          component:Profile
+          path: "cliente",
+          name: "cliente",
+          component: Cliente
         },
         {
-          path:'credit-card',
-          name:'credit',
-          component:CreditCard
-        },
-        {
-          path:'notificaciones',
-          name:'notificaciones',
-          component:Notificaciones
-        },
-        {
-          path:'ayuda',
-          name:'ayuda',
-          component:Ayuda
-        },
-        {
-          path:'historial',
-          name:'historial',
-          component:Historial
+          path: "empresa",
+          name: "empresa",
+          component: Empresa
         }
       ]
     },
-    { 
-      path:'/aliados/:id',
-      name:'aliados',
-      component:Aliados
+    {
+      path: "/account",
+      name: "account",
+      component: Account,
+
+      children: [
+        {
+          path: "profile",
+          name: "profile",
+          component: Profile
+        },
+        {
+          path: "credit-card",
+          name: "credit",
+          component: CreditCard
+        },
+        {
+          path: "notificaciones",
+          name: "notificaciones",
+          component: Notificaciones
+        },
+        {
+          path: "ayuda",
+          name: "ayuda",
+          component: Ayuda
+        },
+        {
+          path: "historial",
+          name: "historial",
+          component: Historial
+        }
+      ]
     },
     {
-      path:'*',
-      name:'notfount',
-      component:NotFound
+      path: "/aliados/:id",
+      name: "aliados",
+      component: Aliados
+    },
+    {
+      path: "*",
+      name: "notfount",
+      component: NotFound
     }
-  ],
+  ]
 });
 
-router.beforeEach((to, from, next) => {
+/*router.beforeEach((to, from, next) => {
   const user = store.state.user.loggedIn;
   
   if(
@@ -145,6 +145,6 @@ router.beforeEach((to, from, next) => {
   }
 
 
-});
+});*/
 
 export default router;
