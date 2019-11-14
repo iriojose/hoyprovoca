@@ -28,6 +28,11 @@
                 
             <v-spacer />
             <v-divider vertical class="hidden-sm-and-down color"></v-divider>
+            <v-toolbar-items v-if="user.loggedIn">
+                <v-btn icon class="mx-3" to="/account/notificaciones">
+                    <v-icon size="30">notifications</v-icon>
+                </v-btn>
+            </v-toolbar-items>
 
             <v-toolbar-items v-if="user.loggedIn==false">
                 <v-hover v-slot:default="{ hover }">
@@ -56,12 +61,11 @@
                         <v-list dense>
                             <v-list-item>
                                 <v-list-item-avatar color="grey" dark>
-                                    <!-- <img :src="dont" alt="John" width="30" height="30"> -->
-                                    IG
+                                    <img :src="imagen" alt="JN">
                                 </v-list-item-avatar>
 
                                 <v-list-item-content>
-                                    <v-list-item-title>Irio Gomez</v-list-item-title>
+                                    <v-list-item-title>{{nombre+' '+apellido}}</v-list-item-title>
                                 </v-list-item-content>
 
                             </v-list-item>
@@ -113,6 +117,9 @@ import firebase from 'firebase';
         data(){
             return {
                 busquedas:'',
+                imagen:'',
+                nombre:'',
+                apellido:'',
                 link:[
                     {text:'Ajustes de cuentas',path:'/account/profile'},
                     {text:'Agregar tarjeta de credito',path:'/account/credit-card'},
@@ -143,13 +150,29 @@ import firebase from 'firebase';
                     this.setDrawer(true);
                 }
             },
-
             logOut(){
                 firebase.auth().signOut().then(() => {
                     this.$router.replace({ name: "login" });
                 });
+            },
+            async getImage(){
+                let uid = await firebase.auth().currentUser.uid;
+                var ref = await firebase
+                    .firestore()
+                    .collection("profile")
+                    .doc(uid);
+
+                ref.onSnapshot(snap => {
+                    this.imagen= snap.data().imagen;
+                    this.nombre=snap.data().nombre;
+                    this.apellido=snap.data().apellido;
+                });
+                    
             }
         },
+        mounted(){
+            this.getImage();
+        }
     }
 </script>
 

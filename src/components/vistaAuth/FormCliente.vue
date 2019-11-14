@@ -6,7 +6,7 @@
                     <v-card class="mb-12" height="150" elevation="0">
                         <v-form v-model="valid1" @submit.prevent="">
                             <v-row>
-                                <v-col cols="12" lg="4" md="4" sm="4" offset="2">
+                                <v-col cols="12" lg="5" md="5" sm="5" offset="1">
                                     <v-text-field 
                                         type="text"
                                         v-model="user.nombre"
@@ -21,7 +21,7 @@
                                     />
                                 </v-col>
 
-                                <v-col cols="12" lg="4" md="4" sm="4">
+                                <v-col cols="12" lg="5" md="5" sm="5">
                                     <v-text-field 
                                         type="text"
                                         prepend-inner-icon="person"

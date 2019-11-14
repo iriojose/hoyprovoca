@@ -1,7 +1,10 @@
 <template>
-  <v-sheet :color="`grey ${theme.isDark ? 'darken-2' : 'lighten-4'}`" class="px-3 pt-3 pb-3">
-    <v-skeleton-loader class="mx-auto" max-width="250" type="card" />
-  </v-sheet>
+    <v-sheet 
+        :color="`grey ${theme.isDark ? 'darken-2' : 'lighten-4'}`" 
+        
+    >
+        <v-skeleton-loader max-width="250" type="card" />
+    </v-sheet>
 </template>
 
 <script>

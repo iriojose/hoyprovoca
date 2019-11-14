@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-layout row wrap justify-center>
-            <v-flex md8 xs8 lg8 sm8> 
+            <v-flex md6 xs6 lg6 sm6> 
                 <v-card elevation="5" class="pa-5 my-10">
                     <div class="text-center">
                         <v-btn text>
