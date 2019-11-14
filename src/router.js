@@ -103,7 +103,7 @@ const router = new Router({
       ]
     },
     {
-      path: "/aliados/:id",
+      path: "/aliados/:text/:id",
       name: "aliados",
       component: Aliados
     },

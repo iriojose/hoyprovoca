@@ -1,6 +1,6 @@
 <template>
   <div>
-      <v-card elevation="0">
+      <v-card elevation="1">
           <v-layout row wrap justify-center>
               <v-flex md6 xs3 class="my-4">
                   <v-avatar size="150">
@@ -13,7 +13,7 @@
           </v-layout>
       </v-card>
 
-      <v-card class="mt-2" elevation="0">
+      <v-card class="mt-2" elevation="2">
           <v-list dense>
               <v-list-item
                   v-for="opcion in opciones"

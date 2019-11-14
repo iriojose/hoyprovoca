@@ -42,12 +42,14 @@ export default {
   data() {
     return {
       categor: [],
-      activo: false
+      activo: false,
+      aliados:{}
     };
   },
 
   created() {
     this.getCategorias();
+    this.getAliados();
   },
 
   watch: {
@@ -67,6 +69,17 @@ export default {
             imagen: doc.data().imagen
           });
         });
+      });
+    },
+
+    async getAliados(){
+      var ref = await firebase.firestore()
+                .collection('aliados')
+                .doc('Gf8fyo1wTERGbLGpVPXC');
+      console.log(ref);
+
+      ref.onSnapshot(snap => {
+        console.log(snap.data().grupos);
       });
     }
   }
