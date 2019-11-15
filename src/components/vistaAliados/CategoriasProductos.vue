@@ -1,9 +1,13 @@
 <template>
     <div>
-        <v-card color="#f5f5f5" elevation="4">
-            <v-img gradient="to bottom right, rgba(0,0,0,.1), rgba(0,0,0,.5)" 
-                    height="400" 
-                    :src="aliado.imagen2">
+        <v-card color="#f5f5f5" elevation="4" v-if="activo">
+            <v-img 
+                gradient="to bottom right, rgba(0,0,0,.1), rgba(0,0,0,.5)" 
+                height="400" 
+                width="100%"
+                :src="aliado.imagen2"
+                contain
+            >
                 <v-row>
                     <v-col cols="12" md="5" sm="10" lg="5" class="mt-12 mx-10">
                         <v-card elevation="5" width="100%"  height="250">
@@ -34,6 +38,8 @@
             </v-img>
         </v-card>
 
+        <SkeletonAliados v-else/>
+
         <v-tabs 
             color="#000" 
             centered class="mt-5" 
@@ -41,21 +47,21 @@
         >
             <v-tabs-slider></v-tabs-slider>
             <v-tab 
-                v-for="n in num" 
+                v-for="n in grupos" 
                 :key="n.id"
-                :href="`#tab-${n.id}`"
+                :href="`#tab-${n.nombre}`"
             >
-                {{n.id}}
+                {{n.nombre}}
             </v-tab>
 
             <v-tab-item
-                v-for="n in num" 
+                v-for="n in grupos" 
                 :key="n.id"
-                :value="'tab-' + n.id"
+                :value="'tab-' + n.nombre"
                 class="color"
             >
                 <v-card class="mx-10 mt-10" elevation="0" color="#f5f5f5" height="400" width="100%">
-                    <span class="subtitle-1 font-weight-bold">{{n.id}}</span>
+                    <span class="subtitle-1 font-weight-bold">{{n.nombre}}</span>
                     <v-row>
                         <v-col cols="12" md="3">
                             <v-card height="150" width="100%">
@@ -72,19 +78,22 @@
                     </v-row>
                 </v-card>
             </v-tab-item>
-            
         </v-tabs>
-        
     </div>
 </template>
 
 <script>
 import router from '@/router';
 import firebase from 'firebase';
+import SkeletonAliados from '@/components/layouts/SkeletonAliados';
 
     export default {
+        components:{
+            SkeletonAliados
+        },
         data() {
             return {
+                activo:false,
                 num:[
                     {id:'Sugeridos'},
                     {id:'Promociones'},
@@ -98,21 +107,21 @@ import firebase from 'firebase';
                     tipo2:'',
                     tipo3:'',
                     tipo4:'',
-                    imagen2:''
+                    imagen2:'',
                 },
-                activo:false
-            }
-        },
-
-        watch:{
-            aliado(){
-                this.activo=true;
-                console.log(this.activo);
+                grupos:[]
             }
         },
 
         mounted() {
             this.getAliado();  
+        },
+
+        watch: {
+            grupos(){
+                this.activo = true;
+                console.log(this.activo);
+            }
         },
 
         methods: {
@@ -128,6 +137,7 @@ import firebase from 'firebase';
                     this.aliado.tipo2 = snap.data().tipo2;
                     this.aliado.tipo3 = snap.data().tipo3;
                     this.aliado.tipo4 = snap.data().tipo4;
+                    this.grupos = snap.data().grupos;
                 });
            }
         },

@@ -24,7 +24,6 @@ var firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
-firebase.firestore().settings(setting);
 
 let app = null;
 

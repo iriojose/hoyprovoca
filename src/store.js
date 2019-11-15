@@ -15,7 +15,8 @@ export default new Vuex.Store({
     items: [
       { title: "Promociones", icon: "monetization_on" },
       { title: "Restaurantes", icon: "restaurant" },
-      { title: "Tiendas", icon: "store_mall_directory" }
+      { title: "Tiendas", icon: "store_mall_directory" },
+      { title: "Bebidas", icon: "local_bar" },
     ],
   },
 

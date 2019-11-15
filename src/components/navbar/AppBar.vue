@@ -1,7 +1,8 @@
 <template>
     <div>
         <BarraLateral />
-        <v-app-bar app elevation="3">
+        <v-app-bar app elevation="3" id="scroll-target">
+
             <v-app-bar-nav-icon @click="change()" v-if="drawer==false"/>
             <v-icon v-else  @click="change()">
                 close
@@ -12,21 +13,26 @@
                     <v-img src="@/assets/log.png"></v-img>
                 </v-btn>
             </v-toolbar-title>
-                
+            
+            <v-spacer/>
+
             <v-text-field
                 v-model="busquedas"
-                label="Search store..."
-                append-icon="search"
-                color="#005598"
+                label="Buscar producto..."
+                prepend-inner-icon="search"
+                clearable
+                persistent-hint
                 hide-details
+                dense 
                 outlined
-                dense
-                rounded
                 v-on:keyup.enter="search"
-                class="hidden-sm-and-down"
+                class="hidden-sm-and-down mx-8"
+                background-color="#f7f7f7"
+                color="#999"
+                single-line
+                :loading="loading"
             />
                 
-            <v-spacer />
             <v-divider vertical class="hidden-sm-and-down color"></v-divider>
             <v-toolbar-items v-if="user.loggedIn">
                 <v-btn icon class="mx-3" to="/account/notificaciones">
@@ -84,7 +90,7 @@
 
                             <v-list-item>
                                 <v-list-item-title @click="logOut()">
-                                    Cerrar sesion
+                                    Cerrar sesión
                                 </v-list-item-title>
                             </v-list-item>
                         </v-list>
@@ -124,7 +130,9 @@ import firebase from 'firebase';
                     {text:'Ajustes de cuentas',path:'/account/profile'},
                     {text:'Agregar tarjeta de credito',path:'/account/credit-card'},
                     {text:'centro de ayuda',path:'/account/ayuda'},
-                ]
+                ],
+                loading:false,
+                scroll:0,
             }
         },
         computed: {
@@ -132,16 +140,26 @@ import firebase from 'firebase';
 
             ...mapGetters({
                 user: "user"
-            })
+            }),
         },
+
         methods: {
             ...mapActions(['setDrawer']),
+
+            onScroll (e) {
+                this.offsetTop = e.target.scrollTop
+            },
 
             transition(){
                 return "slide-y-transition"
             },
+
             search() {
-                router.push("/search");
+                this.loading=true;
+                setTimeout(() => {
+                    this.loading=false;
+                    router.push("/search");
+                },2000);
             },
             change(){
                 if(this.drawer==true){

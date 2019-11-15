@@ -3,13 +3,16 @@
         :color="`grey ${theme.isDark ? 'darken-2' : 'lighten-4'}`"
         class="mx-5"
     >
-        <v-skeleton-loader max-width="250" type="card" />
+         <v-skeleton-loader  
+            type="image" 
+            height="300"
+        />
     </v-sheet>
 </template>
 
 <script>
     export default {
         inject: ["theme"]
-    };
+    }
 </script>
 

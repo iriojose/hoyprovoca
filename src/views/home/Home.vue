@@ -1,7 +1,10 @@
 <template>
   <div>
     <AppBar />
-    <Banner />
+    <Banner v-if="activo" />
+
+    <SkeletonImage v-else/>
+
     <Categorias title="Categorias" :categorias="categor" v-if="activo" />
 
     <v-row v-else class="my-5">
@@ -28,6 +31,7 @@ import Footer from "@/components/footer/Footer";
 import Banner from "@/components/vistaHome/Banner";
 import Categorias from "@/components/vistaHome/Categorias";
 import SkeletonCard from "@/components/layouts/SkeletonCard";
+import SkeletonImage from '@/components/layouts/SkeletonImage'
 import firebase from "firebase";
 
 export default {
@@ -37,7 +41,8 @@ export default {
     Footer,
     Banner,
     Categorias,
-    SkeletonCard
+    SkeletonCard,
+    SkeletonImage
   },
   data() {
     return {
