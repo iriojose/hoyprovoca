@@ -6,7 +6,7 @@
             <v-flex md4 xs12>
                 <v-layout row justify-space-around>
                     <v-flex md3 align-self-center>
-                        <v-img :src="require('@/assets/shop.svg')" width="64" height="64"/>
+                        <v-img :src="require('@/assets/e-commerce.svg')" width="64" height="64"/>
                     </v-flex>
                     <v-flex md6 align-self-center>
                         Pagos Online
@@ -17,10 +17,10 @@
             <v-flex md4 xs12>
                 <v-layout row justify-space-around>
                     <v-flex md3>
-                        <v-img :src="require('@/assets/delivery.svg')" width="64" height="64"/>
+                        <v-img :src="require('@/assets/e-comer.svg')" width="64" height="64"/>
                     </v-flex>
                     <v-flex md6 align-self-center>
-                        Envios a toda hora
+                        Compras a todas horas
                     </v-flex>
                 </v-layout>
             </v-flex>

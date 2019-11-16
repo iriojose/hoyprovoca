@@ -59,12 +59,12 @@
                         type="number"
                         counter="12"
                         dense
+                        prefix="+58"
                         color="#005598"
                         append-icon="create"
                         :rules="[
                                 required('Telefono'),
-                                minLength('Telefono',3),
-                                maxLength('Telefono',12),
+                                minLength('Telefono',10),
                               ]"
                     />
                 </v-col>
@@ -101,7 +101,8 @@ export default {
       editable:false,
       nombre: "",
       apellido: "",
-      telefono: "122121211212",
+      cedula:'',
+      telefono: "",
       email: "",
       count:0,
       snackbar:false,
@@ -147,7 +148,9 @@ export default {
         .collection('profile')
         .doc(uid).update({
           nombre:this.nombre,
-          apellido:this.apellido
+          apellido:this.apellido,
+          telefono:this.telefono,
+          cedula:this.cedula
       });
       this.snackbar=true;
     },
@@ -162,6 +165,8 @@ export default {
       ref.onSnapshot(snap => {
         this.nombre= snap.data().nombre;
         this.apellido= snap.data().apellido;
+        this.cedula=snap.data().cedula;
+        this.telefono=snap.data().telefono;
       });
     }
   }

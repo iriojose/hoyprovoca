@@ -1,12 +1,30 @@
 <template>
     <v-form v-model="valid" @submit.prevent="">
         <v-stepper v-model="e1" class="elevation-0">
+            <v-stepper-header class="elevation-0">
+                <v-stepper-step 
+                    step="1" 
+                    :complete="e1>=2" 
+                    :color="e1>=2 ? 'green':'#005598'"
+                >Datos basicos
+                </v-stepper-step>
+                <v-divider></v-divider>
+                <v-stepper-step 
+                    step="2" 
+                    :complete="e1==3" 
+                    :color="e1==3 ? 'green':'#005598'"
+                >Telefono
+                </v-stepper-step>
+                <v-divider></v-divider>
+                <v-stepper-step step="3" color="#005598">Datos privados</v-stepper-step>
+            </v-stepper-header>
+
             <v-stepper-items>
                 <v-stepper-content step="1">
                     <v-card class="mb-12" height="150" elevation="0">
                         <v-form v-model="valid1" @submit.prevent="">
                             <v-row>
-                                <v-col cols="12" lg="5" md="5" sm="5" offset="1">
+                                <v-col cols="12" lg="6" md="6" sm="6">
                                     <v-text-field 
                                         type="text"
                                         v-model="user.nombre"
@@ -15,16 +33,16 @@
                                         outlined
                                         dense
                                         clearable
-                                        prepend-inner-icon="person"
+                                        append-icon="person"
                                         counter="40"
                                         :rules="[required('Nombre(s)'), minLength('Nombre(s)',3),maxLength('Nombre(s)',40)]"
                                     />
                                 </v-col>
 
-                                <v-col cols="12" lg="5" md="5" sm="5">
+                                <v-col cols="12" lg="6" md="6" sm="6">
                                     <v-text-field 
                                         type="text"
-                                        prepend-inner-icon="person"
+                                        append-icon="person"
                                         v-model="user.apellido"
                                         label="Apellido(s)"
                                         clearable
@@ -35,19 +53,62 @@
                                         :rules="[required('Apellido(s)'), minLength('Apellido(s)',3),maxLength('Apellido(s)',40)]"
                                     />
                                 </v-col>
+
+                                <v-col cols="12" lg="6" md="6" sm="6" offset="3">
+                                    <v-text-field 
+                                        type="text"
+                                        append-icon="payment"
+                                        v-model="user.cedula"
+                                        prefix="V-"
+                                        clearable
+                                        color="#005598"
+                                        outlined
+                                        single-line
+                                        dense
+                                        counter="8"
+                                        autofocus
+                                        :rules="[required('Cedula'), minLength('Cedula',6),maxLength('Cedula',8)]"
+                                    />
+                                </v-col>
+                            </v-row>
+                        </v-form>
+                    </v-card>
+                     <div class="text-end">
+                        <v-btn @click="e1=2" color="info" :disabled="!valid1">
+                            Siguiente
+                        </v-btn>
+                    </div>
+                </v-stepper-content>
+
+                <v-stepper-content step="2">
+                    <v-card class="mb-12" height="150" elevation="0">
+                        <v-form v-model="valid2" @submit.prevent="">
+                            <v-row>
+                                <v-col cols="12" lg="6" md="6" sm="6" offset="3">
+                                    <v-text-field 
+                                        type="text"
+                                        v-model="user.telefono"
+                                        color="#005598"
+                                        outlined
+                                        append-icon="phone"
+                                        prefix="+58"
+                                        counter="10"
+                                        :rules="[required('Telefono'), minLength('Telefono',10),maxLength('Telefono',10)]"
+                                    />
+                                </v-col>
                             </v-row>
                         </v-form>
                     </v-card>
                     <div class="text-end">
-                        <v-btn @click="e1=2" color="info" :disabled="!valid1">
+                        <v-btn @click="e1=3" color="info" :disabled="!valid2">
                             Siguiente
                         </v-btn>
                     </div>
                     
                 </v-stepper-content>
 
-                <v-stepper-content step="2">
-                    <v-form v-model="valid2" @submit.prevent="">
+                <v-stepper-content step="3">
+                    <v-form v-model="valid3" @submit.prevent="">
                         <v-card class="mb-12" height="150" elevation="0">
                             <v-row>
                                 <v-col cols="12" lg="6" md="6" sm="6" offset="3">
@@ -60,6 +121,7 @@
                                         outlined
                                         color="#005598"
                                         dense
+                                        single-line
                                         counter="50"
                                         :rules="[required('Email'), emailFormat(), maxLength('Email',50)]"
                                     />
@@ -69,6 +131,7 @@
                                         v-model="user.password"
                                         label="Password"
                                         counter="true"
+                                        single-line
                                         :type="showPassword ? 'text' : 'password' "
                                         :rules="[required('password'), minLength('password',8)]"
                                         @click:append="showPassword = !showPassword"
@@ -83,7 +146,7 @@
                         </v-card>
                         <v-row>
                             <v-col cols="12" md="3" lg="3" sm="3">
-                                <v-btn @click="e1=1" text>
+                                <v-btn @click="e1=2" text>
                                     volver
                                 </v-btn>
                             </v-col>
@@ -91,9 +154,9 @@
                                 <v-btn 
                                     block 
                                     type="submit" 
-                                    :disabled="!valid2 || loading" 
+                                    :disabled="!valid3 || loading" 
                                     color="#005598" 
-                                    :dark="valid2 && !loading"
+                                    :dark="valid3 && !loading"
                                     :loading="loading"
                                     @click="register()"
                                 >
@@ -133,6 +196,7 @@ import router from '@/router';
                 valid:false,
                 valid1:false,
                 valid2:false,
+                valid3:false,
                 showPassword:false,
                 error:null,
                 snackbar:false,
@@ -143,7 +207,8 @@ import router from '@/router';
                     password:'',
                     telefono:'',
                     sexo:'',
-                    fecha:'',
+                    fechaNac:'',
+                    cedula:''
                 },
                 ...validations,
                 e1:0,
@@ -167,13 +232,15 @@ import router from '@/router';
                     firebase.firestore().collection('profile').doc(data.user.uid).set({
                         nombre: this.user.nombre,
                         apellido:this.user.apellido,
+                        cedula:this.user.cedula,
+                        telefono:this.user.telefono,
                         imagen:"https://us.123rf.com/450wm/thesomeday123/thesomeday1231712/thesomeday123171200009/91087331-icono-de-perfil-de-avatar-predeterminado-para-hombre-marcador-de-posici%C3%B3n-de-foto-gris-vector-de-ilustr.jpg?ver=6"
                     }).then(() => {
                         this.snackbar=true;
                         setTimeout(() => {
                             this.error=null;
                             router.push('/');
-                        },2000);
+                        },1000);
                     });
                 }).catch(err => {
                     this.snackbar=true;

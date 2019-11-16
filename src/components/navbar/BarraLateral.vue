@@ -54,6 +54,9 @@
                   <v-col cols="12" md="3" offset="1">
                       <v-img height="90" src="https://www.stickpng.com/assets/images/58428cc1a6515b1e0ad75ab1.png" contain/>
                   </v-col>
+                   <v-col cols="12" md="3" offset="1">
+                      <v-img height="90" src="https://www.stickpng.com/assets/images/58428cc1a6515b1e0ad75ab1.png" contain/>
+                  </v-col>
               </v-row>
           </v-card>
       </v-menu>

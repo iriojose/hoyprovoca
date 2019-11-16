@@ -4,24 +4,31 @@
         <v-app-bar app elevation="3" id="scroll-target">
 
             <v-app-bar-nav-icon @click="change()" v-if="drawer==false"/>
-            <v-icon v-else  @click="change()">
-                close
-            </v-icon>
-
+            <v-btn v-else  @click="change()" icon depressed>
+                <v-icon>
+                    close
+                </v-icon>
+            </v-btn>
+               
             <v-toolbar-title class="mx-8 text-center">
                 <v-btn text router to="/">
                     <v-img src="@/assets/log.png"></v-img>
                 </v-btn>
             </v-toolbar-title>
-            
-            <v-spacer/>
+
+            <v-progress-linear
+                :active="loading"
+                :indeterminate="loading"
+                absolute
+                bottom
+                color="#005598"
+            ></v-progress-linear>
 
             <v-text-field
                 v-model="busquedas"
                 label="Buscar producto..."
                 prepend-inner-icon="search"
                 clearable
-                persistent-hint
                 hide-details
                 dense 
                 outlined
@@ -30,9 +37,9 @@
                 background-color="#f7f7f7"
                 color="#999"
                 single-line
-                :loading="loading"
             />
-                
+
+            <v-spacer/>
             <v-divider vertical class="hidden-sm-and-down color"></v-divider>
             <v-toolbar-items v-if="user.loggedIn">
                 <v-btn icon class="mx-3" to="/account/notificaciones">
@@ -159,7 +166,7 @@ import firebase from 'firebase';
                 setTimeout(() => {
                     this.loading=false;
                     router.push("/search");
-                },2000);
+                },3000);
             },
             change(){
                 if(this.drawer==true){

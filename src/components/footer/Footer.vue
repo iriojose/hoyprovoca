@@ -105,7 +105,7 @@ import PreFooter from './PreFooter';
                 informacion:[
                     {text:'Terminos y condiciones'},
                     {text:'Trabaja con nosotros'},
-                    {text:' Politica de tratamientos de datos personales'},
+                    {text:'Politica de tratamientos de datos personales'},
                     {text:'Preguntas frecuentes'}
                 ],
                 siguenos:[
