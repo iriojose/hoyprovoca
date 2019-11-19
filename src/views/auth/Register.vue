@@ -12,7 +12,7 @@
         </v-app-bar>
 
         <v-row class="my-4">
-            <v-col cols="12" md="4" lg="4" sm="4" offset="4">
+            <v-col cols="12" md="6" lg="6" sm="6" offset="3">
                 <v-tabs color="#005598" background-color="#f5f5f5" centered>
                     <v-tab to="/register/cliente">Persona</v-tab>
                     <v-tab to="/register/empresa">Compañia</v-tab>

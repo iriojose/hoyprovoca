@@ -4,19 +4,19 @@
             <v-stepper-header class="elevation-0">
                 <v-stepper-step 
                     step="1" 
-                    :complete="e1>=2" 
-                    :color="e1>=2 ? 'green':'#005598'"
+                    :complete="valid1" 
+                    :color="valid1 ? 'green':'#005598'"
                 >Datos basicos
                 </v-stepper-step>
                 <v-divider></v-divider>
                 <v-stepper-step 
                     step="2" 
-                    :complete="e1==3" 
-                    :color="e1==3 ? 'green':'#005598'"
+                    :complete="valid2" 
+                    :color="valid2 ? 'green':'#005598'"
                 >Telefono
                 </v-stepper-step>
                 <v-divider></v-divider>
-                <v-stepper-step step="3" color="#005598">Datos privados</v-stepper-step>
+                <v-stepper-step step="3" :complete="valid3" :color="valid3 ? 'green':'#005598'">Datos privados</v-stepper-step>
             </v-stepper-header>
 
             <v-stepper-items>
@@ -99,12 +99,20 @@
                             </v-row>
                         </v-form>
                     </v-card>
-                    <div class="text-end">
-                        <v-btn @click="e1=3" color="info" :disabled="!valid2">
-                            Siguiente
-                        </v-btn>
-                    </div>
-                    
+                    <v-row>
+                        <v-col cols="12" md="3" lg="3" sm="3">
+                            <v-btn @click="e1=1" text icon>
+                                <v-icon large>
+                                    arrow_back
+                                </v-icon>
+                            </v-btn>
+                        </v-col>
+                        <v-col cols="12" md="3" lg="3" sm="3" offset="6">
+                            <v-btn @click="e1=3" color="info" :disabled="!valid2">
+                                Siguiente
+                            </v-btn>
+                        </v-col>
+                    </v-row>
                 </v-stepper-content>
 
                 <v-stepper-content step="3">
@@ -146,8 +154,10 @@
                         </v-card>
                         <v-row>
                             <v-col cols="12" md="3" lg="3" sm="3">
-                                <v-btn @click="e1=2" text>
-                                    volver
+                                <v-btn @click="e1=2" text icon>
+                                    <v-icon large>
+                                        arrow_back
+                                    </v-icon>
                                 </v-btn>
                             </v-col>
                             <v-col cols="12" md="3" lg="3" sm="3" offset="6">
@@ -200,6 +210,8 @@ import router from '@/router';
                 showPassword:false,
                 error:null,
                 snackbar:false,
+                terms:false,
+                conditions:false,
                 user:{
                     nombre:'',
                     apellido:'',
@@ -208,7 +220,7 @@ import router from '@/router';
                     telefono:'',
                     sexo:'',
                     fechaNac:'',
-                    cedula:''
+                    cedula:'',
                 },
                 ...validations,
                 e1:0,

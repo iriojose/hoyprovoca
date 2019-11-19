@@ -25,6 +25,9 @@ import Search from "./views/search/Search";
 //ruta de perfil de aliados
 import Aliados from "./views/aliados/Aliados";
 
+//clase de simulacion con jhonny granado
+import Simulacion from './views/simulacion/Simulacion';
+
 Vue.use(Router);
 
 const router = new Router({
@@ -106,6 +109,11 @@ const router = new Router({
       path: "/aliados/:text/:id",
       name: "aliados",
       component: Aliados
+    },
+    {
+      path: "/simulacion",
+      name: "simulacion",
+      component: Simulacion
     },
     {
       path: "*",
