@@ -3,7 +3,7 @@
     <AppBar />
     <Banner v-if="activo" />
 
-    <SkeletonImage v-else/>
+    <SkeletonImage v-else />
 
     <Categorias title="Categorias" :categorias="categor" v-if="activo" />
 

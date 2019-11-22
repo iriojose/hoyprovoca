@@ -1,118 +1,99 @@
 <template>
     <div>
-        <div class="subtitle-1 font-weight-medium">
+        <div class="subtitle-1 font-weight-medium mb-3">
             Historial
         </div>
-        <v-container fluid>
-            <v-data-iterator
-                :items="items"
-                :items-per-page.sync="itemsPerPage"
+        
+        <v-alert
+            border="left"
+            colored-border
+            color="grey accent-4"
+            elevation="2"
+        >
+            <v-card-title>
+                Pedidos
+            </v-card-title>
+
+            <v-data-table
+                :headers="headers"
+                :items="desserts"
             >
-                <template v-slot:header>
-                    <v-toolbar class="mb-2" color="#005598" dark flat>
-                        <v-toolbaar-title>
-                            Pedidos
-                        </v-toolbaar-title>
-                    </v-toolbar>
+                <template v-slot:item.action="{ item }">
+                    <v-icon class="mr-2" @click="verItem(item)"> 
+                        remove_red_eye
+                    </v-icon>
                 </template>
-
-                <template v-slot:default="props">
-                    <v-row>
-                        <v-col v-for="item in props.items" :key="item.name" cols="12" sm="6" md="6" lg="6">
-                            <v-card elevation="3">
-                                <v-card-title class="subheading font-weight-bold">
-                                    {{item.fecha}}
-                                </v-card-title>
-                                <v-divider/>
-
-                                <v-list dense>
-                                    <v-list-item>
-                                        <v-list-item-content>
-                                            item
-                                        </v-list-item-content>
-
-                                        <v-list-item-content>
-                                            cantidad
-                                        </v-list-item-content>
-
-                                        <v-list-item-content>
-                                            precio
-                                        </v-list-item-content>
-                                    </v-list-item> 
-
-                                    <v-list-item v-for="producto in item.productos" :key="producto.name">
-                                        <v-list-item-content class="align-end">
-                                            {{producto.name}}
-                                        </v-list-item-content>
-                                        <v-list-item-content class="align-end">
-                                           {{producto.cantidad}}
-                                        </v-list-item-content>
-                                        <v-list-item-content class="align-end">
-                                           {{producto.precio}}
-                                        </v-list-item-content>
-                                    </v-list-item>
-                                </v-list>
-                                <v-divider/>
-                                <v-card-content class="pa-5">
-                                    <span class="headline font-weight-bold ">Total:{{item.total}}</span>
-                                </v-card-content>
-                            </v-card>
-                        </v-col>
-                    </v-row>
-                </template>
-            </v-data-iterator>
-        </v-container>
+            </v-data-table>
+        </v-alert>
     </div>
 </template>
 
 <script>
     export default {
+        methods: {
+            verItem(item){
+
+            }
+        },
+
         data(){
             return{
-                itemsPerPage:3,
-                items:[
+                headers: [
                     {
-                        fecha:'18/09/2019',
-                        productos:[
-                            {name:'agua',cantidad:2,precio:'5$'},
-                            {name:'agua',cantidad:2,precio:'5$'},
-                            {name:'agua',cantidad:2,precio:'5$'},
-                            {name:'agua',cantidad:2,precio:'5$'},
-                        ],
-                        total:'330$'
+                        text: 'id',
+                        align: 'left',
+                        sortable: true,
+                        value: 'id',
+                    },
+                    {text: 'Fecha',sortable: false,value: 'fecha'},
+                    { text: 'Articulos', value: 'articulos',sortable: false},
+                    { text: 'Total', value: 'total',sortable: false},
+                    { text: 'Factura', value: 'factura',sortable: false},
+                    { text: 'Acciones', value: 'action', sortable: false },
+                ],
+
+                desserts: [
+                    {
+                        id: 1,
+                        fecha:'10/11/2019',
+                        articulos:12,
+                        total:'200$',
+                        factura:'AS12J43M34'
                     },
                     {
-                        fecha:'18/09/2019',
-                        productos:[
-                            {name:'agua',cantidad:2,precio:'5$'},
-                            {name:'agua',cantidad:2,precio:'5$'},
-                            {name:'agua',cantidad:2,precio:'5$'},
-                        ],
-                        total:'230$'
+                        id: 2,
+                        fecha:'10/11/2019',
+                        articulos:1,
+                        total:'10$',
+                        factura:'AS12J43M34'
                     },
                     {
-                        fecha:'18/09/2019',
-                        productos:[
-                            {name:'agua',cantidad:2,precio:'5$'},
-                            {name:'agua',cantidad:2,precio:'5$'},
-                            {name:'agua',cantidad:2,precio:'5$'},
-                        ],
-                        total:'130$'
+                        id: 3,
+                        fecha:'10/11/2019',
+                        articulos:2,
+                        total:'20$',
+                        factura:'AS12J43M34'
                     },
                     {
-                        fecha:'18/09/2019',
-                        productos:[
-                            {name:'agua',cantidad:2,precio:'5$'},
-                            {name:'agua',cantidad:2,precio:'5$'},
-                        ],
-                        total:'130$'
+                        id: 4,
+                        fecha:'10/11/2019',
+                        articulos:1,
+                        total:'10$',
+                        factura:'AS12J43M34'
                     },
                     {
-                        fecha:'18/09/2019',
-                        productos:[
-                            {name:'agua',cantidad:2,precio:'5$'}
-                        ],
-                        total:'130$'
+                        id: 5,
+                        fecha:'10/11/2019',
+                        articulos:2,
+                        total:'50$',
+                        factura:'AS12J43M34'
+                    },
+                    {
+                        id: 6,
+                        fecha:'10/11/2019',
+                        articulos:3,
+                        total:'100$',
+                        factura:'AS12J43M34'
                     },
                 ]
             }

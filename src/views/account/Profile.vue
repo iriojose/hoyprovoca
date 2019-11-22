@@ -156,7 +156,10 @@ export default {
     },
 
     async getProfile(uid) {
+
       var uid =await firebase.auth().currentUser.uid;
+      console.log(uid);
+      
       var ref = await firebase
         .firestore()
         .collection("profile")

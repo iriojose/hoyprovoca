@@ -18,6 +18,11 @@ export default new Vuex.Store({
       { title: "Tiendas", icon: "store_mall_directory" },
       { title: "Bebidas", icon: "local_bar" },
     ],
+    frecuenciaLlegada:4,
+    tiempoSistema:5,
+    repeticiones:10,
+    data:[],
+    dataSelected:[]
   },
 
   getters: {
@@ -41,12 +46,12 @@ export default new Vuex.Store({
 
     SET_USER(state, data) {
       state.user.data = data;
-    }
+    },
   },
 
   actions: {
     setDrawer({commit},val){
-      commit("SET_DRAWER",val)
+      commit("SET_DRAWER",val);
     },
 
     fetchUser({ commit }, user) {

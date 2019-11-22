@@ -28,6 +28,14 @@ import Aliados from "./views/aliados/Aliados";
 //clase de simulacion con jhonny granado
 import Simulacion from './views/simulacion/Simulacion';
 
+//rutas de adminitrador
+import Admin from './views/admin/Admin'
+import Dashboard from './views/admin/Dashboard'
+import Usuarios from './views/admin/Usuarios'
+import Notificaciones2 from './views/admin/Notificaciones'
+import Aliados2 from './views/admin/Aliados'
+import Ventas from './views/admin/Ventas'
+
 Vue.use(Router);
 
 const router = new Router({
@@ -119,6 +127,39 @@ const router = new Router({
       path: "*",
       name: "notfount",
       component: NotFound
+    },
+    {
+      path:'/admin',
+      name:'admin',
+      component:Admin , 
+
+      children:[
+        {
+          path:'dashboard',
+          name:'Dashboard',
+          component:Dashboard
+        },
+        {
+          path:'usuarios',
+          name:'Usuarios',
+          component:Usuarios,
+        },
+        {
+          path:'aliados',
+          name:'Aliados',
+          component:Aliados2
+        },
+        {
+          path:'notificaciones',
+          name:'Notificaciones',
+          component:Notificaciones2
+        },
+        {
+          path:'ventas',
+          name:'Ventas',
+          component:Ventas
+        }
+      ]
     }
   ]
 });

@@ -21,6 +21,11 @@ let number = (properType) => {
     return v => v && regex.test(v) || `${properType} debe ser solo numerico`;
 }
 
+let cedula = (properType) => {
+    let regex = /^[V|E|J|P][0-9]{5,9}$/ 
+    return v => v && regex.test(v) || `${properType} incorrecta`
+}
+
 //incompleto, falta expresion regular para los 4 primeros numeros del telefono
 let telefonoFormat = () => {
     let regex= aa;
@@ -32,5 +37,6 @@ export default{
     minLength,
     maxLength,
     emailFormat,
-    number
+    number,
+    cedula
 }

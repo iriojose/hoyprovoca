@@ -2,13 +2,13 @@
     <div>
         <v-row class="mx-3">
             <v-col cols="12" md="6" lg="12" sm="6">
-                <v-card class="pa-4" elevation="0">
+                <v-card class="pa-4" elevation="3">
                     <h3 class="my-4">Buscar por:</h3>
                     <v-select 
                         :items="items"
                         label="Categorias"
                         chips 
-                        v-model="def"
+                        v-model="items[0].text"
                         color="#005598"
                         hide-details
                         small-chips
@@ -31,13 +31,13 @@
             </v-col>
 
             <v-col cols="12" md="6" lg="12" sm="6">
-                <v-card class="pa-4" elevation="0">
+                <v-card class="pa-4" elevation="3">
                     <h3 class="my-4">Ordenar por:</h3>
                     <v-select 
                         :items="items2"
                         label="Categorias"
                         chips 
-                        v-model="def2"
+                        v-model="items2[0].text"
                         color="#005598"
                         hide-details
                         small-chips
@@ -73,6 +73,7 @@
                     {icon:'restaurant',text:'Restaurantes'},
                     {icon:'store_mall_directory',text:'Tiendas'},
                     {icon:'headset',text:'Tecnologia'},
+                    {icon:'store',text:'Supermercados'},
                 ],
                 items2:[
                     {icon:'arrow_right',text:'Mayor precio'},

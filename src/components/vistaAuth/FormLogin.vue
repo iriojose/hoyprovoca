@@ -101,7 +101,7 @@ import firebase from 'firebase';
                     setTimeout(() => {
                         this.error=null;
                         router.push('/');
-                    },2000);
+                    },1000);
                 }).catch(err => {
                     this.snackbar=true;
                     this.error =  err.message;

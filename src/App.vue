@@ -1,11 +1,11 @@
 <template>
-  <v-app style="background-color:#f5f5f5;">
+    <v-app style="background-color:#f5f5f5;">
       <v-content>
           <transition name="fade">
               <router-view/>
-          </transition>
+          </transition>  
       </v-content>
-  </v-app>
+    </v-app>
 </template>
 
 <script>

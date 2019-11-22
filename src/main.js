@@ -7,9 +7,10 @@ import "@babel/polyfill";
 import "roboto-fontface/css/roboto/roboto-fontface.css";
 import "@mdi/font/css/materialdesignicons.css";
 import firebase from "firebase";
+import Croppa from 'vue-croppa'
 
 Vue.config.productionTip = false;
-
+Vue.use(Croppa);
 var setting = { timestampsInSnapshots: true };
 
 var firebaseConfig = {
@@ -26,7 +27,7 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 firebase.auth().onAuthStateChanged(user => {
-  store.dispatch("fetchUser", user);
+    store.dispatch("fetchUser", user);
 });
 
 new Vue({
@@ -35,3 +36,4 @@ new Vue({
   vuetify,
   render: h => h(App)
 }).$mount("#app");
+
