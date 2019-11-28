@@ -13,7 +13,7 @@
       </v-col>
     </v-row>
 
-    <Categorias title="Sugerencias" :categorias="aliados" v-if="activo" />
+    <Sugerencias title="Sugerencias" :sugerencias="aliados" v-if="activo" />
 
     <v-row v-else class="my-5">
       <v-col cols="12" md="3" v-for="n in 4" :key="n">
@@ -30,6 +30,7 @@ import AppBar from "@/components/navbar/AppBar";
 import Footer from "@/components/footer/Footer";
 import Banner from "@/components/vistaHome/Banner";
 import Categorias from "@/components/vistaHome/Categorias";
+import Sugerencias from "@/components/vistaHome/Sugerencias";
 import SkeletonCard from "@/components/layouts/SkeletonCard";
 import SkeletonImage from '@/components/layouts/SkeletonImage'
 import firebase from "firebase";
@@ -41,6 +42,7 @@ export default {
     Footer,
     Banner,
     Categorias,
+    Sugerencias,
     SkeletonCard,
     SkeletonImage
   },

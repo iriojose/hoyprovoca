@@ -24,6 +24,8 @@ import Search from "./views/search/Search";
 
 //ruta de perfil de aliados
 import Aliados from "./views/aliados/Aliados";
+import AliadoEspecifico from "./views/aliados/AliadoEspecifico";
+import Tipos from "./views/aliados/Tipos";
 
 //clase de simulacion con jhonny granado
 import Simulacion from './views/simulacion/Simulacion';
@@ -114,9 +116,39 @@ const router = new Router({
       ]
     },
     {
-      path: "/aliados/:text/:id",
+      path: "/aliados",
       name: "aliados",
-      component: Aliados
+      component: Aliados,
+
+      children:[
+        {
+          path:"tipo/:text",
+          name:"tipo",
+          component:Tipos
+        },
+        {
+          path:":local",
+          name:"local",
+          component:AliadoEspecifico,
+
+          children:[
+            {
+              path:":categoria",
+              name:"nivel1",
+              component:AliadoEspecifico,
+
+              children:[
+                {
+                  path:":especifica",
+                  name:"nivel2",
+                  component:AliadoEspecifico,
+                }
+              ]
+            },
+          ]
+        }
+
+      ]
     },
     {
       path: "/simulacion",

@@ -8,6 +8,7 @@ import "roboto-fontface/css/roboto/roboto-fontface.css";
 import "@mdi/font/css/materialdesignicons.css";
 import firebase from "firebase";
 import Croppa from 'vue-croppa'
+import chartist from './plugins/chartist.js';
 
 Vue.config.productionTip = false;
 Vue.use(Croppa);
@@ -31,6 +32,7 @@ firebase.auth().onAuthStateChanged(user => {
 });
 
 new Vue({
+  chartist,
   store,
   router,
   vuetify,
