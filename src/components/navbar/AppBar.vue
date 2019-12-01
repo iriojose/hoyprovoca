@@ -1,11 +1,15 @@
 <template>
     <div>
         <BarraLateral />
-        <v-app-bar app elevation="3" id="scroll-target">
+        <v-app-bar app elevation="3" height="80">
 
-            <v-app-bar-nav-icon @click="change()" v-if="drawer==false"/>
-            <v-btn v-else  @click="change()" icon depressed>
-                <v-icon>
+            <v-app-bar-nav-icon  
+                @click="change()" 
+                v-if="drawer==false"
+                class="ml-2"
+            />
+            <v-btn v-else  @click="change()" icon depressed class="ml-2">
+                <v-icon :color="color ? '#fff':null">
                     close
                 </v-icon>
             </v-btn>
@@ -35,24 +39,28 @@
                 v-on:keyup.enter="search"
                 class="hidden-sm-and-down mx-8"
                 background-color="#f7f7f7"
-                color="#999"
+                :color="color ? '#000':'#005598'"
                 single-line
             />
 
             <v-spacer/>
-            <v-divider vertical class="hidden-sm-and-down color"></v-divider>
+            <v-divider vertical class="hidden-sm-and-down"></v-divider>
             <v-toolbar-items v-if="user.loggedIn">
                 <v-btn icon class="mx-3" to="/account/notificaciones">
-                    <v-icon size="30">notifications</v-icon>
+                    <v-icon size="35">notifications</v-icon>
                 </v-btn>
             </v-toolbar-items>
 
-            <v-toolbar-items v-if="user.loggedIn==false">
-                <v-hover v-slot:default="{ hover }">
-                    <v-btn text to="/login" :color="hover ? 'dark':null">
-                        Iniciar sesión
-                    </v-btn>
-                </v-hover>
+            <v-toolbar-items v-if="user.loggedIn">
+                <v-btn icon class="mx-3">
+                    <v-icon size="35">shopping_cart</v-icon>
+                </v-btn>
+            </v-toolbar-items>
+
+            <v-toolbar-items v-if="!user.loggedIn">
+                <v-btn text to="/login" >
+                    Iniciar sesión
+                </v-btn>
             </v-toolbar-items>
 
             <v-toolbar-items v-if="user.loggedIn">
@@ -63,17 +71,17 @@
                     offset-y
                 >
                     <template v-slot:activator="{ on }">
-                        <v-avatar color="#f5f5f5" class="mx-3 my-1 elevation-3">
+                        <v-avatar color="#f5f5f5" class="mx-3 my-3 elevation-3">
                             <v-btn icon v-on="on">
-                                <v-icon size="30">person</v-icon>
+                                <v-icon size="35">person</v-icon>
                             </v-btn>
                         </v-avatar>
                     </template>
                     <!-- lista de opciones-->
-                    <v-card>
-                        <v-list dense>
+                    <v-card width="300">
+                        <v-list >
                             <v-list-item>
-                                <v-list-item-avatar color="grey" dark>
+                                <v-list-item-avatar color="grey" dark size="70">
                                     <img :src="imagen" alt="JN">
                                 </v-list-item-avatar>
 
@@ -88,29 +96,33 @@
 
                         <v-list dense rounded>
                             <v-list-item v-for="item in link" :key="item.text" :to="item.path">
+                            
+                                <v-list-item-icon>
+                                    <v-icon color="">{{item.icon}}</v-icon>
+                                </v-list-item-icon>
                                 <v-list-item-title>
                                     {{item.text}}
                                 </v-list-item-title>
+                                
                             </v-list-item>
 
                             <v-divider/>
-
-                            <v-list-item>
-                                <v-list-item-title @click="logOut()">
-                                    Cerrar sesión
-                                </v-list-item-title>
-                            </v-list-item>
+                            <v-hover v-slot:default="{hover}">
+                                <v-list-item @click="logOut()">
+                                    <v-list-item-icon>
+                                        <v-icon :color="hover ? '#005598':null">
+                                            power_settings_new
+                                        </v-icon>
+                                    </v-list-item-icon>
+                                    <v-list-item-title>
+                                        Cerrar sesión
+                                    </v-list-item-title>
+                                </v-list-item>
+                            </v-hover>
                         </v-list>
                     </v-card>
                 </v-menu>
             </v-toolbar-items>
-
-            <v-toolbar-items v-if="user.loggedIn">
-                <v-btn icon class="mx-3">
-                    <v-icon size="30">shopping_cart</v-icon>
-                </v-btn>
-            </v-toolbar-items>
-
         </v-app-bar>
     </div>
 </template>
@@ -134,12 +146,11 @@ import firebase from 'firebase';
                 nombre:'',
                 apellido:'',
                 link:[
-                    {text:'Ajustes de cuentas',path:'/account/profile'},
-                    {text:'Agregar tarjeta de credito',path:'/account/credit-card'},
-                    {text:'centro de ayuda',path:'/account/ayuda'},
+                    {text:'Ajustes de cuentas',path:'/account/profile',icon:'build'},
+                    {text:'Agregar metodo de pago',path:'/account/metodo-de-pago',icon:'credit_card'},
+                    {text:'centro de ayuda',path:'/account/ayuda',icon:'help'},
                 ],
-                loading:false,
-                scroll:0,
+                loading:false
             }
         },
         computed: {
@@ -152,10 +163,6 @@ import firebase from 'firebase';
 
         methods: {
             ...mapActions(['setDrawer']),
-
-            onScroll (e) {
-                this.offsetTop = e.target.scrollTop
-            },
 
             transition(){
                 return "slide-y-transition"
@@ -203,6 +210,6 @@ import firebase from 'firebase';
 
 <style lang="scss" scoped>
     .color{
-        color:black;
+        color:#005598;
     }
 </style>

@@ -2,10 +2,10 @@
     <div>
         <AppBar />
         <v-row  class="mx-5">
-            <v-col cols="12" md="3" lg="3" sm="3">
+            <v-col cols="12" md="3" lg="3" sm="12">
                 <CategoriasConceptos />
             </v-col>
-            <v-col cols="12" md="9" lg="9" sm="9">
+            <v-col cols="12" md="9" lg="9" sm="12">
                 <Conceptos />
             </v-col>
         </v-row>

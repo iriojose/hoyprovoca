@@ -1,8 +1,8 @@
 <template>
   <div>
     <AppBar />
-    <Banner v-if="activo" />
 
+    <Banner v-if="activo" />
     <SkeletonImage v-else />
 
     <Categorias title="Categorias" :categorias="categor" v-if="activo" />
@@ -50,7 +50,7 @@ export default {
     return {
       categor: [],
       activo: false,
-      aliados:[]
+      aliados:[],
     };
   },
 

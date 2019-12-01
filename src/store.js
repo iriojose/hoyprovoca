@@ -12,17 +12,14 @@ export default new Vuex.Store({
       data:null,
     },
     drawer:false,
+    dialog:false,
+    producto:{},
     items: [
       { title: "Promociones", icon: "monetization_on" },
       { title: "Restaurantes", icon: "restaurant" },
       { title: "Tiendas", icon: "store_mall_directory" },
       { title: "Bebidas", icon: "local_bar" },
     ],
-    frecuenciaLlegada:4,
-    tiempoSistema:5,
-    repeticiones:10,
-    data:[],
-    dataSelected:[]
   },
 
   getters: {
@@ -40,6 +37,18 @@ export default new Vuex.Store({
       }
     },
 
+    SET_DIALOG(state,val){
+      if(val){
+        state.dialog=true;
+      }else{
+        state.dialog=false;
+      }
+    },
+
+    SET_PRODUCTO(state,val){
+      state.producto=val;
+    },
+
     SET_LOGGED_IN(state, value) {
       state.user.loggedIn = value;
     },
@@ -52,6 +61,14 @@ export default new Vuex.Store({
   actions: {
     setDrawer({commit},val){
       commit("SET_DRAWER",val);
+    },
+
+    setDialog({commit},val){
+      commit("SET_DIALOG",val);
+    },
+
+    setProducto({commit},val){
+      commit("SET_PRODUCTO",val);
     },
 
     fetchUser({ commit }, user) {

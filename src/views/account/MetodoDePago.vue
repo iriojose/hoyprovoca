@@ -14,7 +14,7 @@
                     <v-dialog v-model="dialog" max-width="420">
                         <template v-slot:activator="{on}">
                             <v-btn rounded color="#005598" dark @click="dialog =!dialog"> 
-                                Agregar tarjeta de credito
+                                Agregar metodo de pago
                             </v-btn>
                         </template>
 
@@ -29,7 +29,7 @@
                                
                             <v-card-title>
                                 <div class="text-center">
-                                    <span class="headline font-weight-medium">Tarjeta de credito</span>
+                                    <span class="headline font-weight-medium">Metodos de pago</span>
                                 </div>
                             </v-card-title>
                             <v-card-content>

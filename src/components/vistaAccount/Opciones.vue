@@ -106,8 +106,8 @@ export default {
         { icon: "build", text: "Ajustes de cuenta", path: "/account/profile" },
         {
           icon: "credit_card",
-          text: "Tajeta de credito",
-          path: "/account/credit-card"
+          text: "Metodos de pago",
+          path: "/account/metodo-de-pago"
         },
         {
           icon: "calendar_today",

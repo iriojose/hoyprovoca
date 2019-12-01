@@ -1,35 +1,46 @@
 <template>
     <div class="my-8 mx-10">
     <div class="display-1 font-italic font-weight-bold">{{title}}</div>
-    <v-sheet class="mx-auto my-4" elevation="0" max-width="1300" color="f5f5f5">
-        <v-slide-group v-model="model" class="pa-4" mandatory show-arrows>
-            <v-slide-item v-for="sugerencia in sugerencias" :key="sugerencia.uid" class="mx-4">
+
+    <v-sheet elevation="0" color="#f5f5f5">
+        <v-slide-group
+            show-arrows
+            class="pa-5"
+            v-model="model"
+            prev-icon="arrow_back"
+            next-icon="arrow_forward"
+        >
+            <v-slide-item v-for="sugerencia in sugerencias" :key="sugerencia.uid">
                 <v-hover v-slot:default="{hover}">
                     <v-card
-                        :color="hover ? 'grey lighten-1':'#fff'"
-                        height="250"
-                        width="200"
-                        class="pa-2"
-                        elevation="0"
+                        :elevation="hover ? '5':'2'"
+                        class="ma-2"
+                        height="300"
+                        width="250"
                         :to="{name:'local', params:{local:sugerencia.nombre}}"
                     >
-                        <v-img contain :src="sugerencia.imagen" height="220" width="220" />
-                        <strong class="pa-3 font-italic font-weight-bold">{{sugerencia.nombre}}</strong>
+                        <v-img contain width="250" height="250" :src="sugerencia.imagen" />
+                        <v-divider></v-divider>
+                        <div class="div text-center pt-3">
+                            <strong class="font-italic font-weight-bold">{{sugerencia.nombre}}</strong>
+                        </div>
                     </v-card>
                 </v-hover>
             </v-slide-item>
-            <v-slide-item v-for="sugerencia in sugerencias" :key="sugerencia.uid" class="mx-2">
+            <v-slide-item v-for="sugerencia in sugerencias" :key="sugerencia.uid">
                 <v-hover v-slot:default="{hover}">
                     <v-card
-                        :color="hover ? 'grey lighten-1':'#fff'"
-                        height="250"
-                        width="200"
-                        class="pa-2"
-                        elevation="0"
+                        :elevation="hover ? '5':'2'"
+                        class="ma-2"
+                        height="300"
+                        width="250"
                         :to="{name:'local', params:{local:sugerencia.nombre}}"
                     >
-                        <v-img contain :src="sugerencia.imagen" height="220" width="220" />
-                        <strong class="pa-3 font-italic font-weight-bold">{{sugerencia.nombre}}</strong>
+                        <v-img contain width="250" height="250" :src="sugerencia.imagen" />
+                        <v-divider></v-divider>
+                        <div class="div text-center pt-3">
+                            <strong class="font-italic font-weight-bold">{{sugerencia.nombre}}</strong>
+                        </div>
                     </v-card>
                 </v-hover>
             </v-slide-item>
@@ -39,12 +50,20 @@
 </template>
 
 <script>
-export default {
-  props: ["sugerencias", "title"],
-  data() {
-    return {
-      model: 1,
-    };
-  },
+    export default {
+    props: ["sugerencias", "title"],
+    data() {
+        return {
+        model: 1,
+        };
+    },
 };
 </script>
+
+<style scope>
+    .div{
+        width: 100%;
+        background: #f5f5f5;
+        height: 50px;
+    }
+</style>

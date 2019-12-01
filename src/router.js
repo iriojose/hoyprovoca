@@ -11,10 +11,13 @@ import Register from "./views/auth/Register.vue";
 import Cliente from "./views/auth/Cliente";
 import Empresa from "./views/auth/Empresa";
 
+//pruebas
+import Pruebas from './views/pruebas/Pruebas';
+
 //rutas del perfil de usuario
 import Account from "./views/account/Account";
 import Profile from "./views/account/Profile";
-import CreditCard from "./views/account/CreditCard";
+import MetodoDePago from "./views/account/MetodoDePago";
 import Notificaciones from "./views/account/Notificaciones";
 import Ayuda from "./views/account/Ayuda";
 import Historial from "./views/account/Historial";
@@ -26,9 +29,6 @@ import Search from "./views/search/Search";
 import Aliados from "./views/aliados/Aliados";
 import AliadoEspecifico from "./views/aliados/AliadoEspecifico";
 import Tipos from "./views/aliados/Tipos";
-
-//clase de simulacion con jhonny granado
-import Simulacion from './views/simulacion/Simulacion';
 
 //rutas de adminitrador
 import Admin from './views/admin/Admin'
@@ -47,6 +47,11 @@ const router = new Router({
       path: "/",
       name: "home",
       component: Home
+    },
+    {
+      path: "/pruebas",
+      name: "pruebas",
+      component: Pruebas
     },
     {
       path: "/search",
@@ -94,9 +99,9 @@ const router = new Router({
           component: Profile
         },
         {
-          path: "credit-card",
-          name: "credit",
-          component: CreditCard
+          path: "metodo-de-pago",
+          name: "metodos",
+          component: MetodoDePago
         },
         {
           path: "notificaciones",
@@ -149,11 +154,6 @@ const router = new Router({
         }
 
       ]
-    },
-    {
-      path: "/simulacion",
-      name: "simulacion",
-      component: Simulacion
     },
     {
       path: "*",
