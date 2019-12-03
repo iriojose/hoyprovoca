@@ -12,7 +12,6 @@
                         color="#005598"
                         hide-details
                         small-chips
-                        dense
                         outlined
                         hide-selected
                     >
@@ -41,7 +40,6 @@
                         color="#005598"
                         hide-details
                         small-chips
-                        dense
                         outlined
                         hide-selected
                     >

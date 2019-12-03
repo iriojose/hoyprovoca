@@ -193,7 +193,21 @@ const router = new Router({
         }
       ]
     }
-  ]
+  ],
+
+  base: '/', // The base URL of the app
+  linkActiveClass: 'router-link-active', // <router-link> default active class
+  linkExactActiveClass: 'router-link-exact-active', // <router-link> default active class for exact matches
+  scrollBehavior (to, from, savedPosition) {
+    // native-like behavior when navigating with back/forward buttons
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return { x: 0, y: 0 }
+    }
+  },
+  parseQuery: q => q, // custom query string parse
+  fallback: true,
 });
 
 /*router.beforeEach((to, from, next) => {

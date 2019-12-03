@@ -8,7 +8,7 @@
                           <v-img :src="imagenes" :class="hover ? 'elevation-5':'elevation-2'"> 
                               <v-row class="fill-height" align="center" justify="center">
                                   <template v-if="hover">
-                                      <v-btn fab color="blue darken-5" @click="modal= !modal" elevation="0">
+                                      <v-btn fab color="blue darken-5" @click="modal= !modal" elevation="3">
                                           <v-icon color="#fff">edit</v-icon>
                                       </v-btn>
                                 </template>
@@ -41,8 +41,9 @@
           </v-list>
       </v-card>
 
-      <v-dialog v-model="modal" max-width="600">
-          <v-card elevation="0">
+      <v-dialog v-model="modal" max-width="600" close-delay>
+          <div class="back">
+          <v-card color="transparent">
               <v-card-title class="headline grey lighten-4">
                   Editar foto  <v-spacer />
                   <v-btn icon color="#005598" text @click="modal = !modal">
@@ -52,24 +53,47 @@
 
               <v-divider/>
 
-              <v-card-text class="mt-8 text-center">
-                  <croppa 
-                      v-model="myCroppa"
-                      :width="500"
-                      :height="300"
-                      :zoom-speed="5"
-                      :canvas-color="'#eee'"
-                      :placeholder="'Selecciona una imagen'"
-                      :placeholder-font-size="20"
-                  >
-                      
-                  </croppa>     
+              <v-card-text class="mt-8 text-center">     
+                  <v-row>
+                      <v-col cols="12" md="8" sm="8" offset="2">
+                          <croppa 
+                            v-model="myCroppa"
+                            :width="300"
+                            :height="300"
+                            :canvas-color="'#eee'"
+                            prevent-white-space
+                            :placeholder="'Selecciona una imagen'"
+                            :placeholder-font-size="20"
+                            @new-image-drawn="onNewImage()"
+                            @zoom="onZoom()"
+                            @init="onInit()"
+                            initial-image="https://zhanziyang.github.io/vue-croppa/static/500.jpeg"
+                          ></croppa>
+                      </v-col>
+                      <v-col cols="12" md="8" sm="8" offset="2">
+                          <v-slider
+                              track-color="#eee"
+                              class="mt-8"
+                              label="Zoom"
+                              id="#slider"
+                              v-model="sliderVal"
+                              append-icon="panorama"
+                              prepend-icon="photo"
+                              thumb-label
+                              color="teal"
+                              @input="onSliderChange($event)"
+                              :min="sliderMin" 
+                              :max="sliderMax" 
+                              step="0.001" 
+                          ></v-slider>
+                      </v-col>
+                  </v-row>
               </v-card-text>
 
               <v-card-actions class="mx-5 my-3">
                   <v-spacer/>
                   <v-btn text @click="modal = !modal" elevation="0" class="blue--text">
-                      cancel
+                      Cancelar
                   </v-btn>
                   <v-hover v-slot:default="{hover}">
                       <v-btn 
@@ -79,11 +103,12 @@
                           class="px-4"
                           @click="editImage()"
                       >
-                          save
+                          Guardar
                       </v-btn>
                   </v-hover>
               </v-card-actions>
           </v-card>
+          </div>
       </v-dialog>
 
       <v-snackbar v-model="snackbar" bottom right color="green" :timeout="time">
@@ -101,7 +126,10 @@ export default {
       snackbar:false,
       time:2000,
       modal:false,
-      myCroppa:null,
+      myCroppa:{},
+      sliderVal:0,
+      sliderMin:0,
+      sliderMax:0,
       opciones: [
         { icon: "build", text: "Ajustes de cuenta", path: "/account/profile" },
         {
@@ -150,7 +178,6 @@ export default {
   },
 
   methods: {
-
     async getProfile(uid) {
       var ref = await firebase
         .firestore()
@@ -164,13 +191,35 @@ export default {
       });
     },
     
+    onNewImage() {
+      this.sliderVal = this.myCroppa.scaleRatio;
+      this.sliderMin = this.myCroppa.scaleRatio / 2;
+      this.sliderMax = this.myCroppa.scaleRatio * 2;
+    },
+    
+    onSliderChange(evt) {
+      var increment = evt;
+      this.myCroppa.scaleRatio = + increment;
+    },
+    
+    onZoom() {
+      this.sliderVal = this.myCroppa.scaleRatio;
+    },
+
+    onInit() {
+      this.myCroppa.addClipPlugin(function (ctx, x, y, w, h) {
+        ctx.beginPath()
+        ctx.arc(x + w / 2, y + h / 2, w / 2, 0, 2 * Math.PI, true)
+        ctx.closePath()
+      });
+    },
 
     editImage(){
-        this.imagenes = null;
+        this.imagenes = {};
         let url = this.myCroppa.generateDataUrl();
 
         if(!url){
-            alert('No imagen')
+            alert('No imagen');
             return
         }else{
             this.imagenes=url;
@@ -183,6 +232,9 @@ export default {
 </script>
 
 <style scoped>
+  .back{
+    background-color:white;
+  }
   .aftim-color {
     color: #005598;
   }

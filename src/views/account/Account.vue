@@ -5,8 +5,8 @@
             <v-flex md3 xs12 lg3>
                 <Opciones />
             </v-flex>
-            <v-flex md9 xs12 lg9 class="mt-2">
-                <v-card elevation="1" class="mx-4 pa-5">
+            <v-flex md9 xs12 lg9>
+                <v-card elevation="0" color="#f5f5f5" class="mx-4 px-2 pt-2">
                     <router-view/>
                 </v-card>
             </v-flex>

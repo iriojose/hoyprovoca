@@ -1,90 +1,117 @@
 <template>
     <div>
-    <div class="subtitle-1 font-weight-medium">Información de tu cuenta</div>
+      <v-card width="100%" height="510" elevation="1">
+          <v-card-title class="title font-weight-bold back">
+              Información de tu cuenta
+          </v-card-title>
 
-    <v-form v-model="valid" @submit.prevent="">
-        <v-layout class="ma-5">
-            <v-row>
-                <v-col cols="12" md="5" lg="5" sm="5" offset="1" class="my-2">
-                    <v-text-field
-                        v-model="nombre"
-                        label="Nombre(s)"
-                        type="text"
-                        counter="40"
-                        dense
-                        color="#005598"
-                        append-icon="create"
-                        :rules="[
-                                required('Nombre(s)'),
-                                minLength('Nombre(s)',3),
-                                maxLength('Nombre(s)',40)
-                              ]"
-                    />
-                </v-col>
+          <v-divider></v-divider>
 
-                <v-col cols="12" md="5" lg="5" sm="5" offset="1" class="my-2">
-                    <v-text-field
-                        v-model="apellido"
-                        label="Apellido(s)"
-                        type="text"
-                        counter="40"
-                        dense
-                        color="#005598"
-                        append-icon="create"
-                        :rules="[
-                                required('Apellido(s)'),
-                                minLength('Apellido(s)',3),
-                                maxLength('Apellido(s)',40)
-                              ]"
-                    />
-                </v-col>
+          <v-card-text class="mb-12">
+              <v-form v-model="valid" @submit.prevent="">
+                  <v-row class="my-4">
+                      <v-col cols="12" md="5" sm="5" lg="5" offset="1">
+                          <v-sheet v-mutate="onMutate" hidden>
+                            {{ nombre}}
+                          </v-sheet>
+                          <v-text-field
+                              v-model="nombre"
+                              label="Nombre(s)"
+                              type="text"
+                              counter="40"
+                              dense
+                              color="#005598"
+                              append-icon="create"
+                              :rules="[
+                                      required('Nombre(s)'),
+                                      minLength('Nombre(s)',3),
+                                      maxLength('Nombre(s)',40)
+                                    ]"
+                          />
+                      </v-col>
+                      <v-col cols="12" md="5" sm="5" lg="5">
+                          <v-sheet v-mutate="onMutate" hidden>
+                            {{ apellido}}
+                          </v-sheet>
+                          <v-text-field
+                              v-model="apellido"
+                              label="Apellido(s)"
+                              type="text"
+                              counter="40"
+                              dense
+                              color="#005598"
+                              append-icon="create"
+                              :rules="[
+                                      required('Apellido(s)'),
+                                      minLength('Apellido(s)',3),
+                                      maxLength('Apellido(s)',40)
+                                    ]"
+                          />
+                      </v-col>
+                      <v-col cols="12" md="5" lg="5" sm="5" offset="1" class="my-3">
+                          <v-text-field
+                              v-model="email"
+                              label="Email"
+                              type="email"
+                              counter="40"
+                              dense
+                              color="#005598"
+                              append-icon="email"
+                              disabled
+                          />
+                      </v-col>
+                      <v-col cols="12" md="5" lg="5" sm="5" class="my-3">
+                          <v-text-field
+                              v-model="cedula"
+                              label="Cedula"
+                              type="text"
+                              counter="40"
+                              dense
+                              color="#005598"
+                              append-icon="credit_card"
+                              disabled
+                          />
+                      </v-col>
+                      <v-col cols="12" md="7" offset="1" sm="7" lg="7">
+                          <v-sheet v-mutate="onMutate" hidden>
+                            {{ telefono}}
+                          </v-sheet>
+                          <v-text-field
+                            v-model="telefono"
+                            label="Telefono"
+                            type="number"
+                            counter="12"
+                            dense
+                            prefix="+58"
+                            color="#005598"
+                            append-icon="create"
+                            :rules="[
+                                    required('Telefono'),
+                                    minLength('Telefono',10),
+                                  ]"
+                        />
+                      </v-col>
+                  </v-row>
+              </v-form>
+          </v-card-text>
 
-                <v-col cols="12" md="8" lg="8" sm="8" offset="2" class="my-2">
-                    <v-text-field
-                        v-model="email"
-                        label="Email"
-                        type="email"
-                        counter="40"
-                        dense
-                        color="#005598"
-                        append-icon="email"
-                        disabled
-                    />
-                </v-col>
+          <v-divider></v-divider>
+          <v-card-actions class="back px-12">
+              <v-spacer></v-spacer>
+              <v-btn 
+                  color="teal" 
+                  dark
+                  :disabled="!valid || !editable"
+                  @click="editar()"
+              >Editar</v-btn>
+          </v-card-actions>
 
-                <v-col cols="12" md="5" lg="5" sm="5" offset="1" class="my-2">
-                    <v-text-field
-                        v-model="telefono"
-                        label="Telefono"
-                        type="number"
-                        counter="12"
-                        dense
-                        prefix="+58"
-                        color="#005598"
-                        append-icon="create"
-                        :rules="[
-                                required('Telefono'),
-                                minLength('Telefono',10),
-                              ]"
-                    />
-                </v-col>
+          <v-divider></v-divider>
+      </v-card>
 
-                <v-col cols="12" md="3" lg="3" sm="3" offset="3" class="my-2">
-                    <v-btn 
-                        color="green" 
-                        outlined 
-                        :disabled="!valid || !editable"
-                        @click="editar()"
-                    >Editar</v-btn>
-                </v-col>
-            </v-row>
-
-            <!--snakbar para mensaje de editar completado-->
-            <v-snackbar v-model="snackbar" color="green" right :timeout="time">
-                Se ha editado exitosamente.
-            </v-snackbar>
-        </v-layout>
-    </v-form>
+      <v-snackbar v-model="snackbar" color="green" right :timeout="time">
+          Se ha editado exitosamente.
+      </v-snackbar>
   </div>
 </template>
 
@@ -110,29 +137,7 @@ export default {
     };
   },
 
-  watch:{
-    nombre(){
-      this.count=this.count +1;
-      if(this.count>=3){
-        this.editable=true;
-      }
-    },
-    apellido(){
-      this.count=this.count +1;
-      if(this.count>=3){
-        this.editable=true;
-      }
-    },
-    telefono(){
-      this.count=this.count +1;
-      if(this.count>=3){
-        this.editable=true;
-      }
-    },
-  },
-
   mounted() {
-    
     this.email = firebase.auth().currentUser.email;
     this.getProfile();
   },
@@ -142,8 +147,13 @@ export default {
   },
 
   methods: {
+
+    onMutate(){
+      this.editable=true;
+    },
+
     async editar(){
-      var uid =await firebase.auth().currentUser.uid;
+      var uid = firebase.auth().currentUser.uid;
       await firebase.firestore()
         .collection('profile')
         .doc(uid).update({
@@ -153,6 +163,7 @@ export default {
           cedula:this.cedula
       });
       this.snackbar=true;
+      this.editable=false;
     },
 
     async getProfile(uid) {
@@ -175,3 +186,9 @@ export default {
   }
 };
 </script>
+
+<style scope>
+  .back{
+    background: #eee;
+  }
+</style>

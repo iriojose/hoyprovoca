@@ -1,30 +1,46 @@
 <template>
     <div>
-        <div class="subtitle-1 font-weight-medium mb-3">
-            Historial
-        </div>
-        
-        <v-alert
-            border="left"
-            colored-border
-            color="grey accent-4"
-            elevation="2"
-        >
-            <v-card-title>
-                Pedidos
+        <v-card width="100%" height="510" elevation="2">
+            <v-card-title class="title font-weight-bold back">
+                Historial de compras
             </v-card-title>
+            <v-divider></v-divider>
 
-            <v-data-table
-                :headers="headers"
-                :items="desserts"
-            >
-                <template v-slot:item.action="{ item }">
-                    <v-icon class="mr-2" @click="verItem(item)"> 
-                        remove_red_eye
-                    </v-icon>
-                </template>
-            </v-data-table>
-        </v-alert>
+            <v-card-text>
+                <v-card-title>
+                    <v-text-field
+                        v-model="search"
+                        append-icon="search"
+                        label="Buscar registro..."
+                        dense
+                        color="#005598"
+                        single-line
+                        hide-details
+                    />
+                    <v-spacer></v-spacer>
+                </v-card-title>
+                <v-data-table
+                    no-results-text="No se encontraron resultados..."
+                    :headers="headers"
+                    :items="desserts"
+                    :search="search"
+                    :page.sync="page"
+                    :items-per-page="itemsPerPage"
+                    hide-default-footer
+                    class="elevation-0"
+                    @page-count="pageCount = $event"
+                >
+                    <template v-slot:item.action="{ item }">
+                        <v-icon class="mr-2" @click="verItem(item)"> 
+                            remove_red_eye
+                        </v-icon>
+                    </template>
+                </v-data-table>
+                <div class="text-center pt-3">
+                    <v-pagination v-model="page" :length="pageCount" color="teal"></v-pagination>
+                </div>
+            </v-card-text>
+        </v-card>
     </div>
 </template>
 
@@ -38,6 +54,10 @@
 
         data(){
             return{
+                page: 1,
+                pageCount: 0,
+                itemsPerPage: 5,
+                search:'',
                 headers: [
                     {
                         text: 'id',
@@ -95,8 +115,57 @@
                         total:'100$',
                         factura:'AS12J43M34'
                     },
+                     {
+                        id: 7,
+                        fecha:'10/11/2019',
+                        articulos:2,
+                        total:'50$',
+                        factura:'AS12J43M34'
+                    },
+                    {
+                        id: 8,
+                        fecha:'10/11/2019',
+                        articulos:3,
+                        total:'100$',
+                        factura:'AS12J43M34'
+                    },
+                     {
+                        id: 9,
+                        fecha:'10/11/2019',
+                        articulos:2,
+                        total:'50$',
+                        factura:'AS12J43M34'
+                    },
+                    {
+                        id: 10,
+                        fecha:'10/11/2019',
+                        articulos:3,
+                        total:'100$',
+                        factura:'AS12J43M34'
+                    },
+                     {
+                        id: 11,
+                        fecha:'10/11/2019',
+                        articulos:2,
+                        total:'50$',
+                        factura:'AS12J43M34'
+                    },
+                    {
+                        id: 12,
+                        fecha:'10/11/2019',
+                        articulos:3,
+                        total:'100$',
+                        factura:'AS12J43M34'
+                    },
+                    
                 ]
             }
         }
     }
 </script>
+
+<style scope>
+    .back{
+        background: #eee;
+    }
+</style>

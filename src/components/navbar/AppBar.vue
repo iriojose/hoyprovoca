@@ -9,7 +9,7 @@
                 class="ml-2"
             />
             <v-btn v-else  @click="change()" icon depressed class="ml-2">
-                <v-icon :color="color ? '#fff':null">
+                <v-icon>
                     close
                 </v-icon>
             </v-btn>
@@ -39,21 +39,36 @@
                 v-on:keyup.enter="search"
                 class="hidden-sm-and-down mx-8"
                 background-color="#f7f7f7"
-                :color="color ? '#000':'#005598'"
+                color="#005598"
                 single-line
             />
 
             <v-spacer/>
             <v-divider vertical class="hidden-sm-and-down"></v-divider>
+
             <v-toolbar-items v-if="user.loggedIn">
                 <v-btn icon class="mx-3" to="/account/notificaciones">
-                    <v-icon size="35">notifications</v-icon>
+                    <v-badge
+                        color="teal"
+                        left
+                        overlap
+                    >
+                        <template v-slot:badge><div></div></template>
+                        <v-icon size="35">notifications</v-icon>
+                    </v-badge>
                 </v-btn>
             </v-toolbar-items>
 
             <v-toolbar-items v-if="user.loggedIn">
                 <v-btn icon class="mx-3">
-                    <v-icon size="35">shopping_cart</v-icon>
+                    <v-badge 
+                        color="teal"
+                        left
+                        overlap
+                    >
+                        <template v-slot:badge>1</template>
+                        <v-icon size="35">shopping_cart</v-icon>
+                    </v-badge>
                 </v-btn>
             </v-toolbar-items>
 
@@ -94,7 +109,7 @@
 
                         <v-divider></v-divider>
 
-                        <v-list dense rounded>
+                        <v-list>
                             <v-list-item v-for="item in link" :key="item.text" :to="item.path">
                             
                                 <v-list-item-icon>
