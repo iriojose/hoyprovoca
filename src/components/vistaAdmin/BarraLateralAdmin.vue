@@ -9,8 +9,9 @@
             src="https://images8.alphacoders.com/526/526198.jpg"
             height="100%"
             gradient="rgba(69,77,88,0.7), rgba(126,134,154,0.7)"
+            class="px-5 pt-5"
         >
-            <v-list-item class="my-3">
+            <v-list-item>
                 <v-list-item-avatar>
                     <v-avatar color="white" class="mx-3" size="50">
                         <v-img src="https://cdn.shortpixel.ai/client/q_glossy,ret_img/http://aftim.software/wp-content/uploads/2019/08/TIENDA-1.png"/>
@@ -21,9 +22,9 @@
                 </v-list-item-title>
             </v-list-item>
 
-            <v-divider/>
+            <v-divider class="mt-5"/>
 
-            <v-list rounded dense class="my-3">
+            <v-list>
                 <v-list-item
                     v-for="([icon,text,path], i) in items"
                     :key="i"

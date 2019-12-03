@@ -17,7 +17,6 @@ import BarraLateralAdmin from '@/components/vistaAdmin/BarraLateralAdmin';
         components:{
             NavbarAdmin,
             BarraLateralAdmin
-
         }
     }
 </script>
