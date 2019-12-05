@@ -1,18 +1,15 @@
 <template>
    <div class="background elevation-3">
-      <v-container>
-
-         <v-layout row wrap justify-space-around class="my-5">
-            <v-flex md2 sm2 xs2 lg2>
+      <v-row class="pt-10">
+         <v-col cols="12" md="3" sm="3" lg="3" offset="3">
                <v-btn color="#005598" elevation="0" to="/" icon>
                   <v-icon large color="#fff">
                      home
                   </v-icon>
                </v-btn>
-            </v-flex>
-
-            <v-flex md2 sm2 xs2 lg2>
-               <v-btn color="#005598" elevation="0" to="/register/cliente">
+         </v-col>
+         <v-col cols="12" md="3" lg="3" sm="3" offset="2">
+            <v-btn color="#005598" elevation="0" to="/register/cliente">
                   <span class="white--text">
                      Registrate
                   </span>
@@ -20,26 +17,52 @@
                       keyboard_arrow_right
                   </v-icon>
                </v-btn>
-            </v-flex>
-         </v-layout>
+         </v-col>
+      </v-row>
 
-         <v-layout row wrap justify-center>
-            <v-flex md6 xs6 lg4 sm6> 
-               <v-card elevation="5" class="pa-5 my-10">
-                  <div class="text-center">
-                     <v-btn text>
-                        <v-img src="@/assets/log.png"></v-img>
-                     </v-btn>
-                  </div>
-                  <v-divider class="my-7"></v-divider>
+      <v-row>
+         <v-col cols="12" md="4" lg="4" class="hidden-sm-and-down">
+            <v-img 
+               contain 
+               class="margen"
+               :src="require('@/assets/undrawlogin.svg')"
+            ></v-img>
+         </v-col>
 
+         <v-col cols="12" md="4" sm="8" lg="4">
+            <v-card elevation="15" class="pa-5 my-10">
+
+               <div class="text-center">
+                  <v-btn text>
+                     <v-img src="@/assets/log.png"></v-img>
+                  </v-btn>
+               </div>
+               <v-divider class="mt-5"></v-divider>
+
+               <v-card-text>
                   <formLogin/>
-               </v-card>
-            </v-flex>
-         </v-layout>
-      </v-container>
+               </v-card-text>
+               <v-divider></v-divider>
 
-      <FooterAuth />
+               <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn text class="decoracion text-lowercase" depressed>
+                     Olvido su contraseña?
+                  </v-btn>
+               </v-card-actions>
+            </v-card>
+         </v-col>
+
+         <v-col cols="12" md="4" lg="4" class="hidden-sm-and-down">
+            <v-img 
+               contain 
+               class="margen"
+               :src="require('@/assets/undrawlogin2.svg')" 
+               height="300"
+            ></v-img>
+         </v-col>
+      </v-row>
+      
       <SubFooter />
    </div>
 </template>
@@ -47,13 +70,11 @@
 <script>
 import FormLogin from '@/components/vistaAuth/FormLogin';
 import SubFooter from '@/components/footer/SubFooter';
-import FooterAuth from '@/components/vistaAuth/FooterAuth';
 
 export default {
    components:{
       FormLogin,
       SubFooter,
-      FooterAuth
    },
 }
 </script>
@@ -63,4 +84,11 @@ export default {
       background-color:rgba(0,82,152,0.8);
       height: 30%;
    } 
+   .margen{
+      margin-top:250px;
+   }
+
+   .decoracion{
+      text-decoration: underline;
+   }
 </style>

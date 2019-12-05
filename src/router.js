@@ -42,6 +42,7 @@ Vue.use(Router);
 
 const router = new Router({
   mode: "history",
+  base:'/',
   routes: [
     {
       path: "/",
@@ -195,7 +196,6 @@ const router = new Router({
     }
   ],
 
-  base: '/', // The base URL of the app
   linkActiveClass: 'router-link-active', // <router-link> default active class
   linkExactActiveClass: 'router-link-exact-active', // <router-link> default active class for exact matches
   scrollBehavior (to, from, savedPosition) {

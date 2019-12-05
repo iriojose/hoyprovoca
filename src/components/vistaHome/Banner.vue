@@ -7,15 +7,15 @@
         class="mt-1"
     >
         <v-carousel-item>
-            <v-img contain :src="require('@/assets/COMIDA.jpg')" />
+            <v-img contain src="@/assets/COMIDA.jpg" />
         </v-carousel-item>
 
          <v-carousel-item>
-            <v-img contain :src="require('@/assets/FARMACIA.jpg')" />
+            <v-img contain src="@/assets/FARMACIA.jpg" />
         </v-carousel-item>
 
          <v-carousel-item>
-            <v-img contain :src="require('@/assets/SPORT.jpg')" />
+            <v-img contain src="@/assets/SPORT.jpg" />
         </v-carousel-item>
     </v-carousel>
 </template>
