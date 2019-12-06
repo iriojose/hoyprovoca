@@ -1,17 +1,22 @@
 <template>
     <div>
-        <v-layout row wrap justify-center>
-            <v-flex md8 lg8 sm10 xs10>
-                <v-card elevation="5" class="pa-5 my-10">
+        <v-row>
+            <v-col cols="12" md="5" lg="5" sm="5">
+                <v-img :src="require('@/assets/undrawformempresa.svg')" contain></v-img>
+            </v-col>
+            <v-col cols="12" md="6" lg="6">
+                <v-card elevation="15" class="pa-5 my-10">
                     <div class="text-center">
                         <v-btn text>
                             <v-img src="@/assets/log.png"></v-img>
                         </v-btn>
                     </div>
-                    <FormEmpresa />
+                    <v-card-text>
+                        <FormEmpresa />
+                    </v-card-text>
                 </v-card>
-            </v-flex>
-        </v-layout>
+            </v-col>
+        </v-row>
     </div>
 </template>
 

@@ -13,12 +13,15 @@ export default new Vuex.Store({
     },
     drawer:false,
     dialog:false,
+    panel:false,
     producto:{},
     items: [
-      { title: "Promociones", icon: "monetization_on" },
-      { title: "Restaurantes", icon: "restaurant" },
-      { title: "Tiendas", icon: "store_mall_directory" },
-      { title: "Bebidas", icon: "local_bar" },
+      { title: "Promociones"},{ title: "Restaurantes"},
+      { title: "Tiendas"},{ title: "Bebidas"},
+      { title: "Artes"},{ title: "Artesanias"},
+      { title: "Computadoras"},{ title: "Electronicos"},
+      { title: "Vehiculos"},{ title: "Motos"},
+      { title: "Animales"},{ title: "Antenas"},
     ],
   },
 
@@ -34,6 +37,14 @@ export default new Vuex.Store({
         state.drawer = true;
       }else{
         state.drawer = false;
+      }
+    },
+
+    SET_PANEL(state,val){
+      if(val == true){
+        state.panel = true;
+      }else{
+        state.panel = false;
       }
     },
 
@@ -61,6 +72,10 @@ export default new Vuex.Store({
   actions: {
     setDrawer({commit},val){
       commit("SET_DRAWER",val);
+    },
+
+    setPanel({commit},val){
+      commit("SET_PANEL",val);
     },
 
     setDialog({commit},val){

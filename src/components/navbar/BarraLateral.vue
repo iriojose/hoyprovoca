@@ -2,64 +2,36 @@
     <v-navigation-drawer 
       app
       v-model="drawers" 
-      hide-overlay
       :transition="transition()"  
       temporary
-      style="margin-top:80px;"
+      hide-overlay
+      width="300"
+      :style="$vuetify.breakpoint.smAndDown ? 'margin-top:122px;':'margin-top:66px'"
     >
-      <v-menu 
-        open-on-hover 
-        right 
-        offset-x 
-        transition="slide-x-transition" 
-        v-for="item in items"
-        :key="item.title"
-      >
-          <template v-slot:activator="{ on }">
-              <v-list dense>
-                  <v-list-item
-                    link
-                    v-on="on"
-                  >
-                      <v-list-item-icon>
-                          <v-icon>{{ item.icon }}</v-icon>
-                      </v-list-item-icon>
-
-                      <v-list-item-content>
-                          <v-list-item-title>{{ item.title }}</v-list-item-title>
-                      </v-list-item-content>
-                  </v-list-item>
-              </v-list>
-          </template>
-          <v-card 
-            color="rgba(255,255,255,0.9)" 
-            width="800" 
-            height="467" 
+      <v-list v-if="show">
+          <v-subheader>Comprar por categorias</v-subheader>
+          <v-divider></v-divider>
+          <v-list-item 
+              link 
+              v-for="item in items" 
+              :key="item.title"
+              @click="list(item)"
           >
-              <v-card-title>
-                  {{item.title}}
-              </v-card-title>
-              <v-divider></v-divider>
+              <v-list-item-content>
+                  <v-list-item-title>{{ item.title }}</v-list-item-title>
+              </v-list-item-content>
 
-              <v-row>
-                  <v-col cols="12" md="3" offset="1">
-                      <v-img height="90" src="https://www.stickpng.com/assets/images/58428cc1a6515b1e0ad75ab1.png" contain/>
-                  </v-col>
-                  <v-col cols="12" md="3" offset="1">
-                      <v-img height="90" src="https://www.stickpng.com/assets/images/58428cc1a6515b1e0ad75ab1.png" contain/>
-                  </v-col>
-                  <v-col cols="12" md="3" offset="1">
-                      <v-img height="90" src="https://www.stickpng.com/assets/images/58428cc1a6515b1e0ad75ab1.png" contain/>
-                  </v-col>
-                  <v-col cols="12" md="3" offset="1">
-                      <v-img height="90" src="https://www.stickpng.com/assets/images/58428cc1a6515b1e0ad75ab1.png" contain/>
-                  </v-col>
-                   <v-col cols="12" md="3" offset="1">
-                      <v-img height="90" src="https://www.stickpng.com/assets/images/58428cc1a6515b1e0ad75ab1.png" contain/>
-                  </v-col>
-              </v-row>
-          </v-card>
-      </v-menu>
+              <v-list-item-icon>
+                  <v-icon>keyboard_arrow_right</v-icon>
+              </v-list-item-icon>
+          </v-list-item>
+      </v-list>
+      <v-list v-else>
+          <v-subheader v-ripple @click="show=true" class="">
+            <v-icon class="mx-3">arrow_back</v-icon>  Volver al menu principal
+          </v-subheader>
+          <v-divider></v-divider>
+      </v-list>
       <v-divider></v-divider>
     </v-navigation-drawer>
 </template>
@@ -69,6 +41,11 @@ import {mapState,mapActions} from 'vuex';
 
     export default {
         name: 'BarraLateral',
+        data(){
+          return{
+            show:true,
+          }
+        },
         computed: {
           ...mapState(['items','drawer']),
 
@@ -84,19 +61,17 @@ import {mapState,mapActions} from 'vuex';
         methods:{
             ...mapActions(['setDrawer']),
 
-          transition(){
-            if(this.drawer){
-              return "slide-x-transition";
-            }else{
-              return "slide-y-transition";
+            list(val){
+              this.show=false;
+            },
+
+            transition(){
+              if(this.drawer){
+                return "slide-x-transition";
+              }else{
+                return "slide-y-transition";
+              }
             }
-          }
         }
     }
 </script>
-
-<style scope>
-    .index{
-      z-index:100;
-    }
-</style>

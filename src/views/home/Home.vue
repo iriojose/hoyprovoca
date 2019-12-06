@@ -2,24 +2,29 @@
   <div>
     <AppBar />
 
-    <Banner v-if="activo" />
-    <SkeletonImage v-else />
+    <Banner />
+
+    <MasVendidos title="Lo más vendido" />
+
+    <MasVendidos title="Ofertas de la semana" />
 
     <Categorias title="Categorias" :categorias="categor" v-if="activo" />
 
-    <v-row v-else class="my-5">
-      <v-col cols="12" md="3" v-for="n in 4" :key="n">
+    <v-row v-else class="my-5 mx-3">
+      <v-col cols="12" md="3" sm="6" lg="3" v-for="n in 4" :key="n">
         <SkeletonCard />
       </v-col>
     </v-row>
 
     <Sugerencias title="Sugerencias" :sugerencias="aliados" v-if="activo" />
 
-    <v-row v-else class="my-5">
-      <v-col cols="12" md="3" v-for="n in 4" :key="n">
+    <v-row v-else class="my-5 mx-3">
+      <v-col cols="12" md="3" sm="6" lg="3" v-for="n in 4" :key="n">
         <SkeletonCard />
       </v-col>
     </v-row>
+
+    <BannerAbajo />
     <Footer />
   </div>
 </template>
@@ -33,6 +38,8 @@ import Categorias from "@/components/vistaHome/Categorias";
 import Sugerencias from "@/components/vistaHome/Sugerencias";
 import SkeletonCard from "@/components/layouts/SkeletonCard";
 import SkeletonImage from '@/components/layouts/SkeletonImage'
+import BannerAbajo from '@/components/vistaHome/Banner2';
+import MasVendidos from '@/components/vistaHome/MasVendidos';
 import firebase from "firebase";
 
 export default {
@@ -44,7 +51,9 @@ export default {
     Categorias,
     Sugerencias,
     SkeletonCard,
-    SkeletonImage
+    SkeletonImage,
+    BannerAbajo,
+    MasVendidos
   },
   data() {
     return {
