@@ -6,7 +6,7 @@
             </div>
             <v-sheet
                 elevation="0"
-                color="#f5f5f5"
+                color="#eee"
             >
                 <v-slide-group
                     center-active

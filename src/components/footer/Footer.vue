@@ -88,7 +88,6 @@
 <script>
 import SubFooter from './SubFooter';
 import PreFooter from './PreFooter';
-
     export default {
         components:{
             SubFooter,

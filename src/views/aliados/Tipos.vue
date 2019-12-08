@@ -1,7 +1,7 @@
 <template>
     <div>
         <AppBar />
-            <SubTipos />
+            <SubTipos :class="$vuetify.breakpoint.smAndDown ? 'mt-12':null"/>
         <Footer />
     </div>
 </template>
@@ -19,7 +19,3 @@ import SubTipos from '@/components/vistaAliados/SubTipos'
         }
     }
 </script>
-
-<style lang="scss" scoped>
-
-</style>

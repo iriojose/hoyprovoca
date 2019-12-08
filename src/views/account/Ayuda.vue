@@ -15,6 +15,6 @@
 
 <style scope>
     .back{
-        background: #eee;
+        background: #f5f5f5;
     }
 </style>

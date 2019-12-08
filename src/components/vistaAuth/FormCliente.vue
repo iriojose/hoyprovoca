@@ -21,10 +21,10 @@
 
             <v-stepper-items>
                 <v-stepper-content step="1">
-                    <v-card class="mb-12" height="150" elevation="0">
+                    <v-card class="mb-12" elevation="0">
                         <v-form v-model="valid1" @submit.prevent="">
                             <v-row>
-                                <v-col cols="12" lg="6" md="6" sm="6">
+                                <v-col cols="12" lg="6" md="6" sm="12">
                                     <v-text-field 
                                         type="text"
                                         v-model="user.nombre"
@@ -39,7 +39,7 @@
                                     />
                                 </v-col>
 
-                                <v-col cols="12" lg="6" md="6" sm="6">
+                                <v-col cols="12" lg="6" md="6" sm="12">
                                     <v-text-field 
                                         type="text"
                                         append-icon="person"
@@ -54,7 +54,7 @@
                                     />
                                 </v-col>
 
-                                <v-col cols="12" lg="6" md="6" sm="6" offset="3">
+                                <v-col cols="12" lg="6" md="6" sm="12" :offset="$vuetify.breakpoint.smAndDown ? null:3">
                                     <v-text-field 
                                         type="text"
                                         append-icon="payment"
@@ -72,19 +72,20 @@
                                 </v-col>
                             </v-row>
                         </v-form>
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn @click="e1=2" color="info" :disabled="!valid1">
+                                Siguiente
+                            </v-btn>
+                        </v-card-actions>
                     </v-card>
-                     <div class="text-end">
-                        <v-btn @click="e1=2" color="info" :disabled="!valid1">
-                            Siguiente
-                        </v-btn>
-                    </div>
                 </v-stepper-content>
 
                 <v-stepper-content step="2">
-                    <v-card class="mb-12" height="150" elevation="0">
+                    <v-card elevation="0">
                         <v-form v-model="valid2" @submit.prevent="">
                             <v-row>
-                                <v-col cols="12" lg="6" md="6" sm="6" offset="3">
+                                <v-col cols="12" lg="6" md="6" sm="12" :offset="$vuetify.breakpoint.smAndDown ? null:3">
                                     <v-text-field 
                                         type="text"
                                         v-model="user.telefono"
@@ -98,28 +99,25 @@
                                 </v-col>
                             </v-row>
                         </v-form>
-                    </v-card>
-                    <v-row>
-                        <v-col cols="12" md="3" lg="3" sm="3">
+                        <v-card-actions>
                             <v-btn @click="e1=1" text icon>
                                 <v-icon large>
                                     arrow_back
                                 </v-icon>
                             </v-btn>
-                        </v-col>
-                        <v-col cols="12" md="3" lg="3" sm="3" offset="6">
+                            <v-spacer></v-spacer>
                             <v-btn @click="e1=3" color="info" :disabled="!valid2">
                                 Siguiente
                             </v-btn>
-                        </v-col>
-                    </v-row>
+                        </v-card-actions>
+                    </v-card>
                 </v-stepper-content>
 
                 <v-stepper-content step="3">
                     <v-form v-model="valid3" @submit.prevent="">
-                        <v-card class="mb-12" height="150" elevation="0">
+                        <v-card elevation="0">
                             <v-row>
-                                <v-col cols="12" lg="6" md="6" sm="6" offset="3">
+                                <v-col cols="12" lg="6" md="6" sm="12" :offset="$vuetify.breakpoint.smAndDown ? null:3">
                                     <v-text-field
                                         label="Email"
                                         v-model="user.email"
@@ -134,7 +132,7 @@
                                         :rules="[required('Email'), emailFormat(), maxLength('Email',50)]"
                                     />
                                 </v-col>
-                                <v-col cols="12" lg="6" md="6" sm="6" offset="3">
+                                <v-col cols="12" lg="6" md="6" sm="12" :offset="$vuetify.breakpoint.smAndDown ? null:3">
                                     <v-text-field
                                         v-model="user.password"
                                         label="Password"
@@ -151,18 +149,14 @@
                                     />
                                 </v-col>
                             </v-row>
-                        </v-card>
-                        <v-row>
-                            <v-col cols="12" md="3" lg="3" sm="3">
+                            <v-card-actions>
                                 <v-btn @click="e1=2" text icon>
                                     <v-icon large>
                                         arrow_back
                                     </v-icon>
                                 </v-btn>
-                            </v-col>
-                            <v-col cols="12" md="3" lg="3" sm="3" offset="6">
+                                <v-spacer></v-spacer>
                                 <v-btn 
-                                    block 
                                     type="submit" 
                                     :disabled="!valid3 || loading" 
                                     color="#005598" 
@@ -177,8 +171,8 @@
                                         </span>
                                     </template>
                                 </v-btn>
-                            </v-col>
-                        </v-row>
+                            </v-card-actions>
+                        </v-card>
                     </v-form>
                 </v-stepper-content>
             </v-stepper-items>

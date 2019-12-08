@@ -8,6 +8,7 @@
                     color="#005598"
                     @change="cambioPrecio($event)"
                     dense
+                    outlined
                     hide-selected
                     hide-details
                     label="Total"

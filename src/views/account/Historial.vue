@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-card width="100%" height="510" elevation="2">
+        <v-card width="100%" elevation="2">
             <v-card-title class="title font-weight-bold back">
                 Historial de compras
             </v-card-title>
@@ -171,6 +171,6 @@
 
 <style scope>
     .back{
-        background: #eee;
+        background: #f5f5f5;
     }
 </style>

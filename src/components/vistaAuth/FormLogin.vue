@@ -31,7 +31,7 @@
                         dense
                     />
                 </v-col>
-                <v-col cols="12" md="4" sm="4" lg="4" offset="8">
+                <v-col cols="12">
                     <v-btn 
                         block 
                         type="submit" 
@@ -87,7 +87,7 @@ import firebase from 'firebase';
         
         watch: {
             loading() {
-                setTimeout(() => (this.loading = false), 2000)
+                setTimeout(() => (this.loading = false), 2000);
             },
         },
 

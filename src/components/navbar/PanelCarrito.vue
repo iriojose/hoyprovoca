@@ -31,7 +31,7 @@
             <v-divider></v-divider>
             <v-card-text>
                 <!--si no hay pedidos se muestra un svg -->
-                <div v-if="pedidos==null">
+                <div v-if="pedidos">
                     <v-img contain width="100%" height="350" :src="require('@/assets/undrawempty.svg')"></v-img>
                     <p class="mt-5 text-center">su carrito esta vacio</p>
                 </div>

@@ -18,7 +18,7 @@
                 <v-list >
                     <v-list-item>
                         <v-list-item-avatar color="grey" dark size="70">
-                            <img :src="imagen" alt="JN">
+                            <img :src="imagen">
                         </v-list-item-avatar>
 
                         <v-list-item-content>
@@ -74,7 +74,7 @@ import firebase from 'firebase';
                 link:[
                     {text:'Ajustes de cuentas',path:'/account/profile',icon:'build'},
                     {text:'Agregar metodo de pago',path:'/account/metodo-de-pago',icon:'credit_card'},
-                    {text:'centro de ayuda',path:'/account/ayuda',icon:'help'},
+                    {text:'Centro de ayuda',path:'/account/ayuda',icon:'help'},
                 ],
             }
         },
@@ -90,6 +90,7 @@ import firebase from 'firebase';
 
             async getImage(){
                 let uid = await firebase.auth().currentUser.uid;
+                console.log(uid);
                 var ref = await firebase
                     .firestore()
                     .collection("profile")
@@ -108,7 +109,7 @@ import firebase from 'firebase';
                 });
             },
         },
-        mounted(){
+        created(){
             this.getImage();
         }
     }

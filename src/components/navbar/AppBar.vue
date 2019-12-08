@@ -7,17 +7,19 @@
             <v-app-bar-nav-icon  
                 @click="change()" 
                 v-if="drawer==false"
-                class="ml-2"
             />
-            <v-btn v-else  @click="change()" icon depressed class="ml-2">
+            <v-btn fab v-else  @click="change()" icon depressed>
                 <v-icon>
                     close
                 </v-icon>
             </v-btn>
                
-            <v-toolbar-title class="mx-8 text-center">
-                <v-btn text router to="/">
+            <v-toolbar-title :class="$vuetify.breakpoint.smAndDown ? null:'mx-8'">
+                <v-btn text to="/" v-if="!$vuetify.breakpoint.smAndDown">
                     <v-img src="@/assets/log.png" contain></v-img>
+                </v-btn>
+                <v-btn to="/" elevation="0" text v-ripple="false" depressed v-else>
+                    <v-img width="40" height="40" src="@/assets/log2.png" contain></v-img>
                 </v-btn>
             </v-toolbar-title>
 
@@ -41,6 +43,7 @@
 
             <ItemsOnline />
             <Perfil />
+
              <v-toolbar-items v-if="!user.loggedIn">
                 <v-btn text to="/login" >
                     Iniciar sesión

@@ -1,7 +1,7 @@
 <template>
     <div>
         <AppBar />
-        <v-row >
+        <v-row :class="$vuetify.breakpoint.smAndDown ? 'mt-12':null">
             <v-col cols="12" md="12" lg="3" sm="12">
                 <Filtros />
             </v-col>

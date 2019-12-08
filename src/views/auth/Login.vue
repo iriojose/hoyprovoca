@@ -1,24 +1,25 @@
 <template>
-   <div class="background elevation-3">
-      <v-row class="pt-10">
-         <v-col cols="12" md="3" sm="3" lg="3" offset="3">
+   <div>
+      <v-toolbar elevation="0" color="#005598">
+         <v-toolbar-items>
                <v-btn color="#005598" elevation="0" to="/" icon>
                   <v-icon large color="#fff">
                      home
                   </v-icon>
                </v-btn>
-         </v-col>
-         <v-col cols="12" md="3" lg="3" sm="3" offset="2">
+         </v-toolbar-items>
+         <v-spacer></v-spacer>
+         <v-toolbar-items>
             <v-btn color="#005598" elevation="0" to="/register/cliente">
-                  <span class="white--text">
-                     Registrate
-                  </span>
-                  <v-icon x-large color="#fff">
-                      keyboard_arrow_right
-                  </v-icon>
-               </v-btn>
-         </v-col>
-      </v-row>
+               <span class="white--text">
+                  Registrate
+               </span>
+               <v-icon x-large color="#fff">
+                  keyboard_arrow_right
+               </v-icon>
+            </v-btn>
+         </v-toolbar-items>
+      </v-toolbar>
 
       <v-row>
          <v-col cols="12" md="4" lg="4" class="hidden-sm-and-down">
@@ -29,7 +30,7 @@
             ></v-img>
          </v-col>
 
-         <v-col cols="12" md="4" sm="8" lg="4">
+         <v-col cols="12" md="4" sm="10" lg="4" :offset="$vuetify.breakpoint.smAndDown? '1':null">
             <v-card elevation="15" class="pa-5 my-10">
 
                <div class="text-center">
@@ -62,7 +63,6 @@
             ></v-img>
          </v-col>
       </v-row>
-      
       <SubFooter />
    </div>
 </template>
@@ -83,11 +83,11 @@ export default {
    .background{
       background-color:rgba(0,82,152,0.8);
       height: 30%;
+      width: 100%;
    } 
    .margen{
       margin-top:250px;
    }
-
    .decoracion{
       text-decoration: underline;
    }

@@ -1,6 +1,6 @@
 <template>
     <div>
-      <v-card width="100%" height="510" elevation="1">
+      <v-card width="100%" elevation="1">
           <v-card-title class="title font-weight-bold back">
               Información de tu cuenta
           </v-card-title>
@@ -10,7 +10,7 @@
           <v-card-text class="mb-12">
               <v-form v-model="valid" @submit.prevent="">
                   <v-row class="my-4">
-                      <v-col cols="12" md="5" sm="5" lg="5" offset="1">
+                      <v-col cols="12" md="5" sm="12" lg="5" :offset="$vuetify.breakpoint.smAndDown ? null:1">
                           <v-sheet v-mutate="onMutate" hidden>
                             {{ nombre}}
                           </v-sheet>
@@ -29,7 +29,7 @@
                                     ]"
                           />
                       </v-col>
-                      <v-col cols="12" md="5" sm="5" lg="5">
+                      <v-col cols="12" md="5" sm="12" lg="5" >
                           <v-sheet v-mutate="onMutate" hidden>
                             {{ apellido}}
                           </v-sheet>
@@ -48,7 +48,7 @@
                                     ]"
                           />
                       </v-col>
-                      <v-col cols="12" md="5" lg="5" sm="5" offset="1" class="my-3">
+                      <v-col cols="12" md="5" lg="5" sm="12" :offset="$vuetify.breakpoint.smAndDown ? null:1" class="my-3">
                           <v-text-field
                               v-model="email"
                               label="Email"
@@ -60,7 +60,7 @@
                               disabled
                           />
                       </v-col>
-                      <v-col cols="12" md="5" lg="5" sm="5" class="my-3">
+                      <v-col cols="12" md="5" lg="5" sm="12" :offset="$vuetify.breakpoint.smAndDown ? null:1" class="my-3">
                           <v-text-field
                               v-model="cedula"
                               label="Cedula"
@@ -72,7 +72,7 @@
                               disabled
                           />
                       </v-col>
-                      <v-col cols="12" md="7" offset="1" sm="7" lg="7">
+                      <v-col cols="12" md="7" :offset="$vuetify.breakpoint.smAndDown ? null:1" sm="12" lg="7">
                           <v-sheet v-mutate="onMutate" hidden>
                             {{ telefono}}
                           </v-sheet>
@@ -96,7 +96,7 @@
           </v-card-text>
 
           <v-divider></v-divider>
-          <v-card-actions class="back px-12">
+          <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn 
                   color="teal" 
@@ -149,7 +149,11 @@ export default {
   methods: {
 
     onMutate(){
-      this.editable=true;
+      if(this.count > 3){
+        this.editable=true;
+      }else{
+        this.count=this.count+1;
+      }
     },
 
     async editar(){
@@ -186,9 +190,3 @@ export default {
   }
 };
 </script>
-
-<style scope>
-  .back{
-    background: #eee;
-  }
-</style>

@@ -1,25 +1,20 @@
 <template>
     <div>
         <v-app-bar app height="50">
-            <v-btn to="/login" elevation="0">
+            <v-btn text to="/login" elevation="0" depressed>
                 <v-icon x-large>
                     keyboard_arrow_left
                 </v-icon>
                 volver
             </v-btn>
 
-            <v-toolbar-title class="color mx-8">Bienvenido a Aftim</v-toolbar-title>
+            <v-toolbar-title class="color">Bienvenido a Aftim</v-toolbar-title>
         </v-app-bar>
 
-        <v-row class="mt-2">
-            <v-col cols="12" md="6" lg="6" sm="6" offset="3">
-                
-                <v-tabs color="#005598" background-color="#f5f5f5" centered v-on="on">
-                    <v-tab to="/register/cliente">Persona</v-tab>
-                    <v-tab to="/register/empresa">Compañia</v-tab>
-                </v-tabs>
-            </v-col>
-        </v-row>
+        <v-tabs class="mt-2" color="#005598" background-color="#eee" centered>
+            <v-tab to="/register/cliente">Persona</v-tab>
+            <v-tab to="/register/empresa">Compañia</v-tab>
+        </v-tabs>
 
        <transition name="slide-fade">
             <router-view />
@@ -41,7 +36,7 @@ import SubFooter from '@/components/footer/SubFooter';
 
 <style scoped>
     .color{
-        color: #005598;
+        color: #6c63ff;
     }
 
     .slide-fade-enter-active {
