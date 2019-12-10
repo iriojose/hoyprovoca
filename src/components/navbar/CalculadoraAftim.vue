@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-row>
-            <v-col cols="12" md="6" offset="1">
+            <v-col cols="12" md="6" sm="6" offset="1">
                 <v-select
                     :items="items"
                     small-chips
@@ -11,13 +11,13 @@
                     outlined
                     hide-selected
                     hide-details
-                    label="Total"
+                    label="Calculadora"
                 >
                     <template v-slot:item="{item,attrs,on}">
                         <v-list-item v-bind="attrs" v-on="on" dense>
-                            <v-list-icon>
+                            <v-list-item-icon>
                                 <v-icon>{{item.icon}}</v-icon>
-                            </v-list-icon>
+                            </v-list-item-icon>
                             <v-list-item-title :id="attrs['aria-labelledby']">
                                 {{item.text}}
                             </v-list-item-title>
@@ -25,7 +25,7 @@
                     </template>
                 </v-select>
             </v-col>
-            <v-col cols="12" md="3" offset="1">
+            <v-col cols="12" md="4" sm="4">
                 <p class="font-weight-black">{{total}}</p>
             </v-col>
         </v-row>
@@ -64,7 +64,3 @@
         },
     }
 </script>
-
-<style lang="scss" scoped>
-
-</style>

@@ -60,7 +60,7 @@
                               disabled
                           />
                       </v-col>
-                      <v-col cols="12" md="5" lg="5" sm="12" :offset="$vuetify.breakpoint.smAndDown ? null:1" class="my-3">
+                      <v-col cols="12" md="5" lg="5" sm="12" class="my-3">
                           <v-text-field
                               v-model="cedula"
                               label="Cedula"
@@ -138,7 +138,9 @@ export default {
   },
 
   mounted() {
-    this.email = firebase.auth().currentUser.email;
+    firebase.auth().onAuthStateChanged(user => {
+      this.email= user.email;
+    });
     this.getProfile();
   },
 
@@ -157,6 +159,7 @@ export default {
     },
 
     async editar(){
+      
       var uid = firebase.auth().currentUser.uid;
       await firebase.firestore()
         .collection('profile')
@@ -170,22 +173,27 @@ export default {
       this.editable=false;
     },
 
-    async getProfile(uid) {
-
-      var uid =await firebase.auth().currentUser.uid;
-      console.log(uid);
+    async getProfile() {
+      try{
+        var uid='';
+        firebase.auth().onAuthStateChanged(user => {
+          uid= user.uid;
+        });
       
-      var ref = await firebase
-        .firestore()
-        .collection("profile")
-        .doc(uid);
+        var ref = await firebase
+          .firestore()
+          .collection("profile")
+          .doc(uid);
 
-      ref.onSnapshot(snap => {
-        this.nombre= snap.data().nombre;
-        this.apellido= snap.data().apellido;
-        this.cedula=snap.data().cedula;
-        this.telefono=snap.data().telefono;
-      });
+        ref.onSnapshot(snap => {
+          this.nombre= snap.data().nombre;
+          this.apellido= snap.data().apellido;
+          this.cedula=snap.data().cedula;
+          this.telefono=snap.data().telefono;
+        });
+      }catch(e){
+        console.log(e);
+      }
     }
   }
 };

@@ -2,9 +2,9 @@
     <div>
         <BarraLateral />
 
-        <v-app-bar :elevation="$vuetify.breakpoint.smAndDown ? 0:3" app height="65">
+        <v-app-bar :elevation="$vuetify.breakpoint.smAndDown ? 0:5" app height="65">
 
-            <v-app-bar-nav-icon  
+            <v-app-bar-nav-icon 
                 @click="change()" 
                 v-if="drawer==false"
             />
@@ -16,9 +16,9 @@
                
             <v-toolbar-title :class="$vuetify.breakpoint.smAndDown ? null:'mx-8'">
                 <v-btn text to="/" v-if="!$vuetify.breakpoint.smAndDown">
-                    <v-img src="@/assets/log.png" contain></v-img>
+                    <v-img width="120" height="120" src="@/assets/log.png" contain></v-img>
                 </v-btn>
-                <v-btn to="/" elevation="0" text v-ripple="false" depressed v-else>
+                <v-btn to="/" disabled elevation="0" text v-else>
                     <v-img width="40" height="40" src="@/assets/log2.png" contain></v-img>
                 </v-btn>
             </v-toolbar-title>
@@ -55,7 +55,6 @@
                 :indeterminate="loading"
                 absolute
                 bottom
-                color="#005598"
             ></v-progress-linear>
         </v-app-bar>
 

@@ -25,7 +25,12 @@
                                 color="#036358"
                             >
                                 <div class="mb-5 text-center">
-                                    <v-btn class="text-capitalize">Vista ràpida</v-btn>
+                                    <v-btn 
+                                        @click="change(item)"
+                                        class="text-capitalize"
+                                    >
+                                        Vista ràpida
+                                    </v-btn>
                                 </div>
                                 <div>
                                     <v-btn class="text-capitalize">Agregar al carrito</v-btn>
@@ -36,11 +41,19 @@
                 </v-hover>
             </v-slide-item>
         </v-slide-group>
+        
+        <DialogConceptos />
     </v-sheet>
 </template>
 
 <script>
+import DialogConceptos from '@/components/dialogs/DialogConceptos';
+import {mapState,mapActions} from 'vuex';
+
     export default {
+        components:{
+            DialogConceptos,
+        },
         props:{
             conceptos:{
                 type:Array,
@@ -55,7 +68,6 @@
         data() {
             return {
                 model:1,
-                dialog:false,
                 sabled:[
                     {
                         id:1,
@@ -117,9 +129,17 @@
                 ]
             }
         },
+        computed: {
+            ...mapState(['dialog']),
+        },
+        methods: {
+            ...mapActions(['setDialog','setProducto']),
+
+            change(item){
+                this.setProducto(item);
+                this.setDialog(true);
+            },
+        },
+        //http://www.solucionespm.com/wp-content/uploads/2018/04/ofertas.jpg
     }
 </script>
-
-<style lang="scss" scoped>
-
-</style>

@@ -67,6 +67,7 @@
 <script>
 import validations from '@/validations/validations';
 import router from '@/router';
+import store from '../../store';
 import firebase from 'firebase';
 
     export default {
@@ -98,6 +99,7 @@ import firebase from 'firebase';
                 firebase.auth().signInWithEmailAndPassword(this.user.email,this.user.password)
                 .then(data => {
                     this.snackbar=true;
+                    store.state.user.loggedIn=true;
                     setTimeout(() => {
                         this.error=null;
                         router.push('/');

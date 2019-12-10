@@ -31,8 +31,7 @@
                 <v-divider></v-divider>
 
                 <v-list>
-                    <v-list-item v-for="item in link" :key="item.text" :to="item.path">
-                            
+                    <v-list-item v-for="item in link" :key="item.text" :to="item.path">   
                         <v-list-item-icon>
                             <v-icon color="">{{item.icon}}</v-icon>
                         </v-list-item-icon>
@@ -62,7 +61,7 @@
 </template>
 
 <script>
-import {mapGetters} from  'vuex';
+import {mapGetters,mapActions} from  'vuex';
 import firebase from 'firebase';
 
     export default {
@@ -84,32 +83,41 @@ import firebase from 'firebase';
             }),
         },
         methods: {
+            ...mapActions(['logout']),
+
             transition(){
                 return "slide-y-transition"
             },
 
             async getImage(){
-                let uid = await firebase.auth().currentUser.uid;
-                console.log(uid);
-                var ref = await firebase
+                try{
+                    let uid ;
+                    await firebase.auth().onAuthStateChanged(user => {
+                        uid= user.uid;
+                    });
+                    var ref = await firebase
                     .firestore()
                     .collection("profile")
                     .doc(uid);
 
-                ref.onSnapshot(snap => {
-                    this.imagen= snap.data().imagen;
-                    this.nombre=snap.data().nombre;
-                    this.apellido=snap.data().apellido;
-                });   
+                    ref.onSnapshot(snap => {
+                        this.imagen= snap.data().imagen;
+                        this.nombre=snap.data().nombre;
+                        this.apellido=snap.data().apellido;
+                    });  
+                }catch(e){
+                    console.log(e);
+                }
             },
 
             logOut(){
                 firebase.auth().signOut().then(() => {
+                    this.logout();
                     this.$router.replace({ name: "login" });
                 });
             },
         },
-        created(){
+        mounted(){
             this.getImage();
         }
     }

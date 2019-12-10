@@ -49,7 +49,7 @@ export default new Vuex.Store({
     },
 
     SET_DIALOG(state,val){
-      if(val){
+      if(val == true){
         state.dialog=true;
       }else{
         state.dialog=false;
@@ -84,6 +84,10 @@ export default new Vuex.Store({
 
     setProducto({commit},val){
       commit("SET_PRODUCTO",val);
+    },
+    
+    logout({commit}){
+      commit(" SET_LOGGED_IN",false);
     },
 
     fetchUser({ commit }, user) {

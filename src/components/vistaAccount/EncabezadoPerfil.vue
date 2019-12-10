@@ -3,7 +3,7 @@
         <!-- imagen de encabezado con datos de la cuenta -->
         <v-card-text>
             <v-hover v-slot:default="{hover}">
-                <v-avatar size="200">
+                <v-avatar size="150">
                     <v-img :src="imagen" :class="hover ? 'elevation-10':'elevation-2'">
                         <v-row class="fill-height" align="center" justify="center">
                             <template v-if="hover">
@@ -20,7 +20,7 @@
             </div>
         </v-card-text>
 
-        <!--modal para edita foto -->
+        <!--modal para editar foto -->
         <v-dialog v-model="modal" width="400" close-delay>
             <v-card>
                 <v-card-title class="headline grey lighten-4">
@@ -33,7 +33,7 @@
 
                 <v-card-text class="mt-5">     
                     <v-row>
-                        <v-col cols="12" md="8" sm="8" offset="2">
+                        <v-col cols="12" md="8" sm="12" :offset="$vuetify.breakpoint.smAndDown ? null:2">
                             <!-- plugins para recortar la imagen -->
                             <croppa 
                                 v-model="myCroppa"
@@ -49,12 +49,11 @@
                                 initial-image="https://zhanziyang.github.io/vue-croppa/static/500.jpeg"
                             ></croppa>
                         </v-col>
-                        <v-col cols="12" md="8" sm="8" offset="2">
+                        <v-col cols="12" md="8" sm="12" :offset="$vuetify.breakpoint.smAndDown ? null:2">
                             <!-- slider para hacer zoom -->
                             <v-slider
                                 track-color="#eee"
                                 class="mt-8"
-                                label="Zoom"
                                 id="#slider"
                                 v-model="sliderVal"
                                 append-icon="panorama"
@@ -114,21 +113,28 @@ import firebase from "firebase";
             }
         },
         mounted() {
-            var uid = firebase.auth().currentUser.uid;
-            this.getProfile(uid);
+            this.getProfile();
         },
         methods: {
-            async getProfile(uid) {
-                var ref = await firebase
+            async getProfile() {
+                try{
+                    let uid='' ;
+                    firebase.auth().onAuthStateChanged(user => {
+                        uid= user.uid;
+                    });
+                    var ref = await firebase
                     .firestore()
                     .collection("profile")
                     .doc(uid);
 
-                ref.onSnapshot(snap => {
-                    this.nombre = snap.data().nombre;
-                    this.apellido = snap.data().apellido;
-                    this.imagen = snap.data().imagen;
-                });
+                    ref.onSnapshot(snap => {
+                        this.nombre = snap.data().nombre;
+                        this.apellido = snap.data().apellido;
+                        this.imagen = snap.data().imagen;
+                    });
+                }catch(e){
+                    console.log(e);
+                }
             },
             //al colocar una nueva imagen
             onNewImage() {

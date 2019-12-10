@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Router from "vue-router";
 import store from "./store";
+import firebase from 'firebase';
 
 import Home from "./views/home/Home.vue";
 import NotFound from "./views/NotFound";
@@ -31,12 +32,21 @@ import AliadoEspecifico from "./views/aliados/AliadoEspecifico";
 import Tipos from "./views/aliados/Tipos";
 
 //rutas de adminitrador
-import Admin from './views/admin/Admin'
-import Dashboard from './views/admin/Dashboard'
-import Usuarios from './views/admin/Usuarios'
-import Notificaciones2 from './views/admin/Notificaciones'
-import Aliados2 from './views/admin/Aliados'
-import Ventas from './views/admin/Ventas'
+import Admin from './views/admin/Admin';
+import Dashboard from './views/admin/Dashboard';
+import Usuarios from './views/admin/Usuarios';
+import Notificaciones2 from './views/admin/Notificaciones';
+import Aliados2 from './views/admin/Aliados';
+import Ventas from './views/admin/Ventas';
+
+//ruta checkout de pedidos
+import Checkout from './views/pedidos/Checkout';
+
+//ruta detallada del producto
+import DetalleProducto from './views/productos/DetalleProducto';
+
+//noautorizado 403
+import NotAutorized from "./views/NotAutorized";
 
 Vue.use(Router);
 
@@ -47,17 +57,42 @@ const router = new Router({
     {
       path: "/",
       name: "home",
-      component: Home
+      component: Home,
+      meta: {
+        auth: false
+      }
     },
     {
       path: "/pruebas",
       name: "pruebas",
-      component: Pruebas
+      component: Pruebas,
+      meta: {
+        auth: false
+      }
+    },
+    {
+      path: "/checkout",
+      name: "checkout",
+      component: Checkout,
+      meta: {
+        auth: true
+      }
+    },
+    {
+      path: "/producto/:id",
+      name: "detalleproducto",
+      component: DetalleProducto,
+      meta: {
+        auth: false
+      }
     },
     {
       path: "/search",
       name: "search",
-      component: Search
+      component: Search,
+      meta: {
+        auth: false
+      }
     },
     {
       path: "/login",
@@ -72,7 +107,8 @@ const router = new Router({
       name: "register",
       component: Register,
       meta: {
-        auth: false
+        auth: false,
+        mediador:true
       },
 
       children: [
@@ -92,32 +128,51 @@ const router = new Router({
       path: "/account",
       name: "account",
       component: Account,
+      meta: {
+        auth: true,
+        mediador:true
+      },
 
       children: [
         {
           path: "profile",
           name: "profile",
-          component: Profile
+          component: Profile,
+          meta: {
+            auth: true
+          },
         },
         {
           path: "metodo-de-pago",
           name: "metodos",
-          component: MetodoDePago
+          component: MetodoDePago,
+          meta: {
+            auth: true
+          },
         },
         {
           path: "notificaciones",
           name: "notificaciones",
-          component: Notificaciones
+          component: Notificaciones,
+          meta: {
+            auth: true
+          },
         },
         {
           path: "ayuda",
           name: "ayuda",
-          component: Ayuda
+          component: Ayuda,
+          meta: {
+            auth: true
+          },
         },
         {
           path: "historial",
           name: "historial",
-          component: Historial
+          component: Historial,
+          meta: {
+            auth: true
+          },
         }
       ]
     },
@@ -125,6 +180,9 @@ const router = new Router({
       path: "/aliados",
       name: "aliados",
       component: Aliados,
+      meta: {
+        auth: false
+      },
 
       children:[
         {
@@ -157,6 +215,11 @@ const router = new Router({
       ]
     },
     {
+      path:"/noAutorizado",
+      name:"403",
+      component:NotAutorized
+    },
+    {
       path: "*",
       name: "notfount",
       component: NotFound
@@ -165,6 +228,10 @@ const router = new Router({
       path:'/admin',
       name:'admin',
       component:Admin , 
+      meta: {
+        auth: true,
+        mediador:true
+      },
 
       children:[
         {
@@ -210,36 +277,29 @@ const router = new Router({
   fallback: true,
 });
 
+//proteccion de rutas
+  //cada ruta tiene un meta que lo etiqueta
+  //si es true es por que requiere estar logueado para entrar a esa ruta
+  //si no envia a una vista 403 no autorizado
+  //si es false si la ruta sigue normalmente por que no requiere estar logueado
+
 /*router.beforeEach((to, from, next) => {
-  const user = store.state.user.loggedIn;
-  
-  if(
-    to.path == '/login' || 
-    to.path == '/register' || 
-    to.path == '/register/cliente' ||
-    to.path == '/register/empresa'
-    && user
-  ){
-    next({name:'home'});
+  let user=store.state.user.loggedIn;
+  console.log(store.state.user.loggedIn);
+
+  if (to.meta.auth){
+    if (user){
+      if(to.meta.mediador){
+        next({name:'notfount'});
+      }else{
+        next();
+      }
+    } else {
+      next({name: '403'});
+    }
   }else{
     next();
   }
-
-  if(
-    to.path == '/account' ||
-    to.path == '/account/profile' ||
-    to.path == '/account/credit-card' ||
-    to.path == '/account/notificaciones' ||
-    to.path == '/account/ayuda' ||
-    to.path == '/account/historial' 
-    && user == false
-  ){
-    next({name:'home'});
-  }else{
-    next();
-  }
-
-
 });*/
 
 export default router;

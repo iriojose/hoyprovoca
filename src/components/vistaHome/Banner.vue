@@ -1,3 +1,4 @@
+  
 <template>
     <v-carousel
         height="400"
@@ -7,7 +8,7 @@
         <v-carousel-item
             v-for="img in images"
             :key="img.id"
-            src="@/assets/COMIDA.jpg"
+            src="@/assets/comida.jpg"
             transition="fade-transition"
         >
         </v-carousel-item>

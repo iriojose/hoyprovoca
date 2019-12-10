@@ -75,17 +75,17 @@
             </v-sheet>
         </div>
 
-        <DialogProducto />
+        <DialogConceptos />
     </div>
 </template>
 
 <script>
-import DialogProducto from '@/components/vistaAliados/DialogProducto';
+import DialogConceptos from '@/components/dialogs/DialogConceptos';
 import {mapState,mapActions} from 'vuex';
 
     export default {
         components:{
-            DialogProducto
+            DialogConceptos
         },
         data() {
             return {
