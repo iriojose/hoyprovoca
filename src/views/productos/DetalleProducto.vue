@@ -40,38 +40,55 @@
                                     ({{ rating }})
                                 </span>
                             </v-col>
+                            
+                            <v-col cols="12" md="12">
+                                <strong class="black--text title">Bss. 500.000 </strong>
+                            </v-col>
+                            <v-col cols="12" md="12" sm="12">
+                                <strong class="green--text title">Disponible.</strong>
+                            </v-col>
+                            <v-col cols="12" md="12">
+                                <p class="black--text darken-1 subtitle-1">
+                                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. 
+                                    Corrupti iure nulla cumque sunt itaque eaque reprehenderit 
+                                    animi commodi ratione nisi, molestiae culpa ipsum. Pariatur 
+                                    ssumenda temporibus, ut perspiciatis amet facilis.
+                                </p>
+                            </v-col>
                         </v-row>
                     </v-card-text>
-                    <v-card-actions>
-
-                    </v-card-actions>
                 </v-card>
             </v-col>
-            <v-col cols="12" md="2">
-                <v-card color="#eee" elevation="0" class="px-5 py-5">
-                    <v-tooltip left>
-                        <template v-slot:activator="{ on }">
-                            <div v-on="complete ? on:null">
-                                <v-btn :disabled="complete" color="#005598" class="white--text text-capitalize caption">
-                                    <v-icon color="#fff">shopping_cart</v-icon>
-                                    Agregar al carrito
-                                </v-btn>
-                            </div> 
-                        </template>
-                        <span>le falta algo más</span>
-                    </v-tooltip>
 
-                    <v-text-field
-                        class="mt-5"
-                        type="number"
-                        v-model="cant"
-                        label="cantidad"
-                        dense
-                        single-line
-                        hide-details
-                        filled
-                        color="#000"
-                    />
+            <v-col cols="12" md="2">
+                <v-card elevation="0" class="cuadro px-2 py-5">
+                    <v-card-text>
+                        <v-tooltip left>
+                            <template v-slot:activator="{ on }">
+                                <div v-on="complete ? on:null">
+                                    <v-btn :disabled="complete" color="#005598" class="white--text text-capitalize caption">
+                                        <v-icon color="#fff">shopping_cart</v-icon>
+                                        Agregar al carrito
+                                    </v-btn>
+                                </div> 
+                            </template>
+                            <span>le falta algo más</span>
+                        </v-tooltip>
+                        
+                        <v-select
+                            v-model="cant"
+                            :items="filters"
+                            label="Cantidad"
+                            filled
+                            color="#000"
+                            hide-details
+                            hide-selected
+                            chips
+                            type="number"
+                            class="mt-5"
+                            dense
+                        ></v-select>
+                    </v-card-text>
                 </v-card>
             </v-col>
         </v-row>
@@ -82,9 +99,10 @@
     export default {
         data(){
             return{
-                complete:true,
+                complete:false,
                 rating:2.5,
-                cant:null
+                cant:null,
+                filters:[1,2,3,4,5]
             }
         }
     }
@@ -92,6 +110,6 @@
 
 <style scoped>
     .cuadro{
-        border: 1px solid #fff;
+        border: 1px solid #000;
     }
 </style>

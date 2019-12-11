@@ -1,7 +1,6 @@
 import Vue from "vue";
 import Router from "vue-router";
 import store from "./store";
-import firebase from 'firebase';
 
 import Home from "./views/home/Home.vue";
 import NotFound from "./views/NotFound";
@@ -52,7 +51,7 @@ Vue.use(Router);
 
 const router = new Router({
   mode: "history",
-  base:'/',
+  base:'/aftim',
   routes: [
     {
       path: "/",

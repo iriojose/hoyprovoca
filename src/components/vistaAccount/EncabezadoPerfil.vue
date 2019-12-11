@@ -95,15 +95,13 @@
 </template>
 
 <script>
-import firebase from "firebase";
-
     export default {
         data(){
             return{
                 modal:false,
-                nombre: "",
-                apellido: "",
-                imagen: "",
+                nombre: "Irio",
+                apellido: "Gòmez",
+                imagen: "https://us.123rf.com/450wm/thesomeday123/thesomeday1231712/thesomeday123171200009/91087331-icono-de-perfil-de-avatar-predeterminado-para-hombre-marcador-de-posici%C3%B3n-de-foto-gris-vector-de-ilustr.jpg?ver=6",
                 snackbar:false,
                 time:2000,
                 myCroppa:{},
@@ -113,28 +111,11 @@ import firebase from "firebase";
             }
         },
         mounted() {
-            this.getProfile();
+            //this.getProfile();
         },
         methods: {
-            async getProfile() {
-                try{
-                    let uid='' ;
-                    firebase.auth().onAuthStateChanged(user => {
-                        uid= user.uid;
-                    });
-                    var ref = await firebase
-                    .firestore()
-                    .collection("profile")
-                    .doc(uid);
-
-                    ref.onSnapshot(snap => {
-                        this.nombre = snap.data().nombre;
-                        this.apellido = snap.data().apellido;
-                        this.imagen = snap.data().imagen;
-                    });
-                }catch(e){
-                    console.log(e);
-                }
+            async getProfile() {//metodo para traer perfil
+                //solo nombre,apellido,e imagen
             },
             //al colocar una nueva imagen
             onNewImage() {

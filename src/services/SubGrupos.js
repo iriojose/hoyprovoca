@@ -3,7 +3,7 @@ import header from './header';
 
 export default () => {
     return axios.create({
-        baseURL:'http://192.168.0.253:81/api/conceptos',
+        baseURL:'http://192.168.0.253:81/api/subgrupos',
         withCredentials:false,
         headers:{
             Accept:'application/json',

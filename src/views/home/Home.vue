@@ -8,23 +8,27 @@
 
     <MasVendidos title="Ofertas de la semana" />
 
-    <Categorias title="Categorias" :categorias="categor" v-if="activo" />
-
-    <v-row v-else class="my-5 mx-3">
+    <!--
+      <Categorias title="Categorias" :categorias="categorias" v-if="activo" />
+    -->
+    <!--agregar v-else luego -->
+    <v-row class="my-5 mx-3">
       <v-col cols="12" md="3" sm="6" lg="3" v-for="n in 4" :key="n">
         <SkeletonCard />
       </v-col>
     </v-row>
 
-    <Sugerencias title="Sugerencias" :sugerencias="aliados" v-if="activo" />
-
-    <v-row v-else class="my-5 mx-3">
+    <!--
+      <Sugerencias title="Sugerencias" :sugerencias="aliados" v-if="activo" />
+    -->
+    <!--agregar v-else luego -->
+    <v-row class="my-5 mx-3">
       <v-col cols="12" md="3" sm="6" lg="3" v-for="n in 4" :key="n">
         <SkeletonCard />
       </v-col>
     </v-row>
 
-    <BannerAbajo />
+    <!-- <BannerAbajo />-->
     <Footer />
   </div>
 </template>
@@ -40,7 +44,8 @@ import SkeletonCard from "@/components/layouts/SkeletonCard";
 import SkeletonImage from '@/components/layouts/SkeletonImage'
 import BannerAbajo from '@/components/vistaHome/Banner2';
 import MasVendidos from '@/components/vistaHome/MasVendidos';
-import firebase from "firebase";
+import Api from '@/services/Api';
+import axios from 'axios';
 
 export default {
   name: "home",
@@ -57,18 +62,27 @@ export default {
   },
   data() {
     return {
-      categor: [],
+      categorias: [],
       activo: false,
       aliados:[],
+      //formato de las variables categorias y aliados
+      //imagen,nombre,id
     };
   },
 
   created() {
-    this.getCategorias();
-    this.getAliados();
+    //this.getCategorias();
+    //this.getAliados();
+
+    Api().get('/').then((response) => {
+      console.log(response.data);
+    }).catch(e => {
+      console.log(e);
+    });
   },
 
   watch: {
+    //cuando las variables cambien se quita el modo de espera
     categor() {
       this.activo = true;
     },
@@ -78,33 +92,7 @@ export default {
   },
 
   methods: {
-    async getCategorias() {
-      var ref = await firebase.firestore().collection("categorias");
-      var count=0;
-      ref.onSnapshot(snap => {
-        snap.forEach(doc => {
-          this.categor.push({
-            nombre: doc.data().nombre,
-            imagen: doc.data().imagen,
-            uid:count++,
-          });
-        });
-      });
-    },
-
-    async getAliados(){
-      var ref = await firebase.firestore().collection('aliados');
-
-      ref.onSnapshot(snap => {
-        snap.forEach(doc => {
-          this.aliados.push({
-            imagen:doc.data().imagen,
-            nombre:doc.data().nombre,
-            uid:doc.data().id
-          });
-        });
-      });
-    }
+    //methods
   }
 };
 </script>

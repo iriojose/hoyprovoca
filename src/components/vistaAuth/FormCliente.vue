@@ -191,7 +191,7 @@
 </template>
 <script>
 import validations from '@/validations/validations';
-import firebase from 'firebase';
+//import Clientes from '@/servicios/Clientes'
 import router from '@/router';
 
     export default {
@@ -232,26 +232,16 @@ import router from '@/router';
             register(){
                 this.loading = true;
 
-                firebase.auth().createUserWithEmailAndPassword(
-                    this.user.email, this.user.password
-                ).then(data => {
-                    firebase.firestore().collection('profile').doc(data.user.uid).set({
-                        nombre: this.user.nombre,
-                        apellido:this.user.apellido,
-                        cedula:this.user.cedula,
-                        telefono:this.user.telefono,
-                        imagen:"https://us.123rf.com/450wm/thesomeday123/thesomeday1231712/thesomeday123171200009/91087331-icono-de-perfil-de-avatar-predeterminado-para-hombre-marcador-de-posici%C3%B3n-de-foto-gris-vector-de-ilustr.jpg?ver=6"
-                    }).then(() => {
-                        this.snackbar=true;
-                        setTimeout(() => {
-                            this.error=null;
-                            router.push('/');
-                        },1000);
-                    });
-                }).catch(err => {
-                    this.snackbar=true;
-                    this.error = err.message;
-                });
+                
+                this.snackbar=true;
+                setTimeout(() => {
+                    this.error=null;
+                    router.push('/');
+                },1000);
+                
+                //para cuando atrape un error
+                //this.snackbar=true;
+                //this.error = err.message;
             }
         }
     }

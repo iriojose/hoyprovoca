@@ -117,7 +117,7 @@
 
 <script>
 import validations from "@/validations/validations";
-import firebase from "firebase";
+//agregar servicio
 import { mapState } from "vuex";
 
 export default {
@@ -126,11 +126,11 @@ export default {
       ...validations,
       valid: false,
       editable:false,
-      nombre: "",
-      apellido: "",
-      cedula:'',
-      telefono: "",
-      email: "",
+      nombre: "irio",
+      apellido: "gomez",
+      cedula:'26707104',
+      telefono: "04127959576",
+      email: "iriojgomezv@gmail.com",
       count:0,
       snackbar:false,
       time:2000
@@ -138,10 +138,7 @@ export default {
   },
 
   mounted() {
-    firebase.auth().onAuthStateChanged(user => {
-      this.email= user.email;
-    });
-    this.getProfile();
+    //this.getProfile();
   },
 
   computed: {
@@ -151,6 +148,10 @@ export default {
   methods: {
 
     onMutate(){
+      //un peo ahi para saber cuando se editan los textfields
+      //el peo esta que como traes los valores de la api el asume cambios
+      //y deja visible el boton, por eso puse un count segun el numero de variables
+      //modificadas, acuerdate webon
       if(this.count > 3){
         this.editable=true;
       }else{
@@ -158,42 +159,12 @@ export default {
       }
     },
 
-    async editar(){
-      
-      var uid = firebase.auth().currentUser.uid;
-      await firebase.firestore()
-        .collection('profile')
-        .doc(uid).update({
-          nombre:this.nombre,
-          apellido:this.apellido,
-          telefono:this.telefono,
-          cedula:this.cedula
-      });
+    async editar(){//methodo para editar sus datos
       this.snackbar=true;
       this.editable=false;
     },
 
-    async getProfile() {
-      try{
-        var uid='';
-        firebase.auth().onAuthStateChanged(user => {
-          uid= user.uid;
-        });
-      
-        var ref = await firebase
-          .firestore()
-          .collection("profile")
-          .doc(uid);
-
-        ref.onSnapshot(snap => {
-          this.nombre= snap.data().nombre;
-          this.apellido= snap.data().apellido;
-          this.cedula=snap.data().cedula;
-          this.telefono=snap.data().telefono;
-        });
-      }catch(e){
-        console.log(e);
-      }
+    async getProfile() {//obtiene los datos de la sesion iniciada
     }
   }
 };

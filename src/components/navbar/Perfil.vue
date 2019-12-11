@@ -62,14 +62,13 @@
 
 <script>
 import {mapGetters,mapActions} from  'vuex';
-import firebase from 'firebase';
 
     export default {
         data(){
             return{
-                imagen:'',
-                nombre:'',
-                apellido:'',
+                imagen:'https://us.123rf.com/450wm/thesomeday123/thesomeday1231712/thesomeday123171200009/91087331-icono-de-perfil-de-avatar-predeterminado-para-hombre-marcador-de-posici%C3%B3n-de-foto-gris-vector-de-ilustr.jpg?ver=6',
+                nombre:'irio',
+                apellido:'gomez',
                 link:[
                     {text:'Ajustes de cuentas',path:'/account/profile',icon:'build'},
                     {text:'Agregar metodo de pago',path:'/account/metodo-de-pago',icon:'credit_card'},
@@ -89,36 +88,16 @@ import firebase from 'firebase';
                 return "slide-y-transition"
             },
 
-            async getImage(){
-                try{
-                    let uid ;
-                    await firebase.auth().onAuthStateChanged(user => {
-                        uid= user.uid;
-                    });
-                    var ref = await firebase
-                    .firestore()
-                    .collection("profile")
-                    .doc(uid);
-
-                    ref.onSnapshot(snap => {
-                        this.imagen= snap.data().imagen;
-                        this.nombre=snap.data().nombre;
-                        this.apellido=snap.data().apellido;
-                    });  
-                }catch(e){
-                    console.log(e);
-                }
+            async getImage(){//metodo que trae el usuario
+                
             },
 
             logOut(){
-                firebase.auth().signOut().then(() => {
-                    this.logout();
-                    this.$router.replace({ name: "login" });
-                });
+                //logout
             },
         },
         mounted(){
-            this.getImage();
+            //this.getImage();
         }
     }
 </script>

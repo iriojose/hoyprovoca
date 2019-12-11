@@ -68,7 +68,6 @@
 import validations from '@/validations/validations';
 import router from '@/router';
 import store from '../../store';
-import firebase from 'firebase';
 
     export default {
         data(){
@@ -96,18 +95,17 @@ import firebase from 'firebase';
             login(){
                 this.loading = true;
 
-                firebase.auth().signInWithEmailAndPassword(this.user.email,this.user.password)
-                .then(data => {
-                    this.snackbar=true;
-                    store.state.user.loggedIn=true;
-                    setTimeout(() => {
-                        this.error=null;
-                        router.push('/');
-                    },1000);
-                }).catch(err => {
-                    this.snackbar=true;
-                    this.error =  err.message;
-                });
+                this.snackbar=true;
+                store.state.user.loggedIn=true;
+                setTimeout(() => {
+                    this.error=null;
+                    router.push('/');
+                },1000);
+               
+                  //para cuando atrape un error (catch)
+                  //this.snackbar=true;
+                  //this.error =  err.message;
+              
             }
         },
     }
