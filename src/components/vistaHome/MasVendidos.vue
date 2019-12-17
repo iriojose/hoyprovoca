@@ -1,58 +1,49 @@
 <template>
-    <v-sheet
-        class="my-10 mx-6"
-        elevation="0"
-        width="95%"
-        height="270"
-    >
-        <p class="px-5 title font-weight-medium">
-            {{title}}
-        </p>
+    <div>
+        <div class="headline ml-12 mt-12 font-weight-black">Productos mas vendidos</div>
         <v-slide-group
-            v-model="model"
             show-arrows
+            class="my-5"
         >
             <v-slide-item
-                v-for="item in sabled"
-                :key="item.id"
+                v-for="concepto in  conceptos"
+                :key="concepto.id"
+                class="mx-4"
+                :title="concepto.nombre +' '+concepto.ultimo_costo"
             >
-                <v-hover v-slot:default="{ hover }">
-                    <v-img width="200" height="200" :src="item.img" contain>
-                        <v-fade-transition>
-                            <v-overlay
-                                v-if="hover"
-                                absolute
-                                color="#036358"
-                            >
-                                <div class="mb-5 text-center">
-                                    <v-btn 
-                                        @click="vistarapida(item)"
-                                        class="text-capitalize"
-                                    >
-                                        Vista ràpida
-                                    </v-btn>
-                                </div>
-                                <div>
-                                    <v-btn  
-                                        @click="agregar(item)"
-                                        class="text-capitalize"
-                                    >
-                                        Agregar al carrito
-                                    </v-btn>
-                                </div>
-                            </v-overlay>
-                        </v-fade-transition>
-                    </v-img>
+                <v-hover v-slot:default="{hover}">
+                    <v-card height="200" width="200" :elevation="hover ? 10:4">
+                        <v-img contain height="200" width="200" src="https://www.fourjay.org/myphoto/f/0/3981_laptop-png.png">
+                            <div v-if="!hover" class="modif text-center d-inline-block text-truncate">{{concepto.nombre+' '}}{{concepto.ultimo_costo}}</div>
+                            <transition class="scale-transition" v-else>
+                                <v-overlay
+                                    absolute
+                                        color="#036358"
+                                >
+                                    <div class="mb-5 text-center">
+                                        <v-btn 
+                                            class="text-capitalize caption"
+                                            @click="vistarapida(concepto)"
+                                        >
+                                            Vista ràpida
+                                        </v-btn>
+                                    </div>
+                                    <div>
+                                        <v-btn  
+                                            class="text-capitalize caption"
+                                            @click="agregar(concepto)"
+                                        >
+                                            Agregar al carrito
+                                        </v-btn>
+                                    </div>
+                                </v-overlay>
+                            </transition>
+                        </v-img>
+                    </v-card>
                 </v-hover>
             </v-slide-item>
         </v-slide-group>
-        
-        <DialogConceptos />
-        <ValidacionConcepto />
-        <v-snackbar color="green" right v-model="snackbar" :timeout="5000">
-            Añadido al carro. <v-img contain width="50" height="50" :src="producto.img"></v-img>
-        </v-snackbar>
-    </v-sheet>
+    </div>
 </template>
 
 <script>
@@ -77,98 +68,10 @@ import Movimiento_deposito from '@/services/Movimiento_deposito'
                 default:''
             }
         },
-
         data() {
             return {
                 model:1,
                 snackbar:false,
-                sabled:[
-                    {
-                        id:1,
-                        licor:true,
-                        ropa:false,
-                        servicio:false,
-                        existencia:true,
-                        item:false,
-                        precio:'5$',
-                        nombre:'Cerveza Corona',
-                        oferta:true,
-                        img:'https://www.achocom.net/server/Portal_0015185/img/products/xiaomi-redmi-note-7-4gb64gb-dual-sim-negro_8265115_xxl.jpg'
-                    },
-                    {
-                        id:2,
-                        licor:false,
-                        ropa:true,
-                        servicio:false,
-                        existencia:true,
-                        item:true,
-                        precio:'20$',
-                        nombre:'Yogurt',
-                        oferta:false,
-                        img:'https://www.stickpng.com/assets/images/588526fb6f293bbfae451a3a.png'
-                    },
-                    {
-                        id:3,
-                        licor:false,
-                        ropa:false,
-                        servicio:true,
-                        existencia:true,
-                        item:true,
-                        precio:'3$',
-                        nombre:'Pepito Luchon',
-                        oferta:true,
-                        img:'https://www.fourjay.org/myphoto/f/0/3981_laptop-png.png'
-                    },
-                    {
-                        id:4,
-                        licor:false,
-                        ropa:false,
-                        servicio:false,
-                        existencia:false,
-                        item:false,
-                        precio:'3$',
-                        nombre:'Galleta Maria',
-                        oferta:false,
-                        img:'https://www.partesdel.com/wp-content/uploads/Partes-del-Televisor...jpg'
-                    },
-                    {
-                        id:5,
-                        licor:false,
-                        ropa:false,
-                        servicio:false,
-                        existencia:true,
-                        item:false,
-                        precio:'5$',
-                        nombre:'Desinfectante',
-                        oferta:true,
-                        img:'https://images-na.ssl-images-amazon.com/images/I/91DK0S6RvhL._SX425_.jpg'
-                    },
-
-                    {
-                        id:6,
-                        licor:true,
-                        ropa:false,
-                        servicio:false,
-                        existencia:true,
-                        item:false,
-                        precio:'5$',
-                        nombre:'Grupo de limpieza',
-                        oferta:false,
-                        img:'https://http2.mlstatic.com/televisor-smartv-lg-32-pulgadas-D_NQ_NP_689874-MLV31253038511_062019-Q.jpg'
-                    },
-                    {
-                        id:7,
-                        licor:true,
-                        ropa:false,
-                        servicio:false,
-                        existencia:true,
-                        item:false,
-                        precio:'5$',
-                        nombre:'Grupo de limpieza',
-                        oferta:false,
-                        img:'https://www.achocom.net/server/Portal_0015185/img/products/xiaomi-redmi-note-7-4gb64gb-dual-sim-negro_8265115_xxl.jpg'
-                    },
-                ]
             }
         },
         computed: {
@@ -197,8 +100,7 @@ import Movimiento_deposito from '@/services/Movimiento_deposito'
                 }
             },
             
-            //en proceso
-            async existencia(id){
+            getMovimiento_deposito(id){//trae la existencia del concepto
                 Movimiento_deposito().get(`/${id}`).then((response) => {
                     return response.data.data;
                 }).catch(e => {
@@ -206,6 +108,15 @@ import Movimiento_deposito from '@/services/Movimiento_deposito'
                 });
             }
         },
-        //http://www.solucionespm.com/wp-content/uploads/2018/04/ofertas.jpg
     }
 </script>
+
+<style scoped>
+    .modif{
+        width: 100%;
+        height: 40px;
+        background: rgba(0,0,0,0.5);
+        color: #fff;
+        padding-top: 10px;
+    }
+</style>

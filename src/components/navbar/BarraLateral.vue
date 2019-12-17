@@ -8,32 +8,24 @@
       width="300"
       :style="$vuetify.breakpoint.smAndDown ? 'margin-top:115px;':'margin-top:58px'"
     >
-      <v-list v-if="show">
-          <v-subheader>Comprar por categorias</v-subheader>
-          <v-divider></v-divider>
-          <v-list-item 
-              link 
-              v-for="item in items" 
-              :key="item.title"
-              @click="list(item)"
-          >
-              <v-list-item-content>
-                  <v-list-item-title>{{ item.title }}</v-list-item-title>
-              </v-list-item-content>
+        <v-list>
+            <v-subheader>Comprar por categorias</v-subheader>
+            <v-divider></v-divider>
+            <v-list-item 
+                link 
+                v-for="item in grupos" 
+                :key="item.id"
+                @click="push(item)"
+            >
+                <v-list-item-content>
+                    <v-list-item-title class="text-lowercase">{{ item.nombre }}</v-list-item-title>
+                </v-list-item-content>
 
-              <v-list-item-icon>
-                  <v-icon>keyboard_arrow_right</v-icon>
-              </v-list-item-icon>
-          </v-list-item>
-      </v-list>
-
-      <v-list v-else>
-          <v-subheader v-ripple @click="show=true" class="">
-            <v-icon class="mx-3">arrow_back</v-icon>  Volver al menu principal
-          </v-subheader>
-          <v-divider></v-divider>
-      </v-list>
-      <v-divider></v-divider>
+                <v-list-item-icon>
+                    <v-icon>keyboard_arrow_right</v-icon>
+                </v-list-item-icon>
+            </v-list-item>
+        </v-list>
     </v-navigation-drawer>
 </template>
 
@@ -42,23 +34,18 @@
 import {mapState,mapActions} from 'vuex';
 //services
 import Grupos from '@/services/Grupos';
-import SubGrupos from '@/services/SubGrupos';
+//router
+import router from '@/router';
 
     export default {
         name: 'BarraLateral',
         data(){
           return{
-            show:true,
             grupos:[],
-            //se guardan todos los subgrupos
-            subgrupos:[],
-            //esta arreglo es donde se guarda la lista que aparecera luego 
-            //de darle click al grupo principal
-            listaSubgrupos:[]
           }
         },
         computed: {
-          ...mapState(['items','drawer']),
+          ...mapState(['drawer']),
             //cambiar el drawer de la navegacion
             drawers:{
                 get(){
@@ -69,16 +56,15 @@ import SubGrupos from '@/services/SubGrupos';
                 }
             }
         },
-        mounted(){//se trae los grupos y subgrupos al montarse el componente
-          //this.getGrupos();
-          //this.getSubGrupos();
+        mounted(){//se trae los grupos al montarse el componente
+          this.getGrupos();
         },
         methods:{
             ...mapActions(['setDrawer']),
 
-            list(val){//metodo para seleccionar subgrupo
-            //PD:falta validar y guardar en variable (listasubgrupo)
-                this.show=false;
+            push(item){//empuja a la vista 
+                this.setDrawer(false);
+                router.push({name:'tipo', params:{text: item.nombre , id:item.id}});
             },
 
             transition(){//metodo para animacion de transition
@@ -91,22 +77,12 @@ import SubGrupos from '@/services/SubGrupos';
 
             getGrupos(){//trae los grupos
                 Grupos().get('/').then((response) => {
-                    console.log(response.data.data);
+                    this.grupos = response.data.data;
                 }).catch(e => {
                     console.log(e);
                 });
             },
-
-            getSubGrupos(){//trae subgrupos
-                SubGrupos().get('/').then((response)=> {
-                    console.log(response.data.data);
-                }).cathc(e => {
-                    console.log(e);
-                });
-            }
         }
     }
-
-//Nota para irio:
-//cambiar de categorias a subcategorias con el condicional del id
 </script>
+

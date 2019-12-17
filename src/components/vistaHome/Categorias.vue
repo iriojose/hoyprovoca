@@ -1,6 +1,6 @@
 <template>
-    <div :class="$vuetify.breakpoint.smAndDown ? null:'my-8 mx-10'">
-      <v-divider class="my-12"></v-divider>
+    <div>
+        <v-divider class="my-12"></v-divider>
         <div class="headline ml-12 mt-12 font-weight-black">Categorias mas buscadas</div>
         <v-slide-group
             show-arrows
@@ -12,9 +12,9 @@
                 class="mx-4"
             >
                 <v-hover v-slot:default="{hover}">
-                    <v-card height="250" width="300" elevation="10" v-ripple :to="{name:'tipo', params:{text:categoria.nombre}}">
+                    <v-card height="250" width="300" elevation="10" @click="push(categoria)">
                         <v-card-text>
-                            <v-img contain :src="categoria.imagen"/>
+                            <v-img contain src="https://cdn.pixabay.com/photo/2017/12/09/08/18/pizza-3007395_960_720.jpg"/>
                         </v-card-text>
                     </v-card>
                 </v-hover>
@@ -24,12 +24,20 @@
 </template>
 
 <script>
-export default {
-  props: ["categorias", "title"],
-  data() {
-    return {
-      model: 1,
+//router
+import router from '@/router';
+
+    export default {
+        props: ["categorias", "title"],
+        data() {
+            return {
+            model: 1,
+            };
+        },
+        methods: {
+            push(item){
+                router.push({name:'tipo', params:{text:item.nombre,id:item.id}});
+            }
+        },
     };
-  },
-};
 </script>

@@ -1,116 +1,5 @@
 <template>
     <div>
-    <!--Navbar -->
-        <v-app-bar :elevation="$vuetify.breakpoint.smAndDown ? 0:null" :elevate-on-scroll="$vuetify.breakpoint.smAndDown ? false:true" fade-img-on-scroll app color="#005598">
-
-            <v-app-bar-nav-icon dark @click="method"></v-app-bar-nav-icon>
-
-            <v-toolbar-title class="mx-5" to="/">
-                <v-img contain width="120" height="120" src="@/assets/logo2.png"></v-img>
-            </v-toolbar-title>
-
-            <v-text-field
-                v-model="busqueda"
-                label="Buscar producto..."
-                prepend-inner-icon="search"
-                clearable
-                hide-details
-                dense 
-                outlined
-                class="hidden-sm-and-down ml-10"
-                background-color="#f7f7f7"
-                color="#006788"
-                single-line
-            />
-
-            <v-spacer></v-spacer>
-            <v-divider dark vertical class="hidden-sm-and-down mx-2"></v-divider>
-            
-            <v-btn icon class="mx-2">
-                <v-badge transition="fade-transition" color="teal" left overlap>
-                    <v-icon size="25" color="#fff">notifications</v-icon>
-                    <template v-slot:badge>
-                        0
-                    </template>
-                </v-badge>
-            </v-btn>
-
-
-            <v-btn icon class="mx-2">
-                <v-badge transition="fade-transition" color="teal" left overlap>
-                    <v-icon size="25" color="#fff">shopping_cart</v-icon>
-                    <template v-slot:badge>
-                        0
-                    </template>
-                </v-badge>
-            </v-btn>
-
-
-            <v-avatar color="#f5f5f5" size="40" class="mx-2 elevation-3">
-                <v-btn icon>
-                    <v-icon>person</v-icon>
-                </v-btn>
-            </v-avatar>
-        </v-app-bar>
-    <!--buscador window sm -->
-        <v-toolbar color="#005598" width="100%" class="px-5 fix" v-if="$vuetify.breakpoint.smAndDown">
-            <v-text-field
-                v-model="busqueda"
-                label="Buscar producto..."
-                prepend-inner-icon="search"
-                clearable
-                hide-details
-                dense 
-                outlined
-                background-color="#f7f7f7"
-                color="#005598"
-                single-line
-            />
-        </v-toolbar>
-    <!--Banner inicial -->
-        <Banner />
-
-    <!--Productos mas vendidos -->
-        <div class="headline ml-12 mt-12 font-weight-black">Productos mas vendidos</div>
-        <v-slide-group
-            show-arrows
-            class="my-5"
-        >
-            <v-slide-item
-                v-for="concepto in  conceptos"
-                :key="concepto.id"
-                class="mx-4"
-            >
-                <v-hover v-slot:default="{hover}">
-                    <v-card height="200" width="200" :elevation="hover ? 10:4">
-                        <v-img contain height="200" width="200" :src="concepto.img">
-                            <div v-if="!hover" class="modif text-center">{{concepto.nombre+' '}}{{concepto.precio}}</div>
-                            <transition class="scale-transition" v-else>
-                                <v-overlay
-                                    absolute
-                                    color="#036358"
-                                >
-                                    <div class="mb-5 text-center">
-                                        <v-btn 
-                                            class="text-capitalize caption"
-                                        >
-                                            Vista ràpida
-                                        </v-btn>
-                                    </div>
-                                    <div>
-                                        <v-btn  
-                                            class="text-capitalize caption"
-                                        >
-                                            Agregar al carrito
-                                        </v-btn>
-                                    </div>
-                                </v-overlay>
-                            </transition>
-                        </v-img>
-                    </v-card>
-                </v-hover>
-            </v-slide-item>
-        </v-slide-group>
 
     <!--Promociones -->
         <v-divider class="my-12"></v-divider>
@@ -132,61 +21,13 @@
             </v-slide-item>
         </v-slide-group>
     
-    <!--Categorias-->
-        <v-divider class="my-12"></v-divider>
-        <div class="headline ml-12 mt-12 font-weight-black">Categorias mas buscadas</div>
-        <v-slide-group
-            show-arrows
-            class="my-5 py-5"
-        >
-            <v-slide-item
-                v-for="categoria in  categorias2"
-                :key="categoria.id"
-                class="mx-4"
-            >
-                <v-hover v-slot:default="{hover}">
-                    <v-card height="250" width="300" elevation="10">
-                        <v-card-text>
-                            <v-img contain :src="categoria.img"/>
-                        </v-card-text>
-                    </v-card>
-                </v-hover>
-            </v-slide-item>
-        </v-slide-group>
-
-    <!--Sugerencias de tiendas-->
-        <v-divider class="my-12"></v-divider>
-        <div class="headline ml-12 mt-12 font-weight-black">Visita nuestras tiendas</div>
-        <v-slide-group
-            show-arrows
-            class="my-5 py-5"
-        >
-            <v-slide-item
-                v-for="categoria in  categorias2"
-                :key="categoria.id"
-                class="mx-4"
-            >
-                <v-hover v-slot:default="{hover}">
-                    <v-card height="250" width="300" elevation="10">
-                        <v-card-text>
-                            <v-img contain :src="categoria.img"/>
-                        </v-card-text>
-                    </v-card>
-                </v-hover>
-            </v-slide-item>
-        </v-slide-group>
-
+    
         
     </div>
 </template>
 
 <script>
-import Banner from '@/components/vistaHome/Banner';
-
     export default {
-        components:{
-            Banner,
-        },
         data() {
             return {
                 model:0,

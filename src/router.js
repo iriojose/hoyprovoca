@@ -1,10 +1,15 @@
+//dependencias
 import Vue from "vue";
 import Router from "vue-router";
 import store from "./store";
 
+//ruta home
 import Home from "./views/home/Home.vue";
+
+//rutas de errores
 import NotFound from "./views/NotFound";
 import s500 from './views/s500';
+import NotAutorized from "./views/NotAutorized";
 
 //auth routes components
 import Login from "./views/auth/Login.vue";
@@ -45,14 +50,11 @@ import Checkout from './views/pedidos/Checkout';
 //ruta detallada del producto
 import DetalleProducto from './views/productos/DetalleProducto';
 
-//noautorizado 403
-import NotAutorized from "./views/NotAutorized";
-
 Vue.use(Router);
 
 const router = new Router({
   mode: "history",
-  base:'/aftim',
+  base:'/a',
   routes: [
     {
       path: "/",
@@ -186,12 +188,12 @@ const router = new Router({
 
       children:[
         {
-          path:"tipo/:text",
+          path:"tipo/:text/:id",
           name:"tipo",
           component:Tipos
         },
         {
-          path:":local",
+          path:":text/:id",
           name:"local",
           component:AliadoEspecifico,
 

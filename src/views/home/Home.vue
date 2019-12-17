@@ -7,14 +7,16 @@
 
     <Banner />
 
-    <MasVendidos title="Lo más vendido" />
+    <MasVendidos :conceptos="conceptos" />
 
-    <MasVendidos title="Ofertas de la semana" />
+    <v-divider class="my-12"></v-divider>
+
+    <MasVendidos :conceptos="conceptos"/>
 
     <Categorias title="Categorias" :categorias="categorias" v-if="activoCategoria" />
     <SkeletonCard v-else/>
 
-    <Sugerencias title="Sugerencias" :sugerencias="aliados" v-if="activoAliado" />
+    <Sugerencias :sugerencias="sugerencias" v-if="activoSugerencia" />
     <SkeletonCard v-else/>
 
     <!-- <BannerAbajo />-->
@@ -59,21 +61,18 @@ export default {
     return {
       error:false,
       categorias: [],
-      aliados:[],
+      sugerencias:[],
       conceptos:[],
       activoConcepto:false,
       activoCategoria:false,
-      activoAliado:false,
-      //formato de las variables categorias y aliados
-      //imagen,nombre,id
+      activoSugerencia:false,
     };
   },
 
   created() {
-     /*this.aliados= */this.getEmpresas();
-     /*this.conceptos = */ this.getConceptos();
-    /*this.categorias= */ this.getGrupos();
-    //this.conceptos = //this.getConceptos();
+      this.getEmpresas();
+      this.getConceptos();
+      this.getGrupos();
   },
 
   watch: {
@@ -84,31 +83,34 @@ export default {
     categorias() {
       this.activoCategoria = true;
     },
-    aliados(){
-      this.activoAliado=true;
+    sugerencias(){
+      this.activoSugerencia=true;
     }
   },
 
   methods: {
-    async getGrupos(){//trae las categorias (grupos)
-        await Grupos().get('/?limit=8').then((response) => {
-            console.log(response.data.data);
-            //return response.data.data;
+    getGrupos(){//trae las categorias (grupos)
+        Grupos().get('/?limit=8').then((response) => {
+          this.categorias = response.data.data;
+          console.log(response.data.data);
         }).catch(e => {
           console.log(e);
         });
     },
 
-    async getEmpresas(){//trae empresas (sugenrencias)
-        await Empresa().get('/?limit=8').then((response) => {
+    getEmpresas(){//trae empresas (sugerencias)
+        Empresa().get('/?limit=8').then((response) => {
+            this.sugerencias= response.data.data;
             console.log(response.data.data);
         }).catch(e => {
           console.log(e);
         });
     },
-    async getConceptos(){//trae conceptos
-        await Conceptos().get('/?limit=15').then((response) => {
-            console.log(response.data);
+    
+    getConceptos(){//trae conceptos (productos/servicios)
+        Conceptos().get('/?limit=15').then((response) => {
+            this.conceptos = response.data.data;
+            console.log(response.data.data);
         }).catch(e => {
             console.log(e);
         });
