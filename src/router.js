@@ -4,6 +4,7 @@ import store from "./store";
 
 import Home from "./views/home/Home.vue";
 import NotFound from "./views/NotFound";
+import s500 from './views/s500';
 
 //auth routes components
 import Login from "./views/auth/Login.vue";
@@ -217,6 +218,11 @@ const router = new Router({
       path:"/noAutorizado",
       name:"403",
       component:NotAutorized
+    },
+    {
+      path: "/s500",
+      name: "errorservidor",
+      component: s500
     },
     {
       path: "*",

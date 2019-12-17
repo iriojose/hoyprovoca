@@ -1,33 +1,25 @@
 <template>
     <div :class="$vuetify.breakpoint.smAndDown ? null:'my-8 mx-10'">
-      <div class="display-1 font-weight-bold">{{title}}</div>
-      <v-sheet elevation="0" color="#eee">
+      <v-divider class="my-12"></v-divider>
+        <div class="headline ml-12 mt-12 font-weight-black">Categorias mas buscadas</div>
         <v-slide-group
             show-arrows
-            class="pa-5"
-            v-model="model"
-            prev-icon="arrow_back"
-            next-icon="arrow_forward"
+            class="my-5 py-5"
         >
-            <v-slide-item v-for="categoria in categorias" :key="categoria.uid">
+            <v-slide-item
+                v-for="categoria in  categorias"
+                :key="categoria.id"
+                class="mx-4"
+            >
                 <v-hover v-slot:default="{hover}">
-                    <v-card
-                        :elevation="hover ? '5':'2'"
-                        class="ma-2"
-                        height="300"
-                        width="250"
-                        :to="{name:'tipo', params:{text:categoria.nombre}}"
-                    >
-                        <v-img contain width="250" height="250" :src="categoria.imagen" />
-                        <v-divider></v-divider>
-                        <div class="div text-center pt-3">
-                            <strong class="font-weight-bold">{{categoria.nombre}}</strong>
-                        </div>
+                    <v-card height="250" width="300" elevation="10" v-ripple :to="{name:'tipo', params:{text:categoria.nombre}}">
+                        <v-card-text>
+                            <v-img contain :src="categoria.imagen"/>
+                        </v-card-text>
                     </v-card>
                 </v-hover>
             </v-slide-item>
         </v-slide-group>
-      </v-sheet>
     </div>
 </template>
 

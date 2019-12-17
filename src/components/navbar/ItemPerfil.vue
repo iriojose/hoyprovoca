@@ -1,5 +1,5 @@
 <template>
-    <v-toolbar-items v-if="user.loggedIn">
+    <div v-if="user.loggedIn">
         <v-menu
             :transition="transition()"
             bottom
@@ -7,9 +7,9 @@
             offset-y
         >
             <template v-slot:activator="{ on }">
-                <v-avatar color="#f5f5f5" class="mx-3 mt-1 elevation-3">
+                <v-avatar color="#f5f5f5" size="40" class="mx-2 elevation-3">
                     <v-btn icon v-on="on">
-                        <v-icon size="35">person</v-icon>
+                        <v-icon>person</v-icon>
                     </v-btn>
                 </v-avatar>
             </template>
@@ -57,11 +57,14 @@
                 </v-list>
             </v-card>
         </v-menu>
-    </v-toolbar-items>
+    </div>
 </template>
 
 <script>
-import {mapGetters,mapActions} from  'vuex';
+//vuex
+import {mapGetters,mapActions} from 'vuex';
+//services
+import Clientes from '@/services/Clientes';
 
     export default {
         data(){
@@ -84,20 +87,24 @@ import {mapGetters,mapActions} from  'vuex';
         methods: {
             ...mapActions(['logout']),
 
-            transition(){
+            transition(){//transition del menu
                 return "slide-y-transition"
             },
 
-            async getImage(){//metodo que trae el usuario
-                
+            getCliente(){//metodo get para cliente
+                Clientes().get(`/${this.user.data.id}`).then((response) => {
+                    console.log(response.data.data[0]);
+                }).cathc(e => {
+                    console.log(e);
+                });
             },
 
             logOut(){
                 //logout
             },
         },
-        mounted(){
-            //this.getImage();
+        mounted(){//se trae el cliente
+            //this.getCliente;
         }
     }
 </script>

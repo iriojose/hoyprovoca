@@ -26,14 +26,19 @@
                             >
                                 <div class="mb-5 text-center">
                                     <v-btn 
-                                        @click="change(item)"
+                                        @click="vistarapida(item)"
                                         class="text-capitalize"
                                     >
                                         Vista ràpida
                                     </v-btn>
                                 </div>
                                 <div>
-                                    <v-btn class="text-capitalize">Agregar al carrito</v-btn>
+                                    <v-btn  
+                                        @click="agregar(item)"
+                                        class="text-capitalize"
+                                    >
+                                        Agregar al carrito
+                                    </v-btn>
                                 </div>
                             </v-overlay>
                         </v-fade-transition>
@@ -43,16 +48,24 @@
         </v-slide-group>
         
         <DialogConceptos />
+        <ValidacionConcepto />
+        <v-snackbar color="green" right v-model="snackbar" :timeout="5000">
+            Añadido al carro. <v-img contain width="50" height="50" :src="producto.img"></v-img>
+        </v-snackbar>
     </v-sheet>
 </template>
 
 <script>
 import DialogConceptos from '@/components/dialogs/DialogConceptos';
+import ValidacionConcepto from '@/components/dialogs/ValidacionConcepto';
 import {mapState,mapActions} from 'vuex';
+import router from '@/router';
+import Movimiento_deposito from '@/services/Movimiento_deposito'
 
     export default {
         components:{
             DialogConceptos,
+            ValidacionConcepto,
         },
         props:{
             conceptos:{
@@ -68,9 +81,14 @@ import {mapState,mapActions} from 'vuex';
         data() {
             return {
                 model:1,
+                snackbar:false,
                 sabled:[
                     {
                         id:1,
+                        licor:true,
+                        ropa:false,
+                        servicio:false,
+                        existencia:true,
                         item:false,
                         precio:'5$',
                         nombre:'Cerveza Corona',
@@ -79,6 +97,10 @@ import {mapState,mapActions} from 'vuex';
                     },
                     {
                         id:2,
+                        licor:false,
+                        ropa:true,
+                        servicio:false,
+                        existencia:true,
                         item:true,
                         precio:'20$',
                         nombre:'Yogurt',
@@ -87,6 +109,10 @@ import {mapState,mapActions} from 'vuex';
                     },
                     {
                         id:3,
+                        licor:false,
+                        ropa:false,
+                        servicio:true,
+                        existencia:true,
                         item:true,
                         precio:'3$',
                         nombre:'Pepito Luchon',
@@ -95,6 +121,10 @@ import {mapState,mapActions} from 'vuex';
                     },
                     {
                         id:4,
+                        licor:false,
+                        ropa:false,
+                        servicio:false,
+                        existencia:false,
                         item:false,
                         precio:'3$',
                         nombre:'Galleta Maria',
@@ -103,6 +133,10 @@ import {mapState,mapActions} from 'vuex';
                     },
                     {
                         id:5,
+                        licor:false,
+                        ropa:false,
+                        servicio:false,
+                        existencia:true,
                         item:false,
                         precio:'5$',
                         nombre:'Desinfectante',
@@ -112,6 +146,10 @@ import {mapState,mapActions} from 'vuex';
 
                     {
                         id:6,
+                        licor:true,
+                        ropa:false,
+                        servicio:false,
+                        existencia:true,
                         item:false,
                         precio:'5$',
                         nombre:'Grupo de limpieza',
@@ -120,6 +158,10 @@ import {mapState,mapActions} from 'vuex';
                     },
                     {
                         id:7,
+                        licor:true,
+                        ropa:false,
+                        servicio:false,
+                        existencia:true,
                         item:false,
                         precio:'5$',
                         nombre:'Grupo de limpieza',
@@ -130,15 +172,39 @@ import {mapState,mapActions} from 'vuex';
             }
         },
         computed: {
-            ...mapState(['dialog']),
+            ...mapState(['dialog','validacionConcep','user','producto']),
         },
         methods: {
-            ...mapActions(['setDialog','setProducto']),
+            ...mapActions(['setDialog','setProducto','setValidacionConcepto']),
 
-            change(item){
+            vistarapida(item){
                 this.setProducto(item);
                 this.setDialog(true);
             },
+
+            agregar(item){
+                if(this.user.loggedIn){
+                   // let deposito = this.existencia(item.id);
+
+                    this.setProducto(item);
+                    if(item.existencia && !item.licor && !item.ropa && !item.servicio){
+                        this.snackbar=true;
+                    }else{
+                        this.setValidacionConcepto(true);
+                    }
+                }else{
+                    router.push('/login');
+                }
+            },
+            
+            //en proceso
+            async existencia(id){
+                Movimiento_deposito().get(`/${id}`).then((response) => {
+                    return response.data.data;
+                }).catch(e => {
+                    console.log(e)
+                });
+            }
         },
         //http://www.solucionespm.com/wp-content/uploads/2018/04/ofertas.jpg
     }

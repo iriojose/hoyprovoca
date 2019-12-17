@@ -1,15 +1,44 @@
 <template>
-    <v-sheet 
-        :color="`grey ${theme.isDark ? 'darken-2' : 'lighten-4'}`"
-        class="mx-5"
-    >
-        <v-skeleton-loader max-width="250" type="card" />
-    </v-sheet>
+        <div :class="$vuetify.breakpoint.smAndDown ? null:'my-8 mx-10'">
+            <div class="display-1 font-weight-bold">{{title}}</div>
+
+            <v-sheet elevation="0" color="#eee">
+                <v-slide-group
+                    show-arrows
+                    class="pa-5"
+                    v-model="model"
+                    prev-icon="arrow_back"
+                    next-icon="arrow_forward"
+                >
+                    <v-slide-item v-for="n in 7" :key="n">
+                        <v-card
+                            elevation="2"
+                            class="ma-2"
+                            height="300"
+                            width="250"
+                        >
+                            <v-skeleton-loader max-width="250" type="card" />
+                        </v-card>
+                    </v-slide-item>
+                </v-slide-group>
+            </v-sheet>
+        </div>
 </template>
 
 <script>
     export default {
-        inject: ["theme"]
+        inject: ["theme"],
+        props:{
+            title:{
+                type:String,
+                default:''
+            }
+        },
+        data() {
+            return {
+                model:0
+            }
+        },
     };
 </script>
 

@@ -1,15 +1,14 @@
 import axios from 'axios';
 import header from './header';
-//`{" password " : "123456" , " user " : "admin"}`
 
 export default () => {
     return axios.create({
-        baseURL:'http://192.168.0.253:81',
+        baseURL:'http://192.168.0.253:81/api/movimiento_deposito',
         withCredentials:false,
         headers:{
             Accept:'application/json',
             'Content-Type':'application/json',
-            "x-access-control":`{" password " : "123456" , " user " : "admin"}`
+            "x-access-control":header
         }
     });
 };

@@ -1,6 +1,10 @@
 <template>
     <div>
-        <v-list dense v-for="n in 2" :key="n" >
+        <v-list dense v-for="pedido in pedidos.lenght" :key="pedido.id" >
+        <!--
+            modificar la estetica de esta vaina 
+            piensa un poco bien esto XD
+        -->
             <v-list-title>
                 <v-row>
                     <v-col cols="12" md="7" lg="7" sm="7">
@@ -28,11 +32,28 @@
 </template>
 
 <script>
+//services
+import Pedidos from '@/services/Pedidos';
+
     export default {
-        
+        data() {
+            return {
+                pedidos:[]
+            }
+        },
+        mounted(){
+
+        },
+        methods:{
+            //trae los pedidos(falta el filtro para 
+            //saber si es del cliente logeado)
+            getPedidos(){
+                Pedidos().get('/').then((response) => {
+                    console.log(response.data.data);
+                }).catch(e => {
+                    console.log(e);
+                });
+            }
+        }
     }
 </script>
-
-<style lang="scss" scoped>
-
-</style>

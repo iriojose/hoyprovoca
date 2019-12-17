@@ -3,83 +3,63 @@
         <PreFooter />
         <v-divider />
 
-        <v-layout row>
-            <v-flex md3 xs6 align-self-baseline class="px-5 py-2">
-                <v-list dense>
-                    <h5 class="font-weight-bold">Categorias</h5>
-
-                    <v-hover 
-                        v-slot:default="{ hover }" 
-                        v-for="item in categorias" 
-                        :key="item.text"
-                    >
-                        <v-list-item>
-                            <v-subheader >
-                                <div :class="hover ? 'aftim-color' : null">
-                                {{item.text}}
-                                </div> 
-                            </v-subheader>
+        <v-sheet class="py-4" color="#f5f5f5">
+            <v-row align="baseline">
+                <v-col cols="12" md="3" sm="6">
+                    <div class="text-center subtitle-1 decoracion">Categorias</div>
+                    <v-list dense rounded color="#f5f5f5">
+                        <v-list-item @click="method" dense v-for="categoria in categorias" :key="categoria.text">
+                            <v-hover v-slot:default="{hover}">
+                                <v-list-item-title :class="hover ? 'decoracion text-center':'text-center'">
+                                    {{categoria.text}}
+                                </v-list-item-title>
+                            </v-hover>
                         </v-list-item>
-                    </v-hover>
-                </v-list>
-            </v-flex>
+                    </v-list>
+                </v-col>
 
-            <v-divider vertical class="hidden-sm-and-down"/>
-
-            <v-flex md5 xs6 align-self-baseline class="px-3 py-2">
-                <v-list dense>
-                    <h5 class="font-weight-bold">Información de interes</h5>
-                    <v-hover 
-                        v-slot:default="{ hover }" 
-                        v-for="item in informacion" 
-                        :key="item.text"
-                    >
-                        <v-list-item>
-                            <v-subheader >
-                                <div :class="hover ? 'aftim-color' : null">
-                                   {{item.text}}
-                                </div> 
-                            </v-subheader>
+                <v-col cols="12" md="3" sm="6">
+                    <div class="text-center subtitle-1 decoracion">Informaciòn de interes</div>
+                    <v-list dense rounded color="#f5f5f5">
+                        <v-list-item @click="method" dense v-for="interes in intereses" :key="interes.text">
+                            <v-hover v-slot:default="{hover}">
+                                <v-list-item-title :class="hover ? 'decoracion text-center':'text-center'">
+                                    {{interes.text}}
+                                </v-list-item-title>
+                            </v-hover>
                         </v-list-item>
-                    </v-hover>
-                </v-list>
-            </v-flex>
+                    </v-list>
+                </v-col>
 
-            <v-divider vertical class="hidden-sm-and-down"/>
+                <v-col cols="12" md="3" sm="6">
+                    <div class="text-center subtitle-1 decoracion">Descarga la app</div>
+                    <v-list dense rounded color="#f5f5f5">
+                        <v-list-item class="text-center" @click="method" dense v-for="app in apps" :key="app.text">
+                            <v-list-item-title></v-list-item-title>
+                            <v-list-item-avatar size="25">
+                                <v-img :src="require('@/assets/'+app.img)"/>
+                            </v-list-item-avatar>
+                            <v-list-item-title>{{app.text}}</v-list-item-title>
+                            <v-list-item-title></v-list-item-title>
+                        </v-list-item>
+                    </v-list>
+                </v-col>
 
-            <v-flex md3 xs12 class="px-3 py-2" align-self-baseline>
-                <v-list dense>
-                    <v-layout row wrap>
-                        <v-flex md12 xs6>
-                            <h5 class="font-weight-bold mx-5">Descarga la App</h5>
-
-                            <v-list-item class="my-2">
-                                <v-btn rounded text depressed>
-                                    <v-img src="@/assets/app-store.png"/>
-                                    <v-list-item-title class="mx-2">iPhone</v-list-item-title>
-                                </v-btn>
-                            </v-list-item>
-
-                            <v-list-item>
-                                <v-btn rounded text depressed>
-                                    <v-img src='@/assets/playstore.png'/>
-                                    <v-list-item-title class="mx-2">Android</v-list-item-title>
-                                </v-btn>
-                            </v-list-item>
-                        </v-flex>
-
-                        <v-flex md12 xs6>
-                            <h5 class="font-weight-bold pa-5">Siguenos</h5>
-                            <v-list-item>
-                                <v-btn icon  class="mx-3" v-for="img in siguenos" :key="img.img">
-                                    <v-img :src="require('@/assets/'+img.img)" width="34" height="34"></v-img>
-                                </v-btn>
-                            </v-list-item>
-                        </v-flex>
-                    </v-layout>
-                </v-list>
-            </v-flex>
-        </v-layout>
+                <v-col cols="12" md="3" sm="6">
+                    <div class="text-center subtitle-1 decoracion">Redes sociales</div>
+                    <v-list dense rounded color="#f5f5f5">
+                        <v-list-item class="text-center" @click="method" dense v-for="red in redes" :key="red.text">
+                            <v-list-item-title></v-list-item-title>
+                            <v-list-item-avatar size="25">
+                                <v-img :src="require('@/assets/'+red.img)"/>
+                            </v-list-item-avatar>
+                            <v-list-item-title>{{red.text}}</v-list-item-title>
+                            <v-list-item-title></v-list-item-title>
+                        </v-list-item>
+                    </v-list>
+                </v-col>
+            </v-row>
+        </v-sheet>
 
         <SubFooter />
    </v-sheet>
@@ -101,25 +81,36 @@ import PreFooter from './PreFooter';
                     {text:'Tecnologia'},
                     {text:'Restaurantes'}
                 ],
-                informacion:[
+                intereses:[
                     {text:'Terminos y condiciones'},
                     {text:'Trabaja con nosotros'},
                     {text:'Politica de tratamientos de datos personales'},
                     {text:'Preguntas frecuentes'}
                 ],
-                siguenos:[
-                    {img:'svgfacebook.svg'},
-                    {img:'svgyoutu.svg'},
-                    {img:'instagramsvg.svg'}
-                ]
+                redes:[
+                    {img:'svgfacebook.svg',text:'Facebbok'},
+                    {img:'svgyoutu.svg',text:'YouTube'},
+                    {img:'instagramsvg.svg',text:'Instagram'}
+                ],
+                apps:[
+                    {img:'app-store.png',text:'Iphone'},
+                    {img:'playstore.png',text:'Android'}
+                ],
             }
         },
-        
+        methods: {
+            method(){
+
+            }
+        },
     }
 </script>
 
 <style lang="scss" scoped>
-     .aftim-color{
-        color:#005598;
+    .decoracion{
+        text-decoration: underline;
+        text-decoration-color: #005598;
+        transition-delay: 2s;
+        transition-duration: 1s;
     }
 </style>

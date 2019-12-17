@@ -1,5 +1,8 @@
 <template>
-  <div>
+  <!--error en el servidor -->
+  <error500 v-if="error"/>
+
+  <div v-else>
     <AppBar />
 
     <Banner />
@@ -8,25 +11,11 @@
 
     <MasVendidos title="Ofertas de la semana" />
 
-    <!--
-      <Categorias title="Categorias" :categorias="categorias" v-if="activo" />
-    -->
-    <!--agregar v-else luego -->
-    <v-row class="my-5 mx-3">
-      <v-col cols="12" md="3" sm="6" lg="3" v-for="n in 4" :key="n">
-        <SkeletonCard />
-      </v-col>
-    </v-row>
+    <Categorias title="Categorias" :categorias="categorias" v-if="activoCategoria" />
+    <SkeletonCard v-else/>
 
-    <!--
-      <Sugerencias title="Sugerencias" :sugerencias="aliados" v-if="activo" />
-    -->
-    <!--agregar v-else luego -->
-    <v-row class="my-5 mx-3">
-      <v-col cols="12" md="3" sm="6" lg="3" v-for="n in 4" :key="n">
-        <SkeletonCard />
-      </v-col>
-    </v-row>
+    <Sugerencias title="Sugerencias" :sugerencias="aliados" v-if="activoAliado" />
+    <SkeletonCard v-else/>
 
     <!-- <BannerAbajo />-->
     <Footer />
@@ -34,18 +23,24 @@
 </template>
 
 <script>
+//store
 import { mapState } from "vuex";
+//components
 import AppBar from "@/components/navbar/AppBar";
 import Footer from "@/components/footer/Footer";
 import Banner from "@/components/vistaHome/Banner";
 import Categorias from "@/components/vistaHome/Categorias";
 import Sugerencias from "@/components/vistaHome/Sugerencias";
 import SkeletonCard from "@/components/layouts/SkeletonCard";
-import SkeletonImage from '@/components/layouts/SkeletonImage'
 import BannerAbajo from '@/components/vistaHome/Banner2';
 import MasVendidos from '@/components/vistaHome/MasVendidos';
-import Api from '@/services/Api';
-import axios from 'axios';
+import error500 from '@/views/s500';
+//servicios
+import Conceptos from '@/services/Conceptos';
+import Grupos from '@/services/Grupos';
+import Empresa from '@/services/Empresa';
+//router
+import router from '@/router';
 
 export default {
   name: "home",
@@ -56,43 +51,68 @@ export default {
     Categorias,
     Sugerencias,
     SkeletonCard,
-    SkeletonImage,
     BannerAbajo,
-    MasVendidos
+    MasVendidos,
+    error500,
   },
   data() {
     return {
+      error:false,
       categorias: [],
-      activo: false,
       aliados:[],
+      conceptos:[],
+      activoConcepto:false,
+      activoCategoria:false,
+      activoAliado:false,
       //formato de las variables categorias y aliados
       //imagen,nombre,id
     };
   },
 
   created() {
-    //this.getCategorias();
-    //this.getAliados();
-
-    Api().get('/').then((response) => {
-      console.log(response.data);
-    }).catch(e => {
-      console.log(e);
-    });
+     /*this.aliados= */this.getEmpresas();
+     /*this.conceptos = */ this.getConceptos();
+    /*this.categorias= */ this.getGrupos();
+    //this.conceptos = //this.getConceptos();
   },
 
   watch: {
     //cuando las variables cambien se quita el modo de espera
-    categor() {
-      this.activo = true;
+    conceptos(){
+      this.activoConcepto=true;
+    },
+    categorias() {
+      this.activoCategoria = true;
     },
     aliados(){
-      this.activo=true;
+      this.activoAliado=true;
     }
   },
 
   methods: {
-    //methods
+    async getGrupos(){//trae las categorias (grupos)
+        await Grupos().get('/?limit=8').then((response) => {
+            console.log(response.data.data);
+            //return response.data.data;
+        }).catch(e => {
+          console.log(e);
+        });
+    },
+
+    async getEmpresas(){//trae empresas (sugenrencias)
+        await Empresa().get('/?limit=8').then((response) => {
+            console.log(response.data.data);
+        }).catch(e => {
+          console.log(e);
+        });
+    },
+    async getConceptos(){//trae conceptos
+        await Conceptos().get('/?limit=15').then((response) => {
+            console.log(response.data);
+        }).catch(e => {
+            console.log(e);
+        });
+    }
   }
 };
 </script>

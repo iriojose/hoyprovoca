@@ -1,17 +1,21 @@
-  
-<template>
+ <template>
     <v-carousel
-        height="400"
-        show-arrows-on-hover
-        :style="$vuetify.breakpoint.smAndDown ? 'margin-top:60px':null"
+        cycle
+        progress-color="#6772e5"
+        progress
+        continuous
+        :show-arrows="false"
+        mandatory
+        dark
+        delimiter-icon="bubble_chart"
+        :height="$vuetify.breakpoint.smAndDown ? 200:350"
+        :style="$vuetify.breakpoint.smAndDown ? 'margin-top:65px':'margin-top:5px'"
     >
-        <v-carousel-item
-            v-for="img in images"
-            :key="img.id"
-            src="@/assets/comida.jpg"
-            transition="fade-transition"
-        >
-        </v-carousel-item>
+        <v-carousel-item 
+            v-for="img in images" 
+            :key="img.id" 
+            :src="require(`@/assets/`+img.img)"
+        ></v-carousel-item>
     </v-carousel>
 </template>
 
@@ -20,12 +24,10 @@
     data () {
         return {
             images:[
-                {id:1,img:'@/assets/COMIDA.jpg'},
-                {id:2,img:'@/assets/FARMACIA.jpg'},
-                {id:3,img:'@/assets/COMIDA.jpg'},
-                {id:4,img:'@/assets/COMIDA.jpg'},
-                {id:5,img:'@/assets/COMIDA.jpg'},
-            ]
+                {id:1,img:'comida.jpg'},
+                {id:2,img:'farmacia.jpg'},
+                {id:3,img:'deporte.jpg'},
+            ],
         }
     },
   }

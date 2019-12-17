@@ -1,28 +1,16 @@
 <template>
-    <v-toolbar-items v-if="user.loggedIn">
-        <v-btn icon class="mx-3"  @click="change()">
-            <v-badge 
-                color="teal"
-                left
-                overlap
-            >
-                <template v-slot:badge>1</template>
-                <v-icon size="35">shopping_cart</v-icon>
+    <div>
+        <v-btn v-if="user.loggedIn" icon class="mx-2" @click="change()">
+            <v-badge transition="fade-transition" color="teal" left overlap>
+                <v-icon size="25" color="#fff">shopping_cart</v-icon>
+                <template v-slot:badge>
+                    0
+                </template>
             </v-badge>
         </v-btn>
 
-        <v-btn icon class="mx-3" to="/account/notificaciones">
-            <v-badge
-                color="teal"
-                left
-                overlap
-            >
-                <template v-slot:badge><div></div></template>
-                <v-icon size="35">notifications</v-icon>
-            </v-badge>
-        </v-btn>
         <PanelCarrito />
-    </v-toolbar-items>
+    </div>
 </template>
 
 <script>

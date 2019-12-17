@@ -1,5 +1,6 @@
 <template>
     <div>
+        <!--Navbar -->
         <v-toolbar width="100%" height="50" color="#005598">
            <v-btn text to="/" disabled>
                <v-img width="120" height="120" src="@/assets/logo2.png" contain></v-img>
@@ -10,7 +11,10 @@
            </v-btn>
         </v-toolbar>
 
-        <v-row class="mt-5 px-5">
+        <!--404 en caso de error-->
+        <n404 v-if="error"/>
+        <!--se muestra el detalle del producto -->
+        <v-row class="mt-5 px-5" v-else>
             <v-col cols="12" md="5">
                 <v-card height="400" elevation="10" class="py-5">
                     <v-img contain src="https://www.fourjay.org/myphoto/f/0/3981_laptop-png.png"></v-img>
@@ -20,7 +24,7 @@
                 <v-card color="#eee" elevation="0">
                     <v-card-title>
                         <div class="black--text title">
-                            Lapto superarrechisima que no se cuanto vale pero ahi esta intacta regia poderosa.
+                            {{concepto.nombre}}.
                         </div>
                     </v-card-title>
                     <v-card-text>
@@ -42,17 +46,15 @@
                             </v-col>
                             
                             <v-col cols="12" md="12">
-                                <strong class="black--text title">Bss. 500.000 </strong>
+                                <strong class="black--text title">Bss.{{concepto.costo_promedio}}</strong>
                             </v-col>
                             <v-col cols="12" md="12" sm="12">
-                                <strong class="green--text title">Disponible.</strong>
+                                <strong class="green--text title" v-if="concepto==1">Disponible.</strong>
+                                <strong class="red--text title" v-else>No disponible.</strong>
                             </v-col>
                             <v-col cols="12" md="12">
                                 <p class="black--text darken-1 subtitle-1">
-                                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. 
-                                    Corrupti iure nulla cumque sunt itaque eaque reprehenderit 
-                                    animi commodi ratione nisi, molestiae culpa ipsum. Pariatur 
-                                    ssumenda temporibus, ut perspiciatis amet facilis.
+                                    {{concepto.descripcion}}.
                                 </p>
                             </v-col>
                         </v-row>
@@ -74,42 +76,166 @@
                             </template>
                             <span>le falta algo más</span>
                         </v-tooltip>
-                        
-                        <v-select
-                            v-model="cant"
-                            :items="filters"
-                            label="Cantidad"
-                            filled
-                            color="#000"
-                            hide-details
-                            hide-selected
-                            chips
-                            type="number"
-                            class="mt-5"
-                            dense
-                        ></v-select>
                     </v-card-text>
+
+                    <v-card-actions class="display-inline">
+                        <v-tooltip left>
+                            <template v-slot:activator="{ on }">
+                                <div v-on="restar ? on:null">
+                                    <v-btn :disabled="restar" icon @click="resta()">
+                                        <v-icon>delete</v-icon>
+                                    </v-btn>
+                                </div> 
+                            </template>
+                            <span>Minimo para agregar</span>
+                        </v-tooltip>
+
+                        <div class="mx-10">{{cant}}</div>
+
+                        <v-tooltip left>
+                            <template v-slot:activator="{ on }">
+                                <div v-on="suma ? on:null">
+                                    <v-btn :disabled="suma" icon @click="sumar()">
+                                        <v-icon>exposure_plus_1</v-icon>
+                                    </v-btn>
+                                </div> 
+                            </template>
+                            <span>Maximo alcanzado</span>
+                        </v-tooltip>
+                    </v-card-actions>
                 </v-card>
             </v-col>
         </v-row>
+        <!--mensaje en caso de agregar producto -->
+        <!--<v-snackbar right :color="errorMsj ? 'red':'green'" :timeout="3000">
+            {{msj}}
+        </v-snackbar>-->
     </div>
 </template>
 
 <script>
+//services
+import Conceptos from '@/services/Conceptos';
+import Movimiento_deposito from '@/services/Movimiento_deposito';
+import Empresa from '@/services/Empresa';
+//componentes
+import n404 from '@/views/NotFound';
+
     export default {
         data(){
             return{
-                complete:false,
+                //dinamicos
+                id:'',
+                concepto:{},
+                movimiento:{},
+                empresa:{},
+                error:false,
+                cant:1,
+                suma:false,
+                restar:true,
+                erroMsj:false,
+                snackbar:false,
+                msj:'',
+                //los que estan default
+                complete:true,
                 rating:2.5,
-                cant:null,
-                filters:[1,2,3,4,5]
             }
+        },
+        components:{
+            n404
+        },
+        mounted(){
+            if(this.$route.params.id){
+                this.id=this.$route.params.id;
+                //se trae el concepto
+                this.getConcepto();
+            }else{
+                this.error=true;
+            }
+        },
+        methods:{
+            //trae el concepto segun id de ruta*
+            //se hace asi para evitar que el usuario coloque el id del producto
+            //directamente en la ruta y de error
+            //*si alguna de las llamadas falla mandara 404
+            getConcepto(){
+                Conceptos().get(`/${this.id}`).then((response) => {
+                    this.concepto = response.data.data[0];
+                    console.log(this.concepto);
+
+                    //metodos necesarios
+                    this.getEmpresa();
+                    this.movimiento_deposito();
+                }).catch(e => {
+                    this.error=true;
+                    console.log(e);
+                });
+            },
+
+            movimiento_deposito(){//trae existencia del concepto
+                Movimiento_deposito().get(`/?conceptos_id=${this.id}`).then((response) => {
+                    this.movimiento = response.data.data[0];
+                    console.log(this.movimiento);
+                }).catch(e => {
+                    this.error =true;
+                    console.log(e);
+                });
+            },
+
+            getEmpresa(){//la empresa a la cual pertenece el producto
+                Empresa().get(`/${this.concepto.empresa_id}`).then((response) => {
+                    console.log(response.data.data[0]);
+                    this.empresa=response.data.data[0];
+                }).catch(e => {
+                    this.error=true;
+                    console.log(e);
+                });
+            },
+
+            //metodo para agregar al pedido del usuario
+            //PD:falta restar la existencia al deposito
+            /*async Pedidos().post('/id').then((response) => {
+                    //agregar
+                    this.errorMsj=false;
+                    this.msj='Se ha agregado correctamente';
+                    this.snakbar=true;
+                }).catch(e=> {
+                    console.log(e);
+                    this.errorMsj=true;
+                    this.msj='No se pudo agregar';
+                    this.snakbar=true;
+                });
+            */
+
+            //botones para agregar y disminuir la cantidad requerida por usuario
+            resta(){
+                if(this.cant <= this.movimiento.existencia){
+                    this.suma=false;
+                }
+
+                if(this.cant == 2){
+                    this.cant= this.cant - 1;
+                    this.restar=true;
+                }else{
+                    this.cant=this.cant-1;
+                    this.restar=false;
+                }
+            },
+            sumar(){
+                //evaluacion inicial ya que esta por defecto desabilitada
+                //si sumas se habilita el boton de restar
+                if(this.cant >= 1){
+                    this.restar=false;
+                }
+
+                if(this.cant >= this.movimiento.existencia - 1){
+                    this.cant=this.cant+1;
+                    this.suma=true;
+                }else{
+                    this.cant=this.cant+1;
+                    this.suma=false;
+                }
+            },
         }
     }
 </script>
-
-<style scoped>
-    .cuadro{
-        border: 1px solid #000;
-    }
-</style>

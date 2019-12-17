@@ -12,6 +12,7 @@ export default new Vuex.Store({
     drawer:false,
     dialog:false,
     panel:false,
+    validacionConcep:false,
     producto:{},
     items: [
       { title: "Promociones"},{ title: "Restaurantes"},
@@ -35,6 +36,14 @@ export default new Vuex.Store({
         state.drawer = true;
       }else{
         state.drawer = false;
+      }
+    },
+
+    SET_VALIDACION_CONCEP(state,val){
+      if(val == true){
+        state.validacionConcep = true;
+      }else{
+        state.validacionConcep = false;
       }
     },
 
@@ -78,6 +87,10 @@ export default new Vuex.Store({
 
     setDialog({commit},val){
       commit("SET_DIALOG",val);
+    },
+
+    setValidacionConcepto({commit},val){
+      commit("SET_VALIDACION_CONCEP",val);
     },
 
     setProducto({commit},val){
