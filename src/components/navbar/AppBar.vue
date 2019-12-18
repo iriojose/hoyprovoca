@@ -26,7 +26,7 @@
             </v-btn>
             
             <!--titulo y logo de la pagina -->
-            <v-toolbar-title class="mx-5">
+            <v-toolbar-title :class="$vuetify.breakpoint.smAndDown ? null:'mx-5'">
                 <v-btn to="/" text>
                     <v-img 
                         contain 
@@ -90,6 +90,7 @@
                 :indeterminate="loading"
                 absolute
                 bottom
+                color="#fff"
             ></v-progress-linear>
         </v-app-bar>
 

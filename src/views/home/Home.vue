@@ -7,12 +7,14 @@
 
     <Banner />
 
-    <MasVendidos :conceptos="conceptos" />
+    <MasVendidos :conceptos="conceptos" v-if="activoConcepto" />
+    <SkeletonCard v-else/>
 
     <v-divider class="my-12"></v-divider>
 
-    <MasVendidos :conceptos="conceptos"/>
-
+    <MasVendidos :conceptos="conceptos" v-if="activoConcepto" />
+    <SkeletonCard v-else/>
+    
     <Categorias title="Categorias" :categorias="categorias" v-if="activoCategoria" />
     <SkeletonCard v-else/>
 

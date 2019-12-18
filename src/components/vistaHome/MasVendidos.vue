@@ -13,12 +13,51 @@
             >
                 <v-hover v-slot:default="{hover}">
                     <v-card height="200" width="200" :elevation="hover ? 10:4">
-                        <v-img contain height="200" width="200" src="https://www.fourjay.org/myphoto/f/0/3981_laptop-png.png">
-                            <div v-if="!hover" class="modif text-center d-inline-block text-truncate">{{concepto.nombre+' '}}{{concepto.ultimo_costo}}</div>
+                        <v-img 
+                            contain 
+                            height="200" 
+                            width="200" 
+                            src="https://www.fourjay.org/myphoto/f/0/3981_laptop-png.png"
+                            v-if="!concepto.imagen"
+                        >
+                            <div v-if="!hover" class="modif px-4 text-center d-inline-block text-truncate">{{concepto.nombre+' '}}{{concepto.ultimo_costo}}</div>
                             <transition class="scale-transition" v-else>
                                 <v-overlay
                                     absolute
-                                        color="#036358"
+                                    color="#036358"
+                                >
+                                    <div class="mb-5 text-center">
+                                        <v-btn 
+                                            class="text-capitalize caption"
+                                            @click="vistarapida(concepto)"
+                                        >
+                                            Vista ràpida
+                                        </v-btn>
+                                    </div>
+                                    <div>
+                                        <v-btn  
+                                            class="text-capitalize caption"
+                                            @click="agregar(concepto)"
+                                        >
+                                            Agregar al carrito
+                                        </v-btn>
+                                    </div>
+                                </v-overlay>
+                            </transition>
+                        </v-img>
+                        <!-- en caso de no tener imagen-->
+                         <v-img 
+                            contain 
+                            height="200" 
+                            width="200" 
+                            src="@/assets/noimage.png"
+                            v-else
+                        >
+                            <div v-if="!hover" class="modif px-4 text-center d-inline-block text-truncate">{{concepto.nombre+' '}}{{concepto.ultimo_costo}}</div>
+                            <transition class="scale-transition" v-else>
+                                <v-overlay
+                                    absolute
+                                    color="#036358"
                                 >
                                     <div class="mb-5 text-center">
                                         <v-btn 
@@ -43,15 +82,23 @@
                 </v-hover>
             </v-slide-item>
         </v-slide-group>
+
+        <!--Modales-->
+        <DialogConceptos />
+        <ValidacionConcepto />
     </div>
 </template>
 
 <script>
+//modales
 import DialogConceptos from '@/components/dialogs/DialogConceptos';
 import ValidacionConcepto from '@/components/dialogs/ValidacionConcepto';
+//state globales
 import {mapState,mapActions} from 'vuex';
+//router
 import router from '@/router';
-import Movimiento_deposito from '@/services/Movimiento_deposito'
+//services
+import Conceptos from '@/services/Conceptos'
 
     export default {
         components:{
@@ -83,26 +130,22 @@ import Movimiento_deposito from '@/services/Movimiento_deposito'
             vistarapida(item){
                 this.setProducto(item);
                 this.setDialog(true);
+                this.getConceptos(this.producto.id);
             },
 
             agregar(item){
                 if(this.user.loggedIn){
-                   // let deposito = this.existencia(item.id);
-
                     this.setProducto(item);
-                    if(item.existencia && !item.licor && !item.ropa && !item.servicio){
-                        this.snackbar=true;
-                    }else{
-                        this.setValidacionConcepto(true);
-                    }
+                    this.setValidacionConcepto(true);
+                    this.getConceptos(this.producto.id);
                 }else{
                     router.push('/login');
                 }
             },
             
-            getMovimiento_deposito(id){//trae la existencia del concepto
-                Movimiento_deposito().get(`/${id}`).then((response) => {
-                    return response.data.data;
+            getConceptos(id){//trae la existencia del concepto
+                Conceptos().get(`/${id}/depositos`).then((response) => {
+                    console.log(response.data.response.data);
                 }).catch(e => {
                     console.log(e)
                 });

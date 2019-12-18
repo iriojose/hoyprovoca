@@ -22,12 +22,23 @@
                             height="300" 
                             contain 
                             class="pt-4"
+                            v-if="!producto.imagen"
+                        />
+                        <v-img 
+                            src="@/assets/noimage.png" 
+                            width="100%" 
+                            height="300" 
+                            contain 
+                            class="pt-4"
+                            v-else
                         />
                     </v-col>
                     <v-col cols="12" md="6" class="py-3 px-5">
-                        <v-subheader class="headline">Samsung</v-subheader>
+                        <div v-if="producto.marcas_id">
+                            <v-subheader v-for="marca in marcas" :key="marca.id" class="headline">{{marca.nombre}}</v-subheader>
+                        </div>
                         <div class="headline font-weight-black">
-                            Tarjeta de memoria con adaptador de 32&nbsp;GB microSDHC EVO...
+                            {{producto.nombre}}
                         </div>
                         <v-row align="baseline">
                             <v-col cols="12" md="6" sm="6">
@@ -63,13 +74,18 @@
 </template>
 
 <script>
+//state global
 import {mapState,mapActions} from 'vuex';
+//router
 import router from '@/router';
+//services
+import Marcas from '@/services/Marcas';
 
     export default {
         data() {
             return {
-                rating:3.5
+                rating:3.5,
+                marcas:[]
             }
         },
         computed: {
@@ -84,12 +100,28 @@ import router from '@/router';
                 }
             }
         },
+        watch:{
+            producto(){
+                this.getMarcas();
+            }
+        },
         methods: {
             ...mapActions(['setDialog']),
 
             push(){
                 this.setDialog(false);
-                router.push('/producto/detalle');
+                router.push(`/producto/${this.producto.id}`);
+            },
+
+            getMarcas(){
+                if(this.producto.marcas_id){
+                    Marcas().get(`/${this.producto.marcas_id}`).then((response) => {
+                        console.log(response.data.data);
+                        this.marcas= response.data.data;
+                    }).catch(e => {
+                        console.log(e);
+                    });
+                }
             }
         },
 

@@ -2,7 +2,7 @@
     <v-dialog v-model="validacionConcepto" width="600">
         <v-card>
             <v-card-title>
-                <v-toolbar elevation="0" height="50">
+               <!-- <v-toolbar elevation="0" height="50">
                     
                     <v-img width="70" height="70" contain :src="producto.img" />
 
@@ -17,16 +17,16 @@
                                 </v-icon>
                             </v-btn>
                         </v-toolbar-items>
-                </v-toolbar>
+                </v-toolbar> --> 
             </v-card-title>
 
             <v-card-text>
-                <div v-if="!producto.existencia" class="title text-center red--text">
+                 <div class="title text-center red--text">
                     Este servicio no se encuentra disponible...
                     <v-img src="@/assets/undrawemptymodal.svg" contain width="100%" height="200"></v-img>
                 </div>
 
-                <div v-if="producto.licor" class="text-center">
+                <!-- <div v-if="producto.licor" class="text-center">
                     <div class="grey--text darken-2 title">¿Eres mayor de 18 años?</div>
                     <v-divider></v-divider>
                     <v-row class="my-4">
@@ -41,9 +41,9 @@
                             </v-btn>
                         </v-col>
                     </v-row>
-                </div>
+                </div> --> 
 
-                <div v-if="producto.ropa">
+                <!-- <div v-if="producto.ropa">
                     <v-row>
                         <v-col cols="12" md="6" sm="12">
                             <div class="text-center grey--text darken-2 title">Talla</div>
@@ -81,7 +81,7 @@
                             </v-btn>
                         </v-col>
                     </v-row>
-                </div>
+                </div>--> 
             </v-card-text>
         </v-card>
         <v-snackbar v-model="snackbar" right color='green' :timeout="5000">
@@ -118,7 +118,7 @@ import {mapState,mapActions} from 'vuex';
 
             validacionConcepto:{
                 get(){
-                    return this.validacionConcep
+                    return this.validacionConcep;
                 },
                 set(val){
                     this.setValidacionConcepto(val);

@@ -1,6 +1,6 @@
 <template>
    <div>
-      <v-toolbar elevation="0" color="#005598">
+      <v-toolbar elevation="0" color="#005598" width="100%">
          <v-toolbar-items>
                <v-btn color="#005598" elevation="0" to="/" icon>
                   <v-icon large color="#fff">
@@ -21,7 +21,7 @@
          </v-toolbar-items>
       </v-toolbar>
 
-      <v-row>
+      <v-row :class="$vuetify.breakpoint.smAndDown ? 'mx-2':null">
          <v-col cols="12" md="4" lg="4" class="hidden-sm-and-down">
             <v-img 
                contain 
@@ -30,7 +30,7 @@
             ></v-img>
          </v-col>
 
-         <v-col cols="12" md="4" sm="10" lg="4" :offset="$vuetify.breakpoint.smAndDown? '1':null">
+         <v-col cols="12" md="4" sm="12" lg="4" >
             <v-card elevation="15" class="pa-5 my-10">
 
                <div class="text-center">

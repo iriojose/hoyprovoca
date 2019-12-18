@@ -8,7 +8,15 @@
       width="300"
       :style="$vuetify.breakpoint.smAndDown ? 'margin-top:115px;':'margin-top:58px'"
     >
-        <v-list>
+        <div class="text-center mt-12" v-if="loading">
+            <v-progress-circular
+            :size="50"
+            color="#005598"
+            :indeterminate="loading"
+            class="mt-12"
+        ></v-progress-circular>
+        </div>
+        <v-list v-else>
             <v-subheader>Comprar por categorias</v-subheader>
             <v-divider></v-divider>
             <v-list-item 
@@ -42,6 +50,7 @@ import router from '@/router';
         data(){
           return{
             grupos:[],
+            loading:true
           }
         },
         computed: {
@@ -78,6 +87,7 @@ import router from '@/router';
             getGrupos(){//trae los grupos
                 Grupos().get('/').then((response) => {
                     this.grupos = response.data.data;
+                    this.loading=false;
                 }).catch(e => {
                     console.log(e);
                 });
