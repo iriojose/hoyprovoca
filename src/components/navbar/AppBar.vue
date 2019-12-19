@@ -139,10 +139,8 @@ import {mapState,mapActions,mapGetters} from  'vuex';
             }
         },
         computed: {
+            ...mapGetters(['user']),
             ...mapState(['drawer']),
-            ...mapGetters({
-                user: "user"
-            }),
         },
         methods: {
             ...mapActions(['setDrawer']),

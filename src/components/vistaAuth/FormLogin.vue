@@ -97,6 +97,8 @@ import store from '../../store';
 
                 this.snackbar=true;
                 store.state.user.loggedIn=true;
+                let valor=true;
+                window.localStorage.setItem('user',valor);
                 setTimeout(() => {
                     this.error=null;
                     router.push('/');

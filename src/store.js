@@ -69,11 +69,17 @@ export default new Vuex.Store({
 
     SET_LOGGED_IN(state, value) {
       state.user.loggedIn = value;
+      window.localStorage.setItem('user',value);
     },
 
     SET_USER(state, data) {
       state.user.data = data;
     },
+
+    LOGOUT(state){
+      state.user.loggedIn=false;
+      window.localStorage.setItem('user',false);
+    }
   },
 
   actions: {
@@ -98,7 +104,7 @@ export default new Vuex.Store({
     },
     
     logout({commit}){
-      commit(" SET_LOGGED_IN",false);
+      commit("LOGOUT");
     },
 
     fetchUser({ commit }, user) {

@@ -22,10 +22,7 @@ import {mapState,mapActions,mapGetters} from 'vuex';
             PanelCarrito
         },
         computed: {
-            ...mapGetters({
-                user: "user"
-            }),
-            
+            ...mapGetters(['user']),
             ...mapState(['panel'])
         },
         methods: {

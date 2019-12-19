@@ -80,9 +80,7 @@ import Clientes from '@/services/Clientes';
             }
         },
         computed: {
-            ...mapGetters({
-                user: "user"
-            }),
+            ...mapGetters(['user']),
         },
         methods: {
             ...mapActions(['logout']),
@@ -100,7 +98,7 @@ import Clientes from '@/services/Clientes';
             },
 
             logOut(){
-                //logout
+                this.logout();
             },
         },
         mounted(){//se trae el cliente

@@ -8,22 +8,20 @@
         <v-card-text class="my-4">
             <v-expansion-panels class="elevation-5" accordion active-class="grey lighten-4">
                 <v-expansion-panel
-                    v-for="item in items"
-                    :key="item.grupo"
-                    @click="push(item.grupo)"
+                    v-for="grupo in grupos"
+                    :key="grupo.id"
+                    @click="changeGrupo(grupo.nombre)"
                 >
-                    <v-expansion-panel-header expand-icon="arrow_right">{{item.grupo}}</v-expansion-panel-header>
+                    <v-expansion-panel-header expand-icon="arrow_right">{{grupo.nombre}}</v-expansion-panel-header>
                     <v-expansion-panel-content>
                         <v-list color="#f5f5f5" dense rounded>
                             <v-list-item-group active-class="green white--text">
                                 <v-list-item
-                                    v-for="subgrupo in item.subgrupos"
-                                    :key="subgrupo.nombre"
-                                    @click="push2(subgrupo.nombre)"
+                                    v-for="subgrupo in grupo.subgrupos"
+                                    :key="subgrupo.id"
+                                    @click="changeSubgrupo(subgrupo.nombre)"
                                 >
-                                    <v-list-item-content>
-                                        <v-list-item-title v-text="subgrupo.nombre"></v-list-item-title>
-                                    </v-list-item-content>
+                                    <v-list-item-title>{{subgrupo.nombre}}</v-list-item-title>
                                 </v-list-item>
                             </v-list-item-group>
                         </v-list>
@@ -45,82 +43,22 @@
         data() {
             return {
                 top:0,
-                local:'',
-                categoria:'',
-                especifica:'',
-                items:[
-                    {
-                        grupo:'Hamburguesas',
-                        subgrupos:[
-                            {nombre:'Pollo'},
-                            {nombre:'Chuleta'},
-                            {nombre:'Mixta'},
-                            {nombre:'Carne'},
-                            {nombre:'Especial'},
-                        ]
-                    },
-                    {
-                        grupo:'Perro Caliente',
-                        subgrupos:[
-                            {nombre:'Polaco'},
-                            {nombre:'Especial'},
-                            {nombre:'Jumbo'},
-                        ]
-                    },
-                    {
-                        grupo:'Bebidas',
-                        subgrupos:[
-                            {nombre:'Refrescos'},
-                            {nombre:'Cervezas'},
-                            {nombre:'Jugos'},
-                        ]
-                    },
-                    {
-                        grupo:'Vinos',
-                        subgrupos:[
-                            {nombre:'Tinto'},
-                            {nombre:'Blanco'},
-                        ]
-                    },
-                ]
-
+                selectGrupo:'',
+                selectSubgrupo:'',
             }
         },
-
         mounted() {
-            if(this.$route.params.especifica){
-                this.especifica = this.$route.params.especifica;
-                console.log(this.especifica);
-            } 
-            if(this.$route.params.categoria){
-                this.categoria = this.$route.params.categoria;
-                console.log(this.categoria);
-            } 
-            this.local=this.$route.params.local;
+            console.log(this.grupos);
         },
-
-        methods: {
-            push(n){
-                this.$router.push({
-                    name: "nivel1",
-                    params:{
-                        categoria:n,
-                    }
-                });
-
-                this.categoria = n;
-                console.log(this.categoria + ' categoria');
+        methods:{
+            changeGrupo(val){
+                this.selectGrupo=val;
+                console.log(val);
             },
 
-            push2(n){
-                this.$router.push({
-                    name: "nivel2",
-                    params:{
-                        especifica:n,
-                    }
-                });
-                this.especifica = n;
-                console.log(this.especifica + 'especifica');
+            changeSubgrupo(val){
+                this.selectSubgrupo=val;
+                console.log(val);
             }
         },
     }

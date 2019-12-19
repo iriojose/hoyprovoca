@@ -196,29 +196,13 @@ const router = new Router({
           path:":text/:id",
           name:"local",
           component:AliadoEspecifico,
-
-          children:[
-            {
-              path:":categoria",
-              name:"nivel1",
-              component:AliadoEspecifico,
-
-              children:[
-                {
-                  path:":especifica",
-                  name:"nivel2",
-                  component:AliadoEspecifico,
-                }
-              ]
-            },
-          ]
         }
 
       ]
     },
     {
       path:"/noAutorizado",
-      name:"403",
+      name:"noautorizado403",
       component:NotAutorized
     },
     {
@@ -228,7 +212,7 @@ const router = new Router({
     },
     {
       path: "*",
-      name: "notfount",
+      name: "notfound",
       component: NotFound
     },
     {
@@ -285,28 +269,39 @@ const router = new Router({
 });
 
 //proteccion de rutas
-  //cada ruta tiene un meta que lo etiqueta
-  //si es true es por que requiere estar logueado para entrar a esa ruta
-  //si no envia a una vista 403 no autorizado
-  //si es false si la ruta sigue normalmente por que no requiere estar logueado
-
-/*router.beforeEach((to, from, next) => {
+  //cada ruta tiene un meta auth que indica si require estar autenticado
+  //algunas rutas tiene un meta mediador que indica a una ruta que no devulve nada solo tiene un (router view)
+  //se revisa si esta autenticado el usuario y luego si es un mediador
+  
+router.beforeEach((to, from, next) => {
   let user=store.state.user.loggedIn;
-  console.log(store.state.user.loggedIn);
 
   if (to.meta.auth){
-    if (user){
+    if(user){
       if(to.meta.mediador){
-        next({name:'notfount'});
+        next({name: 'notfound'});
       }else{
-        next();
-      }
+        //si estas logueado no te deja ir a login o register
+        //if(to.name == 'login' || to.name == 'cliente' || to.name == 'empresa'){
+          //next({name:'home'});
+        //}else{
+          next();
+        //}
+      }   
     } else {
-      next({name: '403'});
+      if(to.meta.mediador){
+        next({name: 'notfound'});
+      }else{
+        next({name: 'noautorizado403'});
+      }
     }
   }else{
-    next();
+    if(to.meta.mediador){
+      next({name: 'notfound'});
+    }else{
+      next();
+    }
   }
-});*/
+});
 
 export default router;
