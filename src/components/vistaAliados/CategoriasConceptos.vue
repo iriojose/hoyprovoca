@@ -36,6 +36,12 @@
 
 <script>
     export default {
+        props:{
+            grupos:{
+                type:Array,
+                default: () => ([])
+            }
+        },
         data() {
             return {
                 top:0,

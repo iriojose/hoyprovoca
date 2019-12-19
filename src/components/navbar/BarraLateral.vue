@@ -48,10 +48,10 @@ import router from '@/router';
     export default {
         name: 'BarraLateral',
         data(){
-          return{
-            grupos:[],
-            loading:true
-          }
+            return{
+                grupos:[],
+                loading:true
+            }
         },
         computed: {
           ...mapState(['drawer']),
@@ -66,7 +66,7 @@ import router from '@/router';
             }
         },
         mounted(){//se trae los grupos al montarse el componente
-          this.getGrupos();
+            this.getGrupos();
         },
         methods:{
             ...mapActions(['setDrawer']),

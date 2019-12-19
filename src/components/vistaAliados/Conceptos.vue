@@ -84,6 +84,12 @@ import DialogConceptos from '@/components/dialogs/DialogConceptos';
 import {mapState,mapActions} from 'vuex';
 
     export default {
+        props:{
+            conceptos:{
+                type:Array,
+                dafault:() => ([])
+            }
+        },
         components:{
             DialogConceptos
         },
