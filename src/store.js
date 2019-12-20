@@ -10,6 +10,7 @@ export default new Vuex.Store({
       data:null,
     },
     drawer:false,
+    grupos:[],
     dialog:false,
     panel:false,
     validacionConcep:false,
@@ -31,6 +32,11 @@ export default new Vuex.Store({
   },
 
   mutations: {
+
+    SET_GRUPOS(state,val){
+      state.grupos = val;
+    },
+
     SET_DRAWER(state,val){
       if(val == true){
         state.drawer = true;
@@ -83,6 +89,9 @@ export default new Vuex.Store({
   },
 
   actions: {
+    setGrupos({commit},val){
+      commit("SET_GRUPOS",val);
+    },
     setDrawer({commit},val){
       commit("SET_DRAWER",val);
     },

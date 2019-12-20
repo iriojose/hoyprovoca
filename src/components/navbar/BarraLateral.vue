@@ -10,11 +10,11 @@
     >
         <div class="text-center mt-12" v-if="loading">
             <v-progress-circular
-            :size="50"
-            color="#005598"
-            :indeterminate="loading"
-            class="mt-12"
-        ></v-progress-circular>
+                :size="50"
+                color="#005598"
+                :indeterminate="loading"
+                class="mt-12"
+            ></v-progress-circular>
         </div>
         <v-list v-else>
             <v-subheader>Comprar por categorias</v-subheader>
@@ -73,7 +73,7 @@ import router from '@/router';
 
             push(item){//empuja a la vista 
                 this.setDrawer(false);
-                router.push({name:'tipo', params:{text: item.nombre , id:item.id}});
+                router.push({name:'grupos', params:{text: item.nombre , id:item.id}});
             },
 
             transition(){//metodo para animacion de transition

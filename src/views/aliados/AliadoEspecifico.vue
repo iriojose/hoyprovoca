@@ -2,25 +2,17 @@
     <!--en caso de no encontrar la empresa -->
     <n404 v-if="error"/>
     
-    <!--se muestran los resultados -->
+    <!--se muestran los datos -->
     <div v-else>
         <AppBar />
-        <v-row :class="$vuetify.breakpoint.smAndDown ? 'mx-5 mt-12':'mx-5'">
-            <v-col cols="12" md="3" lg="3" sm="12">
-                <CategoriasConceptos :grupos="grupos" />
-            </v-col>
-            <v-col cols="12" md="9" lg="9" sm="12">
-                <Conceptos  />
-            </v-col>
-        </v-row>
+        <EmpresaData :grupos="grupos" :empresa="empresa"/>
         <Footer />
     </div>
 </template>
 
 <script>
 //components
-import CategoriasConceptos from '@/components/vistaAliados/CategoriasConceptos';
-import Conceptos from '@/components/vistaAliados/Conceptos';
+import EmpresaData from '@/components/vistaAliados/EmpresaData';
 import AppBar from '@/components/navbar/AppBar';
 import Footer from '@/components/footer/Footer';
 //services
@@ -30,8 +22,7 @@ import n404 from '@/views/NotFound';
 
     export default {
         components:{
-            CategoriasConceptos,
-            Conceptos,
+            EmpresaData,
             AppBar,
             Footer,
             n404
@@ -70,8 +61,8 @@ import n404 from '@/views/NotFound';
             //puse los metodos de los servicios uno dentro del otro por que si no a la 
             //hora de filtrar los datos eran undefined
 
-            getEmpresa(id){//trae los datos de la empresa
-                Empresa().get(`/${id}`).then((response)=> {
+            async getEmpresa(id){//trae los datos de la empresa
+                await Empresa().get(`/${id}`).then((response)=> {
                     this.empresa = response.data.data[0];
 
                     this.getEmpresaGrupos(this.id);//grupos
@@ -83,8 +74,8 @@ import n404 from '@/views/NotFound';
             },
 
 
-            getEmpresaGrupos(id){//trae los grupos de la empresa
-                Empresa().get(`/${id}/grupos`).then((response) => {
+            async getEmpresaGrupos(id){//trae los grupos de la empresa
+                await Empresa().get(`/${id}/grupos`).then((response) => {
                     this.grupos = response.data.response.data;
 
                     this.getEmpresaSubGrupos(this.id);//subgrupos
@@ -95,8 +86,8 @@ import n404 from '@/views/NotFound';
                 })
             },
 
-            getEmpresaSubGrupos(id){//trae los subgrupos de la empresa
-                Empresa().get(`/${id}/subgrupos`).then((response) => {
+            async getEmpresaSubGrupos(id){//trae los subgrupos de la empresa
+                await Empresa().get(`/${id}/subgrupos`).then((response) => {
                     this.subgrupos = response.data.response.data;
 
                     this.getEmpresaConceptos(this.id);//conceptos
@@ -107,8 +98,8 @@ import n404 from '@/views/NotFound';
                 })
             },
 
-            getEmpresaConceptos(id){//trae los conceptos de la empresa
-                Empresa().get(`/${id}/conceptos`).then((response) => {
+            async getEmpresaConceptos(id){//trae los conceptos de la empresa
+                await Empresa().get(`/${id}/conceptos`).then((response) => {
                     this.conceptos = response.data.response.data;
 
                     this.filter();//filtra todo
@@ -127,7 +118,6 @@ import n404 from '@/views/NotFound';
                 for(let i=0 ; i < this.grupos.length; i++){//filtra subgrupos de grupos
                     this.grupos[i].subgrupos = this.subgrupos.filter(subgrupo => subgrupo.grupos_id == this.grupos[i].id);
                 }
-                console.log(this.grupos);
             }
         }
     }

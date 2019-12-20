@@ -1,34 +1,37 @@
 <template>
-    <error404 v-if="error" />
+    <n404 v-if="error" />
     <div v-else>
-        <AppBar/>
-        <SubTipos :subgrupos="subgrupos" :class="$vuetify.breakpoint.smAndDown ? 'mt-12':null"/>
+        <AppBar />
+        <GruposData :subgrupos="subgrupos" :conceptos="conceptos"/>
         <Footer />
     </div>
 </template>
 
 <script>
 //componentes
-import AppBar from '@/components/navbar/AppBar';
-import Footer from '@/components/footer/Footer';
-import SubTipos from '@/components/vistaAliados/SubTipos'
-import error404 from '@/views/NotFound';
+import AppBar from "@/components/navbar/AppBar";
+import Footer from "@/components/footer/Footer";
+import GruposData  from '@/components/vistaGrupos/GruposData'
+//NOT FOUND 
+import n404 from '@/views/NotFound';
 //services
 import Grupos from '@/services/Grupos';
 import SubGrupos from '@/services/SubGrupos';
+import {mapActions} from 'vuex';
 
     export default {
         components:{
             AppBar,
             Footer,
-            SubTipos,
-            error404
+            GruposData,
+            n404
         },
         data(){
             return{
                 error:false,
                 id:'',
                 subgrupos:[],
+                conceptos:[]
             }
         },
         mounted(){//al montarse revisas la ruta
@@ -39,7 +42,6 @@ import SubGrupos from '@/services/SubGrupos';
                 this.error=true;
             }
         },
-
         watch:{//cuando la ruta se cambie se vuelve a buscar
             '$route'(val){
                if(val.params.id){
@@ -51,31 +53,32 @@ import SubGrupos from '@/services/SubGrupos';
                 }
             }
         },
-
         methods: {
-            getGruposSubGrupos(id){//trae los subgrupos del grupo buscado (sale en la ruta id,nombre)
-                Grupos().get(`/${id}/subgrupos/`).then((response) => {
+            async getGruposSubGrupos(id){//trae los subgrupos del grupo buscado (sale en la ruta id,nombre)
+                this.conceptos=[]; //cuando se ejecute otra vez no debe quedar ninguno del anterior
+
+                await Grupos().get(`/${id}/subgrupos/`).then((response) => {
                     this.subgrupos = response.data.data;
                     for (let i=0; i < this.subgrupos.length; i++){
-                       this.subgrupos[i].conceptos = this.getSubgruposConceptos(this.subgrupos[i].id,i);
-                    }//habia utilizado return pero devolvia undefined , lo deje asi (xd)
-                    console.log(this.subgrupos);
+                       this.getSubgruposConceptos(this.subgrupos[i].id);
+                    }//habia utilizado return pero devolvia undefined , lo deje asi 
+                    console.log(this.grupos);
+                    console.log(this.conceptos);
                 }).catch(e => {
                     this.error=true;
                     console.log(e);
                 });
             },
 
-            getSubgruposConceptos(id,i){//trae los conceptos del subgrupo
-                SubGrupos().get(`/${id}/conceptos`).then((response) => {
-                    this.subgrupos[i].conceptos= response.data.data;
+            async getSubgruposConceptos(id){//trae los conceptos del subgrupo
+                await SubGrupos().get(`/${id}/conceptos`).then((response) => {
+                    this.conceptos.push(response.data.data);
                 }).catch(e => {
                     this.error=true;
                     console.log(e);
                 });
             }
         },
-
 
     }
 </script>

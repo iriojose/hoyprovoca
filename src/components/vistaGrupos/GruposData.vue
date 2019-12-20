@@ -1,13 +1,13 @@
 <template>
-    <div>
-        <div v-for="subgrupo in subgrupos" :key="subgrupo.id">
+    <div :class="$vuetify.breakpoint.smAndDown ? 'mx-2 pt-10':'mx-10'">
+        <div v-for="(subgrupo,i) in subgrupos" :key="subgrupo.id">
             <div class="headline ml-12 mt-12 font-weight-black">{{subgrupo.nombre}}</div>
             <v-slide-group
                 show-arrows
                 class="my-5"
             >
                 <v-slide-item
-                    v-for="concepto in  subgrupo.conceptos"
+                    v-for="concepto in conceptos[i]"
                     :key="concepto.id"
                     class="mx-2 mb-10 mt-5"
                 >
@@ -95,52 +95,26 @@
 
 <script>
 import DialogConceptos from '@/components/dialogs/DialogConceptos';
-import {mapState,mapActions} from 'vuex';
 
     export default {
-        props:{
-            conceptos:{
-                type:Array,
-                dafault:() => []
-            },
-            subgrupos:{
-                type:Array,
-                default: () => []
-            },
-            grupos:{
-                type:Array,
-                default: () => []
-            }
-        },
         components:{
             DialogConceptos
         },
-        data() {
-            return {
-                item:null,
-                model:1,
+        props:{
+            subgrupos:{
+                type:Array,
+                default: () => ([])
+            },
+            conceptos:{
+                type:Array,
+                default: () => ([])
             }
         },
-        computed: {
-            ...mapState(['dialog']),
-        },
-        methods: {
-            ...mapActions(['setDialog','setProducto']),
-
-            change(item){
-                this.setProducto(item);
-                this.setDialog(true);
-            },
+        data() {
+            return {
+                model:1,
+                loading:true
+            }
         },
     }
 </script>
-
-<style lang="css" scope>
-    .ribbon {
-        width: 0px;
-        height: 80px;
-        border-left: 50px solid #d9534f;
-        border-right: 50px solid #d9534f;
-        border-bottom: 35px solid transparent;
-    }
-</style>

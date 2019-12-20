@@ -34,7 +34,6 @@ import Search from "./views/search/Search";
 //ruta de perfil de aliados
 import Aliados from "./views/aliados/Aliados";
 import AliadoEspecifico from "./views/aliados/AliadoEspecifico";
-import Tipos from "./views/aliados/Tipos";
 
 //rutas de adminitrador
 import Admin from './views/admin/Admin';
@@ -49,6 +48,9 @@ import Checkout from './views/pedidos/Checkout';
 
 //ruta detallada del producto
 import DetalleProducto from './views/productos/DetalleProducto';
+
+//ruta de grupos y subgrupos 
+import Grupos from './views/grupos/Grupos';
 
 Vue.use(Router);
 
@@ -68,6 +70,14 @@ const router = new Router({
       path: "/pruebas",
       name: "pruebas",
       component: Pruebas,
+      meta: {
+        auth: false
+      }
+    },
+    {
+      path: "/grupos/:text/:id",
+      name: "grupos",
+      component: Grupos,
       meta: {
         auth: false
       }
@@ -187,11 +197,6 @@ const router = new Router({
       },
 
       children:[
-        {
-          path:"tipo/:text/:id",
-          name:"tipo",
-          component:Tipos
-        },
         {
           path:":text/:id",
           name:"local",

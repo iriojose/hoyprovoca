@@ -36,7 +36,7 @@ import router from '@/router';
         },
         methods: {
             push(item){
-                router.push({name:'tipo', params:{text:item.nombre,id:item.id}});
+                router.push({name:'grupos', params:{text:item.nombre,id:item.id}});
             }
         },
     };
