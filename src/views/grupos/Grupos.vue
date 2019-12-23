@@ -61,9 +61,7 @@ import {mapActions} from 'vuex';
                     this.subgrupos = response.data.data;
                     for (let i=0; i < this.subgrupos.length; i++){
                        this.getSubgruposConceptos(this.subgrupos[i].id);
-                    }//habia utilizado return pero devolvia undefined , lo deje asi 
-                    console.log(this.grupos);
-                    console.log(this.conceptos);
+                    }
                 }).catch(e => {
                     this.error=true;
                     console.log(e);

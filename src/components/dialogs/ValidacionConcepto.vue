@@ -1,115 +1,106 @@
 <template>
     <v-dialog v-model="validacionConcepto" width="600">
         <v-card>
-            <v-card-title>
-               <!-- <v-toolbar elevation="0" height="50">
-                    
-                    <v-img width="70" height="70" contain :src="producto.img" />
+            <div class="title text-center red--text mt-3" v-if="existencia.existencia <= 0.00">
+                Este servicio no se encuentra disponible...
+                <v-img src="@/assets/undrawemptymodal.svg" contain width="100%" height="200"></v-img>
+            </div>
 
-                    <v-toolbar-title>
-                        {{producto.nombre}}
-                    </v-toolbar-title>
-                    <v-spacer></v-spacer>
-                        <v-toolbar-items>
-                            <v-btn fab  icon @click="validacionConcepto = false">
-                                <v-icon color="#000" >
-                                    close
-                                </v-icon>
-                            </v-btn>
-                        </v-toolbar-items>
-                </v-toolbar> --> 
-            </v-card-title>
+            <div v-else>
+                <v-card-title>
+                    <v-toolbar elevation="0" height="50">
+                        <v-toolbar-title>
+                            {{producto.nombre}}
+                        </v-toolbar-title>
+                        <v-spacer></v-spacer>
+                            <v-toolbar-items>
+                                <v-btn fab  icon @click="validacionConcepto = false">
+                                    <v-icon color="#000" >
+                                        close
+                                    </v-icon>
+                                </v-btn>
+                            </v-toolbar-items>
+                    </v-toolbar> 
+                </v-card-title>
 
-            <v-card-text>
-                 <div class="title text-center red--text">
-                    Este servicio no se encuentra disponible...
-                    <v-img src="@/assets/undrawemptymodal.svg" contain width="100%" height="200"></v-img>
-                </div>
-
-                <!-- <div v-if="producto.licor" class="text-center">
-                    <div class="grey--text darken-2 title">¿Eres mayor de 18 años?</div>
-                    <v-divider></v-divider>
-                    <v-row class="my-4">
-                        <v-col cols="12" md="6" sm="6">
-                            <v-btn @click="agregar" width="100" depressed outlined color="#005598" elevation="5">
-                                Si
-                            </v-btn>
-                        </v-col>
-                         <v-col cols="12" md="6" sm="6">
-                            <v-btn  @click="validacionConcepto = false" width="100" depressed outlined color="#005598" elevation="5">
-                               No
-                            </v-btn>
-                        </v-col>
-                    </v-row>
-                </div> --> 
-
-                <!-- <div v-if="producto.ropa">
-                    <v-row>
+                <v-divider class="my-2"></v-divider>
+                
+                <v-card-text>
+                    <v-row >
                         <v-col cols="12" md="6" sm="12">
-                            <div class="text-center grey--text darken-2 title">Talla</div>
-                            <v-radio-group v-model="radioGroup">
-                                <v-radio
-                                    v-for="talla in tallas"
-                                    :key="talla.id"
-                                    :label="talla.talla"
-                                    color="#005598"
-                                ></v-radio>
-                            </v-radio-group>
+                            <v-img width="300" height="100" contain src="@/assets/noimage.png" />
+                            <div class="text-center mt-5">
+                                BsS.{{producto.precio_a}}
+                            </div>
                         </v-col>
                         <v-col cols="12" md="6" sm="12">
-                            <div class="text-center grey--text darken-2 title">Color</div>
-                            <v-select
-                                class="my-5"
-                                color="#005598"
-                                :items="colores"
+                            <v-textarea
                                 filled
-                                item-color="#000"
-                                label="Colores"
-                                v-model="color"
-                            ></v-select>
-                        </v-col>
-                        
-                        <v-col cols="12" md="8" sm="8" offset="2" class="my-3">
-                            <v-btn 
-                                @click="agregar"  
-                                dark 
-                                color="#005598" 
-                                block elevation="5" 
-                                class="caption text-capitalize"
+                                label="Acotación"
+                                color="#005598"
+                                clearable
+                                auto-grow
                             >
-                                Agregar
-                            </v-btn>
+                            </v-textarea>
                         </v-col>
                     </v-row>
-                </div>--> 
-            </v-card-text>
+                </v-card-text>
+                <v-divider class="my-2"></v-divider>
+                <v-card-actions>
+                    <v-btn @click="restar" color="#005598" :disabled="disabled || disabledResta" class="mx-2" tile icon>
+                        <v-icon dark>delete</v-icon>
+                    </v-btn>
+
+                    <div class="mx-2 font-weight-black subtitle-1">{{count}}</div>
+
+                    <v-btn @click="sumar" color="#005598" :disabled="disabled || disabledSuma" class="mx-2" tile icon>
+                        <v-icon dark>plus_one</v-icon>
+                    </v-btn> 
+
+                    <v-spacer></v-spacer>
+
+                     <v-btn :disabled="disabled" @click="push" class="text-capitalize white--text" color="#005598">
+                        Dte Producto
+                    </v-btn>
+                    <v-btn :disabled="disabled" @click="agregar" class="text-capitalize white--text" color="#005598">
+                        Agregar
+                    </v-btn>
+                </v-card-actions>
+            </div>
+                 
         </v-card>
-        <v-snackbar v-model="snackbar" right color='green' :timeout="5000">
+        <v-snackbar v-model="snackbar" right :timeout="5000">
             Añadido al carro.
-            <v-img contain width="50" height="50" :src="producto.img"></v-img>
+            <v-img contain width="50" height="50" src="@/assets/noimage.png"></v-img>
         </v-snackbar>
     </v-dialog>
 </template>
 
 <script>
 import {mapState,mapActions} from 'vuex';
+import router from '@/router';
 
     export default {
+        props:{
+            existencia:{
+                type:Object,
+                default: () => {}
+            }
+        },
         data() {
             return {
                 loading:false,
-                radioGroup: 1,
                 snackbar:false,
-                color:'',
-                tallas:[
-                    {id:1,talla:'xs'},
-                    {id:2,talla:'sm'},
-                    {id:3,talla:'md'},
-                    {id:4,talla:'lg'},
-                    {id:5,talla:'xl'},
-                    {id:6,talla:'sl'},
-                ],
-                colores:['Azul','amarillo','rojo','verde','rosa','morado']
+                disabled:false,
+                count:1,
+                disabledSuma:false,
+                disabledResta:true,
+            }
+        },
+
+        watch:{
+            existencia(){
+                this.count=1;
             }
         },
 
@@ -123,17 +114,53 @@ import {mapState,mapActions} from 'vuex';
                 set(val){
                     this.setValidacionConcepto(val);
                 }
-            }
+            }, 
+
         },
         methods: {
             ...mapActions(['setValidacionConcepto']),
 
-            agregar(){
+             push(){//lleva al detalle del concepto
+                this.setValidacionConcepto(false);
+                router.push(`/producto/${this.producto.id}`);
+            },
+
+            agregar(){//lo agrega al pedido
+                this.disabled=true;
                 this.snackbar=true;
                 setTimeout(() => {
                     this.validacionConcepto=false;
+                    this.disabled=false;
                 },3000);
-            }
+            },
+
+           sumar(){//aumenta la cantidad del producto a pedir
+                if(this.count >= 1){
+                    this.disabledResta=false;
+                }
+
+                if(this.count >= this.existencia.existencia - 1){
+                    this.count++
+                    this.disabledSuma=true;
+                }else{
+                    this.count++
+                    this.disabledSuma=false;
+                }
+           },
+
+           restar(){//resta el numero que quieres a pedir
+                if(this.count <= this.existencia.existencia){
+                    this.disabledSuma = false;
+                }
+
+                if(this.count == 2){
+                    this.count--;
+                    this.disabledResta = true;
+                }else{
+                    this.count--;
+                    this.disabledResta = false;
+                }
+           }
         },
     }
 </script>

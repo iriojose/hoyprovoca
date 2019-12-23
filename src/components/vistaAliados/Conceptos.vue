@@ -1,18 +1,26 @@
 <template>
     <div>
-        <div v-for="subgrupo in subgrupos" :key="subgrupo.id">
+        <div v-for="subgrupo in sgrupos" :key="subgrupo.id">
             <div class="headline ml-12 mt-12 font-weight-black">{{subgrupo.nombre}}</div>
             <v-slide-group
                 show-arrows
                 class="my-5"
             >
                 <v-slide-item
-                    v-for="concepto in  subgrupo.conceptos"
+                    v-for="concepto in  conceptos"
                     :key="concepto.id"
                     class="mx-2 mb-10 mt-5"
                 >
-                    <v-hover v-slot:default="{hover}">
-                        <v-card :title="concepto.nombre" tile height="300" width="200" :elevation="hover ? 15:5">
+                    <v-hover v-slot:default="{hover}"  
+                        v-if="concepto.subgrupos_id == subgrupo.id"
+                    >
+                        <v-card 
+                            :title="concepto.nombre" 
+                            tile 
+                            height="300" 
+                            width="200" 
+                            :elevation="hover ? 15:5"
+                        >
                             <v-img 
                                 v-if="!concepto.imagen"
                                 height="220" 
@@ -88,7 +96,8 @@
                     </v-hover>
                 </v-slide-item>
             </v-slide-group>  
-        </div> 
+        </div>
+
         <DialogConceptos />
     </div>
 </template>
@@ -98,7 +107,7 @@ import DialogConceptos from '@/components/dialogs/DialogConceptos';
 import {mapState,mapActions} from 'vuex';
 
     export default {
-        props:{
+        props:{//props que vienen de empresaData
             conceptos:{
                 type:Array,
                 dafault:() => []
@@ -110,6 +119,41 @@ import {mapState,mapActions} from 'vuex';
             grupos:{
                 type:Array,
                 default: () => []
+            },
+            selectGrupo:{
+                type:Number,
+                default:0
+            },
+            selectSubgrupo:{
+                type:Number,
+                default:0
+            }
+        },
+        watch:{
+            selectGrupo(){
+                this.sgrupos= [];//reincio de variable
+
+                for (let i=0; i < this.subgrupos.length; i++) {
+                    if(this.subgrupos[i].grupos_id == this.selectGrupo){
+                       this.sgrupos.push(this.subgrupos[i]);
+                   }
+                }
+                console.log(this.sgrupos);
+            },
+
+            selectSubgrupo(){
+                this.sgrupos= [];//reincio de variable
+                
+                for (let i = 0; i < this.subgrupos.length; i++) {
+                    if(this.selectSubgrupo == this.subgrupos[i].id){
+                        this.sgrupos.push(this.subgrupos[i]); 
+                    }
+                }
+                console.log(this.sgrupos);
+            },
+
+            subgrupos(){
+                this.sgrupos=this.subgrupos;
             }
         },
         components:{
@@ -119,6 +163,7 @@ import {mapState,mapActions} from 'vuex';
             return {
                 item:null,
                 model:1,
+                sgrupos:[]
             }
         },
         computed: {

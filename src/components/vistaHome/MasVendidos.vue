@@ -8,7 +8,7 @@
             <v-slide-item
                 v-for="concepto in  conceptos"
                 :key="concepto.id"
-                class="mx-4"
+                class="mx-4 mb-8"
                 :title="concepto.nombre +' '+concepto.ultimo_costo"
             >
                 <v-hover v-slot:default="{hover}">
@@ -85,7 +85,7 @@
 
         <!--Modales-->
         <DialogConceptos />
-        <ValidacionConcepto />
+        <ValidacionConcepto :existencia="existencia"/>
     </div>
 </template>
 
@@ -108,7 +108,7 @@ import Conceptos from '@/services/Conceptos'
         props:{
             conceptos:{
                 type:Array,
-                default:() => ([])
+                default:() => []
             },
             title:{
                 type:String,
@@ -119,6 +119,7 @@ import Conceptos from '@/services/Conceptos'
             return {
                 model:1,
                 snackbar:false,
+                existencia:{},
             }
         },
         computed: {
@@ -145,9 +146,16 @@ import Conceptos from '@/services/Conceptos'
             
             getConceptos(id){//trae la existencia del concepto
                 Conceptos().get(`/${id}/depositos`).then((response) => {
-                    console.log(response.data.response.data);
+                    let data = response.data.response.data;
+                    let data2={};
+                    for(let i=0; i< data.length; i++) {
+                        if(data[i].depositos_id == 1){
+                            this.existencia=data[i];
+                        }
+                    }
+                    console.log(this.existencia);
                 }).catch(e => {
-                    console.log(e)
+                    console.log(e);
                 });
             }
         },

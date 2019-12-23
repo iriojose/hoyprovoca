@@ -24,7 +24,7 @@
                             <v-expansion-panel
                                 v-for="grupo in grupos"
                                 :key="grupo.id"
-                                @click="changeGrupo(grupo.subgrupos)"
+                                @click="changeGrupo(grupo.id)"
                             >
                                 <v-expansion-panel-header 
                                     class="text-lowercase font-weight-bold"
@@ -36,9 +36,9 @@
                                         <v-list-item
                                             v-for="subgrupo in subgrupos"
                                             :key="subgrupo.id"
-                                            @click="changeSubgrupo(subgrupo.conceptos)"
+                                            @click="changeSubGrupo(subgrupo.id)"
                                         >
-                                            <v-list-item-title>
+                                            <v-list-item-title v-if="subgrupo.grupos_id == grupo.id">
                                                 {{subgrupo.nombre}}
                                             </v-list-item-title>
                                         </v-list-item>
@@ -52,7 +52,13 @@
 
             <!--conceptos por grupos y subgrupos seleccionado -->
             <v-col cols="12" md="9" lg="9" sm="12">
-                <Conceptos :subgrupos="subgrupos" :grupos="grupos"/>
+                <Conceptos 
+                    :selectGrupo="selectGrupo" 
+                    :selectSubgrupo="selectSubgrupo" 
+                    :subgrupos="subgrupos" 
+                    :grupos="grupos" 
+                    :conceptos="conceptos"
+                />
             </v-col>
         </v-row>
 </template>
@@ -66,19 +72,26 @@ import Conceptos from '@/components/vistaAliados/Conceptos';
                 type:Array,
                 default: () => []
             },
+            subgrupos:{
+                type:Array,
+                default: () => []
+            },
+            conceptos:{
+                type:Array,
+                default: () => []
+            },
             empresa:{
                 type:Object,
                 default: () => {}
-            }
+            },
+
         },
         data() {
             return {
                 item:1,
                 loading:true,
-                subgrupos:[],//el que se usa en este componente 
-                conceptos:[],
-                subgrupoEnviadoConceptos:[] //el que se envia a conceptos (compoente) 
-                                            //para ir filtrando segun el selecionado
+                selectGrupo:0,
+                selectSubgrupo:0
             }
         },
         components: {
@@ -86,21 +99,25 @@ import Conceptos from '@/components/vistaAliados/Conceptos';
         },
         watch: {
             grupos(){
-                this.loading=false;
-                this.subgrupoEnviadoConceptos=this.grupos;
-                console.log(this.subgrupoEnviadoConceptos);
+               this.loading=false;
+            },
+            subgrupos(){
+               
+            },
+            conceptos(){
+               
             },
 
         },
         methods:{
-            changeGrupo(sbg){
-                this.subgrupos=sbg;
-                this.subgrupoEnviadoConceptos=sbg;
-                console.log(this.subgrupoEnviadoConceptos);
+            changeGrupo(evt){
+                this.selectGrupo = evt;
+                console.log(evt);
             },
 
-            changeSubgrupo(sbgc){
-                this.conceptos = sbgc;
+            changeSubGrupo(evt){
+                this.selectSubgrupo=evt;
+                console.log(evt);
             }
         },
     }

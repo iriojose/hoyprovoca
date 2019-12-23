@@ -5,7 +5,7 @@
     <!--se muestran los datos -->
     <div v-else>
         <AppBar />
-        <EmpresaData :grupos="grupos" :empresa="empresa"/>
+        <EmpresaData :grupos="grupos" :empresa="empresa" :subgrupos="subgrupos" :conceptos="conceptos"/>
         <Footer />
     </div>
 </template>
@@ -50,7 +50,7 @@ import n404 from '@/views/NotFound';
                if(val.params.id){
                     this.id=val.params.id;
                     this.getEmpresa(this.id); 
-                    this.error=false;//en caso de devolverse por algun error no devolvera 404 nuevamente seguira el 404
+                    this.error=false;//en caso de devolverse por algun error no devolvera 404 nuevamente seguira normalmente
                 }else{
                     this.error=true;
                 }
@@ -73,52 +73,36 @@ import n404 from '@/views/NotFound';
                 });
             },
 
-
-            async getEmpresaGrupos(id){//trae los grupos de la empresa
-                await Empresa().get(`/${id}/grupos`).then((response) => {
+            async getEmpresaGrupos(){
+                await Empresa().get(`/${this.id}/grupos`).then((response) => {
                     this.grupos = response.data.response.data;
 
-                    this.getEmpresaSubGrupos(this.id);//subgrupos
-
+                    this.getEmpresaSubgrupos();
                 }).catch(e => {
-                    console.log(e);
                     this.error=true;
-                })
+                    console.log(e);
+                });
             },
 
-            async getEmpresaSubGrupos(id){//trae los subgrupos de la empresa
-                await Empresa().get(`/${id}/subgrupos`).then((response) => {
-                    this.subgrupos = response.data.response.data;
+            async getEmpresaSubgrupos(){
+                await Empresa().get(`/${this.id}/subgrupos`).then((response) => {
+                    this.subgrupos=response.data.response.data;
 
-                    this.getEmpresaConceptos(this.id);//conceptos
-
+                    this.getEmpresaConceptos();
                 }).catch(e => {
-                    console.log(e);
                     this.error=true;
-                })
+                    console.log(e);
+                });
             },
 
-            async getEmpresaConceptos(id){//trae los conceptos de la empresa
-                await Empresa().get(`/${id}/conceptos`).then((response) => {
+            async getEmpresaConceptos(){
+                await Empresa().get(`/${this.id}/conceptos`).then((response)  => {
                     this.conceptos = response.data.response.data;
-
-                    this.filter();//filtra todo
-
                 }).catch(e => {
-                    console.log(e);
                     this.error=true;
-                })
-            }, 
-
-            filter(){//pone todo en un super arreglo que tiene grupos - subgrupos - conceptos de esa empresa
-                for(let i=0 ; i < this.subgrupos.length; i++){//filtra conceptos de subgrupos
-                    this.subgrupos[i].conceptos= this.conceptos.filter(concepto => concepto.subgrupos_id == this.subgrupos[i].id);
-                }
-
-                for(let i=0 ; i < this.grupos.length; i++){//filtra subgrupos de grupos
-                    this.grupos[i].subgrupos = this.subgrupos.filter(subgrupo => subgrupo.grupos_id == this.grupos[i].id);
-                }
-            }
+                    console.log(e);
+                });
+            },
         }
     }
 </script>
