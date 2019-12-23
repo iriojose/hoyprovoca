@@ -1,11 +1,16 @@
 <template>
     <div :class="$vuetify.breakpoint.smAndDown ? 'mx-2 pt-10':'mx-10'">
-        <div v-for="(subgrupo,i) in subgrupos" :key="subgrupo.id">
+        <!--componente de espera -->
+        <SkeletonCategorias v-if="loading"/>
+        
+        <!-- subgrupos -->
+        <div v-for="(subgrupo,i) in subgrupos" :key="subgrupo.id" v-else>
             <div class="headline ml-12 mt-12 font-weight-black">{{subgrupo.nombre}}</div>
             <v-slide-group
                 show-arrows
                 class="my-5"
             >
+            <!--conceptos de subgrupos -->
                 <v-slide-item
                     v-for="concepto in conceptos[i]"
                     :key="concepto.id"
@@ -94,13 +99,18 @@
 </template>
 
 <script>
+//components
 import DialogConceptos from '@/components/dialogs/DialogConceptos';
+import SkeletonCategorias from '@/components/layouts/SkeletonCategorias';
+//state globales
+import {mapState,mapActions} from 'vuex';
 
     export default {
         components:{
-            DialogConceptos
+            DialogConceptos,
+            SkeletonCategorias
         },
-        props:{
+        props:{//props
             subgrupos:{
                 type:Array,
                 default: () => ([])
@@ -108,6 +118,11 @@ import DialogConceptos from '@/components/dialogs/DialogConceptos';
             conceptos:{
                 type:Array,
                 default: () => ([])
+            }
+        },
+        watch:{
+            subgrupos(){//cuando la variable cambie se renderiza
+                this.loading=false;
             }
         },
         data() {
