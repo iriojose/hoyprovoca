@@ -120,13 +120,20 @@ import Conceptos from '@/services/Conceptos'
                 model:1,
                 snackbar:false,
                 existencia:{},
+                prueba:{
+                    id:1,
+                    nombre:"empresa 1",
+                    empresa_id:1,
+                    usuario_id:1,
+                    detalles:[]
+                }
             }
         },
         computed: {
-            ...mapState(['dialog','validacionConcep','user','producto']),
+            ...mapState(['dialog','validacionConcep','user','producto','pedidos']),
         },
         methods: {
-            ...mapActions(['setDialog','setProducto','setValidacionConcepto']),
+            ...mapActions(['setDialog','setProducto','setValidacionConcepto','setPedidos','setDetallePedidos']),
 
             vistarapida(item){
                 this.setProducto(item);
@@ -137,7 +144,7 @@ import Conceptos from '@/services/Conceptos'
             agregar(item){
                 if(this.user.loggedIn){
                     this.setProducto(item);
-                    this.setValidacionConcepto(true);
+                    //this.setValidacionConcepto(true);
                     this.getConceptos(this.producto.id);
                 }else{
                     router.push('/login');
@@ -147,17 +154,27 @@ import Conceptos from '@/services/Conceptos'
             getConceptos(id){//trae la existencia del concepto
                 Conceptos().get(`/${id}/depositos`).then((response) => {
                     let data = response.data.response.data;
-                    let data2={};
                     for(let i=0; i< data.length; i++) {
                         if(data[i].depositos_id == 1){
                             this.existencia=data[i];
                         }
                     }
                     console.log(this.existencia);
+
+                    if(this.existencia.existencia >= 0){
+                        if(this.pedidos.length == 0){
+                            this.setPedidos(this.prueba);
+                            this.setDetallePedidos(this.producto);
+                        }else{   
+                            this.setDetallePedidos(this.producto);
+                        }
+                    }
                 }).catch(e => {
                     console.log(e);
                 });
-            }
+            },
+
+
         },
     }
 </script>

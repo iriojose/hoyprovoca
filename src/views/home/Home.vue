@@ -94,7 +94,6 @@ export default {
     getGrupos(){//trae las categorias (grupos)
         Grupos().get('/?limit=8').then((response) => {
           this.categorias = response.data.data;
-          console.log(response.data.data);
         }).catch(e => {
           console.log(e);
         });
@@ -103,7 +102,6 @@ export default {
     getEmpresas(){//trae empresas (sugerencias)
         Empresa().get('/?limit=8').then((response) => {
             this.sugerencias= response.data.data;
-            console.log(response.data.data);
         }).catch(e => {
           console.log(e);
         });
@@ -112,7 +110,6 @@ export default {
     getConceptos(){//trae conceptos (productos/servicios)
         Conceptos().get('/?limit=15').then((response) => {
             this.conceptos = response.data.data;
-            console.log(response.data.data);
         }).catch(e => {
             console.log(e);
         });

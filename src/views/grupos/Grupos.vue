@@ -2,7 +2,7 @@
     <div>
         <div v-if="error">
             <AppBar />
-            <div class="text-center mt-10">
+            <div :class="$vuetify.breakpoint.smAndDown ? 'text-center margen':'text-center mt-10'">
                 <strong class="grey--text">No se encontraron resultados...</strong>
                 <v-row justify="center" align="center">
                     <v-col cols="12" md="6">
@@ -90,3 +90,9 @@ import {mapActions} from 'vuex';
 
     }
 </script>
+
+<style lang="css" scope>
+    .margen{
+        margin-top: 80px;
+    }
+</style>

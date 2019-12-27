@@ -15,28 +15,90 @@ export default new Vuex.Store({
     panel:false,
     validacionConcep:false,
     producto:{},
-    items: [
-      { title: "Promociones"},{ title: "Restaurantes"},
-      { title: "Tiendas"},{ title: "Bebidas"},
-      { title: "Artes"},{ title: "Artesanias"},
-      { title: "Computadoras"},{ title: "Electronicos"},
-      { title: "Vehiculos"},{ title: "Motos"},
-      { title: "Animales"},{ title: "Antenas"},
-    ],
+    pedidos:[],
+    totalCarrito:0,
+    totalPedido:0
   },
 
-  getters: {
+  getters: {//devulve la sesion 
     user(state){
       return state.user;
     }
   },
 
   mutations: {
-    SET_GRUPOS(state,val){
-      state.grupos = val;
+    SET_PEDIDOS(state,val){//este es por agregacion
+      state.pedidos.push(val);
+    },
+    
+    SET_PEDIDOS_SERVICES(state,val){//cuando viene de la api
+      state.pedidos=val;
     },
 
-    SET_DRAWER(state,val){
+    SET_DETALLE_PEDIDOS(state,val){
+      for (let i = 0; i < state.pedidos.length; i++) {
+        if(state.pedidos[i].empresa_id == val.empresa_id){
+           state.pedidos[i].detalles.push(val); 
+        }
+      }
+
+      state.totalCarrito = 0;
+      state.totalPedido = [];
+
+      for (let i = 0; i < state.pedidos.length; i++){
+        for (let e = 0; e < state.pedidos[i].detalles.length; e++) {
+          state.totalCarrito += Number.parseFloat(state.pedidos[i].detalles[e].precio_a);
+        }
+        state.totalPedido.push(state.totalCarrito);
+      }
+    },
+
+    DELETE_DETALLE_PEDIDOS(state,val){//elimina el concepto de un pedido
+      for (let i = 0; i < state.pedidos.length; i++) {
+        for (let e = 0; e < state.pedidos[i].detalles.length; e++){
+          if(state.pedidos[i].detalles.length == 1){
+            state.pedidos.splice(i,1);
+            return //asi no sigue buscando
+          }else{
+            if(state.pedidos[i].detalles[e].id == val.id){
+              state.pedidos[i].detalles.splice(e,1);
+              return //asi no sigue buscando
+            }
+          }
+        }
+      }
+
+      state.totalCarrito = 0;
+      state.totalPedido = [];
+
+      for (let i = 0; i < state.pedidos.length; i++){
+        for (let e = 0; e < state.pedidos[i].detalles.length; e++) {
+          state.totalCarrito += Number.parseFloat(state.pedidos[i].detalles[e].precio_a);
+        }
+        state.totalPedido.push(state.totalCarrito);
+      }
+    },
+
+    DELETE_PEDIDOS(state,val){//elimina un pedido
+      for (let i = 0; i < state.pedidos.length; i++) {
+        if(state.pedidos[i].id == val.id){
+          state.pedidos.splice(i,1);
+          return //asi no sigue buscando
+        }
+      }
+      
+      state.totalCarrito = 0;
+      state.totalPedido = [];
+
+      for (let i = 0; i < state.pedidos.length; i++){
+        for (let e = 0; e < state.pedidos[i].detalles.length; e++) {
+          state.totalCarrito += Number.parseFloat(state.pedidos[i].detalles[e].precio_a);
+        }
+        state.totalPedido.push(state.totalCarrito);
+      }
+    },
+
+    SET_DRAWER(state,val){//abre el panel del home de grupos
       if(val == true){
         state.drawer = true;
       }else{
@@ -44,7 +106,7 @@ export default new Vuex.Store({
       }
     },
 
-    SET_VALIDACION_CONCEP(state,val){
+    SET_VALIDACION_CONCEP(state,val){//abre el de conceptos cuando require una acotacion de usuario
       if(val == true){
         state.validacionConcep = true;
       }else{
@@ -52,7 +114,7 @@ export default new Vuex.Store({
       }
     },
 
-    SET_PANEL(state,val){
+    SET_PANEL(state,val){//abre el panel de carrito de compras
       if(val == true){
         state.panel = true;
       }else{
@@ -60,7 +122,7 @@ export default new Vuex.Store({
       }
     },
 
-    SET_DIALOG(state,val){
+    SET_DIALOG(state,val){//dejado de usar
       if(val == true){
         state.dialog=true;
       }else{
@@ -68,26 +130,23 @@ export default new Vuex.Store({
       }
     },
 
-    SET_PRODUCTO(state,val){
+    SET_PRODUCTO(state,val){//bandera para ver el producto seleccionado por usuario
       state.producto=val;
     },
 
-    SET_LOGGED_IN(state,value) {
+    SET_LOGGED_IN(state,value) {//metodo de login
       state.user.loggedIn = true;
       state.user.token=value;
       window.localStorage.setItem('token',value);
     },
 
-    LOGOUT(state){
+    LOGOUT(state){//logout del usuario
       state.user.loggedIn=false;
       window.localStorage.setItem('token',"");
     }
   },
 
   actions: {
-    setGrupos({commit},val){
-      commit("SET_GRUPOS",val);
-    },
     setDrawer({commit},val){
       commit("SET_DRAWER",val);
     },
@@ -114,6 +173,27 @@ export default new Vuex.Store({
 
     logged({commit},value){
         commit("SET_LOGGED_IN",value);
+    },
+    
+    //pedidos actions
+    setPedidos({commit},val){//crea encabezado pedido ppr empresa
+        commit("SET_PEDIDOS",val);
+    },
+
+    setPedidosServices({commit},val){//en caso de haber recargado la pagina se traen desde la api
+        commit("SET_PEDIDOS_SERVICES",val);
+    },
+
+    setDetallePedidos({commit},val){//se agrega detalle/concepto a un pedido
+        commit("SET_DETALLE_PEDIDOS",val);
+    },
+
+    deleteDetallePedidos({commit},val){//se borra el detalle de un concepto
+        commit("DELETE_DETALLE_PEDIDOS",val);
+    },
+
+    deletePedidos({commit},val){//elimina un pedido completo
+      commit("DELETE_PEDIDOS",val);
     }
   }
 });

@@ -4,7 +4,7 @@
             <v-badge transition="fade-transition" color="teal" left overlap>
                 <v-icon size="25" color="#fff">shopping_cart</v-icon>
                 <template v-slot:badge>
-                    0
+                    {{pedidos.length}}
                 </template>
             </v-badge>
         </v-btn>
@@ -23,7 +23,7 @@ import {mapState,mapActions,mapGetters} from 'vuex';
         },
         computed: {
             ...mapGetters(['user']),
-            ...mapState(['panel'])
+            ...mapState(['panel','pedidos']),
         },
         methods: {
             ...mapActions(['setPanel']),
