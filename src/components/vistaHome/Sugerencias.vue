@@ -9,7 +9,7 @@
             <v-slide-item
                 v-for="sugerencia in  sugerencias"
                 :key="sugerencia.id"
-                class="mx-4"
+                class="mx-4 mb-8"
             >
                 <v-hover v-slot:default="{hover}">
                     <v-card    

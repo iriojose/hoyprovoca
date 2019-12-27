@@ -9,7 +9,7 @@
             <v-slide-item
                 v-for="categoria in  categorias"
                 :key="categoria.id"
-                class="mx-4"
+                class="mx-4 mb-8"
             >
                 <v-hover v-slot:default="{hover}">
                     <v-card height="250" width="300" elevation="10" @click="push(categoria)">
@@ -31,7 +31,7 @@ import router from '@/router';
         props: ["categorias", "title"],
         data() {
             return {
-            model: 1,
+                model: 1,
             };
         },
         methods: {

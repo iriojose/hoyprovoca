@@ -6,8 +6,8 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state:{
     user:{
-      loggedIn:false,
-      data:null,
+      token:null,
+      loggedIn:false
     },
     drawer:false,
     grupos:[],
@@ -32,7 +32,6 @@ export default new Vuex.Store({
   },
 
   mutations: {
-
     SET_GRUPOS(state,val){
       state.grupos = val;
     },
@@ -73,18 +72,15 @@ export default new Vuex.Store({
       state.producto=val;
     },
 
-    SET_LOGGED_IN(state, value) {
-      state.user.loggedIn = value;
-      window.localStorage.setItem('user',value);
-    },
-
-    SET_USER(state, data) {
-      state.user.data = data;
+    SET_LOGGED_IN(state,value) {
+      state.user.loggedIn = true;
+      state.user.token=value;
+      window.localStorage.setItem('token',value);
     },
 
     LOGOUT(state){
       state.user.loggedIn=false;
-      window.localStorage.setItem('user',false);
+      window.localStorage.setItem('token',"");
     }
   },
 
@@ -116,16 +112,8 @@ export default new Vuex.Store({
       commit("LOGOUT");
     },
 
-    fetchUser({ commit }, user) {
-      commit("SET_LOGGED_IN", user !== null);
-      if (user) {
-        commit("SET_USER", {
-          displayName: user.displayName,
-          email: user.email
-        });
-      } else {
-        commit("SET_USER", null);
-      }
+    logged({commit},value){
+        commit("SET_LOGGED_IN",value);
     }
   }
 });

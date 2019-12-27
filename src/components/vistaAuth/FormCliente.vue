@@ -190,9 +190,15 @@
     </v-form>
 </template>
 <script>
+//metodos de validacion
 import validations from '@/validations/validations';
-//import Clientes from '@/servicios/Clientes'
+//servicios
+import Usuario from '@/services/Usuario';
+//router
 import router from '@/router';
+//state globales
+//vuex
+import {mapState,mapActions} from 'vuex';
 
     export default {
         data(){
@@ -229,59 +235,82 @@ import router from '@/router';
         },
 
         methods:{
+            ...mapActions(['logged']),
+
             register(){
                 this.loading = true;
+                this.SignUp();
+            },
 
-                
-                this.snackbar=true;
-                setTimeout(() => {
-                    this.error=null;
-                    router.push('/');
-                },1000);
-                
-                //para cuando atrape un error
-                //this.snackbar=true;
-                //this.error = err.message;
-            }
+            SignUp(){//metodo para registrarse
+                let data ={//hardcoded 
+                    password:this.user.password,
+                    nombre:this.user.nombre,
+                    apellido:this.user.apellido,
+                    login:this.user.email,
+                    perfil_id:1
+                }
+
+                Usuario().post("/signup",{data}).then((response) => {
+                    console.log(response);
+                    this.snackbar=true;
+                    this.logged(response.data.token);//se guarda token en state
+
+                    setTimeout(() => {
+                        this.loading = false;
+                        this.error=null;
+                        router.push('/');
+                    },1000);
+
+                }).catch(e => {
+                    this.snackbar=true;
+                    this.error = e.message;
+                    console.log(e);
+                });
+            },
         }
     }
 </script>
 
 <style>
-  .custom-loader {
-    animation: loader 1s infinite;
-    display: flex;
-  }
-  @-moz-keyframes loader {
-    from {
-      transform: rotate(0);
+    .custom-loader {
+        animation: loader 1s infinite;
+        display: flex;
     }
-    to {
-      transform: rotate(360deg);
+
+    @-moz-keyframes loader {
+        from {
+            transform: rotate(0);
+        }
+        to {
+            transform: rotate(360deg);
+        }
     }
-  }
-  @-webkit-keyframes loader {
-    from {
-      transform: rotate(0);
+
+    @-webkit-keyframes loader {
+        from {
+            transform: rotate(0);
+        }
+        to {
+            transform: rotate(360deg);
+        }
     }
-    to {
-      transform: rotate(360deg);
+
+    @-o-keyframes loader {
+        from {
+            transform: rotate(0);
+        }
+        to {
+            transform: rotate(360deg);
+        }
     }
-  }
-  @-o-keyframes loader {
-    from {
-      transform: rotate(0);
+
+    @keyframes loader {
+        from {
+            transform: rotate(0);
+        }
+        to {
+            transform: rotate(360deg);
+        }
     }
-    to {
-      transform: rotate(360deg);
-    }
-  }
-  @keyframes loader {
-    from {
-      transform: rotate(0);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
 </style>

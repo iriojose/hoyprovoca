@@ -64,7 +64,9 @@
 //vuex
 import {mapGetters,mapActions} from 'vuex';
 //services
-import Clientes from '@/services/Clientes';
+import Usuario from '@/services/Usuario';
+//router
+import router from '@/router';
 
     export default {
         data(){
@@ -89,9 +91,11 @@ import Clientes from '@/services/Clientes';
                 return "slide-y-transition"
             },
 
-            getCliente(){//metodo get para cliente
-                Clientes().get(`/${this.user.data.id}`).then((response) => {
-                    console.log(response.data.data[0]);
+            getUsuario(){//metodo get para el usuario logeado
+                Usuario().post("/validate", {
+                    user_token:this.user.token
+                }).then((response) => {
+                    console.log(response.data);
                 }).cathc(e => {
                     console.log(e);
                 });
@@ -99,10 +103,12 @@ import Clientes from '@/services/Clientes';
 
             logOut(){
                 this.logout();
+                router.push('/login');
             },
         },
+        
         mounted(){//se trae el cliente
-            //this.getCliente;
+            //this.getUsuario();
         }
     }
 </script>

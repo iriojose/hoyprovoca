@@ -33,15 +33,19 @@
                                 </v-expansion-panel-header>
                                 <v-expansion-panel-content>
                                     <v-list dense> 
-                                        <v-list-item
+                                        <div
                                             v-for="subgrupo in subgrupos"
                                             :key="subgrupo.id"
-                                            @click="changeSubGrupo(subgrupo.id)"
                                         >
-                                            <v-list-item-title v-if="subgrupo.grupos_id == grupo.id">
-                                                {{subgrupo.nombre}}
-                                            </v-list-item-title>
-                                        </v-list-item>
+                                            <v-list-item
+                                                @click="changeSubGrupo(subgrupo.id)"
+                                                v-if="subgrupo.grupos_id == grupo.id"
+                                            >
+                                                <v-list-item-title>
+                                                    {{subgrupo.nombre}}
+                                                </v-list-item-title>
+                                            </v-list-item>
+                                        </div>
                                     </v-list>
                                 </v-expansion-panel-content>
                             </v-expansion-panel>
@@ -91,7 +95,7 @@ import Conceptos from '@/components/vistaAliados/Conceptos';
                 item:1,
                 loading:true,
                 selectGrupo:0,
-                selectSubgrupo:0
+                selectSubgrupo:0,
             }
         },
         components: {
@@ -99,7 +103,7 @@ import Conceptos from '@/components/vistaAliados/Conceptos';
         },
         watch: {
             grupos(){
-               this.loading=false;
+                this.loading=false;
             },
             subgrupos(){
                

@@ -286,12 +286,7 @@ router.beforeEach((to, from, next) => {
       if(to.meta.mediador){
         next({name: 'notfound'});
       }else{
-        //si estas logueado no te deja ir a login o register
-        //if(to.name == 'login' || to.name == 'cliente' || to.name == 'empresa'){
-          //next({name:'home'});
-        //}else{
-          next();
-        //}
+        next();
       }   
     } else {
       if(to.meta.mediador){
@@ -304,7 +299,15 @@ router.beforeEach((to, from, next) => {
     if(to.meta.mediador){
       next({name: 'notfound'});
     }else{
-      next();
+      if(to.name == 'login' && user){
+        next({name:'home'});
+      }else if(to.name == 'cliente' && user){
+        next({name:'home'});
+      }else if(to.name == 'empresa'&& user){
+        next({name:'home'});
+      }else{
+        next();
+      }
     }
   }
 });

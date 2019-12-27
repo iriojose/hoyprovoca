@@ -11,11 +11,14 @@ import Croppa from 'vue-croppa'
 Vue.config.productionTip = false;
 Vue.use(Croppa);
 
-let user = window.localStorage.getItem('user');
-if(user=='true'){
+let token = window.localStorage.getItem('token');
+
+if(token){
   store.state.user.loggedIn=true;
+  store.state.user.token=token;
 }else{
   store.state.user.loggedIn=false;
+  store.state.user.token="";
 }
 
 new Vue({

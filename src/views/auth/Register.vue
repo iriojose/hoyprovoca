@@ -7,8 +7,11 @@
                 </v-icon>
                 volver
             </v-btn>
-
-            <v-toolbar-title class="color">Bienvenido a Aftim</v-toolbar-title>
+            <v-spacer></v-spacer>
+            <v-toolbar-title class="color">
+                Bienvenido a Aftim
+            </v-toolbar-title>
+            <v-spacer></v-spacer>
         </v-app-bar>
 
         <v-tabs class="mt-2" color="#005598" background-color="#eee" centered>
@@ -36,7 +39,7 @@ import SubFooter from '@/components/footer/SubFooter';
 
 <style scoped>
     .color{
-        color: #6c63ff;
+        color: #005598;
     }
 
     .slide-fade-enter-active {

@@ -11,7 +11,11 @@
                 class="my-5"
             >
             <!--conceptos de subgrupos -->
+                <div v-if="!conceptos[i]">
+                   No se encontraron resultados...
+                </div>
                 <v-slide-item
+                    v-else
                     v-for="concepto in conceptos[i]"
                     :key="concepto.id"
                     class="mx-2 mb-10 mt-5"
@@ -41,6 +45,7 @@
                                             dark
                                             width="50%"
                                             class="text-capitalize body font-weight-bold"
+                                            @click="agregar(concepto)"
                                         >
                                             Agregar
                                         </v-btn>
@@ -71,6 +76,7 @@
                                             dark
                                             width="50%"
                                             class="text-capitalize body font-weight-bold"
+                                            @click="agregar(concepto)"
                                         >
                                             Agregar
                                         </v-btn>
@@ -94,20 +100,23 @@
                 </v-slide-item>
             </v-slide-group>  
         </div> 
-        <DialogConceptos />
+        <ValidacionConcepto :existencia="existencia" />
     </div>
 </template>
 
 <script>
 //components
-import DialogConceptos from '@/components/dialogs/DialogConceptos';
+import ValidacionConcepto from '@/components/dialogs/ValidacionConcepto';
 import SkeletonCategorias from '@/components/layouts/SkeletonCategorias';
 //state globales
 import {mapState,mapActions} from 'vuex';
+//services
+import Conceptos from '@/services/Conceptos';
+import Pedidos from '@/services/Pedidos';
 
     export default {
         components:{
-            DialogConceptos,
+            ValidacionConcepto,
             SkeletonCategorias
         },
         props:{//props
@@ -128,8 +137,49 @@ import {mapState,mapActions} from 'vuex';
         data() {
             return {
                 model:1,
-                loading:true
+                loading:true,
+                existencia:{}
             }
+        },
+        computed: {
+            ...mapState(['validacionConcep','user','producto']),
+        },
+        methods: {
+            ...mapActions(['setProducto','setValidacionConcepto']),
+
+            agregar(item){
+                if(this.user.loggedIn){
+                    this.setProducto(item);
+                    this.setValidacionConcepto(true);
+                    this.getConceptos(item.id);
+                }else{
+                    router.push('/login');
+                }
+            },
+
+            getConceptos(id){//trae la existencia del concepto
+                Conceptos().get(`/${id}/depositos`).then((response) => {
+                    let data = response.data.response.data;
+                    let data2={};
+                    for(let i=0; i< data.length; i++) {
+                        if(data[i].depositos_id == 1){
+                            this.existencia=data[i];
+                        }
+                    }
+                    console.log(this.existencia);
+                }).catch(e => {
+                    console.log(e);
+                });
+            },
+
+            getPedidos(){
+                Pedidos().get().then((response) =>{
+
+                }).catch(e =>{
+                    console.log(e);
+                });
+            }
+
         },
     }
 </script>

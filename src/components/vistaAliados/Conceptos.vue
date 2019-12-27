@@ -1,6 +1,14 @@
 <template>
     <div>
-        <div v-for="subgrupo in sgrupos" :key="subgrupo.id">
+        <div v-if="sgrupos.length == 0" class="text-center mt-10">
+            <strong class="grey--text">No se encontraron resultados...</strong>
+            <v-row justify="center" align="center">
+                <v-col cols="12" md="6">
+                    <v-img src="@/assets/nodata.svg" height="500" contain />
+            </v-col>
+            </v-row>
+        </div>
+        <div v-for="subgrupo in sgrupos" :key="subgrupo.id" v-else>
             <div class="headline ml-12 mt-12 font-weight-black">{{subgrupo.nombre}}</div>
             <v-slide-group
                 show-arrows
@@ -11,9 +19,7 @@
                     :key="concepto.id"
                     class="mx-2 mb-10 mt-5"
                 >
-                    <v-hover v-slot:default="{hover}"  
-                        v-if="concepto.subgrupos_id == subgrupo.id"
-                    >
+                    <v-hover v-slot:default="{hover}" v-if="concepto.subgrupos_id == subgrupo.id">
                         <v-card 
                             :title="concepto.nombre" 
                             tile 
@@ -44,6 +50,7 @@
                                             dark
                                             width="50%"
                                             class="text-capitalize body font-weight-bold"
+                                            @click="agregar(concepto)"
                                         >
                                             Agregar
                                         </v-btn>
@@ -74,6 +81,7 @@
                                             dark
                                             width="50%"
                                             class="text-capitalize body font-weight-bold"
+                                            @click="agregar(concepto)"
                                         >
                                             Agregar
                                         </v-btn>
@@ -98,13 +106,18 @@
             </v-slide-group>  
         </div>
 
-        <DialogConceptos />
+        <ValidacionConcepto :existencia="existencia" />
     </div>
 </template>
 
 <script>
-import DialogConceptos from '@/components/dialogs/DialogConceptos';
+//dialog 
+import ValidacionConcepto from '@/components/dialogs/ValidacionConcepto';
+//state globales
 import {mapState,mapActions} from 'vuex';
+//services
+import Conceptos from '@/services/Conceptos';
+import Pedidos from '@/services/Pedidos';
 
     export default {
         props:{//props que vienen de empresaData
@@ -128,6 +141,9 @@ import {mapState,mapActions} from 'vuex';
                 type:Number,
                 default:0
             }
+        },
+        components:{
+            ValidacionConcepto
         },
         watch:{
             selectGrupo(){
@@ -156,26 +172,53 @@ import {mapState,mapActions} from 'vuex';
                 this.sgrupos=this.subgrupos;
             }
         },
-        components:{
-            DialogConceptos
-        },
         data() {
             return {
                 item:null,
                 model:1,
-                sgrupos:[]
+                sgrupos:[],
+                existencia:{}
             }
         },
         computed: {
-            ...mapState(['dialog']),
+            ...mapState(['validacionConcep','user','producto']),
         },
         methods: {
-            ...mapActions(['setDialog','setProducto']),
+            ...mapActions(['setProducto','setValidacionConcepto']),
 
-            change(item){
-                this.setProducto(item);
-                this.setDialog(true);
+            agregar(item){
+                if(this.user.loggedIn){
+                    this.setProducto(item);
+                    this.setValidacionConcepto(true);
+                    this.getConceptos(item.id);
+                }else{
+                    router.push('/login');
+                }
             },
+
+            getConceptos(id){//trae la existencia del concepto
+                Conceptos().get(`/${id}/depositos`).then((response) => {
+                    let data = response.data.response.data;
+                    let data2={};
+                    for(let i=0; i< data.length; i++) {
+                        if(data[i].depositos_id == 1){
+                            this.existencia=data[i];
+                        }
+                    }
+                    console.log(this.existencia);
+                }).catch(e => {
+                    console.log(e);
+                });
+            },
+
+            getPedidos(){
+                Pedidos().get().then((response) =>{
+
+                }).catch(e =>{
+                    console.log(e);
+                });
+            }
+
         },
     }
 </script>

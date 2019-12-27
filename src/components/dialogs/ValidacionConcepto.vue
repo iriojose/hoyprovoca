@@ -1,7 +1,7 @@
 <template>
     <v-dialog v-model="validacionConcepto" width="600">
         <v-card>
-            <div class="title text-center red--text mt-3" v-if="existencia.existencia <= 0.00">
+            <div class="title text-center red--text mt-3" v-if="existencia.existencia <= 0">
                 Este servicio no se encuentra disponible...
                 <v-img src="@/assets/undrawemptymodal.svg" contain width="100%" height="200"></v-img>
             </div>
@@ -48,7 +48,7 @@
                 <v-divider class="my-2"></v-divider>
                 <v-card-actions>
                     <v-btn @click="restar" color="#005598" :disabled="disabled || disabledResta" class="mx-2" tile icon>
-                        <v-icon dark>delete</v-icon>
+                        <v-icon dark>exposure_neg_1</v-icon>
                     </v-btn>
 
                     <div class="mx-2 font-weight-black subtitle-1">{{count}}</div>
@@ -100,6 +100,9 @@ import router from '@/router';
 
         watch:{
             existencia(){
+                this.count=1;
+            },
+            producto(){
                 this.count=1;
             }
         },

@@ -1,12 +1,22 @@
 <template>
-    <!--en caso de no encontrar la empresa -->
-    <n404 v-if="error"/>
-    
-    <!--se muestran los datos -->
-    <div v-else>
-        <AppBar />
-        <EmpresaData :grupos="grupos" :empresa="empresa" :subgrupos="subgrupos" :conceptos="conceptos"/>
-        <Footer />
+    <div>
+        <div v-if="error">
+            <AppBar />
+            <div class="text-center mt-10">
+                <strong class="grey--text">No se encontraron resultados...</strong>
+                <v-row justify="center" align="center">
+                    <v-col cols="12" md="6">
+                        <v-img src="@/assets/nodata.svg" height="500" contain />
+                    </v-col>
+                </v-row>
+            </div>
+            <Footer />
+        </div>
+        <div v-else>
+            <AppBar />
+            <EmpresaData :grupos="grupos" :empresa="empresa" :subgrupos="subgrupos" :conceptos="conceptos"/>
+            <Footer />
+        </div>
     </div>
 </template>
 
@@ -17,15 +27,12 @@ import AppBar from '@/components/navbar/AppBar';
 import Footer from '@/components/footer/Footer';
 //services
 import Empresa from '@/services/Empresa';
-//NOT FOUND 
-import n404 from '@/views/NotFound';
 
     export default {
         components:{
             EmpresaData,
             AppBar,
             Footer,
-            n404
         },
         data() {
             return {

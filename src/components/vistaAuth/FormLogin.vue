@@ -5,7 +5,7 @@
                 <v-col cols="12" md="12" xs="12">
                     <v-text-field
                         label="Email"
-                        v-model="user.email"
+                        v-model="usuario.email"
                         type="email"
                         clearable
                         outlined
@@ -18,7 +18,7 @@
                 </v-col>
                 <v-col cols="12" md="12" xs="12">
                     <v-text-field
-                        v-model="user.password"
+                        v-model="usuario.password"
                         label="Password"
                         counter="true"
                         :type="showPassword ? 'text' : 'password' "
@@ -65,14 +65,19 @@
 </template>
 
 <script>
+//metodos de validacion
 import validations from '@/validations/validations';
+//router
 import router from '@/router';
-import store from '../../store';
+//state globales
+import {mapState,mapActions} from 'vuex';
+//servicios
+import Usuario from '@/services/Usuario';
 
     export default {
         data(){
             return {
-                user: {
+                usuario: {
                     email: "",
                     password: "",
                 },
@@ -84,31 +89,38 @@ import store from '../../store';
                 loading:false,
             }
         },
-        
-        watch: {
-            loading() {
-                setTimeout(() => (this.loading = false), 2000);
-            },
+        computed: {
+          ...mapState(['user'])
         },
-
         methods: {
+          ...mapActions(['logged']),
+
             login(){
                 this.loading = true;
+                let data = {
+                    usuario:this.usuario.email,
+                    password:this.usuario.password
+                }
 
-                this.snackbar=true;
-                store.state.user.loggedIn=true;
-                let valor=true;
-                window.localStorage.setItem('user',valor);
-                setTimeout(() => {
-                    this.error=null;
-                    router.push('/');
-                },1000);
-               
-                  //para cuando atrape un error (catch)
-                  //this.snackbar=true;
-                  //this.error =  err.message;
-              
+                Usuario().post("/login",{data}).then((response) => {
+                    console.log(response);
+                    this.snackbar=true;
+                    this.logged(response.data.token);//se guarda token en state
+
+                    setTimeout(() => {
+                        this.error=null;
+                        this.loading=false;
+                        router.push('/');
+                    },1000);
+
+                }).catch(e => {
+                    console.log(e);
+                    this.loading = false;
+                    this.snackbar=true;
+                    this.error="error";
+                });
             }
+
         },
     }
 </script>
