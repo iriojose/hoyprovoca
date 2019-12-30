@@ -62,7 +62,7 @@
 
                             <v-spacer></v-spacer>
 
-                                <v-btn @click="deletedetalle(detalle)" class="mx-2" tile icon>
+                                <v-btn @click="deletedetalle(pedido,detalle)" class="mx-2" tile icon>
                                     <v-icon dark>delete</v-icon>
                                 </v-btn>
 
@@ -123,6 +123,7 @@
 
 <script>
 import {mapState,mapActions} from 'vuex';
+import Pedidos from '@/services/Pedidos';
 
     export default {
         data(){
@@ -130,6 +131,10 @@ import {mapState,mapActions} from 'vuex';
                 dolares:53,
                 totales:[]
             }
+        },
+
+        mounted(){
+            this.getPedidos();
         },
 
         computed: {
@@ -152,7 +157,7 @@ import {mapState,mapActions} from 'vuex';
         },
 
         methods: {
-            ...mapActions(['setPanel','setPedidos','deletePedidos','deleteDetallePedidos']),
+            ...mapActions(['setPanel','deletePedidos','deleteDetallePedidos','setPedidosServices','setDetallePedidos']),
 
             transition(){//animacion del panel
               if(this.panel){
@@ -171,11 +176,53 @@ import {mapState,mapActions} from 'vuex';
             },
 
             deletepedido(val){
-                this.deletePedidos(val)
+                this.deletePedido(val.id);//local
+                this.deletePedidos(val);//api
             },
 
-            deletedetalle(val){
-                this.deleteDetallePedidos(val);
+            deletedetalle(val,val2){
+                this.deleteDetallePedidos(val);//local
+                this.deletePedidosDetail(val.id,val2.id);//api
+            },
+
+            updateDetalle(id,data,id2){
+
+            },
+
+
+            //LLAMADAS A LA API
+
+            getPedidos(){//trae los pedidos del usuario
+                Pedidos().get("/").then((response) => {
+                    console.log(response.data.data);
+                    //this.setPedidosServices(response.data.data);
+                }).catch(e => {
+                    console.log(e);
+                })
+            },
+
+            updatePedidosDetalles(id,id2){//actualiza un detalle del pedido (pricipalmente la cantidad)
+                Pedidos().post(`/${id}/detalles/${id2}`).then((response) => {
+                    console.log(response);
+                }).catch(e => {
+                    console.log(e);
+                }) 
+            },
+
+            deletePedidosDetail(id,id2){//elimina el detalle de un pedido
+                Pedidos().delete(`/${id}/detalles/${id2}`).then((response) => {
+                    console.log(response);
+                }).catch(e => {
+                    console.log(e);
+                }) 
+            },
+
+            deletePedido(id){//elimina un pedido completo
+                Pedidos().delete(`/${id}`).then((response) => {
+                    console.log(response);
+                }).catch(e => {
+                    console.log(e);
+                })
             }
         },
     }

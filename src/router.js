@@ -85,7 +85,7 @@ const router = new Router({
     {
       path: "/checkout",
       name: "checkout",
-      component: Checkout,
+      component:Checkout,
       meta: {
         auth: true
       }

@@ -10,7 +10,7 @@
            </v-btn>
         </v-toolbar>
 
-        <v-row>
+        <v-row :class="$vuetify.breakpoint.smAndDown ? 'mx-3':null"> 
            <v-col cols="12" :offset="$vuetify.breakpoint.smAndDown ? null:1" md="6"> 
                <v-sheet
                     class="mt-10 py-3"
@@ -30,49 +30,50 @@
                                 rounded
                                 @click="toggle"
                             >
-                                Pastelito Maracucho
+                                Empresa
                             </v-btn>
                         </v-slide-item>
                     </v-slide-group>
                 </v-sheet>
 
                 <v-card elevation="10" class="mt-10 text-center" width="100%">
-                    <v-list two-line subheader>
-                        <v-subheader class="title px-10">Items</v-subheader>
-                        <v-list-item :disabled="bauche ? true:false" v-for="n in 7" :key="n" class="px-10">
+                    <v-subheader class="title px-10">Articulos</v-subheader>
+                    <v-toolbar elevation="0" v-for="n in 7" :key="n">
+                        <v-img 
+                            width="50" 
+                            height="50" 
+                            contain 
+                            src="@/assets/noimage.png"
+                        />
+                        <v-spacer></v-spacer>
 
-                            <v-list-item-avatar horizontal size="50">
-                                <v-img contain src="https://www.partesdel.com/wp-content/uploads/Partes-del-Televisor...jpg"></v-img>
-                            </v-list-item-avatar>
+                        <v-toolbar-title>
+                            xiaomi redmi note 7 plus
+                        </v-toolbar-title>
 
-                            <v-list-item-title class="caption">
-                                xiaomi redmi note 7 plus
-                            </v-list-item-title>
+                        <v-spacer></v-spacer>
 
-                            <v-list-item-subtitle>
-                                <v-hover v-slot:default="{hover}">
-                                    <div v-if="hover">
-                                        <v-btn class="mx-2" fab outlined width="30" height="30">
-                                            <v-icon v-ripple color="#000">exposure_neg_1</v-icon>
-                                        </v-btn>
-                                        <v-btn class="mx-2" fab outlined width="30" height="30">
-                                            <v-icon v-ripple color="#000">plus_one</v-icon>
-                                        </v-btn> 
-                                    </div>
-                                    <div v-else class="black--text body">1</div>
-                                </v-hover>
-                            </v-list-item-subtitle>
+                        <v-btn  class="mx-2" tile icon>
+                            <v-icon dark>delete</v-icon>
+                        </v-btn>
 
-                            <v-list-item-subtitle class="caption black--text">
-                                Bss. 300000
-                            </v-list-item-subtitle>
-                            <v-list-item-actions>
-                                <v-btn fab color="#005598" width="40" height="40">
-                                    <v-icon color="#fff">delete</v-icon>
-                                </v-btn>
-                            </v-list-item-actions>
-                        </v-list-item>
-                    </v-list>
+                        <div class="mx-2 font-weight-black subtitle-1">1</div>
+
+                        <v-btn class="mx-2" tile icon>
+                            <v-icon dark>plus_one</v-icon>
+                        </v-btn> 
+                        <v-spacer></v-spacer>
+
+                        <v-toolbar-title>
+                            300000 BsS 
+                        </v-toolbar-title>
+                        
+                        <v-spacer></v-spacer>
+
+                        <v-btn fab color="#005598" width="40" height="40">
+                            <v-icon color="#fff">delete</v-icon>
+                        </v-btn>
+                    </v-toolbar>
                 </v-card>
             </v-col>
 
@@ -138,18 +139,24 @@
 </template>
 
 <script>
+import Pedidos from '@/services/Pedidos';
+import {mapState, mapActions} from 'vuex';
+
     export default {
         data() {
             return {
                 bolivar:0,
                 dolares:0,
-                bauche:null,
+                bauche:null
             }
         },
-        methods: {
-            ss(){
 
-            },
+        computed: {
+            ...mapState(['pedidos','totalCarrito','totalPedido']),
+        },
+
+        methods: {
+            ...mapActions(['deleteDetallePedidos','setPedidosServices','setDetallePedidos']),
 
             change(evt){
                 this.bauche=null;
@@ -160,8 +167,42 @@
                     }
                     reader.readAsDataURL(evt);
                 }
+            },
+
+            mounted(){
+                this.getPedidos();
+            },
+            //metodos en local
+            
+
+            //LLAMADAS A LA API
+            getPedidos(){//trae los pedidos del usuario
+                Pedidos().get("/").then((response) => {
+                    console.log(response.data.data);
+                    //this.setPedidosServices(response.data.data);
+                }).catch(e => {
+                    console.log(e);
+                })
+            },
+
+            updateDetallesPedidos(id,id2){//actualiza el detalle del pedido
+                Pedidos().post(`/${id}/detalles/${id2}`).then((response) => {
+                    console.log(response);
+                }).catch(e => {
+                    console.log(e);
+                })
+            },
+
+            deleteDetallePedidos(id,id2){//elimina el detalle de un pedido
+                Pedidos().delete(`/${id}/detalles/${id2}`).then((response) => {
+                    console.log(response);
+                }).catch(e => {
+                    console.log(e);
+                });
             }
+
         },
+
     }
 </script>
 

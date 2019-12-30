@@ -120,7 +120,7 @@ import Conceptos from '@/services/Conceptos'
                 model:1,
                 snackbar:false,
                 existencia:{},
-                prueba:{
+                prueba:{//cabecera del pedido
                     id:1,
                     nombre:"empresa 1",
                     empresa_id:1,

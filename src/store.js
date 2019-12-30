@@ -98,6 +98,10 @@ export default new Vuex.Store({
       }
     },
 
+    UPDATE_PEDIDOS(state,val){//actualiza el pedido //POR HACER*
+
+    },
+
     SET_DRAWER(state,val){//abre el panel del home de grupos
       if(val == true){
         state.drawer = true;
@@ -176,7 +180,7 @@ export default new Vuex.Store({
     },
     
     //pedidos actions
-    setPedidos({commit},val){//crea encabezado pedido ppr empresa
+    setPedidos({commit},val){//crea encabezado pedido por empresa
         commit("SET_PEDIDOS",val);
     },
 
@@ -194,6 +198,10 @@ export default new Vuex.Store({
 
     deletePedidos({commit},val){//elimina un pedido completo
       commit("DELETE_PEDIDOS",val);
+    },
+
+    updateDetallePedidos({commit},val){//edita el pedido
+      commit("UPDATE_PEDIDOS",val);
     }
   }
 });
