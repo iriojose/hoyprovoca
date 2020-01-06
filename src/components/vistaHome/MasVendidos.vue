@@ -37,7 +37,7 @@
                                     <div>
                                         <v-btn  
                                             class="text-capitalize caption"
-                                            @click="agregar(concepto)"
+                                            @click="agregarConceptos(concepto)"
                                         >
                                             Agregar al carrito
                                         </v-btn>
@@ -70,7 +70,7 @@
                                     <div>
                                         <v-btn  
                                             class="text-capitalize caption"
-                                            @click="agregar(concepto)"
+                                            @click="agregarConceptos(concepto)"
                                         >
                                             Agregar al carrito
                                         </v-btn>
@@ -98,7 +98,8 @@ import {mapState,mapActions} from 'vuex';
 //router
 import router from '@/router';
 //services
-import Conceptos from '@/services/Conceptos'
+import Conceptos from '@/services/Conceptos';
+import Pedidos from '@/services/Pedidos';
 
     export default {
         components:{
@@ -120,13 +121,6 @@ import Conceptos from '@/services/Conceptos'
                 model:1,
                 snackbar:false,
                 existencia:{},
-                prueba:{//cabecera del pedido
-                    id:1,
-                    nombre:"empresa 1",
-                    empresa_id:1,
-                    usuario_id:1,
-                    detalles:[]
-                }
             }
         },
         computed: {
@@ -141,37 +135,95 @@ import Conceptos from '@/services/Conceptos'
                 this.getConceptos(this.producto.id);
             },
 
-            agregar(item){
+            agregarConceptos(item){//
                 if(this.user.loggedIn){
                     this.setProducto(item);
                     //this.setValidacionConcepto(true);
-                    this.getConceptos(this.producto.id);
+                    this.getConceptosExistencia(item.id);
                 }else{
                     router.push('/login');
                 }
             },
-            
-            getConceptos(id){//trae la existencia del concepto
-                Conceptos().get(`/${id}/depositos`).then((response) => {
-                    let data = response.data.response.data;
-                    for(let i=0; i< data.length; i++) {
-                        if(data[i].depositos_id == 1){
-                            this.existencia=data[i];
-                        }
-                    }
-                    console.log(this.existencia);
 
-                    if(this.existencia.existencia >= 0){
+            getConceptosExistencia(id){//trae la existencia del concepto del deposito de la web
+                Conceptos().get(`/${id}/depositos`).then((response) => {
+                    this.existencia = response.data.data[0];   
+                    console.log(this.existencia.existencia);
+
+                    if(Number.parseInt(this.existencia.existencia) >= 0){
                         if(this.pedidos.length == 0){
-                            this.setPedidos(this.prueba);
-                            this.setDetallePedidos(this.producto);
-                        }else{   
-                            this.setDetallePedidos(this.producto);
+                            this.postPedidos();
+                        }else{
+                            this.validacionSiExistePedidos();
                         }
                     }
                 }).catch(e => {
                     console.log(e);
                 });
+            },
+
+            validacionSiExistePedidos(item){//si existe un pedido a la empresa que pertenece ese concepto
+                let bandera = false;
+                let id=null;
+
+                for (let i = 0; i < this.pedidos.length; i++) {
+                    if(this.pedidos[i].empresa_id == this.producto.empresa_id){
+                        bandera=true;
+                        id=this.pedidos[i].id;
+                    }
+                }
+
+                if(bandera){
+                    this.postPedidos(data,data2);
+                }else{
+                    this.postPedidosDetalle(id);
+                }
+            },
+
+            //posts de la Api
+            
+            postPedidos(){//crea un pedido
+                let data = {
+                    rest_mesas_id:1,
+                    rest_estatus_id:1,
+                    estado:'para vender',
+                    cant_personas:1,
+                    usuario_id:16,
+                    empresa_id:this.producto.empresa_id
+                }
+
+                let data2 = {
+                    conceptos_id:this.producto.id,
+                    cantidad:1,
+                    precio:this.producto.precio_a,
+                    estatus_id:1,
+                    estado:'vendible',
+                }
+
+                Pedidos().post("/",{data,data2}).then((response) => {
+                    console.log(response);
+                    this.setPedidos(data);
+                    this.setDetallePedidos(data2);
+                }).catch(e =>{
+                    console.log(e);
+                });
+            },
+
+            postPedidosDetalle(id){//agrega un detalle a un pedido
+                let data = {
+                    conceptos_id:this.producto.id,
+                    cantidad:1,
+                    precio:this.producto.precio_a,
+                    estatus_id:1,
+                    estado:'vendible',
+                }
+
+                Pedidos().post(`/${id}/detalles`,{data}).then((response) => {
+                    console.log(response);
+                    this.setDetallePedidos(this.producto);
+                }).catch(e => {
+                    console.log(e);
+                })
             },
 
 

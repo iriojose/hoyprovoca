@@ -7,7 +7,7 @@ export default new Vuex.Store({
   state:{
     user:{
       token:null,
-      loggedIn:false
+      loggedIn:false,
     },
     drawer:false,
     grupos:[],
@@ -20,14 +20,14 @@ export default new Vuex.Store({
     totalPedido:0
   },
 
-  getters: {//devulve la sesion 
+  getters: {//devuelve la sesion 
     user(state){
       return state.user;
     }
   },
 
   mutations: {
-    SET_PEDIDOS(state,val){//este es por agregacion
+    SET_PEDIDOS(state,val){//este es por agregacion de usuarios
       state.pedidos.push(val);
     },
     
@@ -175,8 +175,8 @@ export default new Vuex.Store({
       commit("LOGOUT");
     },
 
-    logged({commit},value){
-        commit("SET_LOGGED_IN",value);
+    logged({commit},value,value2){
+        commit("SET_LOGGED_IN",value,value2);
     },
     
     //pedidos actions

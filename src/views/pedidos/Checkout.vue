@@ -18,7 +18,7 @@
                 >
                     <v-slide-group show-arrows>
                         <v-slide-item
-                            v-for="n in 2"
+                            v-for="n in 0"
                             :key="n"
                             v-slot:default="{ active, toggle }"
                         >
@@ -38,7 +38,7 @@
 
                 <v-card elevation="10" class="mt-10 text-center" width="100%">
                     <v-subheader class="title px-10">Articulos</v-subheader>
-                    <v-toolbar elevation="0" v-for="n in 7" :key="n">
+                    <v-toolbar elevation="0" v-for="n in 0" :key="n">
                         <v-img 
                             width="50" 
                             height="50" 
@@ -140,7 +140,8 @@
 
 <script>
 import Pedidos from '@/services/Pedidos';
-import {mapState, mapActions} from 'vuex';
+import Usuario from '@/services/Usuario';
+import {mapState, mapActions,mapGetters} from 'vuex';
 
     export default {
         data() {
@@ -153,6 +154,7 @@ import {mapState, mapActions} from 'vuex';
 
         computed: {
             ...mapState(['pedidos','totalCarrito','totalPedido']),
+            ...mapGetters(['user']),
         },
 
         methods: {
@@ -170,21 +172,13 @@ import {mapState, mapActions} from 'vuex';
             },
 
             mounted(){
-                this.getPedidos();
+               
             },
+
             //metodos en local
             
-
             //LLAMADAS A LA API
-            getPedidos(){//trae los pedidos del usuario
-                Pedidos().get("/").then((response) => {
-                    console.log(response.data.data);
-                    //this.setPedidosServices(response.data.data);
-                }).catch(e => {
-                    console.log(e);
-                })
-            },
-
+           
             updateDetallesPedidos(id,id2){//actualiza el detalle del pedido
                 Pedidos().post(`/${id}/detalles/${id2}`).then((response) => {
                     console.log(response);

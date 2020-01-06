@@ -12,6 +12,7 @@ Vue.config.productionTip = false;
 Vue.use(Croppa);
 
 let token = window.localStorage.getItem('token');
+let data = window.localStorage.getItem('data');
 
 if(token){
   store.state.user.loggedIn=true;

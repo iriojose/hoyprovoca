@@ -122,8 +122,9 @@
 </template>
 
 <script>
-import {mapState,mapActions} from 'vuex';
+import {mapState,mapActions,mapGetters} from 'vuex';
 import Pedidos from '@/services/Pedidos';
+import Usuario from '@/services/Usuario';
 
     export default {
         data(){
@@ -134,11 +135,14 @@ import Pedidos from '@/services/Pedidos';
         },
 
         mounted(){
-            this.getPedidos();
+            if(this.user.loggedIn){
+                this.getUsuario();
+            }
         },
 
         computed: {
             ...mapState(['panel','pedidos','totalCarrito','totalPedido']),
+            ...mapGetters(['user']),
 
             panels:{
                 get(){
@@ -191,14 +195,23 @@ import Pedidos from '@/services/Pedidos';
 
 
             //LLAMADAS A LA API
-
-            getPedidos(){//trae los pedidos del usuario
-                Pedidos().get("/").then((response) => {
-                    console.log(response.data.data);
-                    //this.setPedidosServices(response.data.data);
+            getPedidosUsuario(id){//trae los pedidos del usuario especifico
+                Usuario().get(`/${id}/pedidos`).then((response) =>{
+                    console.log(response.data);
+                    if(response.data !== 'This entity is empty'){
+                        this.setPedidosServices(response.data);
+                    }
                 }).catch(e => {
                     console.log(e);
-                })
+                });
+            },
+
+            getUsuario(){//metodo get para el usuario logeado
+                Usuario().post("/validate", {user_token:this.user.token}).then((response) => {
+                    this.getPedidosUsuario(response.data.data.id);
+                }).catch(e => {
+                    console.log(e);
+                });
             },
 
             updatePedidosDetalles(id,id2){//actualiza un detalle del pedido (pricipalmente la cantidad)
