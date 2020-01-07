@@ -80,8 +80,8 @@ import Empresa from '@/services/Empresa';
                 });
             },
 
-            async getEmpresaGrupos(){
-                await Empresa().get(`/${this.id}/grupos`).then((response) => {
+            getEmpresaGrupos(){
+                Empresa().get(`/${this.id}/grupos`).then((response) => {
                     this.grupos = response.data.response.data;
 
                     this.getEmpresaSubgrupos();
@@ -91,8 +91,8 @@ import Empresa from '@/services/Empresa';
                 });
             },
 
-            async getEmpresaSubgrupos(){
-                await Empresa().get(`/${this.id}/subgrupos`).then((response) => {
+            getEmpresaSubgrupos(){
+                Empresa().get(`/${this.id}/subgrupos`).then((response) => {
                     this.subgrupos=response.data.response.data;
 
                     this.getEmpresaConceptos();
@@ -102,8 +102,8 @@ import Empresa from '@/services/Empresa';
                 });
             },
 
-            async getEmpresaConceptos(){
-                await Empresa().get(`/${this.id}/conceptos`).then((response)  => {
+            getEmpresaConceptos(){
+                Empresa().get(`/${this.id}/conceptos`).then((response)  => {
                     this.conceptos = response.data.response.data;
                 }).catch(e => {
                     this.error=true;

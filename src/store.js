@@ -17,7 +17,7 @@ export default new Vuex.Store({
     producto:{},
     pedidos:[],
     totalCarrito:0,
-    totalPedido:0
+    totalPedido:[]
   },
 
   getters: {//devuelve la sesion 
@@ -27,34 +27,51 @@ export default new Vuex.Store({
   },
 
   mutations: {
-    SET_PEDIDOS(state,val){//este es por agregacion de usuarios
+    SET_PEDIDOS(state,val){//este es por agregacion por parte de los usuarios
       state.pedidos.push(val);
     },
     
     SET_PEDIDOS_SERVICES(state,val){//cuando viene de la api
       state.pedidos=val;
+      
+      state.totalCarrito = 0;
+      state.totalPedido = [];
+
+      for(let i = 0; i < state.pedidos.length; i++){
+        let suma=0;
+        for (let e = 0; e < state.pedidos[i].detalles.length; e++) {
+          suma=suma+Number.parseFloat(state.pedidos[i].detalles[e].precio);
+        }
+        state.totalPedido.push(suma); 
+        state.totalCarrito = state.totalCarrito+suma;
+      }
+
     },
 
     SET_DETALLE_PEDIDOS(state,val){
-      for (let i = 0; i < state.pedidos.length; i++) {
-        if(state.pedidos[i].empresa_id == val.empresa_id){
-           state.pedidos[i].detalles.push(val); 
+
+      for (let i = 0; i < state.pedidos.length; i++){
+        if(state.pedidos[i].id == val.rest_pedidos_id){
+          state.pedidos[i].detalles.push(val); 
         }
       }
 
       state.totalCarrito = 0;
       state.totalPedido = [];
 
-      for (let i = 0; i < state.pedidos.length; i++){
+      for(let i = 0; i < state.pedidos.length; i++){
+        let suma=0;
         for (let e = 0; e < state.pedidos[i].detalles.length; e++) {
-          state.totalCarrito += Number.parseFloat(state.pedidos[i].detalles[e].precio_a);
+          suma=suma+Number.parseFloat(state.pedidos[i].detalles[e].precio);
         }
-        state.totalPedido.push(state.totalCarrito);
+        state.totalPedido.push(suma); 
+        state.totalCarrito = state.totalCarrito+suma;
       }
+
     },
 
     DELETE_DETALLE_PEDIDOS(state,val){//elimina el concepto de un pedido
-      for (let i = 0; i < state.pedidos.length; i++) {
+      for (let i = 0; i < state.pedidos.length; i++){
         for (let e = 0; e < state.pedidos[i].detalles.length; e++){
           if(state.pedidos[i].detalles.length == 1){
             state.pedidos.splice(i,1);
@@ -67,21 +84,11 @@ export default new Vuex.Store({
           }
         }
       }
-
-      state.totalCarrito = 0;
-      state.totalPedido = [];
-
-      for (let i = 0; i < state.pedidos.length; i++){
-        for (let e = 0; e < state.pedidos[i].detalles.length; e++) {
-          state.totalCarrito += Number.parseFloat(state.pedidos[i].detalles[e].precio_a);
-        }
-        state.totalPedido.push(state.totalCarrito);
-      }
     },
 
     DELETE_PEDIDOS(state,val){//elimina un pedido
       for (let i = 0; i < state.pedidos.length; i++) {
-        if(state.pedidos[i].id == val.id){
+        if(state.pedidos[i].id == val){
           state.pedidos.splice(i,1);
           return //asi no sigue buscando
         }
@@ -90,12 +97,15 @@ export default new Vuex.Store({
       state.totalCarrito = 0;
       state.totalPedido = [];
 
-      for (let i = 0; i < state.pedidos.length; i++){
+      for(let i = 0; i < state.pedidos.length; i++){
+        let suma=0;
         for (let e = 0; e < state.pedidos[i].detalles.length; e++) {
-          state.totalCarrito += Number.parseFloat(state.pedidos[i].detalles[e].precio_a);
+          suma=suma+Number.parseFloat(state.pedidos[i].detalles[e].precio);
         }
-        state.totalPedido.push(state.totalCarrito);
+        state.totalPedido.push(suma); 
+        state.totalCarrito = state.totalCarrito+suma;
       }
+
     },
 
     UPDATE_PEDIDOS(state,val){//actualiza el pedido //POR HACER*

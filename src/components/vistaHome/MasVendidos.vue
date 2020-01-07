@@ -38,6 +38,8 @@
                                         <v-btn  
                                             class="text-capitalize caption"
                                             @click="agregarConceptos(concepto)"
+                                            :disabled="loading"
+                                            :loading="loading"
                                         >
                                             Agregar al carrito
                                         </v-btn>
@@ -71,6 +73,8 @@
                                         <v-btn  
                                             class="text-capitalize caption"
                                             @click="agregarConceptos(concepto)"
+                                            :disabled="loading"
+                                            :loading="loading"
                                         >
                                             Agregar al carrito
                                         </v-btn>
@@ -121,6 +125,8 @@ import Pedidos from '@/services/Pedidos';
                 model:1,
                 snackbar:false,
                 existencia:{},
+                loading:false,
+                usuario:null
             }
         },
         computed: {
@@ -136,6 +142,8 @@ import Pedidos from '@/services/Pedidos';
             },
 
             agregarConceptos(item){//
+                this.loading=true;
+
                 if(this.user.loggedIn){
                     this.setProducto(item);
                     //this.setValidacionConcepto(true);
@@ -148,82 +156,115 @@ import Pedidos from '@/services/Pedidos';
             getConceptosExistencia(id){//trae la existencia del concepto del deposito de la web
                 Conceptos().get(`/${id}/depositos`).then((response) => {
                     this.existencia = response.data.data[0];   
-                    console.log(this.existencia.existencia);
 
                     if(Number.parseInt(this.existencia.existencia) >= 0){
                         if(this.pedidos.length == 0){
+                            console.log('primer pedido');
                             this.postPedidos();
                         }else{
                             this.validacionSiExistePedidos();
                         }
+                    }else{
+                        console.log('no tiene existencia');
                     }
                 }).catch(e => {
                     console.log(e);
+                    this.loading=false;
                 });
             },
 
-            validacionSiExistePedidos(item){//si existe un pedido a la empresa que pertenece ese concepto
+            validacionSiExistePedidos(){//si existe un pedido a la empresa que pertenece ese concepto
                 let bandera = false;
                 let id=null;
 
-                for (let i = 0; i < this.pedidos.length; i++) {
+                for (let i = 0; i < this.pedidos.length; i++){
                     if(this.pedidos[i].empresa_id == this.producto.empresa_id){
+                        console.log(this.pedidos[i]);
                         bandera=true;
                         id=this.pedidos[i].id;
                     }
                 }
-
+            
                 if(bandera){
-                    this.postPedidos(data,data2);
-                }else{
+                    console.log('detalle agregado');
                     this.postPedidosDetalle(id);
+                }else{
+                    console.log('pedido diferente');
+                    this.postPedidos();
                 }
             },
 
             //posts de la Api
-            
-            postPedidos(){//crea un pedido
+            postPedidos(){//crea un pedido y su primer detalle
+
                 let data = {
                     rest_mesas_id:1,
-                    rest_estatus_id:1,
+                    rest_estatus_id:3,
                     estado:'para vender',
                     cant_personas:1,
                     usuario_id:16,
                     empresa_id:this.producto.empresa_id
                 }
 
-                let data2 = {
-                    conceptos_id:this.producto.id,
-                    cantidad:1,
-                    precio:this.producto.precio_a,
-                    estatus_id:1,
-                    estado:'vendible',
-                }
+                let data1 = [
+                    {
+                        conceptos_id:this.producto.id,
+                        cantidad:1,
+                        precio:this.producto.precio_a,
+                        rest_estatus_id:7,
+                        estado:'vendible',
+                    }
+                ]
 
-                Pedidos().post("/",{data,data2}).then((response) => {
-                    console.log(response);
-                    this.setPedidos(data);
-                    this.setDetallePedidos(data2);
+                Pedidos().post("/",{data,data1}).then((response) => {
+                    let data3 = {
+                        id:response.data.data.id,
+                        rest_mesas_id:1,
+                        rest_estatus_id:3,
+                        estado:'para vender',
+                        cant_personas:1,
+                        usuario_id:16,
+                        empresa_id:this.producto.empresa_id
+                    }
+
+                    this.setPedidos(data3);//local
+                    this.setDetallePedidos(data1[0],response.data.data.id);//local
+                    this.loading=false;
                 }).catch(e =>{
                     console.log(e);
+                    this.loading=false;
                 });
             },
 
             postPedidosDetalle(id){//agrega un detalle a un pedido
                 let data = {
-                    conceptos_id:this.producto.id,
-                    cantidad:1,
-                    precio:this.producto.precio_a,
-                    estatus_id:1,
-                    estado:'vendible',
-                }
+                        rest_pedidos_id:id,
+                        conceptos_id:this.producto.id,
+                        cantidad:1,
+                        precio:this.producto.precio_a,
+                        rest_estatus_id:7,
+                        estado:'vendible',
+                    }
 
                 Pedidos().post(`/${id}/detalles`,{data}).then((response) => {
                     console.log(response);
-                    this.setDetallePedidos(this.producto);
+
+                    this.setDetallePedidos(data);//metodo local
+                    this.loading=false;
                 }).catch(e => {
                     console.log(e);
+                    this.loading=false;
                 })
+            },
+
+            getUsuario(){//metodo get para el usuario logeado
+                Usuario().post("/validate", {user_token:this.user.token}).then((response) => {
+                    this.usuario=response.data.data.id;
+                    this.loading=false;
+                }).catch(e => {
+                    console.log(e);
+                    this.loading=false;
+                });
             },
 
 

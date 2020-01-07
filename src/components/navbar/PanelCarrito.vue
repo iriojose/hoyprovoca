@@ -39,15 +39,16 @@
                 >
                     <v-expansion-panel-header>
                         <v-toolbar elevation="0" height="60">
-                            <v-btn icon @click="deletepedido(pedido)"><v-icon>delete</v-icon></v-btn>
+                            <v-btn icon @click="deletePedido(pedido.id)"><v-icon>delete</v-icon></v-btn>
                             <v-spacer></v-spacer>
                             <v-avatar class="elevation-10" color="#eee" size="50">
                                 <v-img src="@/assets/noimage.png"></v-img>
                             </v-avatar>
+                            <!--
                             <v-spacer></v-spacer>
-                            <div class="font-weight-bold">{{pedido.nombre}}</div>
+                            <div class="font-weight-bold">{{pedido.nombre}}</div>-->
                             <v-spacer></v-spacer>
-                            <div class="font-weight-black">BsS. {{totalPedido[i]}}</div>
+                            <div class="font-weight-black">BsS. {{Number.parseFloat(totalPedido[i])}}</div>
                         </v-toolbar>
                     </v-expansion-panel-header>
                     <v-expansion-panel-content>
@@ -62,18 +63,18 @@
 
                             <v-spacer></v-spacer>
 
-                                <v-btn @click="deletedetalle(pedido,detalle)" class="mx-2" tile icon>
+                                <v-btn @click="deletePedidosDetail(pedido,detalle)" class="mx-2" tile icon :loading="loading">
                                     <v-icon dark>delete</v-icon>
                                 </v-btn>
 
-                                <div class="mx-2 font-weight-black subtitle-1">1</div>
+                                <div class="mx-2 font-weight-black subtitle-1">{{Number.parseInt(detalle.cantidad)}}</div>
 
                                 <v-btn class="mx-2" tile icon>
                                     <v-icon dark>plus_one</v-icon>
                                 </v-btn> 
                             <v-spacer></v-spacer>
 
-                            <div class="font-weight-black">Bss. {{detalle.precio_a}}</div>
+                            <div class="font-weight-black">Bss. {{detalle.precio}}</div>
                         </v-toolbar>
                     </v-expansion-panel-content>
                 </v-expansion-panel>
@@ -113,7 +114,7 @@
             <v-divider></v-divider>
 
             <div class="mt-3 py-3 text-center">
-                <v-btn to="/checkout" color="#005598" disabled class="white--text" width="50%" rounded>
+                <v-btn to="/checkout" color="#005598" :disabled="pedidos.length == 0 ? true:false" class="white--text" width="50%" rounded>
                     Ir a pagar
                 </v-btn>
             </div>
@@ -130,7 +131,8 @@ import Usuario from '@/services/Usuario';
         data(){
             return{
                 dolares:53,
-                totales:[]
+                totales:[],
+                loading:false
             }
         },
 
@@ -155,8 +157,10 @@ import Usuario from '@/services/Usuario';
         },
 
         watch:{
-            pedidos(){
-                console.log('cj');
+            loading(){
+                if(!this.loading){
+                    this.getUsuario();
+                }
             }
         },
 
@@ -179,27 +183,14 @@ import Usuario from '@/services/Usuario';
                 }
             },
 
-            deletepedido(val){
-                this.deletePedido(val.id);//local
-                this.deletePedidos(val);//api
-            },
-
-            deletedetalle(val,val2){
-                this.deleteDetallePedidos(val);//local
-                this.deletePedidosDetail(val.id,val2.id);//api
-            },
-
-            updateDetalle(id,data,id2){
-
-            },
-
-
             //LLAMADAS A LA API
-            getPedidosUsuario(id){//trae los pedidos del usuario especifico
+            getPedidosUsuario(id){//trae los pedidos del usuario logeado
                 Usuario().get(`/${id}/pedidos`).then((response) =>{
-                    console.log(response.data);
+                    console.log(response.data.data);
                     if(response.data !== 'This entity is empty'){
-                        this.setPedidosServices(response.data);
+                        this.setPedidosServices(response.data.data);//local method
+                    }else{
+                        console.log('no tienes pedidos');
                     }
                 }).catch(e => {
                     console.log(e);
@@ -215,27 +206,45 @@ import Usuario from '@/services/Usuario';
             },
 
             updatePedidosDetalles(id,id2){//actualiza un detalle del pedido (pricipalmente la cantidad)
+                this.loading=true;
+
                 Pedidos().post(`/${id}/detalles/${id2}`).then((response) => {
                     console.log(response);
+                    this.loading=false;
                 }).catch(e => {
                     console.log(e);
-                }) 
+                    this.loading=false;
+                });
             },
 
-            deletePedidosDetail(id,id2){//elimina el detalle de un pedido
-                Pedidos().delete(`/${id}/detalles/${id2}`).then((response) => {
-                    console.log(response);
-                }).catch(e => {
-                    console.log(e);
-                }) 
+            deletePedidosDetail(pedido,detalle){//elimina el detalle de un pedido
+                this.loading=true;
+                
+                if(pedido.detalles.length == 1){//se elimina el pedido entero si solo queda un detalle
+                    this.deletePedido(pedido.id);
+                }else{
+                    Pedidos().delete(`/${pedido.id}/detalles/${detalle.id}`).then((response) => {
+                        console.log(response);
+                        this.deleteDetallePedidos(pedido);//local method
+                        this.loading=false;
+                    }).catch(e => {
+                        console.log(e);
+                        this.loading=false;
+                    });
+                }
             },
 
             deletePedido(id){//elimina un pedido completo
+                this.loading=true;
+
                 Pedidos().delete(`/${id}`).then((response) => {
                     console.log(response);
+                    this.deletePedidos(id);//metodo local 
+                    this.loading=false;
                 }).catch(e => {
                     console.log(e);
-                })
+                    this.loading=false;
+                });
             }
         },
     }

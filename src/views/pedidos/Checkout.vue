@@ -18,8 +18,8 @@
                 >
                     <v-slide-group show-arrows>
                         <v-slide-item
-                            v-for="n in 0"
-                            :key="n"
+                            v-for="pedido in pedidos"
+                            :key="pedido.id"
                             v-slot:default="{ active, toggle }"
                         >
                             <v-btn
@@ -30,7 +30,7 @@
                                 rounded
                                 @click="toggle"
                             >
-                                Empresa
+                                {{pedido.id}}
                             </v-btn>
                         </v-slide-item>
                     </v-slide-group>
@@ -38,7 +38,7 @@
 
                 <v-card elevation="10" class="mt-10 text-center" width="100%">
                     <v-subheader class="title px-10">Articulos</v-subheader>
-                    <v-toolbar elevation="0" v-for="n in 0" :key="n">
+                    <v-toolbar elevation="0" v-for="detalle in pedidos[0].detalles" :key="detalle.id">
                         <v-img 
                             width="50" 
                             height="50" 
@@ -54,7 +54,7 @@
                         <v-spacer></v-spacer>
 
                         <v-btn  class="mx-2" tile icon>
-                            <v-icon dark>delete</v-icon>
+                            <v-icon dark>exposure_neg_1</v-icon>
                         </v-btn>
 
                         <div class="mx-2 font-weight-black subtitle-1">1</div>
@@ -65,7 +65,7 @@
                         <v-spacer></v-spacer>
 
                         <v-toolbar-title>
-                            300000 BsS 
+                            BsS {{detalle.precio}} 
                         </v-toolbar-title>
                         
                         <v-spacer></v-spacer>
@@ -130,6 +130,11 @@
                             <v-col cols="12" md="12" sm="12" justify-self="center">
                                 <v-img width="450" height="200" contain v-if="bauche" :src="bauche" />
                             </v-col>
+                            <v-col cols="12" md="12" sm="12" v-if="bauche">
+                                <v-btn block color="#005598" class="text-capitalize white--text" rounded @click="pagar">
+                                    Confirmar
+                                </v-btn>
+                            </v-col>
                         </v-row>
                     </v-card-actions>
                 </v-card>
@@ -139,8 +144,10 @@
 </template>
 
 <script>
+//services
 import Pedidos from '@/services/Pedidos';
 import Usuario from '@/services/Usuario';
+//state
 import {mapState, mapActions,mapGetters} from 'vuex';
 
     export default {
@@ -148,7 +155,8 @@ import {mapState, mapActions,mapGetters} from 'vuex';
             return {
                 bolivar:0,
                 dolares:0,
-                bauche:null
+                bauche:null,
+                detalles:[]
             }
         },
 
@@ -158,7 +166,7 @@ import {mapState, mapActions,mapGetters} from 'vuex';
         },
 
         methods: {
-            ...mapActions(['deleteDetallePedidos','setPedidosServices','setDetallePedidos']),
+            ...mapActions(['deleteDetallePedidos','setPedidosServices','setDetallePedidos','deletePedidos']),
 
             change(evt){
                 this.bauche=null;
@@ -177,8 +185,19 @@ import {mapState, mapActions,mapGetters} from 'vuex';
 
             //metodos en local
             
+            pagar(){
+
+            },
+
             //LLAMADAS A LA API
-           
+            deletePedido(id){//
+                Pedidos().delete(`/${id}`).then((response) => {//elimina el pedidos? o lo confirma como pagado
+                    console.log(response);
+                }).catch(e => {
+                    console.log(e);
+                });
+            },
+
             updateDetallesPedidos(id,id2){//actualiza el detalle del pedido
                 Pedidos().post(`/${id}/detalles/${id2}`).then((response) => {
                     console.log(response);
