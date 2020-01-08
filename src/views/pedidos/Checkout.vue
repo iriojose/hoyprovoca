@@ -12,23 +12,26 @@
 
         <v-row :class="$vuetify.breakpoint.smAndDown ? 'mx-3':null"> 
            <v-col cols="12" :offset="$vuetify.breakpoint.smAndDown ? null:1" md="6"> 
+               <div class="text-center title mt-5">
+                   Pedidos
+               </div>
+
                <v-sheet
-                    class="mt-10 py-3"
+                    class="mt-5 py-3"
                     elevation="10"
                 >
                     <v-slide-group show-arrows>
                         <v-slide-item
-                            v-for="pedido in pedidos"
+                            v-for="(pedido,i) in pedidos"
                             :key="pedido.id"
-                            v-slot:default="{ active, toggle }"
+                            v-slot:default="{active}"
                         >
                             <v-btn
                                 class="mx-2"
-                                :input-value="active"
-                                active-class="purple white--text"
+                                :active-class="active ? 'purple white--text':null"
                                 depressed
                                 rounded
-                                @click="toggle"
+                                @click="selectPedido(pedido,i),active"
                             >
                                 {{pedido.id}}
                             </v-btn>
@@ -36,9 +39,12 @@
                     </v-slide-group>
                 </v-sheet>
 
-                <v-card elevation="10" class="mt-10 text-center" width="100%">
+                <v-card elevation="10" class="mt-10 text-center" width="100%" v-if="detalles">
                     <v-subheader class="title px-10">Articulos</v-subheader>
-                    <v-toolbar elevation="0" v-for="detalle in pedidos[0].detalles" :key="detalle.id">
+                    <v-toolbar elevation="0"
+                        v-for="detalle in detalles"
+                        :key="detalle.id"
+                    >
                         <v-img 
                             width="50" 
                             height="50" 
@@ -53,13 +59,13 @@
 
                         <v-spacer></v-spacer>
 
-                        <v-btn  class="mx-2" tile icon>
+                        <v-btn  class="mx-2" tile icon :disabled="detalle.cantidad==1 ? true:false" @click="restar(detalle)">
                             <v-icon dark>exposure_neg_1</v-icon>
                         </v-btn>
 
-                        <div class="mx-2 font-weight-black subtitle-1">1</div>
+                        <div class="mx-2 font-weight-black subtitle-1">{{Number.parseInt(detalle.cantidad)}}</div>
 
-                        <v-btn class="mx-2" tile icon>
+                        <v-btn class="mx-2" tile icon @click="sumar(detalle)">
                             <v-icon dark>plus_one</v-icon>
                         </v-btn> 
                         <v-spacer></v-spacer>
@@ -70,7 +76,15 @@
                         
                         <v-spacer></v-spacer>
 
-                        <v-btn fab color="#005598" width="40" height="40">
+                        <v-btn 
+                            fab 
+                            color="#005598" 
+                            width="40" 
+                            height="40" 
+                            @click="deletePedidosDetail(detalle,pedido)" 
+                            :loading="loading"
+                            v-if="detalles.length !== 1"
+                        >
                             <v-icon color="#fff">delete</v-icon>
                         </v-btn>
                     </v-toolbar>
@@ -104,7 +118,7 @@
                             <div class="py-2">0Bs.</div>
                             <v-text-field 
                                 solo
-                                v-model="dolares"
+                                v-model="totalPedido[index]"
                                 dense
                                 color="#000"
                                 hide-details
@@ -140,6 +154,10 @@
                 </v-card>
             </v-col>
        </v-row>
+
+        <v-snackbar v-model="snackbar" color="red" right class="white--text">
+           Existencia maxima alcanzada.
+        </v-snackbar>
     </div>
 </template>
 
@@ -147,6 +165,7 @@
 //services
 import Pedidos from '@/services/Pedidos';
 import Usuario from '@/services/Usuario';
+import Conceptos from '@/services/Conceptos';
 //state
 import {mapState, mapActions,mapGetters} from 'vuex';
 
@@ -156,8 +175,16 @@ import {mapState, mapActions,mapGetters} from 'vuex';
                 bolivar:0,
                 dolares:0,
                 bauche:null,
-                detalles:[]
+                detalles:null,
+                pedido:null,
+                loading:false,
+                index:null,
+                snackbar:false
             }
+        },
+
+        mounted() {
+            this.getUsuario();
         },
 
         computed: {
@@ -179,41 +206,90 @@ import {mapState, mapActions,mapGetters} from 'vuex';
                 }
             },
 
-            mounted(){
-               
+            selectPedido(val,i){//selecciona el pedido y sus detalles + el index del arreglo de pedidos
+                this.detalles=val.detalles;
+                this.pedido=val;
+                this.index=i;
             },
 
-            //metodos en local
-            
             pagar(){
 
             },
 
-            //LLAMADAS A LA API
-            deletePedido(id){//
-                Pedidos().delete(`/${id}`).then((response) => {//elimina el pedidos? o lo confirma como pagado
-                    console.log(response);
+            sumar(detalle){
+                this.getConceptoExistencia(detalle,1);
+            },
+            restar(detalle){
+                this.getConceptoExistencia(detalle,0);
+            },
+
+            //llamadas a la api
+            getUsuario(){
+                Usuario().post("/validate",{user_token:this.user.token}).then((response) => {
+                    this.getPedidosUsuario(response.data.data.id);
                 }).catch(e => {
                     console.log(e);
                 });
             },
 
-            updateDetallesPedidos(id,id2){//actualiza el detalle del pedido
-                Pedidos().post(`/${id}/detalles/${id2}`).then((response) => {
-                    console.log(response);
+            getPedidosUsuario(id){
+                Usuario().get(`/${id}/pedidos`).then((response) =>{
+                    if(response.data !== 'This entity is empty'){
+                        this.setPedidosServices(response.data.data);//local method
+
+                        if(this.index){//si ya existe un index  
+                            this.selectPedido(this.pedidos[this.index],this.index);//metodo interno del componente
+                        }else{
+                            this.selectPedido(this.pedidos[0],0);
+                        }
+                    }else{
+                        console.log('no tienes pedidos');
+                    }
+                }).catch(e => {
+                    console.log(e);
+                });
+            },
+
+            deletePedidosDetail(detalle,pedido){//elimina el detalle de un pedido
+                this.loading=true;
+                Pedidos().delete(`/${pedido.id}/detalles/${detalle.id}`).then((response) => {
+                    this.deleteDetallePedidos(detalle);//local method
+                    this.loading=false;
+                }).catch(e => {
+                    console.log(e);
+                    this.loading=false;
+                });
+            },
+
+            updateDetallesPedidos(detalle,val){//actualiza el detalle del pedido a suma o resta
+                let data = {
+                    cantidad:detalle.cantidad
+                };
+
+                if(val == 1){
+                    data.cantidad = detalle.cantidad + 1;
+                }else{
+                    data.cantidad = detalle.cantidad - 1 ;
+                }
+
+                Pedidos().post(`/${detalle.rest_pedidos_id}/detalles/${detalle.id}`,{data}).then((response) => {
+                    console.log(response.data);
                 }).catch(e => {
                     console.log(e);
                 })
             },
 
-            deleteDetallePedidos(id,id2){//elimina el detalle de un pedido
-                Pedidos().delete(`/${id}/detalles/${id2}`).then((response) => {
-                    console.log(response);
+            getConceptoExistencia(detalle,val){
+                Conceptos().get(`/${detalle.conceptos_id}/depositos`).then((response) => {
+                    if(Number.parseInt(response.data.data[0].existencia) > 0){
+                        this.updateDetallesPedidos(detalle,val);
+                    }else{
+                        this.snackbar=true;
+                    }
                 }).catch(e => {
                     console.log(e);
                 });
             }
-
         },
 
     }
@@ -225,10 +301,5 @@ import {mapState, mapActions,mapGetters} from 'vuex';
         top: 102px;
         width: 500px;
     }
-    .cuadro{
-        border: 1px solid #eee;
-        border-radius: 100%;
-        width: 50px;
-        height: 50px;
-    }
+   
 </style>

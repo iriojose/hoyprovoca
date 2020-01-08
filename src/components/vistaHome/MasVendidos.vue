@@ -159,7 +159,6 @@ import Pedidos from '@/services/Pedidos';
 
                     if(Number.parseInt(this.existencia.existencia) >= 0){
                         if(this.pedidos.length == 0){
-                            console.log('primer pedido');
                             this.postPedidos();
                         }else{
                             this.validacionSiExistePedidos();
@@ -179,17 +178,14 @@ import Pedidos from '@/services/Pedidos';
 
                 for (let i = 0; i < this.pedidos.length; i++){
                     if(this.pedidos[i].empresa_id == this.producto.empresa_id){
-                        console.log(this.pedidos[i]);
                         bandera=true;
                         id=this.pedidos[i].id;
                     }
                 }
             
                 if(bandera){
-                    console.log('detalle agregado');
                     this.postPedidosDetalle(id);
                 }else{
-                    console.log('pedido diferente');
                     this.postPedidos();
                 }
             },
@@ -203,7 +199,7 @@ import Pedidos from '@/services/Pedidos';
                     estado:'para vender',
                     cant_personas:1,
                     usuario_id:16,
-                    empresa_id:this.producto.empresa_id
+                    empresa_id:this.producto.empresa_id,
                 }
 
                 let data1 = [
@@ -217,6 +213,8 @@ import Pedidos from '@/services/Pedidos';
                 ]
 
                 Pedidos().post("/",{data,data1}).then((response) => {
+                    console.log(response.data.data);
+
                     let data3 = {
                         id:response.data.data.id,
                         rest_mesas_id:1,
@@ -224,11 +222,24 @@ import Pedidos from '@/services/Pedidos';
                         estado:'para vender',
                         cant_personas:1,
                         usuario_id:16,
-                        empresa_id:this.producto.empresa_id
+                        empresa_id:this.producto.empresa_id,
+                        detalles:[]
                     }
 
+                    let data2 = [
+                        {
+                            id:response.data.data.detalles[0].id,
+                            conceptos_id:this.producto.id,
+                            cantidad:1,
+                            precio:this.producto.precio_a,
+                            rest_estatus_id:7,
+                            estado:'vendible',
+                            rest_pedidos_id:response.data.data.id
+                        }
+                    ]
+
                     this.setPedidos(data3);//local
-                    this.setDetallePedidos(data1[0],response.data.data.id);//local
+                    this.setDetallePedidos(data2[0]);//local
                     this.loading=false;
                 }).catch(e =>{
                     console.log(e);
@@ -237,7 +248,7 @@ import Pedidos from '@/services/Pedidos';
             },
 
             postPedidosDetalle(id){//agrega un detalle a un pedido
-                let data = {
+                let data = {//api
                         rest_pedidos_id:id,
                         conceptos_id:this.producto.id,
                         cantidad:1,
@@ -247,9 +258,17 @@ import Pedidos from '@/services/Pedidos';
                     }
 
                 Pedidos().post(`/${id}/detalles`,{data}).then((response) => {
-                    console.log(response);
+                    let data2 = {//local
+                        id:response.data.data.id,
+                        rest_pedidos_id:id,
+                        conceptos_id:this.producto.id,
+                        cantidad:1,
+                        precio:this.producto.precio_a,
+                        rest_estatus_id:7,
+                        estado:'vendible',
+                    }
 
-                    this.setDetallePedidos(data);//metodo local
+                    this.setDetallePedidos(data2);//metodo local
                     this.loading=false;
                 }).catch(e => {
                     console.log(e);
@@ -266,8 +285,6 @@ import Pedidos from '@/services/Pedidos';
                     this.loading=false;
                 });
             },
-
-
         },
     }
 </script>

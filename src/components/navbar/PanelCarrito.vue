@@ -62,8 +62,11 @@
                             />
 
                             <v-spacer></v-spacer>
-
-                                <v-btn @click="deletePedidosDetail(pedido,detalle)" class="mx-2" tile icon :loading="loading">
+                                <v-btn  class="mx-2" tile icon v-if="detalle.cantidad > 1">
+                                    <v-icon dark>exposure_neg_1</v-icon>
+                                </v-btn>
+                                
+                                <v-btn v-else @click="deletePedidosDetail(pedido,detalle)" class="mx-2" tile icon :loading="loading">
                                     <v-icon dark>delete</v-icon>
                                 </v-btn>
 
@@ -132,7 +135,8 @@ import Usuario from '@/services/Usuario';
             return{
                 dolares:53,
                 totales:[],
-                loading:false
+                loading:false,
+                index:null
             }
         },
 
@@ -152,14 +156,6 @@ import Usuario from '@/services/Usuario';
                 },
                 set(val){
                     this.setPanel(val);
-                }
-            }
-        },
-
-        watch:{
-            loading(){
-                if(!this.loading){
-                    this.getUsuario();
                 }
             }
         },
@@ -186,7 +182,6 @@ import Usuario from '@/services/Usuario';
             //LLAMADAS A LA API
             getPedidosUsuario(id){//trae los pedidos del usuario logeado
                 Usuario().get(`/${id}/pedidos`).then((response) =>{
-                    console.log(response.data.data);
                     if(response.data !== 'This entity is empty'){
                         this.setPedidosServices(response.data.data);//local method
                     }else{
@@ -225,7 +220,7 @@ import Usuario from '@/services/Usuario';
                 }else{
                     Pedidos().delete(`/${pedido.id}/detalles/${detalle.id}`).then((response) => {
                         console.log(response);
-                        this.deleteDetallePedidos(pedido);//local method
+                        this.deleteDetallePedidos(detalle);//local method
                         this.loading=false;
                     }).catch(e => {
                         console.log(e);
@@ -245,7 +240,15 @@ import Usuario from '@/services/Usuario';
                     console.log(e);
                     this.loading=false;
                 });
-            }
+            },
+
+            getConceptoExistencia(id){
+                Conceptos().get(`/${id}/depositos`).then((response) =>{
+                    console.log(response);
+                }).catch(e => { 
+                    console.log(e);
+                });
+            },
         },
     }
 </script>

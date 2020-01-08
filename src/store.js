@@ -17,7 +17,7 @@ export default new Vuex.Store({
     producto:{},
     pedidos:[],
     totalCarrito:0,
-    totalPedido:[]
+    totalPedido:[],
   },
 
   getters: {//devuelve la sesion 
@@ -70,19 +70,31 @@ export default new Vuex.Store({
 
     },
 
-    DELETE_DETALLE_PEDIDOS(state,val){//elimina el concepto de un pedido
+    DELETE_DETALLE_PEDIDOS(state,val){//elimina el detalle de un pedido
       for (let i = 0; i < state.pedidos.length; i++){
         for (let e = 0; e < state.pedidos[i].detalles.length; e++){
-          if(state.pedidos[i].detalles.length == 1){
-            state.pedidos.splice(i,1);
-            return //asi no sigue buscando
-          }else{
-            if(state.pedidos[i].detalles[e].id == val.id){
+          if(state.pedidos[i].detalles[e].id == val.id){
+            if(state.pedidos[i].detalles.length == 1){
+              state.pedidos.splice(i,1);
+              break
+            }else{
               state.pedidos[i].detalles.splice(e,1);
-              return //asi no sigue buscando
+              break
             }
           }
         }
+      }
+
+      state.totalCarrito = 0;
+      state.totalPedido = [];
+
+      for(let i = 0; i < state.pedidos.length; i++){
+        let suma=0;
+        for (let e = 0; e < state.pedidos[i].detalles.length; e++) {
+          suma=suma+Number.parseFloat(state.pedidos[i].detalles[e].precio);
+        }
+        state.totalPedido.push(suma); 
+        state.totalCarrito = state.totalCarrito+suma;
       }
     },
 
@@ -90,7 +102,7 @@ export default new Vuex.Store({
       for (let i = 0; i < state.pedidos.length; i++) {
         if(state.pedidos[i].id == val){
           state.pedidos.splice(i,1);
-          return //asi no sigue buscando
+          break
         }
       }
       

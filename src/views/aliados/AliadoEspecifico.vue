@@ -68,12 +68,10 @@ import Empresa from '@/services/Empresa';
             //puse los metodos de los servicios uno dentro del otro por que si no a la 
             //hora de filtrar los datos eran undefined
 
-            async getEmpresa(id){//trae los datos de la empresa
-                await Empresa().get(`/${id}`).then((response)=> {
-                    this.empresa = response.data.data[0];
-
-                    this.getEmpresaGrupos(this.id);//grupos
-                    
+            getEmpresa(id){//trae los datos de la empresa
+                Empresa().get(`/${id}`).then((response)=> {
+                    this.empresa = response.data.data;
+                    this.getEmpresaGrupos(this.id);//grupos 
                 }).catch(e => {
                     this.error=true;
                     console.log(e);
@@ -82,8 +80,7 @@ import Empresa from '@/services/Empresa';
 
             getEmpresaGrupos(){
                 Empresa().get(`/${this.id}/grupos`).then((response) => {
-                    this.grupos = response.data.response.data;
-
+                    this.grupos = response.data.data;
                     this.getEmpresaSubgrupos();
                 }).catch(e => {
                     this.error=true;
@@ -93,8 +90,7 @@ import Empresa from '@/services/Empresa';
 
             getEmpresaSubgrupos(){
                 Empresa().get(`/${this.id}/subgrupos`).then((response) => {
-                    this.subgrupos=response.data.response.data;
-
+                    this.subgrupos=response.data.data;
                     this.getEmpresaConceptos();
                 }).catch(e => {
                     this.error=true;
@@ -104,7 +100,7 @@ import Empresa from '@/services/Empresa';
 
             getEmpresaConceptos(){
                 Empresa().get(`/${this.id}/conceptos`).then((response)  => {
-                    this.conceptos = response.data.response.data;
+                    this.conceptos = response.data.data;
                 }).catch(e => {
                     this.error=true;
                     console.log(e);
