@@ -76,9 +76,14 @@ export default {
       this.getConceptos();
       this.getGrupos();
   },
-
+  computed: {
+    ...mapState(['conceptosId','user']),
+  },
   watch: {
     //cuando las variables cambien se quita el modo de espera
+    conceptosId(){//se refresca cada que agregan
+      this.getConceptos();
+    },
     conceptos(){
       this.activoConcepto=true;
     },
@@ -91,6 +96,16 @@ export default {
   },
 
   methods: {
+    addOrder(){
+      for (let i = 0; i < this.conceptos.length; i++) {
+        for (let e = 0; e < this.conceptosId.length; e++) {
+          if(this.conceptos[i].id == this.conceptosId[e]){
+            this.conceptos[i].agregado=true;
+          }
+        }
+      }
+    },
+
     getGrupos(){//trae las categorias (grupos)
         Grupos().get('/?limit=8').then((response) => {
           this.categorias = response.data.data;
@@ -110,6 +125,7 @@ export default {
     getConceptos(){//trae conceptos (productos/servicios)
         Conceptos().get('/?limit=15').then((response) => {
             this.conceptos = response.data.data;
+            this.addOrder();//pone bandea de agregado a pedidos
         }).catch(e => {
             console.log(e);
         });

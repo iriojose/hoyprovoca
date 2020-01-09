@@ -1,5 +1,25 @@
 <template>
-    <div>
+    <div v-if="pedidos.length==0">
+        <v-toolbar width="100%" height="50" color="#005598">
+           <v-btn text to="/" disabled>
+               <v-img width="120" height="120" src="@/assets/logo2.png" contain></v-img>
+           </v-btn>
+           <v-spacer></v-spacer>
+           <v-btn to="/" text elevation="0" dark class="caption text-capitalize">
+               Seguir Comprando
+           </v-btn>
+        </v-toolbar>
+
+        <div class="text-center mt-10">
+            <strong class="grey--text">No tienes pedidos pendientes...</strong>
+            <v-row justify="center" align="center">
+                <v-col cols="12" md="6">
+                    <v-img src="@/assets/nodata.svg" height="500" contain />
+                </v-col>
+            </v-row>
+        </div>
+    </div>
+    <div v-else>
         <v-toolbar width="100%" height="50" color="#005598">
            <v-btn text to="/" disabled>
                <v-img width="120" height="120" src="@/assets/logo2.png" contain></v-img>
@@ -42,8 +62,8 @@
                 <v-card elevation="10" class="mt-10 text-center" width="100%" v-if="detalles">
                     <v-subheader class="title px-10">Articulos</v-subheader>
                     <v-toolbar elevation="0"
-                        v-for="detalle in detalles"
-                        :key="detalle.id"
+                        v-for="(detalle,i) in detalles"
+                        :key="i"
                     >
                         <v-img 
                             width="50" 
@@ -59,15 +79,26 @@
 
                         <v-spacer></v-spacer>
 
-                        <v-btn  class="mx-2" tile icon :disabled="detalle.cantidad==1 ? true:false" @click="restar(detalle)">
-                            <v-icon dark>exposure_neg_1</v-icon>
-                        </v-btn>
+                        <v-tooltip bottom>
+                            <template v-slot:activator="{ on }">
+                                <v-btn  class="mx-2" tile icon :disabled="detalle.cantidad==1 ? true:false" @click="restar(detalle)" v-on="on">
+                                    <v-icon dark>exposure_neg_1</v-icon>
+                                </v-btn>
+                            </template>
+                            <span>Restar</span>
+                        </v-tooltip>
 
                         <div class="mx-2 font-weight-black subtitle-1">{{Number.parseInt(detalle.cantidad)}}</div>
 
-                        <v-btn class="mx-2" tile icon @click="sumar(detalle)">
-                            <v-icon dark>plus_one</v-icon>
-                        </v-btn> 
+                        <v-tooltip bottom>
+                            <template v-slot:activator="{ on }">
+                                <v-btn class="mx-2" tile icon @click="sumar(detalle)" v-on="on">
+                                    <v-icon dark>plus_one</v-icon>
+                                </v-btn>
+                            </template>
+                            <span>Sumar</span>
+                        </v-tooltip>
+     
                         <v-spacer></v-spacer>
 
                         <v-toolbar-title>
@@ -76,17 +107,23 @@
                         
                         <v-spacer></v-spacer>
 
-                        <v-btn 
-                            fab 
-                            color="#005598" 
-                            width="40" 
-                            height="40" 
-                            @click="deletePedidosDetail(detalle,pedido)" 
-                            :loading="loading"
-                            v-if="detalles.length !== 1"
-                        >
-                            <v-icon color="#fff">delete</v-icon>
-                        </v-btn>
+                        <v-tooltip bottom>
+                            <template v-slot:activator="{ on }">
+                                <v-btn 
+                                    fab 
+                                    color="#005598" 
+                                    width="40" 
+                                    height="40" 
+                                    @click="deletePedidosDetail(detalle,pedido)" 
+                                    :loading="loading"
+                                    v-if="detalles.length !== 1"
+                                    v-on="on"
+                                >
+                                    <v-icon color="#fff">delete</v-icon>
+                                </v-btn>
+                            </template>
+                            <span>Borrar Detalle</span>
+                        </v-tooltip>
                     </v-toolbar>
                 </v-card>
             </v-col>
@@ -193,7 +230,7 @@ import {mapState, mapActions,mapGetters} from 'vuex';
         },
 
         methods: {
-            ...mapActions(['deleteDetallePedidos','setPedidosServices','setDetallePedidos','deletePedidos']),
+            ...mapActions(['deleteDetallePedidos','setPedidosServices','setDetallePedidos','deletePedidos','updateDetallePedidosLocal']),
 
             change(evt){
                 this.bauche=null;
@@ -263,17 +300,21 @@ import {mapState, mapActions,mapGetters} from 'vuex';
 
             updateDetallesPedidos(detalle,val){//actualiza el detalle del pedido a suma o resta
                 let data = {
-                    cantidad:detalle.cantidad
+                    cantidad:detalle.cantidad,
+                    conceptos_id:detalle.conceptos_id
                 };
+                let detalle1 = detalle;
+                detalle1.suma=val;//los metodos del store solo admiten una variable por parametro de otra forma llega undefined
 
                 if(val == 1){
-                    data.cantidad = detalle.cantidad + 1;
+                    data.cantidad = Number.parseInt(detalle.cantidad) + 1;
                 }else{
                     data.cantidad = detalle.cantidad - 1 ;
                 }
 
-                Pedidos().post(`/${detalle.rest_pedidos_id}/detalles/${detalle.id}`,{data}).then((response) => {
+                Pedidos().post(`/${detalle1.rest_pedidos_id}/detalles/${detalle1.id}`,{data}).then((response) => {
                     console.log(response.data);
+                    this.updateDetallePedidosLocal(detalle1);//local method
                 }).catch(e => {
                     console.log(e);
                 })
@@ -281,7 +322,7 @@ import {mapState, mapActions,mapGetters} from 'vuex';
 
             getConceptoExistencia(detalle,val){
                 Conceptos().get(`/${detalle.conceptos_id}/depositos`).then((response) => {
-                    if(Number.parseInt(response.data.data[0].existencia) > 0){
+                    if(Number.parseInt(response.data.data[0].existencia) > 0 && Number.parseInt(detalle.cantidad) <= Number.parseInt(response.data.data[0].existencia)){
                         this.updateDetallesPedidos(detalle,val);
                     }else{
                         this.snackbar=true;

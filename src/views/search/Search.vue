@@ -59,11 +59,11 @@
             <v-col cols="12" lg="9" md="12" sm="12">
                 <!--Resultados empresa -->
                 <v-sheet class="mx-4 my-3 pa-4" elevation="2" height="200">
-                    <ResultadosEmpresa />
+                    <ResultadosEmpresa :empresas="empresas"/>
                 </v-sheet>
 
                 <!--Resultados conceptos/empresa -->
-                <ResultadosConceptos />
+                <ResultadosConceptos :conceptos="conceptos" :empresas="empresas"/>
             </v-col>
         </v-row>
         <Footer />
@@ -81,6 +81,10 @@ import ResultadosEmpresa from '@/components/vistaBuscar/ResultadosEmpresa';
 import router from '@/router';
 //services
 import Grupos from '@/services/Grupos';
+import Conceptos from '@/services/Conceptos';
+import Empresa from '@/services/Empresa';
+//state 
+import {mapState} from 'vuex';
 
     export default {
         components:{
@@ -91,6 +95,9 @@ import Grupos from '@/services/Grupos';
         },
         data() {
             return {
+                aux:[],
+                conceptos:[],
+                empresas:[],
                 error:false,
                 selectCategoria:'',
                 selectFiltro:'',
@@ -103,9 +110,21 @@ import Grupos from '@/services/Grupos';
                 ]
             }
         },
-        mounted() {
-            this.Getgrupos();
+        computed: {
+            ...mapState(['busqueda'])
         },
+        watch: {
+            busqueda(){
+                if(this.busqueda.length >= 5){
+                    this.getConceptos(this.busqueda);
+                };
+            }
+        },
+        mounted(){
+            this.Getgrupos();
+            this.getConceptos(this.busqueda);
+        },
+
         methods: {
             Getgrupos(){
                 Grupos().get('/?fields=id,nombre').then((response) => {
@@ -118,7 +137,6 @@ import Grupos from '@/services/Grupos';
                         }
                         this.categorias.push(categoria);
                     }
-                    console.log(this.categorias);
                 }).catch(e => {
                     console.log(e);
                     this.error = true;
@@ -133,7 +151,32 @@ import Grupos from '@/services/Grupos';
             filtrosChange(evt){//guarda el seleccionado para luego filtrar 
                 console.log(evt);
                 this.selectFiltro=evt.text;
+            },
+
+            getConceptos(nombre){//trae los conceptos por un like 
+                Conceptos().get(`/?nombre=${nombre}`).then((response) => {
+                    console.log(response.data);
+                }).catch(e => {
+                    console.log(e);
+                });
+            },
+
+            getEmpresa(id){
+                Empresa().get(`/${id}`).then((response) => {
+                    console.log(respose.data);
+                }).catch(e => {
+                    console.log(e);
+                })
+            },
+
+            ordenEmpresa(){
+                if(aux.length >= 0){
+                    for (let i = 0; i < aux.length; i++) {
+                    }
+                }
             }
+
+
         },
     }
 </script>

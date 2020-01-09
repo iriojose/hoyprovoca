@@ -134,16 +134,24 @@ import {mapState,mapActions,mapGetters} from  'vuex';
         },
         data(){
             return {
-                busquedas:'',
                 loading:false
             }
         },
         computed: {
             ...mapGetters(['user']),
-            ...mapState(['drawer']),
+            ...mapState(['drawer','busqueda']),
+
+            busquedas:{
+                get(){
+                    return this.busqueda;
+                },
+                set(val){
+                    this.setBusqueda(val);
+                }
+            }
         },
         methods: {
-            ...mapActions(['setDrawer']),
+            ...mapActions(['setDrawer','setBusqueda']),
             
             search() {//metodo para cambiar a la vista buscar
                 this.loading=true;

@@ -25,6 +25,7 @@
                                 <v-overlay
                                     absolute
                                     color="#036358"
+                                    v-if="concepto.agregado"
                                 >
                                     <div class="mb-5 text-center">
                                         <v-btn 
@@ -60,6 +61,7 @@
                                 <v-overlay
                                     absolute
                                     color="#036358"
+                                    v-if="!concepto.agregado"
                                 >
                                     <div class="mb-5 text-center">
                                         <v-btn 
@@ -78,6 +80,11 @@
                                         >
                                             Agregar al carrito
                                         </v-btn>
+                                    </div>
+                                </v-overlay>
+                                <v-overlay absolute color="#036358" v-else>
+                                    <div class="text-center white--text">
+                                        Agregado
                                     </div>
                                 </v-overlay>
                             </transition>
@@ -195,7 +202,7 @@ import Pedidos from '@/services/Pedidos';
 
                 let data = {
                     rest_mesas_id:1,
-                    rest_estatus_id:3,
+                    rest_estatus_id:1,
                     estado:'para vender',
                     cant_personas:1,
                     usuario_id:16,
@@ -207,7 +214,7 @@ import Pedidos from '@/services/Pedidos';
                         conceptos_id:this.producto.id,
                         cantidad:1,
                         precio:this.producto.precio_a,
-                        rest_estatus_id:7,
+                        rest_estatus_id:1,
                         estado:'vendible',
                     }
                 ]
@@ -218,7 +225,7 @@ import Pedidos from '@/services/Pedidos';
                     let data3 = {
                         id:response.data.data.id,
                         rest_mesas_id:1,
-                        rest_estatus_id:3,
+                        rest_estatus_id:1,
                         estado:'para vender',
                         cant_personas:1,
                         usuario_id:16,
@@ -232,7 +239,7 @@ import Pedidos from '@/services/Pedidos';
                             conceptos_id:this.producto.id,
                             cantidad:1,
                             precio:this.producto.precio_a,
-                            rest_estatus_id:7,
+                            rest_estatus_id:1,
                             estado:'vendible',
                             rest_pedidos_id:response.data.data.id
                         }

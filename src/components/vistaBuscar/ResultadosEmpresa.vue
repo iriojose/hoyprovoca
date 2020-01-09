@@ -3,12 +3,12 @@
         <h3 class="headline text-center mb-3">Resultados:</h3>
         <v-slide-group show-arrows class="space">
             <v-slide-item
-                v-for="resultado in resultados" 
-                :key="resultado.local" 
+                v-for="empresa in empresas" 
+                :key="empresa.id" 
             >
                 <v-hover v-slot:default="{hover}">
-                    <v-avatar v-ripple @click="push(resultado.local,resultado.id)" :class="hover ? 'mx-4 elevation-4':'mx-4 elevation-2'" size="80">
-                        <v-img :src="resultado.img" />
+                    <v-avatar v-ripple @click="push(empresa.razon_social,empresa.id)" :class="hover ? 'mx-4 elevation-4':'mx-4 elevation-2'" size="80">
+                        <v-img :src="empresa.imagen" />
                     </v-avatar>
                 </v-hover>
             </v-slide-item>
@@ -22,9 +22,9 @@ import router from '@/router';
 
     export default {
         props:{
-            resultados:{
+            empresas:{
                 type:Array,
-                default: () => ([])
+                default: () => []
             }
         },methods: {
              push(text,id){
@@ -33,7 +33,3 @@ import router from '@/router';
         },
     }
 </script>
-
-<style lang="scss" scoped>
-
-</style>

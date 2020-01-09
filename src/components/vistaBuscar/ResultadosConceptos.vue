@@ -1,12 +1,12 @@
 <template>
     <div>
-        <v-sheet elevation="0" class="ma-4" v-for="resultado in resultados" :key="resultado.local">
+        <v-sheet elevation="0" class="ma-4" v-for="(empresa,i) in empresa" :key="i">
             <v-row>
                 <v-col cols="12" md="3" sm="3" lg="3"  class="ma-4 px-8">
                     <v-avatar class="elevation-3" size="80">
-                        <v-img :src="resultado.img" />
+                        <v-img :src="empresa.imagen" />
                     </v-avatar>
-                    <h6 class="subtitle-1 font-weight-bolt">{{resultado.local}}</h6>
+                    <h6 class="subtitle-1 font-weight-bolt">{{empresa.razon_social}}</h6>
                 </v-col>
             </v-row>
                     
@@ -17,8 +17,8 @@
                 v-model="model"
             >
                 <v-slide-item
-                    v-for="producto in resultado.productos"
-                    :key="producto.nombre"
+                    v-for="concepto in conceptos[i]"
+                    :key="concepto.id"
                 >
                     <v-hover v-slot:default="{hover}">
                         <v-card 
@@ -29,7 +29,7 @@
                             width="200"
                         >
                             <v-img 
-                                :src="producto.img" 
+                                :src="concepto.imagen" 
                                 contain 
                                 width="200" 
                                 height="200"
@@ -65,10 +65,10 @@
                                 <span class="font-weight-bold subtitle mx-2 red--text" v-if="producto.oferta">1$</span>
                             </div>
                             <div>
-                                <span class="font-weight-bold body-1 mx-2">{{producto.nombre}}</span>
+                                <span class="font-weight-bold body-1 mx-2">{{concepto.nombre}}</span>
                             </div>
                             <div>
-                                <span class="font-weight-bold caption grey--text mx-2">Descripcion del producto</span>
+                                <span class="font-weight-bold caption grey--text mx-2">{{concepto.descripcion}}</span>
                             </div>
                         </v-card>
                     </v-hover>
@@ -82,9 +82,13 @@
 
     export default {
         props:{
-            resultados:{
+            conceptos:{
                 type:Array,
-                default: () => ([])
+                default:() => []
+            },
+            empresas:{
+                type:Array,
+                default:() => []
             }
         },
     }

@@ -39,8 +39,9 @@
                 >
                     <v-expansion-panel-header>
                         <v-toolbar elevation="0" height="60">
-                            <v-btn icon @click="deletePedido(pedido.id)"><v-icon>delete</v-icon></v-btn>
+                            <v-btn icon @click="deletePedido(pedido.id)"><v-icon>delete</v-icon></v-btn>   
                             <v-spacer></v-spacer>
+
                             <v-avatar class="elevation-10" color="#eee" size="50">
                                 <v-img src="@/assets/noimage.png"></v-img>
                             </v-avatar>
@@ -62,22 +63,39 @@
                             />
 
                             <v-spacer></v-spacer>
-                                <v-btn  class="mx-2" tile icon v-if="detalle.cantidad > 1">
-                                    <v-icon dark>exposure_neg_1</v-icon>
-                                </v-btn>
+
+                            <v-tooltip bottom v-if="detalle.cantidad > 1">
+                                <template v-slot:activator="{ on }">
+                                    <v-btn v-on="on" class="mx-2" tile icon @click="restar(detalle)">
+                                        <v-icon dark>exposure_neg_1</v-icon>
+                                    </v-btn>
+                                </template>
+                                <span>Restar</span>
+                            </v-tooltip>
                                 
-                                <v-btn v-else @click="deletePedidosDetail(pedido,detalle)" class="mx-2" tile icon :loading="loading">
-                                    <v-icon dark>delete</v-icon>
-                                </v-btn>
+                            <v-tooltip bottom v-else>
+                                <template v-slot:activator="{ on }">
+                                    <v-btn @click="deletePedidosDetail(pedido,detalle)" v-on="on" class="mx-2" tile icon :loading="loading">
+                                        <v-icon dark>delete</v-icon>
+                                    </v-btn>
+                                </template>
+                                <span>Borrar detalle</span>
+                            </v-tooltip>
+                                
+                            <div class="mx-2 font-weight-black subtitle-1">{{Number.parseInt(detalle.cantidad)}}</div>
 
-                                <div class="mx-2 font-weight-black subtitle-1">{{Number.parseInt(detalle.cantidad)}}</div>
-
-                                <v-btn class="mx-2" tile icon>
-                                    <v-icon dark>plus_one</v-icon>
-                                </v-btn> 
+                            <v-tooltip bottom>
+                                <template v-slot:activator="{ on }">
+                                    <v-btn class="mx-2" tile icon @click="sumar(detalle)" v-on="on">
+                                        <v-icon dark>plus_one</v-icon>
+                                    </v-btn> 
+                                </template>
+                                    <span>Sumar</span>
+                            </v-tooltip>
+                            
                             <v-spacer></v-spacer>
 
-                            <div class="font-weight-black">Bss. {{detalle.precio}}</div>
+                            <div class="font-weight-black">Bss. {{Number.parseInt(detalle.precio)}}</div>
                         </v-toolbar>
                     </v-expansion-panel-content>
                 </v-expansion-panel>
@@ -122,6 +140,10 @@
                 </v-btn>
             </div>
         </v-card>
+
+        <v-snackbar v-model="snackbar" right color="red" class="white--text">
+            Existencia maxima alcanzada.
+        </v-snackbar>
     </v-navigation-drawer>
 </template>
 
@@ -129,6 +151,7 @@
 import {mapState,mapActions,mapGetters} from 'vuex';
 import Pedidos from '@/services/Pedidos';
 import Usuario from '@/services/Usuario';
+import Conceptos from '@/services/Conceptos';
 
     export default {
         data(){
@@ -136,7 +159,8 @@ import Usuario from '@/services/Usuario';
                 dolares:53,
                 totales:[],
                 loading:false,
-                index:null
+                index:null,
+                snackbar:false
             }
         },
 
@@ -161,7 +185,7 @@ import Usuario from '@/services/Usuario';
         },
 
         methods: {
-            ...mapActions(['setPanel','deletePedidos','deleteDetallePedidos','setPedidosServices','setDetallePedidos']),
+            ...mapActions(['setPanel','deletePedidos','deleteDetallePedidos','setPedidosServices','setDetallePedidos','updateDetallePedidosLocal']),
 
             transition(){//animacion del panel
               if(this.panel){
@@ -200,18 +224,6 @@ import Usuario from '@/services/Usuario';
                 });
             },
 
-            updatePedidosDetalles(id,id2){//actualiza un detalle del pedido (pricipalmente la cantidad)
-                this.loading=true;
-
-                Pedidos().post(`/${id}/detalles/${id2}`).then((response) => {
-                    console.log(response);
-                    this.loading=false;
-                }).catch(e => {
-                    console.log(e);
-                    this.loading=false;
-                });
-            },
-
             deletePedidosDetail(pedido,detalle){//elimina el detalle de un pedido
                 this.loading=true;
                 
@@ -242,12 +254,49 @@ import Usuario from '@/services/Usuario';
                 });
             },
 
-            getConceptoExistencia(id){
-                Conceptos().get(`/${id}/depositos`).then((response) =>{
-                    console.log(response);
-                }).catch(e => { 
+            //sumar y restar cantidad de detalles
+            sumar(detalle){
+                this.getConceptoExistencia(detalle,1);
+            },
+            restar(detalle){
+                this.getConceptoExistencia(detalle,0);
+            },
+
+            getConceptoExistencia(detalle,val){
+                Conceptos().get(`/${detalle.conceptos_id}/depositos`).then((response) => {
+
+                    if(val == 0){
+                        this.updateDetallesPedidos(detalle,val);
+                    }else if(Number.parseInt(response.data.data[0].existencia) > 0 && Number.parseInt(detalle.cantidad) < Number.parseInt(response.data.data[0].existencia)){
+                        this.updateDetallesPedidos(detalle,val);
+                    }else{
+                        this.snackbar=true;
+                    }
+                }).catch(e => {
                     console.log(e);
                 });
+            },
+
+            updateDetallesPedidos(detalle,val){//actualiza el detalle del pedido a suma o resta
+                let data = {
+                    cantidad:detalle.cantidad,
+                    conceptos_id:detalle.conceptos_id
+                };
+                let detalle1 = detalle;
+                detalle1.suma=val;//los metodos del store solo admiten una variable por parametro de otra forma llega undefined
+
+                if(val == 1){
+                    data.cantidad = Number.parseInt(detalle.cantidad) + 1;
+                }else{
+                    data.cantidad = detalle.cantidad - 1 ;
+                }
+
+                Pedidos().post(`/${detalle1.rest_pedidos_id}/detalles/${detalle1.id}`,{data}).then((response) => {
+                    console.log(response.data);
+                    this.updateDetallePedidosLocal(detalle1);//local method
+                }).catch(e => {
+                    console.log(e);
+                })
             },
         },
     }
