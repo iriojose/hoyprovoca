@@ -23,6 +23,7 @@
 
     <!-- <BannerAbajo />-->
     <Footer />
+    <ValidacionConcepto />
   </div>
 </template>
 
@@ -39,6 +40,7 @@ import SkeletonCard from "@/components/layouts/SkeletonCard";
 import BannerAbajo from '@/components/vistaHome/Banner2';
 import MasVendidos from '@/components/vistaHome/MasVendidos';
 import error500 from '@/views/s500';
+import ValidacionConcepto from '@/components/dialogs/ValidacionConcepto';
 //servicios
 import Conceptos from '@/services/Conceptos';
 import Grupos from '@/services/Grupos';
@@ -58,6 +60,7 @@ export default {
     BannerAbajo,
     MasVendidos,
     error500,
+    ValidacionConcepto
   },
   data() {
     return {
@@ -75,6 +78,7 @@ export default {
       this.getEmpresas();
       this.getConceptos();
       this.getGrupos();
+      this.addOrder();
   },
   computed: {
     ...mapState(['conceptosId','user']),
@@ -82,7 +86,7 @@ export default {
   watch: {
     //cuando las variables cambien se quita el modo de espera
     conceptosId(){//se refresca cada que agregan
-      this.getConceptos();
+      this.addOrder();
     },
     conceptos(){
       this.activoConcepto=true;
@@ -101,6 +105,9 @@ export default {
         for (let e = 0; e < this.conceptosId.length; e++) {
           if(this.conceptos[i].id == this.conceptosId[e]){
             this.conceptos[i].agregado=true;
+            break;
+          }else{
+            this.conceptos[i].agregado=false;
           }
         }
       }
@@ -125,7 +132,7 @@ export default {
     getConceptos(){//trae conceptos (productos/servicios)
         Conceptos().get('/?limit=15').then((response) => {
             this.conceptos = response.data.data;
-            this.addOrder();//pone bandea de agregado a pedidos
+            this.addOrder();//pone bandera de agregado a pedidos
         }).catch(e => {
             console.log(e);
         });

@@ -1,12 +1,7 @@
 <template>
     <v-dialog v-model="validacionConcepto" width="600">
         <v-card>
-            <div class="title text-center red--text mt-3" v-if="existencia.existencia <= 0">
-                Este servicio no se encuentra disponible...
-                <v-img src="@/assets/undrawemptymodal.svg" contain width="100%" height="200"></v-img>
-            </div>
-
-            <div v-else>
+            <div>
                 <v-card-title>
                     <v-toolbar elevation="0" height="50">
                         <v-toolbar-title>
@@ -47,13 +42,13 @@
                 </v-card-text>
                 <v-divider class="my-2"></v-divider>
                 <v-card-actions>
-                    <v-btn @click="restar" color="#005598" :disabled="disabled || disabledResta" class="mx-2" tile icon>
+                    <v-btn color="#005598" class="mx-2" tile icon>
                         <v-icon dark>exposure_neg_1</v-icon>
                     </v-btn>
 
-                    <div class="mx-2 font-weight-black subtitle-1">{{count}}</div>
+                    <div class="mx-2 font-weight-black subtitle-1">1</div>
 
-                    <v-btn @click="sumar" color="#005598" :disabled="disabled || disabledSuma" class="mx-2" tile icon>
+                    <v-btn color="#005598"  class="mx-2" tile icon>
                         <v-icon dark>plus_one</v-icon>
                     </v-btn> 
 
@@ -62,7 +57,7 @@
                      <v-btn :disabled="disabled" @click="push" class="text-capitalize white--text" color="#005598">
                         Dte Producto
                     </v-btn>
-                    <v-btn :disabled="disabled" @click="agregar" class="text-capitalize white--text" color="#005598">
+                    <v-btn :disabled="disabled" class="text-capitalize white--text" color="#005598">
                         Agregar
                     </v-btn>
                 </v-card-actions>
@@ -81,29 +76,11 @@ import {mapState,mapActions} from 'vuex';
 import router from '@/router';
 
     export default {
-        props:{
-            existencia:{
-                type:Object,
-                default: () => {}
-            }
-        },
         data() {
             return {
                 loading:false,
                 snackbar:false,
-                disabled:false,
-                count:1,
-                disabledSuma:false,
-                disabledResta:true,
-            }
-        },
-
-        watch:{
-            existencia(){
-                this.count=1;
-            },
-            producto(){
-                this.count=1;
+                disabled:true,
             }
         },
 
@@ -123,47 +100,14 @@ import router from '@/router';
         methods: {
             ...mapActions(['setValidacionConcepto']),
 
-             push(){//lleva al detalle del concepto
+            push(){//lleva al detalle del concepto
                 this.setValidacionConcepto(false);
                 router.push(`/producto/${this.producto.id}`);
             },
 
-            agregar(){//lo agrega al pedido
-                this.disabled=true;
-                this.snackbar=true;
-                setTimeout(() => {
-                    this.validacionConcepto=false;
-                    this.disabled=false;
-                },3000);
-            },
+            
 
-           sumar(){//aumenta la cantidad del producto a pedir
-                if(this.count >= 1){
-                    this.disabledResta=false;
-                }
-
-                if(this.count >= this.existencia.existencia - 1){
-                    this.count++
-                    this.disabledSuma=true;
-                }else{
-                    this.count++
-                    this.disabledSuma=false;
-                }
-           },
-
-           restar(){//resta el numero que quieres a pedir
-                if(this.count <= this.existencia.existencia){
-                    this.disabledSuma = false;
-                }
-
-                if(this.count == 2){
-                    this.count--;
-                    this.disabledResta = true;
-                }else{
-                    this.count--;
-                    this.disabledResta = false;
-                }
-           }
+           
         },
     }
 </script>

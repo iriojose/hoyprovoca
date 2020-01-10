@@ -16,6 +16,7 @@
             <AppBar />
             <EmpresaData :grupos="grupos" :empresa="empresa" :subgrupos="subgrupos" :conceptos="conceptos"/>
             <Footer />
+            <ValidacionConcepto />
         </div>
     </div>
 </template>
@@ -25,14 +26,17 @@
 import EmpresaData from '@/components/vistaAliados/EmpresaData';
 import AppBar from '@/components/navbar/AppBar';
 import Footer from '@/components/footer/Footer';
+import ValidacionConcepto from '@/components/dialogs/ValidacionConcepto';
 //services
 import Empresa from '@/services/Empresa';
+import { mapState } from 'vuex';
 
     export default {
         components:{
             EmpresaData,
             AppBar,
             Footer,
+            ValidacionConcepto
         },
         data() {
             return {
@@ -52,6 +56,9 @@ import Empresa from '@/services/Empresa';
                 this.error=true;
             }
         },
+        computed:{
+            ...mapState(['conceptosId'])
+        },
         watch:{//cuando la ruta se cambie vuelve a ejecutar
             '$route'(val){
                if(val.params.id){
@@ -61,6 +68,9 @@ import Empresa from '@/services/Empresa';
                 }else{
                     this.error=true;
                 }
+            },
+            conceptosId(){
+                this.addOrder();
             }
         },
         methods:{
@@ -106,6 +116,19 @@ import Empresa from '@/services/Empresa';
                     console.log(e);
                 });
             },
+
+            addOrder(){
+                for (let i = 0; i < this.conceptos.length; i++) {
+                    for (let e = 0; e < this.conceptosId.length; e++) {
+                        if(this.conceptos[i].id == this.conceptosId[e]){
+                            this.conceptos[i].agregado=true;
+                            break;
+                        }else{
+                            this.conceptos[i].agregado=false;
+                        }
+                    }
+                }
+            }
         }
     }
 </script>

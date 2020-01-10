@@ -1,17 +1,11 @@
 <template>
     <div>
         <v-hover v-slot:default="{hover}">
-            <v-card 
-                :title="concepto.nombre" 
-                tile 
-                height="300" 
-                width="200" 
-                :elevation="hover ? 15:5"
-            >
+            <v-card :title="concepto.nombre" tile :height="heightCard" :width="widthCard" :elevation="hover ? 15:5">
                 <v-img 
                     v-if="!concepto.imagen"
-                    height="220" 
-                    width="200" 
+                    :height="heightImg" 
+                    :width="widthImg" 
                     contain 
                     :src="concepto.imagen"
                     :gradient="hover ? 'to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)':null"
@@ -27,22 +21,27 @@
                     >
                         <v-scale-transition>
                             <v-btn  
+                                :loading="loading"
                                 color="#005598"
                                 dark
                                 width="50%"
                                 class="text-capitalize body font-weight-bold"
-                                @click="agregar"
+                                @click="agregarConceptos(concepto)"
+                                v-if="!concepto.agregado"
                             >
                                 Agregar
                             </v-btn>
+                            <div v-else class="white--text title">
+                                agregado
+                            </div>
                         </v-scale-transition>
                     </v-row>
                 </v-img>
                 <!--cuando no tiene imagen -->
                 <v-img  
                     v-else
-                    height="220" 
-                    width="200" 
+                    :height="heightImg" 
+                    :width="widthImg" 
                     contain 
                     src="@/assets/noimage.png"
                     :gradient="hover ? 'to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)':null"
@@ -58,14 +57,19 @@
                     >
                         <v-scale-transition>
                             <v-btn  
+                                :loading="loading"
                                 color="#005598"
                                 dark
                                 width="50%"
                                 class="text-capitalize body font-weight-bold"
-                                @click="agregar"
+                                @click="agregarConceptos(concepto)"
+                                v-if="!concepto.agregado"
                             >
                                 Agregar
                             </v-btn>
+                            <div v-else class="white--text title">
+                                agregado
+                            </div>
                         </v-scale-transition>
                     </v-row>
                 </v-img>
@@ -84,13 +88,13 @@
             </v-card>  
         </v-hover>
 
-        <ValidacionConcepto :existencia="existencia" />
+        <v-snackbar color="red" v-model="snackbar" right>
+            No hay mas existencia.
+        </v-snackbar>
     </div>
 </template>
 
 <script>
-//dialog 
-import ValidacionConcepto from '@/components/dialogs/ValidacionConcepto';
 //state globales
 import {mapState,mapActions} from 'vuex';
 //services
@@ -102,55 +106,214 @@ import Pedidos from '@/services/Pedidos';
             concepto:{
                 type:Object,
                 default: () => {}
+            },
+            widthCard:{
+                type:Number,
+                default:200
+            },
+            heightCard:{
+                type:Number,
+                default:300
+            },
+            widthImg:{
+                type:Number,
+                default:200
+            },
+            heightImg:{
+                type:Number,
+                default:220
+            },
+            margen_x:{
+                type:String,
+                default:""
+            },
+            margen_y:{
+                type:String,
+                default:""
+            },
+            margen_top:{
+                type:String,
+                default:""
+            },
+            margen_bottom:{
+                type:String,
+                default:""
+            },
+            margen_left:{
+                type:String,
+                default:""
+            },
+            margen_right:{
+                type:String,
+                default:""
+            },
+            tipo:{//define el tipo de card de conceptos
+                type:Number,
+                default:1
             }
         },
         data() {
             return {
-                existencia:{}
+                loading:false,
+                existencia:null,
+                snackbar:false
             }
         },
-        components:{
-            ValidacionConcepto
-        },
         computed: {
-            ...mapState(['validacionConcep','user','producto']),
+            ...mapState(['validacionConcep','user','producto','pedidos']),
         },
         methods: {
-            ...mapActions(['setProducto','setValidacionConcepto']),
+            ...mapActions(['setProducto','setValidacionConcepto','setPedidos','setDetallePedidos']),
 
-            agregar(){
+            agregarConceptos(item){
+                this.loading=true;
+
                 if(this.user.loggedIn){
-                    this.setProducto(this.concepto);
-                    this.setValidacionConcepto(true);
-                    this.getConceptos(this.concepto.id);
+                    this.setProducto(item);
+                    this.getConceptosExistencia(item.id);
                 }else{
                     router.push('/login');
                 }
             },
 
-            getConceptos(id){//trae la existencia del concepto
+            getConceptosExistencia(id){//trae la existencia del concepto del deposito de la web
                 Conceptos().get(`/${id}/depositos`).then((response) => {
-                    let data = response.data.response.data;
-                    let data2={};
-                    for(let i=0; i< data.length; i++) {
-                        if(data[i].depositos_id == 1){
-                            this.existencia=data[i];
+                    this.existencia = response.data.data[0];   
+
+                    if(Number.parseInt(this.existencia.existencia) > 0){
+                        if(this.producto.tipos_conceptos_id == 1){
+                            this.setValidacionConcepto(true);
+                            this.loading=false;
+                            return;
+                        }else{
+                            if(this.pedidos.length == 0){
+                                this.postPedidos();
+                            }else{
+                                this.validacionSiExistePedidos();
+                            }
                         }
+                    }else{
+                        this.snackbar=true;//OJO
                     }
-                    console.log(this.existencia);
                 }).catch(e => {
                     console.log(e);
+                    this.loading=false;
                 });
             },
 
-            getPedidos(){
-                Pedidos().get().then((response) =>{
+            //posts de la Api
+            postPedidos(){//crea un pedido y su primer detalle
 
+                let data = {
+                    rest_mesas_id:1,
+                    rest_estatus_id:1,
+                    estado:'ACTIVO',
+                    cant_personas:1,
+                    usuario_id:16,
+                    empresa_id:this.producto.empresa_id,
+                }
+
+                let data1 = [
+                    {
+                        conceptos_id:this.producto.id,
+                        cantidad:1,
+                        precio:this.producto.precio_a,
+                        rest_estatus_id:1,
+                        estado:'Disponible',
+                    }
+                ]
+
+                Pedidos().post("/",{data,data1}).then((response) => {
+                    console.log(response.data.data);
+
+                    let data3 = {
+                        id:response.data.data.id,
+                        rest_mesas_id:1,
+                        rest_estatus_id:1,
+                        estado:'ACTIVO',
+                        cant_personas:1,
+                        usuario_id:16,
+                        empresa_id:this.producto.empresa_id,
+                        detalles:[]
+                    }
+
+                    let data2 = [
+                        {
+                            id:response.data.data.detalles[0].id,
+                            conceptos_id:this.producto.id,
+                            cantidad:1,
+                            precio:this.producto.precio_a,
+                            rest_estatus_id:1,
+                            estado:'Disponible',
+                            rest_pedidos_id:response.data.data.id
+                        }
+                    ]
+
+                    this.setPedidos(data3);//local
+                    this.setDetallePedidos(data2[0]);//local
+                    this.loading=false;
                 }).catch(e =>{
                     console.log(e);
+                    this.loading=false;
                 });
-            }
+            },
 
+            validacionSiExistePedidos(){//si existe un pedido a la empresa que pertenece ese concepto
+                let bandera = false;
+                let id=null;
+
+                for (let i = 0; i < this.pedidos.length; i++){
+                    if(this.pedidos[i].empresa_id == this.producto.empresa_id){
+                        bandera=true;
+                        id=this.pedidos[i].id;
+                    }
+                }
+            
+                if(bandera){
+                    this.postPedidosDetalle(id);
+                }else{
+                    this.postPedidos();
+                }
+            },
+            
+            postPedidosDetalle(id){//agrega un detalle a un pedido
+                let data = {//api
+                        rest_pedidos_id:id,
+                        conceptos_id:this.producto.id,
+                        cantidad:1,
+                        precio:this.producto.precio_a,
+                        rest_estatus_id:7,
+                        estado:'vendible',
+                    }
+
+                Pedidos().post(`/${id}/detalles`,{data}).then((response) => {
+                    let data2 = {//local
+                        id:response.data.data.id,
+                        rest_pedidos_id:id,
+                        conceptos_id:this.producto.id,
+                        cantidad:1,
+                        precio:this.producto.precio_a,
+                        rest_estatus_id:7,
+                        estado:'vendible',
+                    }
+
+                    this.setDetallePedidos(data2);//metodo local
+                    this.loading=false;
+                }).catch(e => {
+                    console.log(e);
+                    this.loading=false;
+                })
+            },
+
+            getUsuario(){//metodo get para el usuario logeado
+                Usuario().post("/validate", {user_token:this.user.token}).then((response) => {
+                    this.usuario=response.data.data.id;
+                    this.loading=false;
+                }).catch(e => {
+                    console.log(e);
+                    this.loading=false;
+                });
+            },
         },
     }
 </script>
@@ -162,5 +325,12 @@ import Pedidos from '@/services/Pedidos';
         border-left: 50px solid #d9534f;
         border-right: 50px solid #d9534f;
         border-bottom: 35px solid transparent;
+    }
+    .modif{
+        width: 100%;
+        height: 40px;
+        background: rgba(0,0,0,0.5);
+        color: #fff;
+        padding-top: 10px;
     }
 </style>

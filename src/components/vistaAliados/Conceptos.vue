@@ -15,111 +15,28 @@
                 class="my-5"
             >
                 <v-slide-item
-                    v-for="concepto in  conceptos"
+                    v-for="concepto in conceptos"
                     :key="concepto.id"
                     class="mx-2 mb-10 mt-5"
-                >
-                    <v-hover v-slot:default="{hover}" v-if="concepto.subgrupos_id == subgrupo.id">
-                        <v-card 
-                            :title="concepto.nombre" 
-                            tile 
-                            height="300" 
-                            width="200" 
-                            :elevation="hover ? 15:5"
-                        >
-                            <v-img 
-                                v-if="!concepto.imagen"
-                                height="220" 
-                                width="200" 
-                                contain 
-                                :src="concepto.imagen"
-                                :gradient="hover ? 'to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)':null"
-                            >
-                                <!-- <div class="ribbon" v-if="concepto.agotado">
-                                    <v-icon color="#fff">schedule</v-icon>
-                                </div>-->
-                                <v-row
-                                    v-if="hover"
-                                    class="fill-height"
-                                    align="center"
-                                    justify="center"
-                                >
-                                    <v-scale-transition>
-                                        <v-btn  
-                                            color="#005598"
-                                            dark
-                                            width="50%"
-                                            class="text-capitalize body font-weight-bold"
-                                            @click="agregar(concepto)"
-                                        >
-                                            Agregar
-                                        </v-btn>
-                                    </v-scale-transition>
-                                </v-row>
-                            </v-img>
-                            <!--cuando no tiene imagen -->
-                            <v-img  
-                                v-else
-                                height="220" 
-                                width="200" 
-                                contain 
-                                src="@/assets/noimage.png"
-                                :gradient="hover ? 'to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)':null"
-                            >
-                                <!-- <div class="ribbon" v-if="concepto.agotado">
-                                    <v-icon color="#fff">schedule</v-icon>
-                                </div>-->
-                                <v-row
-                                    v-if="hover"
-                                    class="fill-height"
-                                    align="center"
-                                    justify="center"
-                                >
-                                    <v-scale-transition>
-                                        <v-btn  
-                                            color="#005598"
-                                            dark
-                                            width="50%"
-                                            class="text-capitalize body font-weight-bold"
-                                            @click="agregar(concepto)"
-                                        >
-                                            Agregar
-                                        </v-btn>
-                                    </v-scale-transition>
-                                </v-row>
-                            </v-img>
-                            <v-divider></v-divider>
-                            <div class="text-center mt-2">
-                                <div class="body display-inline text-truncate font-weight-black">
-                                    BsS. {{concepto.precio_a}}
-                                </div>
-                                <div class="body display-inline text-truncate font-weight-bold">
-                                    {{concepto.nombre}}
-                                </div>
-                                <div class="caption grey--text display-inline text-truncate font-weight-bold">
-                                    {{concepto.descripcion}}
-                                </div>
-                            </div>
-                        </v-card>  
-                    </v-hover>
+                >   
+                    <div v-if="concepto.subgrupos_id == subgrupo.id">
+                        <CardConceptos :concepto="concepto"/>
+                    </div>
                 </v-slide-item>
             </v-slide-group>  
         </div>
-
-        <ValidacionConcepto :existencia="existencia" />
     </div>
 </template>
 
 <script>
-//dialog 
-import ValidacionConcepto from '@/components/dialogs/ValidacionConcepto';
-//state globales
-import {mapState,mapActions} from 'vuex';
-//services
-import Conceptos from '@/services/Conceptos';
-import Pedidos from '@/services/Pedidos';
+import CardConceptos from '@/components/cards/CardConceptos';
+import SliderConceptos from '@/components/sliders/SliderConceptos';//no usado por logica del componente (pensar que hacer!)
 
     export default {
+        components:{
+            CardConceptos,
+            SliderConceptos
+        },
         props:{//props que vienen de empresaData
             conceptos:{
                 type:Array,
@@ -142,9 +59,6 @@ import Pedidos from '@/services/Pedidos';
                 default:0
             }
         },
-        components:{
-            ValidacionConcepto
-        },
         watch:{
             selectGrupo(){
                 this.sgrupos= [];//reincio de variable
@@ -154,7 +68,6 @@ import Pedidos from '@/services/Pedidos';
                        this.sgrupos.push(this.subgrupos[i]);
                    }
                 }
-                console.log(this.sgrupos);
             },
 
             selectSubgrupo(){
@@ -165,7 +78,6 @@ import Pedidos from '@/services/Pedidos';
                         this.sgrupos.push(this.subgrupos[i]); 
                     }
                 }
-                console.log(this.sgrupos);
             },
 
             subgrupos(){
@@ -177,48 +89,7 @@ import Pedidos from '@/services/Pedidos';
                 item:null,
                 model:1,
                 sgrupos:[],
-                existencia:{}
             }
-        },
-        computed: {
-            ...mapState(['validacionConcep','user','producto']),
-        },
-        methods: {
-            ...mapActions(['setProducto','setValidacionConcepto']),
-
-            agregar(item){
-                if(this.user.loggedIn){
-                    this.setProducto(item);
-                    this.setValidacionConcepto(true);
-                    this.getConceptos(item.id);
-                }else{
-                    router.push('/login');
-                }
-            },
-
-            getConceptos(id){//trae la existencia del concepto
-                Conceptos().get(`/${id}/depositos`).then((response) => {
-                    let data = response.data.response.data;
-                    let data2={};
-                    for(let i=0; i< data.length; i++) {
-                        if(data[i].depositos_id == 1){
-                            this.existencia=data[i];
-                        }
-                    }
-                    console.log(this.existencia);
-                }).catch(e => {
-                    console.log(e);
-                });
-            },
-
-            getPedidos(){
-                Pedidos().get().then((response) =>{
-
-                }).catch(e =>{
-                    console.log(e);
-                });
-            }
-
         },
     }
 </script>
