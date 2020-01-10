@@ -67,6 +67,8 @@
             </v-col>
         </v-row>
         <Footer />
+
+        <ValidacionConcepto />
     </div>
 </template>
 
@@ -74,6 +76,7 @@
 //components layouts
 import AppBar from '@/components/navbar/AppBar';
 import Footer from '@/components/footer/Footer';
+import ValidacionConcepto from '@/components/dialogs/ValidacionConcepto';
 //components que manejan los resultados
 import ResultadosConceptos from '@/components/vistaBuscar/ResultadosConceptos';
 import ResultadosEmpresa from '@/components/vistaBuscar/ResultadosEmpresa';
@@ -91,7 +94,8 @@ import {mapState} from 'vuex';
             AppBar,
             Footer,
             ResultadosEmpresa,
-            ResultadosConceptos
+            ResultadosConceptos,
+            ValidacionConcepto 
         },
         data() {
             return {
@@ -111,7 +115,7 @@ import {mapState} from 'vuex';
             }
         },
         computed: {
-            ...mapState(['busqueda'])
+            ...mapState(['busqueda','conceptosId'])
         },
         watch: {
             busqueda(){
@@ -128,8 +132,6 @@ import {mapState} from 'vuex';
         methods: {
             Getgrupos(){
                 Grupos().get('/?fields=id,nombre').then((response) => {
-                    //se hace asi para solventar el problema del select cambiando el nombre del a atributo
-                    //https://vuetifyjs.com/es-MX/components/selects 
                     for(let i=0; i< response.data.data.length; i++){
                         let categoria={
                             text:response.data.data[i].nombre,

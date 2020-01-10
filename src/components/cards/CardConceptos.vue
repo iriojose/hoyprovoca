@@ -181,7 +181,7 @@ import Pedidos from '@/services/Pedidos';
                     this.existencia = response.data.data[0];   
 
                     if(Number.parseInt(this.existencia.existencia) > 0){
-                        if(this.producto.tipos_conceptos_id == 1){
+                        if(this.producto.tipos_conceptos_id == 2){
                             this.setValidacionConcepto(true);
                             this.loading=false;
                             return;

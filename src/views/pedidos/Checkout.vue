@@ -221,7 +221,9 @@ import {mapState, mapActions,mapGetters} from 'vuex';
         },
 
         mounted() {
-            this.getUsuario();
+            if(this.pedidos.lenght == 0){
+                this.getUsuario();
+            }
         },
 
         computed: {

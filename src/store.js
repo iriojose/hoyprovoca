@@ -81,7 +81,7 @@ export default new Vuex.Store({
           if(state.pedidos[i].detalles[e].id == val.id){
             if(state.pedidos[i].detalles.length == 1){
               //elimina el id del arreglo conceptosId (sigue siendo un solo detalle)
-              for (let f = 0; f < state.conceptosId.length; f++) {
+              for (let f = 0; f < state.conceptosId.length; f++){
                 if(state.conceptosId[f] == state.pedidos[i].detalles[e].conceptos_id){
                   state.conceptosId.splice(f,1);
                   break;
@@ -115,7 +115,6 @@ export default new Vuex.Store({
             for (let f = 0; f < state.conceptosId.length; f++){
               if(state.pedidos[i].detalles[e].conceptos_id == state.conceptosId[f]){
                 state.conceptosId.splice(f,1);
-                break;
               }
             }
           }
