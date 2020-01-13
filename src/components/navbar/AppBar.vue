@@ -139,7 +139,7 @@ import {mapState,mapActions,mapGetters} from  'vuex';
         },
         computed: {
             ...mapGetters(['user']),
-            ...mapState(['drawer','busqueda']),
+            ...mapState(['drawer','busqueda','validarBusqueda']),
 
             busquedas:{
                 get(){
@@ -148,12 +148,21 @@ import {mapState,mapActions,mapGetters} from  'vuex';
                 set(val){
                     this.setBusqueda(val);
                 }
+            },
+            validaBusquedas:{
+                get(){
+                    return this.validarBusqueda;
+                },
+                set(val){
+                    this.setValidaBusqueda(val);
+                }
             }
         },
         methods: {
-            ...mapActions(['setDrawer','setBusqueda']),
+            ...mapActions(['setDrawer','setBusqueda','setValidaBusqueda']),
             
             search() {//metodo para cambiar a la vista buscar
+                this.validaBusquedas=true;
                 this.loading=true;
                 setTimeout(() => {
                     this.loading=false;

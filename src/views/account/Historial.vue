@@ -22,7 +22,7 @@
                 <v-data-table
                     no-results-text="No se encontraron resultados..."
                     :headers="headers"
-                    :items="desserts"
+                    :items="pedidosStados"
                     :search="search"
                     :page.sync="page"
                     :items-per-page="itemsPerPage"
@@ -50,13 +50,9 @@
 </template>
 
 <script>
+import {mapState,mapActions} from 'vuex';
+
     export default {
-        methods: {
-            verItem(item){
-
-            }
-        },
-
         data(){
             return{
                 page: 1,
@@ -70,102 +66,44 @@
                         sortable: true,
                         value: 'id',
                     },
-                    {text: 'Fecha',sortable: false,value: 'fecha'},
+                    {text: 'Detalles',sortable: false,value: 'detalles'},
                     { text: 'Articulos', value: 'articulos',sortable: false},
                     { text: 'Total', value: 'total',sortable: false},
-                    { text: 'Factura', value: 'factura',sortable: false},
+                    { text: 'estado', value: 'estado',sortable: false},
                     { text: 'Acciones', value: 'action', sortable: false },
                 ],
-
-                desserts: [
-                    {
-                        id: 1,
-                        fecha:'10/11/2019',
-                        articulos:12,
-                        total:'200$',
-                        factura:'AS12J43M34'
-                    },
-                    {
-                        id: 2,
-                        fecha:'10/11/2019',
-                        articulos:1,
-                        total:'10$',
-                        factura:'AS12J43M34'
-                    },
-                    {
-                        id: 3,
-                        fecha:'10/11/2019',
-                        articulos:2,
-                        total:'20$',
-                        factura:'AS12J43M34'
-                    },
-                    {
-                        id: 4,
-                        fecha:'10/11/2019',
-                        articulos:1,
-                        total:'10$',
-                        factura:'AS12J43M34'
-                    },
-                    {
-                        id: 5,
-                        fecha:'10/11/2019',
-                        articulos:2,
-                        total:'50$',
-                        factura:'AS12J43M34'
-                    },
-                    {
-                        id: 6,
-                        fecha:'10/11/2019',
-                        articulos:3,
-                        total:'100$',
-                        factura:'AS12J43M34'
-                    },
-                     {
-                        id: 7,
-                        fecha:'10/11/2019',
-                        articulos:2,
-                        total:'50$',
-                        factura:'AS12J43M34'
-                    },
-                    {
-                        id: 8,
-                        fecha:'10/11/2019',
-                        articulos:3,
-                        total:'100$',
-                        factura:'AS12J43M34'
-                    },
-                     {
-                        id: 9,
-                        fecha:'10/11/2019',
-                        articulos:2,
-                        total:'50$',
-                        factura:'AS12J43M34'
-                    },
-                    {
-                        id: 10,
-                        fecha:'10/11/2019',
-                        articulos:3,
-                        total:'100$',
-                        factura:'AS12J43M34'
-                    },
-                     {
-                        id: 11,
-                        fecha:'10/11/2019',
-                        articulos:2,
-                        total:'50$',
-                        factura:'AS12J43M34'
-                    },
-                    {
-                        id: 12,
-                        fecha:'10/11/2019',
-                        articulos:3,
-                        total:'100$',
-                        factura:'AS12J43M34'
-                    },
-                    
-                ]
+                pedidosStados:[],
             }
-        }
+        },
+        mounted() {
+            this.ordenarPedidos();
+        },
+        computed:{
+            ...mapState(['pedidos','totalPedido'])
+        },
+        methods: {            ordenarPedidos(){
+                this.pedidosStados=[];
+                console.log("holll");
+
+                for (let i = 0; i < this.pedidos.length; i++) {
+                    let articulos=0;
+                    for (let e = 0; e < this.pedidos[i].detalles.length; e++) {
+                        articulos += Number.parseInt(this.pedidos[i].detalles[e].cantidad);
+                    }
+                    let data={
+                        id:this.pedidos[i].id,
+                        detalles:this.pedidos[i].detalles.length,
+                        articulos:articulos,
+                        total:"BsS."+this.totalPedido[i],
+                        estado:"Por Facturar"
+                    }
+                    this.pedidosStados.push(data);
+                }
+            },
+            verItem(item){
+                console.log("hola");
+            }
+        },
     }
 </script>
 

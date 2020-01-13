@@ -322,7 +322,7 @@ import {mapState, mapActions,mapGetters} from 'vuex';
                 })
             },
 
-            getConceptoExistencia(detalle,val){
+            getConceptoExistencia(detalle,val){//trae la existencia del concepto
                 Conceptos().get(`/${detalle.conceptos_id}/depositos`).then((response) => {
                     if(Number.parseInt(response.data.data[0].existencia) > 0 && Number.parseInt(detalle.cantidad) <= Number.parseInt(response.data.data[0].existencia)){
                         this.updateDetallesPedidos(detalle,val);

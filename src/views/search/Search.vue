@@ -55,15 +55,37 @@
                     </v-col>
                 </v-row>
             </v-col>
-
             <v-col cols="12" lg="9" md="12" sm="12">
-                <!--Resultados empresa -->
+                <v-row class="mr-2">
+                    <v-col 
+                        :justify-self="$vuetify.breakpoint.smAndDown ? 'center':null"
+                        :align-self="$vuetify.breakpoint.smAndDown ? 'center':null"
+                        cols="12" 
+                        class="mb-5"
+                        lg="3" 
+                        sm="12" 
+                        md="4" 
+                        v-for="(concepto,i) in conceptos" 
+                        :key="i"
+                    >
+                        <CardConceptos 
+                            :widthCard="300"
+                            :heightCard="200"
+                            :widthImg="300"
+                            :heightImg="200"
+                            :concepto="concepto"
+                        />
+                    </v-col>
+                </v-row>
+            </v-col>
+            <v-col cols="12" lg="9" md="12" sm="12">
+                <!--Resultados empresa 
                 <v-sheet class="mx-4 my-3 pa-4" elevation="2" height="200">
                     <ResultadosEmpresa :empresas="empresas"/>
-                </v-sheet>
+                </v-sheet>-->
 
-                <!--Resultados conceptos/empresa -->
-                <ResultadosConceptos :conceptos="conceptos" :empresas="empresas"/>
+                <!--Resultados conceptos/empresa 
+                <ResultadosConceptos :conceptos="conceptos" :empresas="empresas"/>-->
             </v-col>
         </v-row>
         <Footer />
@@ -77,6 +99,7 @@
 import AppBar from '@/components/navbar/AppBar';
 import Footer from '@/components/footer/Footer';
 import ValidacionConcepto from '@/components/dialogs/ValidacionConcepto';
+import CardConceptos from '@/components/cards/CardConceptos';
 //components que manejan los resultados
 import ResultadosConceptos from '@/components/vistaBuscar/ResultadosConceptos';
 import ResultadosEmpresa from '@/components/vistaBuscar/ResultadosEmpresa';
@@ -95,11 +118,13 @@ import {mapState} from 'vuex';
             Footer,
             ResultadosEmpresa,
             ResultadosConceptos,
-            ValidacionConcepto 
+            ValidacionConcepto,
+            CardConceptos
         },
         data() {
             return {
                 aux:[],
+                auxConceptos:[],
                 conceptos:[],
                 empresas:[],
                 error:false,
@@ -115,13 +140,18 @@ import {mapState} from 'vuex';
             }
         },
         computed: {
-            ...mapState(['busqueda','conceptosId'])
+            ...mapState(['busqueda','conceptosId','validarBusqueda'])
         },
         watch: {
-            busqueda(){
-                if(this.busqueda.length >= 5){
+            validarBusqueda(){
+                if(this.validarBusqueda){
+                    console.log('hola');
                     this.getConceptos(this.busqueda);
-                };
+                    this.validarBusqueda=false;
+                }
+            },
+            conceptosId(){
+                this.addOrder();
             }
         },
         mounted(){
@@ -146,18 +176,18 @@ import {mapState} from 'vuex';
             },
 
             categoriasChange(evt){//guarda el seleccionado para luego filtrar 
-                console.log(evt);
                 this.selectCategoria=evt.text;
             },
 
             filtrosChange(evt){//guarda el seleccionado para luego filtrar 
-                console.log(evt);
                 this.selectFiltro=evt.text;
             },
 
             getConceptos(nombre){//trae los conceptos por un like 
                 Conceptos().get(`/?nombre=${nombre}`).then((response) => {
-                    console.log(response.data);
+                    this.conceptos=response.data.data;
+                    //this.ordenEmpresa();
+                    this.addOrder();
                 }).catch(e => {
                     console.log(e);
                 });
@@ -170,10 +200,30 @@ import {mapState} from 'vuex';
                     console.log(e);
                 })
             },
+            
+            addOrder(){
+                for (let i = 0; i < this.conceptos.length; i++) {
+                    for (let e = 0; e < this.conceptosId.length; e++) {
+                        if(this.conceptos[i].id == this.conceptosId[e]){
+                            this.conceptos[i].agregado=true;
+                            break;
+                        }else{
+                            this.conceptos[i].agregado=false;
+                        }
+                    }
+                }
+            },
 
             ordenEmpresa(){
-                if(aux.length >= 0){
-                    for (let i = 0; i < aux.length; i++) {
+                let ids=0;
+
+                for (let i = 0; i < this.conceptos.length; i++){
+                    if(this.conceptos[i].empresa_id !== ids){
+                        ids=this.conceptos[i].empresa_id;
+                        let data={
+                            id:ids
+                        }
+                        this.aux.push(data);
                     }
                 }
             }

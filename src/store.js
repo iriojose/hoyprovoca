@@ -14,6 +14,7 @@ export default new Vuex.Store({
     grupos:[],
     dialog:false,
     panel:false,
+    validarBusqueda:false,
     validacionConcep:false,
     producto:{},
     pedidos:[],
@@ -151,6 +152,10 @@ export default new Vuex.Store({
       }
     },
     
+    SET_VALIDA_BUSQUEDA(state,val){
+      state.validarBusqueda=val;
+    },
+
     SET_BUSQUEDA(state,val){
       state.busqueda=val;
     },
@@ -234,6 +239,10 @@ export default new Vuex.Store({
 
     logged({commit},value){//logea al usuario
         commit("SET_LOGGED_IN",value);
+    },
+
+    setValidaBusqueda({commit},val){
+      commit("SET_VALIDA_BUSQUEDA",val);
     },
     
     //pedidos actions
