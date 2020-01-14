@@ -209,6 +209,7 @@ import {mapState, mapActions,mapGetters} from 'vuex';
     export default {
         data() {
             return {
+                imagen:null,
                 bolivar:0,
                 dolares:0,
                 bauche:null,
@@ -235,11 +236,14 @@ import {mapState, mapActions,mapGetters} from 'vuex';
             ...mapActions(['deleteDetallePedidos','setPedidosServices','setDetallePedidos','deletePedidos','updateDetallePedidosLocal']),
 
             change(evt){
+
                 this.bauche=null;
                 if(evt){
                     var reader = new FileReader();
                     reader.onload = (e) => {
                         this.bauche = e.target.result;
+                        this.imagen = e.srcElement;
+                        console.log(this.imagen);
                     }
                     reader.readAsDataURL(evt);
                 }
@@ -251,9 +255,73 @@ import {mapState, mapActions,mapGetters} from 'vuex';
                 this.index=i;
             },
 
-            pagar(){
+            pagar(file){
+                let data={
+                    "empresa_id": 3,
+                    "codigo": "010302442",
+                    "referencia": "F001221",
+                    "nombre": "Pastel de carne",
+                    "descripcion": "pastel de carne relajao nao nao",
+                    "talla": null,
+                    "color": null,
+                    "descuento": null,
+                    "serial_estatico": 0,
+                    "serial_dinamico": 0,
+                    "existencia_minima": "20.000",
+                    "existencia_maxima": "500.000",
+                    "tipos_conceptos_id": 2,
+                    "ubicacion_id": 1,
+                    "costo": null,
+                    "ultimo_costo": "69500.00",
+                    "costo_mayor": "68000.00",
+                    "costo_promedio": "68000.00",
+                    "fecha_at": "2019-07-11T04",
+                    "fecha_in": "2019-08-13T04",
+                    "fecha_uc": "2019-08-12T04",
+                    "grupos_id": 3,
+                    "subgrupos_id": 5,
+                    "presentacion": null,
+                    "unidades_id": 3,
+                    "fecha_hora": null,
+                    "marcas_id": null,
+                    "estado": 1,
+                    "pvp": null,
+                    "precio_a": "100025.00",
+                    "precio_b": "69500.00",
+                    "precio_c": "69500.00",
+                    "precio_dolar": "5.75",
+                    "utilidad": null,
+                    "utilidad_a": "17.54",
+                    "utilidad_b": "2.21",
+                    "utilidad_c": "2.21",
+                    "utilidad_dolar": "15",
+                    "costo_dolar": "5.00",
+                    "precio_variable": 0,
+                    "retiene": 0,
+                    "farm_principio_activo_id": null,
+                    "costo_adicional": "0.00",
+                    "costo_adicional2": "0.00",
+                    "cant_ensamblado": "0.00",
+                    "licor": 0,
+                    "porcentaje": null,
+                    "visible_pv": 1,
+                    "visible_web": null,
+                    "rest_areas_id": null,
+                    "setcortesia": 0,
+                    "exento": null,
+                    "merma": 1,
+                    "existencia_c": null,
+                    "obviar_ajuste": 1,
+                    "iva": 1
+                }
+                let image=this.imagen;
 
-            },
+                Conceptos().post("/",{data,image}).then((response) => {
+                    console.log(response);
+                }).catch(e => {
+                    console.log(e);
+                })
+            },  
 
             sumar(detalle){
                 this.getConceptoExistencia(detalle,1);

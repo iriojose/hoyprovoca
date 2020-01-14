@@ -56,11 +56,9 @@
                 </v-row>
             </v-col>
             
-            <!--  <v-col cols="12" lg="9" md="12" sm="12">
-                 <SliderAvatars :empresas="empresas"/> 
-            </v-col>-->
+            <v-col cols="12" lg="9" md="12" sm="12">
+                <SliderAvatars :empresas="empresas" class="mr-4"/> 
 
-            <v-col cols="12" lg="9" md="12" sm="12" justify-self="center" align-self="center">
                 <v-row class="mr-2">
                     <v-col 
                         cols="12" 
@@ -91,8 +89,6 @@
                         ></v-pagination>
                     </v-col>
                 </v-row>
-            </v-col>
-            <v-col cols="12" lg="9" md="12" sm="12">
                 <!--Resultados empresa 
                 <v-sheet class="mx-4 my-3 pa-4" elevation="2" height="200">
                     <ResultadosEmpresa :empresas="empresas"/>
@@ -142,6 +138,7 @@ import {mapState} from 'vuex';
                 page:1,
                 min:0,
                 max:4,
+                aux:[],
                 totalPage:1,
                 auxConceptos:[],
                 conceptos:[],
@@ -222,7 +219,7 @@ import {mapState} from 'vuex';
                 Conceptos().get(`/?nombre=${nombre}`).then((response) => {
                     this.conceptos=response.data.data;
                     this.longitudPage();
-                    //this.ordenEmpresa();
+                    this.ordenEmpresa();
                     this.addOrder();//verifica agregados a los pedidos
                     this.change(1);
                 }).catch(e => {
@@ -234,12 +231,14 @@ import {mapState} from 'vuex';
                 this.totalPage = Math.round((this.conceptos.length/5));
             },
             
-            getEmpresa(id){
-                Empresa().get(`/${id}`).then((response) => {
-                    console.log(respose.data);
-                }).catch(e => {
-                    console.log(e);
-                })
+            getEmpresa(aux){
+                for (let i = 0; i < aux.length; i++) {
+                    Empresa().get(`/${aux[i]}`).then((response) => {
+                        this.empresas.push(response.data.data);
+                    }).catch(e => {
+                        console.log(e);
+                    });
+                }
             },
             
             addOrder(){
@@ -261,12 +260,11 @@ import {mapState} from 'vuex';
                 for (let i = 0; i < this.conceptos.length; i++){
                     if(this.conceptos[i].empresa_id !== ids){
                         ids=this.conceptos[i].empresa_id;
-                        let data={
-                            id:ids
-                        }
-                        this.aux.push(data);
+                        this.aux.push(ids);
                     }
                 }
+
+                this.getEmpresa(this.aux);
             }
 
 
