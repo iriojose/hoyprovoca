@@ -78,10 +78,10 @@
                     <div class="body display-inline text-truncate font-weight-black">
                         BsS. {{concepto.precio_a}}
                     </div>
-                    <div class="body display-inline text-truncate font-weight-bold">
+                    <div v-if="tipo !== 3" class="body display-inline text-truncate font-weight-bold">
                         {{concepto.nombre}}
                     </div>
-                    <div class="caption grey--text display-inline text-truncate font-weight-bold">
+                    <div v-if="tipo !== 3" class="caption grey--text display-inline text-truncate font-weight-bold">
                         {{concepto.descripcion}}
                     </div>
                 </div>

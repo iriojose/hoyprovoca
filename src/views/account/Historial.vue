@@ -81,9 +81,9 @@ import {mapState,mapActions} from 'vuex';
         computed:{
             ...mapState(['pedidos','totalPedido'])
         },
-        methods: {            ordenarPedidos(){
+        methods: {            
+            ordenarPedidos(){
                 this.pedidosStados=[];
-                console.log("holll");
 
                 for (let i = 0; i < this.pedidos.length; i++) {
                     let articulos=0;
