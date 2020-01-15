@@ -57,7 +57,7 @@
             </v-col>
             
             <v-col cols="12" lg="9" md="12" sm="12">
-                <SliderAvatars :empresas="empresas" class="mr-4"/> 
+                <SliderAvatars :empresas="empresas" class="mr-4 my-5"/> 
 
                 <v-row class="mr-2">
                     <v-col 
@@ -174,7 +174,8 @@ import {mapState} from 'vuex';
             this.getConceptos(this.busqueda);
         },
         methods: {
-            Getgrupos(){
+            //LLAMAAS A LA API
+            Getgrupos(){//trae los grupos de conceptos
                 Grupos().get('/?fields=id,nombre').then((response) => {
                     for(let i=0; i < response.data.data.length; i++){
                         let categoria={
@@ -188,34 +189,8 @@ import {mapState} from 'vuex';
                     this.error = true;
                 });
             },
-            
-            change(evt){
-                this.auxConceptos=[];
 
-                if(evt > 1){
-                    this.min = (evt*5)-1;
-                    this.max=(this.min+4);
-                }else{
-                    this.min=0;
-                    this.max=4;
-                }
-                for (let i = 0; i < this.conceptos.length; i++) {
-                    if(i <= this.max && i >= this.min){
-                        this.auxConceptos.push(this.conceptos[i]);
-                    }
-                }
-                console.log(this.auxConceptos);
-            },
-            
-            categoriasChange(evt){//guarda el seleccionado para luego filtrar 
-                this.selectCategoria=evt.text;
-            },
-
-            filtrosChange(evt){//guarda el seleccionado para luego filtrar 
-                this.selectFiltro=evt.text;
-            },
-
-            getConceptos(nombre){//trae los conceptos por un like 
+            getConceptos(nombre){//trae los conceptos por un like (mejorar)
                 Conceptos().get(`/?nombre=${nombre}`).then((response) => {
                     this.conceptos=response.data.data;
                     this.longitudPage();
@@ -227,11 +202,7 @@ import {mapState} from 'vuex';
                 });
             },
 
-            longitudPage(){
-                this.totalPage = Math.round((this.conceptos.length/5));
-            },
-            
-            getEmpresa(aux){
+            getEmpresa(aux){//trae las empresas de los resultaos
                 for (let i = 0; i < aux.length; i++) {
                     Empresa().get(`/${aux[i]}`).then((response) => {
                         this.empresas.push(response.data.data);
@@ -241,7 +212,54 @@ import {mapState} from 'vuex';
                 }
             },
             
-            addOrder(){
+            //METODOS DE LA PAGINACION
+            change(evt){//acomoda el arreglo para mostrarse por la paginacion
+                this.auxConceptos=[];//reinicia la variable
+
+                if(evt > 1){//cuando es mayor que 1 se multiplica por el numero
+                    this.min = (evt*5)-1;//que quieras por pagina (-1)
+                    this.max=(this.min+4);
+                }else{
+                    this.min=0;
+                    this.max=4;
+                }
+                //for con validacion para llenar el arreglo.
+                for (let i = 0; i < this.conceptos.length; i++) {
+                    if(i <= this.max && i >= this.min){
+                        this.auxConceptos.push(this.conceptos[i]);
+                    }
+                }
+            },
+
+            longitudPage(){//saca la longitud de la paginacion
+                this.totalPage = Math.round((this.conceptos.length/5));
+            },
+            
+            //EVENTOS DE LOS SELECTS
+            categoriasChange(evt){//guarda el seleccionado para luego filtrar 
+                this.selectCategoria=evt.text;
+            },
+
+            filtrosChange(evt){//guarda el seleccionado para luego filtrar 
+                this.selectFiltro=evt;
+            
+                if(evt == 'Mayor precio'){
+                    this.OrdenarMayorAMenor();
+                }
+            },
+            
+            ordenEmpresa(){//obtiene los ids de las empresas
+                let ids=0;
+                for (let i = 0; i < this.conceptos.length; i++){
+                    if(this.conceptos[i].empresa_id !== ids){
+                        ids=this.conceptos[i].empresa_id;
+                        this.aux.push(ids);
+                    }
+                }
+                this.getEmpresa(this.aux);
+            },
+
+            addOrder(){//verifica los conceptos agregados a conceptos
                 for (let i = 0; i < this.conceptos.length; i++) {
                     for (let e = 0; e < this.conceptosId.length; e++) {
                         if(this.conceptos[i].id == this.conceptosId[e]){
@@ -254,20 +272,23 @@ import {mapState} from 'vuex';
                 }
             },
 
-            ordenEmpresa(){
-                let ids=0;
+            OrdenarMayorAMenor(){
+                let menor=this.conceptos[0];
 
                 for (let i = 0; i < this.conceptos.length; i++){
-                    if(this.conceptos[i].empresa_id !== ids){
-                        ids=this.conceptos[i].empresa_id;
-                        this.aux.push(ids);
+                    if(Number.parseFloat(this.conceptos[i].precio_a) < Number.parseFloat(menor.precio_a)){
+                        menor=this.conceptos[i];
+                        console.log('ok');
+                    }else{
+                        if(Number.parseFloat(this.conceptos[i].precio_a) > Number.parseFloat(menor.precio_a)){
+                            menor=menor;
+                            console.log('ok');
+                        }
                     }
                 }
-
-                this.getEmpresa(this.aux);
+                this.change(1);
+                console.log(this.conceptos);
             }
-
-
         },
     }
 </script>
