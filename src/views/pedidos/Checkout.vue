@@ -102,7 +102,7 @@
                         <v-spacer></v-spacer>
 
                         <v-toolbar-title>
-                            BsS {{detalle.precio}} 
+                            Bs. {{detalle.precio}} 
                         </v-toolbar-title>
                         
                         <v-spacer></v-spacer>
@@ -128,7 +128,7 @@
                 </v-card>
             </v-col>
 
-            <v-col cols="12" md="4" class="mx-3 mt-10">
+            <v-col cols="12" md="4" class="mt-10">
                 <v-card 
                     elevation="10" 
                     :class="$vuetify.breakpoint.smAndDown ? 'py-4':'fix mx-5 py-4'"
@@ -139,7 +139,7 @@
                     <v-divider></v-divider>
                     <v-row class="px-5">
                         <v-col cols="12" md="6" sm="6">
-                            <div class="py-2">0$</div>
+                            <div class="py-2 text-center">$</div>
                             <v-text-field 
                                 solo
                                 v-model="bolivar"
@@ -152,7 +152,7 @@
                             />
                         </v-col>
                         <v-col cols="12" md="6" sm="6">
-                            <div class="py-2">0Bs.</div>
+                            <div class="py-2 text-center">Bs.</div>
                             <v-text-field 
                                 solo
                                 v-model="totalPedido[index]"
@@ -178,8 +178,8 @@
                                     outlined
                                 />
                             </v-col>
-                            <v-col cols="12" md="12" sm="12" justify-self="center">
-                                <v-img width="450" height="200" contain v-if="bauche" :src="bauche" />
+                            <v-col cols="12" md="12" sm="12" justify-self="center" align-self="center" class="fill-height">
+                                <v-img :width="$vuetify.breakpoint.smAndDown ? 330:450" height="200" contain v-if="bauche" :src="bauche" />
                             </v-col>
                             <v-col cols="12" md="12" sm="12" v-if="bauche">
                                 <v-btn block color="#005598" class="text-capitalize white--text" rounded @click="pagar">
@@ -236,14 +236,13 @@ import {mapState, mapActions,mapGetters} from 'vuex';
             ...mapActions(['deleteDetallePedidos','setPedidosServices','setDetallePedidos','deletePedidos','updateDetallePedidosLocal']),
 
             change(evt){
-
                 this.bauche=null;
+
                 if(evt){
                     var reader = new FileReader();
                     reader.onload = (e) => {
                         this.bauche = e.target.result;
-                        this.imagen = e.srcElement;
-                        console.log(this.imagen);
+                        this.imagen = evt;
                     }
                     reader.readAsDataURL(evt);
                 }
@@ -258,10 +257,10 @@ import {mapState, mapActions,mapGetters} from 'vuex';
             pagar(file){
                 let data={
                     "empresa_id": 3,
-                    "codigo": "010302442",
-                    "referencia": "F001221",
-                    "nombre": "Pastel de carne",
-                    "descripcion": "pastel de carne relajao nao nao",
+                    "codigo": "0308942",
+                    "referencia": "F0221",
+                    "nombre": "rueda e carne",
+                    "descripcion": "rueda de carne elistica",
                     "talla": null,
                     "color": null,
                     "descuento": null,
@@ -286,7 +285,7 @@ import {mapState, mapActions,mapGetters} from 'vuex';
                     "marcas_id": null,
                     "estado": 1,
                     "pvp": null,
-                    "precio_a": "100025.00",
+                    "precio_a": "200000.00",
                     "precio_b": "69500.00",
                     "precio_c": "69500.00",
                     "precio_dolar": "5.75",

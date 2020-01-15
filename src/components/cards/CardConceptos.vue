@@ -1,92 +1,97 @@
 <template>
     <div>
-        <v-hover v-slot:default="{hover}">
-            <v-card :title="concepto.nombre" tile :height="heightCard" :width="widthCard" :elevation="hover ? 15:5">
-                <v-img 
-                    v-if="!concepto.imagen"
-                    :height="heightImg" 
-                    :width="widthImg" 
-                    contain 
-                    :src="concepto.imagen"
-                    :gradient="hover ? 'to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)':null"
-                >
-                    <!-- <div class="ribbon" v-if="concepto.agotado">
-                        <v-icon color="#fff">schedule</v-icon>
-                    </div>-->
-                    <v-row
-                        v-if="hover"
-                        class="fill-height"
-                        align="center"
-                        justify="center"
-                    >
-                        <v-scale-transition>
-                            <v-btn  
-                                :loading="loading"
-                                color="#005598"
-                                dark
-                                width="50%"
-                                class="text-capitalize body font-weight-bold"
-                                @click="agregarConceptos(concepto)"
-                                v-if="!concepto.agregado"
+        <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+                <v-hover v-slot:default="{hover}">
+                    <v-card v-on="on" tile :height="heightCard" :width="widthCard" :elevation="hover ? 15:5">
+                        <v-img 
+                            v-if="!concepto.imagen"
+                            :height="heightImg" 
+                            :width="widthImg" 
+                            contain 
+                            :src="concepto.imagen"
+                            :gradient="hover ? 'to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)':null"
+                        >
+                            <!-- <div class="ribbon" v-if="concepto.agotado">
+                                <v-icon color="#fff">schedule</v-icon>
+                            </div>-->
+                            <v-row
+                                v-if="hover"
+                                class="fill-height"
+                                align="center"
+                                justify="center"
                             >
-                                Agregar
-                            </v-btn>
-                            <div v-else class="white--text title">
-                                agregado
-                            </div>
-                        </v-scale-transition>
-                    </v-row>
-                </v-img>
-                <!--cuando no tiene imagen -->
-                <v-img  
-                    v-else
-                    :height="heightImg" 
-                    :width="widthImg" 
-                    contain 
-                    src="@/assets/noimage.png"
-                    :gradient="hover ? 'to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)':null"
-                >
-                    <!-- <div class="ribbon" v-if="concepto.agotado">
-                        <v-icon color="#fff">schedule</v-icon>
-                    </div>-->
-                    <v-row
-                        v-if="hover"
-                        class="fill-height"
-                        align="center"
-                        justify="center"
-                    >
-                        <v-scale-transition>
-                            <v-btn  
-                                :loading="loading"
-                                color="#005598"
-                                dark
-                                width="50%"
-                                class="text-capitalize body font-weight-bold"
-                                @click="agregarConceptos(concepto)"
-                                v-if="!concepto.agregado"
+                                <v-scale-transition>
+                                    <v-btn  
+                                        :loading="loading"
+                                        color="#005598"
+                                        dark
+                                        width="50%"
+                                        class="text-capitalize body font-weight-bold"
+                                        @click="agregarConceptos(concepto)"
+                                        v-if="!concepto.agregado"
+                                    >
+                                        Agregar
+                                    </v-btn>
+                                    <div v-else class="white--text title">
+                                        agregado
+                                    </div>
+                                </v-scale-transition>
+                            </v-row>
+                        </v-img>
+                        <!--cuando no tiene imagen -->
+                        <v-img  
+                            v-else
+                            :height="heightImg" 
+                            :width="widthImg" 
+                            contain 
+                            src="@/assets/noimage.png"
+                            :gradient="hover ? 'to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)':null"
+                        >
+                            <!-- <div class="ribbon" v-if="concepto.agotado">
+                                <v-icon color="#fff">schedule</v-icon>
+                            </div>-->
+                            <v-row
+                                v-if="hover"
+                                class="fill-height"
+                                align="center"
+                                justify="center"
                             >
-                                Agregar
-                            </v-btn>
-                            <div v-else class="white--text title">
-                                agregado
+                                <v-scale-transition>
+                                    <v-btn  
+                                        :loading="loading"
+                                        color="#005598"
+                                        dark
+                                        width="50%"
+                                        class="text-capitalize body font-weight-bold"
+                                        @click="agregarConceptos(concepto)"
+                                        v-if="!concepto.agregado"
+                                    >
+                                        Agregar
+                                    </v-btn>
+                                    <div v-else class="white--text title">
+                                        agregado
+                                    </div>
+                                </v-scale-transition>
+                            </v-row>
+                        </v-img>
+                        <v-divider></v-divider>
+                        <div class="text-center mt-2">
+                            <div class="body display-inline text-truncate font-weight-black">
+                                Bs. {{concepto.precio_a}}
                             </div>
-                        </v-scale-transition>
-                    </v-row>
-                </v-img>
-                <v-divider></v-divider>
-                <div class="text-center mt-2">
-                    <div class="body display-inline text-truncate font-weight-black">
-                        BsS. {{concepto.precio_a}}
-                    </div>
-                    <div v-if="tipo !== 3" class="body display-inline text-truncate font-weight-bold">
-                        {{concepto.nombre}}
-                    </div>
-                    <div v-if="tipo !== 3" class="caption grey--text display-inline text-truncate font-weight-bold">
-                        {{concepto.descripcion}}
-                    </div>
-                </div>
-            </v-card>  
-        </v-hover>
+                            <div v-if="tipo !== 3" class="body display-inline text-truncate font-weight-bold">
+                                {{concepto.nombre}}
+                            </div>
+                            <div v-if="tipo !== 3" class="caption grey--text display-inline text-truncate font-weight-bold">
+                                {{concepto.descripcion}}
+                            </div>
+                        </div>
+                    </v-card> 
+                </v-hover> 
+            </template>
+            <span>{{concepto.nombre}}</span>
+        </v-tooltip>
 
         <v-snackbar color="red" v-model="snackbar" right>
             No hay mas existencia.
@@ -182,7 +187,7 @@ import Pedidos from '@/services/Pedidos';
 
             getConceptosExistencia(id){//trae la existencia del concepto del deposito de la web
                 Conceptos().get(`/${id}/depositos`).then((response) => {
-                    this.existencia = response.data.data[0];   
+                    this.existencia = response.data.data[0]; 
 
                     if(Number.parseInt(this.existencia.existencia) > 0){
                         if(this.producto.tipos_conceptos_id == 5){
@@ -197,7 +202,7 @@ import Pedidos from '@/services/Pedidos';
                             }
                         }
                     }else{
-                        this.snackbar=true;//OJO
+                        this.snackbar=true;
                     }
                 }).catch(e => {
                     console.log(e);

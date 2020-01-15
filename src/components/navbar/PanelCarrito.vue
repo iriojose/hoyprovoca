@@ -49,7 +49,7 @@
                             <v-spacer></v-spacer>
                             <div class="font-weight-bold">{{pedido.nombre}}</div>-->
                             <v-spacer></v-spacer>
-                            <div class="font-weight-black">BsS. {{Number.parseFloat(totalPedido[i])}}</div>
+                            <div class="font-weight-black">Bs. {{Number.parseFloat(totalPedido[i])}}</div>
                         </v-toolbar>
                     </v-expansion-panel-header>
                     <v-expansion-panel-content>
@@ -95,7 +95,7 @@
                             
                             <v-spacer></v-spacer>
 
-                            <div class="font-weight-black">Bss. {{Number.parseInt(detalle.precio)}}</div>
+                            <div class="font-weight-black">Bs. {{Number.parseInt(detalle.precio)}}</div>
                         </v-toolbar>
                     </v-expansion-panel-content>
                 </v-expansion-panel>
@@ -105,7 +105,7 @@
             <v-divider></v-divider>
             <v-toolbar elevation="0" height="100">
                 <div>
-                    <div class="py-2 text-center">BsS.</div>
+                    <div class="py-2 text-center">Bs.</div>
                     <v-text-field 
                         solo
                         v-model="totalCarrito"
