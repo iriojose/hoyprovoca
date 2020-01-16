@@ -15,13 +15,10 @@
                                 hide-details
                                 outlined
                                 dense
+                                small-chips
                                 hide-selected
                                 @change="categoriasChange($event)"
-                            >
-                            <!--
-                            el select no acepta otro atributo que no se llame text, si el atributo no es text no muestra nada
-                            -->
-                            </v-select>
+                            ></v-select>
                         </v-card>
                     </v-col>
 
@@ -136,15 +133,13 @@ import {mapState} from 'vuex';
                 page:1,
                 min:0,
                 max:4,
-                aux:[],
                 totalPage:1,
+                aux:[],
                 auxGrupos:[],
                 auxConceptos:[],
                 conceptos:[],
                 empresas:[],
                 error:false,
-                selectCategoria:'',
-                selectFiltro:'',
                 categorias:[],
                 filtros:[
                     {id:1,icon:'arrow_right',text:'Mayor precio'},
@@ -172,31 +167,16 @@ import {mapState} from 'vuex';
         },
 
         mounted(){
-            this.Getgrupos();
             this.getConceptos(this.busqueda);
         },
 
         methods: {
             //LLAMAAS A LA API
-            Getgrupos(){//trae los grupos de conceptos
-                Grupos().get('/?fields=id,nombre').then((response) => {
-                    for(let i=0; i < response.data.data.length; i++){
-                        let categoria={
-                            text:response.data.data[i].nombre,
-                            id:response.data.data[i].id
-                        }
-                        this.categorias.push(categoria);
-                    }
-                }).catch(e => {
-                    console.log(e);
-                    this.error = true;
-                });
-            },
-
             getConceptos(nombre){//trae los conceptos por un like (mejorar)
                 Conceptos().get(`/?nombre=${nombre}`).then((response) => {
                     this.conceptos=response.data.data;
-                    this.longitudPage();
+                    this.auxConceptos = this.conceptos;
+                    this.longitudPage(this.conceptos.length);
                     this.ordenEmpresa();
                     this.addOrder();//verifica agregados a los pedidos
                     this.change(1);
@@ -206,9 +186,24 @@ import {mapState} from 'vuex';
                 });
             },
 
+            getGrupos(aux){//trae los grupos de los conceptos encontrados
+                for (let id of aux) {
+                    Grupos().get(`/${id}`).then((response) => {
+                        let data = {//el atributo se debe llamar (TEXT) ajuro para que se muestre
+                            id:response.data.data.id,
+                            text:response.data.data.nombre
+                        }
+                        this.categorias.push(data);
+                    }).catch(e => {
+                        console.log(e);
+                        this.error = true;
+                    });
+                }
+            },
+
             getEmpresa(aux){//trae las empresas de los resultaos
-                for (let i = 0; i < aux.length; i++) {
-                    Empresa().get(`/${aux[i]}`).then((response) => {
+                for (let id of aux) {
+                    Empresa().get(`/${id}`).then((response) => {
                         this.empresas.push(response.data.data);
                     }).catch(e => {
                         console.log(e);
@@ -218,7 +213,7 @@ import {mapState} from 'vuex';
             
             //METODOS DE LA PAGINACION
             change(evt){//acomoda el arreglo para mostrarse por la paginacion
-                this.auxConceptos=[];//reinicia la variable
+                let aux = [];
 
                 if(evt > 1){//cuando es mayor que 1 se multiplica por el numero
                     this.min = (evt*5)-1;//que quieras por pagina (-1)
@@ -228,25 +223,30 @@ import {mapState} from 'vuex';
                     this.max=4;
                 }
                 //for con validacion para llenar el arreglo.
-                for (let i = 0; i < this.conceptos.length; i++) {
+                for (let i = 0; i < this.auxConceptos.length; i++){
                     if(i <= this.max && i >= this.min){
-                        this.auxConceptos.push(this.conceptos[i]);
+                        aux.push(this.auxConceptos[i]);
                     }
                 }
+                this.auxConceptos = aux;
             },
 
-            longitudPage(){//saca la longitud de la paginacion
-                this.totalPage = Math.round((this.conceptos.length/5));
+            longitudPage(longitud){//saca la longitud de la paginacion
+                this.totalPage = Math.round((longitud/5));
             },
             
             //EVENTOS DE LOS SELECTS
             categoriasChange(evt){//guarda el seleccionado para luego filtrar 
-                this.selectCategoria=evt.text;
+                let id = null;
+                for (let i = 0; i < this.categorias.length; i++) {
+                    if(this.categorias[i].text == evt){
+                        id=this.categorias[i].id;
+                    }
+                }
+                this.ordenarPorCartegorias(id);
             },
 
             filtrosChange(evt){//guarda el seleccionado para luego filtrar 
-                this.selectFiltro=evt;
-            
                 if(evt == 'Mayor precio'){
                     this.ordenarMayorAMenor();
                 }else if(evt == 'Menor precio'){
@@ -256,26 +256,26 @@ import {mapState} from 'vuex';
                 }
             },
             
-            ordenEmpresa(){//obtiene los ids de las empresas (OJO)
-                let ids=0;
-                for (let i = 0; i < this.conceptos.length; i++){
-                    if(this.conceptos[i].empresa_id !== ids){
-                        ids=this.conceptos[i].empresa_id;
-                        this.aux.push(ids);
-                    }
+            ordenEmpresa(){//obtiene los ids de las empresas
+                this.aux = [];
+                for (let i = 0; i < this.conceptos.length; i++) {
+                    this.aux.push(this.conceptos[i].empresa_id);
                 }
+                //esta variable es de tipo (Set) por lo tanto se itera de manera distinta
+                //for(let item of myset) ejemplo... siendo item el valor iterado.
+                this.aux = new Set(this.aux);
                 this.getEmpresa(this.aux);
             },
 
-            ordenargrupos(){//OJO
-                let ids=0;
-                for (let i = 0; i < this.conceptos.length; i++){
-                    if(this.conceptos.grupos_id !== ids){
-                        ids=this.conceptos[i].grupos_id;
-                        this.auxGrupos.push(ids);
-                    }
+            ordenargrupos(){//saca los id de los grupos a los que pertenecen los conceptos buscados
+                this.auxGrupos = [];
+                for (let i = 0; i < this.conceptos.length; i++) {
+                    this.auxGrupos.push(this.conceptos[i].grupos_id);
                 }
-               console.log(this.auxGrupos);
+                //esta variable es de tipo (Set) por lo tanto se itera de manera distinta
+                //for(let item of myset) ejemplo... siendo item el valor de la iteracion.
+                this.auxGrupos = new Set(this.auxGrupos);
+                this.getGrupos(this.auxGrupos);
             },
 
             addOrder(){//verifica los conceptos agregados a conceptos
@@ -322,6 +322,18 @@ import {mapState} from 'vuex';
                     var n = a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase());
                     return n === 0 && a.nombre !== b.nombre ? b.nombre.localeCompare(a) : n;
                 });
+                this.change(1);
+            },
+
+            ordenarPorCartegorias(id){
+                this.auxConceptos = [];
+
+                for (let i = 0; i < this.conceptos.length; i++) {
+                    if(this.conceptos[i].grupos_id == id){
+                        this.auxConceptos.push(this.conceptos[i]);
+                    }
+                }
+                this.longitudPage(this.auxConceptos.length);
                 this.change(1);
             }
         },
