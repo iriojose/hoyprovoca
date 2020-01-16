@@ -17,7 +17,7 @@
                                 dense
                                 small-chips
                                 hide-selected
-                                @change="categoriasChange($event)"
+                                @change="changeCategoria($event)"
                             ></v-select>
                         </v-card>
                     </v-col>
@@ -26,7 +26,7 @@
                         <v-card class="pa-4" elevation="3">
                             <h3 class="my-4">Ordenar por:</h3>
                             <v-select 
-                                :items="filtros"
+                                :items="filt"
                                 label="Filtros"
                                 chips 
                                 color="#005598"
@@ -35,7 +35,7 @@
                                 outlined
                                 dense
                                 hide-selected
-                                @change="filtrosChange($event)"
+                                @change="changeFiltro($event)"
                             >
                                 <template v-slot:item="{item,attrs,on}">
                                     <v-list-item v-bind="attrs" v-on="on" dense>
@@ -84,7 +84,6 @@
                             :page="page"
                             :total-visible="$vuetify.breakpoint.smAndDown ? 5:10"
                             color="#005598"
-                            @input="change($event)"
                         ></v-pagination>
                     </v-col>
                 </v-row>
@@ -141,7 +140,9 @@ import {mapState} from 'vuex';
                 empresas:[],
                 error:false,
                 categorias:[],
-                filtros:[
+                selectFiltro:'',
+                selectCategoria:0,
+                filt:[
                     {id:1,icon:'arrow_right',text:'Mayor precio'},
                     {id:2,icon:'arrow_left',text:'Menor precio'},
                     {id:3,icon:'text_format',text:'Alfabeto'},
@@ -163,6 +164,16 @@ import {mapState} from 'vuex';
             },
             conceptosId(){
                 this.addOrder();
+            },
+
+            page(){
+                this.filtrado();
+            },
+            selectFiltro(){
+                this.filtrado();
+            },
+            selectCategoria(){
+                this.filtrado();
             }
         },
 
@@ -179,8 +190,8 @@ import {mapState} from 'vuex';
                     this.longitudPage(this.conceptos.length);
                     this.ordenEmpresa();
                     this.addOrder();//verifica agregados a los pedidos
-                    this.change(1);
                     this.ordenargrupos();
+                    this.paginador();
                 }).catch(e => {
                     console.log(e);
                 });
@@ -210,50 +221,9 @@ import {mapState} from 'vuex';
                     });
                 }
             },
-            
-            //METODOS DE LA PAGINACION
-            change(evt){//acomoda el arreglo para mostrarse por la paginacion
-                let aux = [];
-
-                if(evt > 1){//cuando es mayor que 1 se multiplica por el numero
-                    this.min = (evt*5)-1;//que quieras por pagina (-1)
-                    this.max=(this.min+4);
-                }else{
-                    this.min=0;
-                    this.max=4;
-                }
-                //for con validacion para llenar el arreglo.
-                for (let i = 0; i < this.auxConceptos.length; i++){
-                    if(i <= this.max && i >= this.min){
-                        aux.push(this.auxConceptos[i]);
-                    }
-                }
-                this.auxConceptos = aux;
-            },
 
             longitudPage(longitud){//saca la longitud de la paginacion
-                this.totalPage = Math.round((longitud/5));
-            },
-            
-            //EVENTOS DE LOS SELECTS
-            categoriasChange(evt){//guarda el seleccionado para luego filtrar 
-                let id = null;
-                for (let i = 0; i < this.categorias.length; i++) {
-                    if(this.categorias[i].text == evt){
-                        id=this.categorias[i].id;
-                    }
-                }
-                this.ordenarPorCartegorias(id);
-            },
-
-            filtrosChange(evt){//guarda el seleccionado para luego filtrar 
-                if(evt == 'Mayor precio'){
-                    this.ordenarMayorAMenor();
-                }else if(evt == 'Menor precio'){
-                    this.ordenarMenorAMayor();
-                }else if(evt == 'Alfabeto'){
-                    this.ordenarAlfabeticamente();
-                }
+                this.totalPage = Math.round((longitud/5)+1);
             },
             
             ordenEmpresa(){//obtiene los ids de las empresas
@@ -291,8 +261,95 @@ import {mapState} from 'vuex';
                 }
             },
             
-            ordenarMenorAMayor(){//ordena el arreglo de menor a mayor por precios
-                this.conceptos.sort(function (a, b){
+            changeCategoria(evt){
+                for (let i = 0; i < this.categorias.length; i++) {
+                    if(this.categorias[i].text == evt){
+                        this.selectCategoria=this.categorias[i].id;
+                    }
+                } 
+            },
+
+            changeFiltro(evt){
+                this.selectFiltro = evt;
+            },
+            
+            paginador(){
+                let aux = [];
+                this.longitudPage(this.auxConceptos.length);
+
+                if(this.page > 1){
+                    this.min = this.page*4;
+                    this.max=(this.min+4);
+                }else{
+                    this.min=0;
+                    this.max=4;
+                }
+
+                for (let i = 0; i < this.auxConceptos.length; i++){
+                    if(i <= this.max && i >= this.min){
+                        aux.push(this.auxConceptos[i]);
+                    }
+                }
+                this.auxConceptos = aux;
+            },
+            
+            filtros(){
+                if(this.selectFiltro == 'Mayor precio'){
+                    this.auxConceptos = this.ordenarMayorAMenor(this.auxConceptos);
+                }else if(this.selectFiltro == 'Menor precio'){
+                    this.auxConceptos = this.ordenarMenorAMayor(this.auxConceptos);
+                }else if(this.selectFiltro == 'Alfabeto'){
+                    this.auxConceptos = this.ordenarAlfabeticamente(this.auxConceptos);
+                }
+            },
+
+            filtrado(){
+                this.auxConceptos = this.conceptos;
+
+                if(this.selectFiltro !== '' && this.selectCategoria !== 0){
+                    this.filtros();
+                    this.ordenarPorCategorias();
+                    this.paginador();
+                }else{
+                    if(this.selectFiltro !== ''){
+                        this.filtros();
+                        this.paginador();
+                    }else{
+                        if(this.selectCategoria !== 0){
+                            this.ordenarPorCategorias();
+                            this.paginador();
+                        }else{
+                            this.paginador();
+                        }
+                    }
+                }
+            },
+
+            ordenarPorCategorias(){
+                let aux = [];
+                for (let i= 0; i < this.auxConceptos.length; i++) {
+                    if(this.auxConceptos[i].grupos_id == this.selectCategoria){
+                        aux.push(this.conceptos[i]);
+                    }
+                }
+                this.auxConceptos = aux;
+            },
+
+            ordenarMayorAMenor(conceptos){
+                conceptos.sort((a,b) => {
+                    if (Number.parseFloat(a.precio_a) < Number.parseFloat(b.precio_a)){
+                        return 1;
+                    }
+                    if (Number.parseFloat(a.precio_a) > Number.parseFloat(b.precio_a)){
+                        return -1;
+                    }
+                    return 0;
+                });
+                return conceptos;
+            },
+
+            ordenarMenorAMayor(conceptos){
+                conceptos.sort(function (a, b){
                     if (Number.parseFloat(a.precio_a) < Number.parseFloat(b.precio_a)){
                         return -1;
                     }
@@ -301,41 +358,17 @@ import {mapState} from 'vuex';
                     }
                     return 0;
                 });
-                this.change(1);
+                return conceptos;
             },
 
-            ordenarMayorAMenor(){//ordena el arreglo de mayor a menor por precios
-                this.conceptos.sort((a,b) => {
-                    if (Number.parseFloat(a.precio_a) < Number.parseFloat(b.precio_a)){
-                        return 1;
-                    }
-                    if (Number.parseFloat(a.precio_a) > Number.parseFloat(b.precio_a)){
-                        return -1;
-                    }
-                    return 0;
-                });
-                this.change(1);
-            },
-
-            ordenarAlfabeticamente(){//ordena alfabeticamente el arreglo
-                this.conceptos.sort((a,b) =>{
+            ordenarAlfabeticamente(conceptos){
+                conceptos.sort((a,b) =>{
                     var n = a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase());
                     return n === 0 && a.nombre !== b.nombre ? b.nombre.localeCompare(a) : n;
                 });
-                this.change(1);
+                return conceptos;
             },
-
-            ordenarPorCartegorias(id){
-                this.auxConceptos = [];
-
-                for (let i = 0; i < this.conceptos.length; i++) {
-                    if(this.conceptos[i].grupos_id == id){
-                        this.auxConceptos.push(this.conceptos[i]);
-                    }
-                }
-                this.longitudPage(this.auxConceptos.length);
-                this.change(1);
-            }
+            
         },
     }
 </script>
