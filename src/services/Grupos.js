@@ -1,9 +1,10 @@
 import axios from 'axios';
 import header from './header';
+import extension from './extension';
 
 export default () => {
     return axios.create({
-        baseURL:'http://192.168.0.253:81/api/grupos',
+        baseURL:`http://${extension}/api/grupos`,
         withCredentials:false,
         headers:{
             Accept:'application/json',

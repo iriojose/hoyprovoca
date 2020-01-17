@@ -1,9 +1,10 @@
 import axios from 'axios';
 import header from './header';
+import extension from './extension';
 
 export default () => {
     return axios.create({
-        baseURL:'http://192.168.0.253:81/api/entidad',
+        baseURL:`http://${extension}/api/entidad`,
         withCredentials:false,
         headers:{
             Accept:'application/json',

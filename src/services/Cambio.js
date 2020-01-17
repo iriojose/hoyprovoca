@@ -1,9 +1,10 @@
 import axios from 'axios';
 import header from './header';
+import extension from './cambio';
 
 export default () => {
     return axios.create({
-        baseURL:'http://192.168.0.253:81/api/cambio',
+        baseURL:`http://${extension}/api/cambio`,
         withCredentials:false,
         headers:{
             Accept:'application/json',
