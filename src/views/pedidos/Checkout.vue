@@ -237,12 +237,13 @@ import {mapState, mapActions,mapGetters} from 'vuex';
 
             change(evt){
                 this.bauche=null;
-
+                
                 if(evt){
                     var reader = new FileReader();
                     reader.onload = (e) => {
                         this.bauche = e.target.result;
                         this.imagen = evt;
+                        
                     }
                     reader.readAsDataURL(evt);
                 }
@@ -313,9 +314,10 @@ import {mapState, mapActions,mapGetters} from 'vuex';
                     "obviar_ajuste": 1,
                     "iva": 1
                 }
-                let image=this.imagen;
-
-                Conceptos().post("/",{data,image}).then((response) => {
+                let formdata = new FormData();
+                formdata.append('image',this.imagen);
+                formdata.append('data',JSON.stringify(data));
+                Conceptos().post("/",formdata).then((response) => {
                     console.log(response);
                 }).catch(e => {
                     console.log(e);
