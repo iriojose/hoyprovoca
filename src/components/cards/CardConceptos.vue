@@ -105,6 +105,7 @@ import {mapState,mapActions} from 'vuex';
 //services
 import Conceptos from '@/services/Conceptos';
 import Pedidos from '@/services/Pedidos';
+import Usuario from '@/services/Usuario';
 
     export default {
         props:{
@@ -165,7 +166,8 @@ import Pedidos from '@/services/Pedidos';
             return {
                 loading:false,
                 existencia:null,
-                snackbar:false
+                snackbar:false,
+                id:0
             }
         },
         computed: {
@@ -196,7 +198,7 @@ import Pedidos from '@/services/Pedidos';
                             return;
                         }else{
                             if(this.pedidos.length == 0){
-                                this.postPedidos();
+                                this.getUsuario();
                             }else{
                                 this.validacionSiExistePedidos();
                             }
@@ -218,7 +220,7 @@ import Pedidos from '@/services/Pedidos';
                     rest_estatus_id:1,
                     estado:'ACTIVO',
                     cant_personas:1,
-                    usuario_id:16,
+                    usuario_id:this.id,
                     empresa_id:this.producto.empresa_id,
                 }
 
@@ -241,7 +243,7 @@ import Pedidos from '@/services/Pedidos';
                         rest_estatus_id:1,
                         estado:'ACTIVO',
                         cant_personas:1,
-                        usuario_id:16,
+                        usuario_id:this.id,
                         empresa_id:this.producto.empresa_id,
                         detalles:[]
                     }
@@ -281,7 +283,7 @@ import Pedidos from '@/services/Pedidos';
                 if(bandera){
                     this.postPedidosDetalle(id);
                 }else{
-                    this.postPedidos();
+                    this.getUsuario();
                 }
             },
             
@@ -316,8 +318,9 @@ import Pedidos from '@/services/Pedidos';
 
             getUsuario(){//metodo get para el usuario logeado
                 Usuario().post("/validate", {user_token:this.user.token}).then((response) => {
-                    this.usuario=response.data.data.id;
+                    this.id=response.data.data.id;
                     this.loading=false;
+                    this.postPedidos();
                 }).catch(e => {
                     console.log(e);
                     this.loading=false;

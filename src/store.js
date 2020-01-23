@@ -18,7 +18,6 @@ export default new Vuex.Store({
     validacionConcep:false,
     producto:{},
     pedidos:[],
-    pedidosProcesados:[],
     totalCarrito:0,
     totalPedido:[],
     conceptosId:[]
@@ -35,55 +34,35 @@ export default new Vuex.Store({
       state.pedidos.push(val);
     },
 
-    REFRESH_SUMA(state){//refresca el total del pedido y de los pedidos
-      state.totalCarrito = 0;
+    REFRESH_SUMA(state){//refresca el total del pedido y de los pedidos en total
+      state.totalCarrito = null;
       state.totalPedido = [];
 
       for(let i = 0; i < state.pedidos.length; i++){
-        let suma=0;
-        for (let e = 0; e < state.pedidos[i].detalles.length; e++) {
-          suma=suma+(Number.parseFloat(state.pedidos[i].detalles[e].precio) * state.pedidos[i].detalles[e].cantidad);
-        }
+        let suma = 0;
+        state.pedidos[i].detalles.filter(a => suma+=Number.parseFloat(a.precio)*a.cantidad);
+        state.totalCarrito+=suma;
         state.totalPedido.push(suma); 
-        state.totalCarrito = state.totalCarrito+suma;
       }
     },
     
     SET_PEDIDOS_SERVICES(state,val){//cuando viene de la api
       state.pedidos=val;
-
-      //verifica el estatus del los pedidos (si es 2 se manda a pedidosProcesados = variable)
-      for (let i = 0; i < state.pedidos.length; i++) {
-        if(state.pedidos[i].rest_estatus_id==2){
-          state.pedidosProcesados.push(state.pedidos[i]);
-          state.pedidos.splice(i,1);
-        }
-        for (let e = 0; e < state.pedidos[i].detalles.length; e++) {
-          //agarra el id de los conceptos agregados
-          state.conceptosId.push(state.pedidos[i].detalles[e].conceptos_id);
-        }
-      }
+      state.pedidos.filter(a => a.detalles.filter(b => state.conceptosId.push(b.conceptos_id)));
     },
 
     SET_DETALLE_PEDIDOS(state,val){//empuja el detalle al pedido deseado
       //agarra el id de los conceptos agregados
       state.conceptosId.push(val.conceptos_id);
-      
-      //const inte = (a,b) => a.filter(value => b.indexOf(value) > -1);
-      const intersec = state.pedidos.filter(a => a.id == val.rest_pedidos_id 
-        
-      );
-      console.log(intersec);
-
-      for (let i = 0; i < state.pedidos.length; i++){
-        if(state.pedidos[i].id == val.rest_pedidos_id){
-          state.pedidos[i].detalles.push(val); 
-        }
-      }
+      state.pedidos.filter(a => a.id == val.rest_pedidos_id ? a.detalles.push(val):null);
     },
 
     DELETE_DETALLE_PEDIDOS(state,val){//elimina el detalle de un pedido
-      for (let i = 0; i < state.pedidos.length; i++){
+      const a = state.pedidos.filter(a => a.detalles.filter(b => b.id !== val.id));
+      state.conceptosId = state.conceptosId.filter(a => a !== val.conceptos_id);
+      state.pedidos = a;
+
+      /*for (let i = 0; i < state.pedidos.length; i++){
         for (let e = 0; e < state.pedidos[i].detalles.length; e++){
           if(state.pedidos[i].detalles[e].id == val.id){
             if(state.pedidos[i].detalles.length == 1){
@@ -110,41 +89,30 @@ export default new Vuex.Store({
             }
           }
         }
-      }
+      }*/
     },
 
     DELETE_PEDIDOS(state,val){//elimina un pedido
-      for (let i = 0; i < state.pedidos.length; i++) {
-        if(state.pedidos[i].id == val){
-
-          //borra los id de conceptos de el arreglo conceptosId
-          for (let e = 0; e < state.pedidos[i].detalles.length; e++) {
-            for (let f = 0; f < state.conceptosId.length; f++){
-              if(state.pedidos[i].detalles[e].conceptos_id == state.conceptosId[f]){
-                state.conceptosId.splice(f,1);
-              }
-            }
-          }
-          state.pedidos.splice(i,1);
-          break;
+      let aux = null;
+      state.pedidos= state.pedidos.filter(a => {
+        if(a.id == val){
+          aux = a;
+          return null;
         }
-      }
+      });
+      console.log(aux);
     },
 
     UPDATE_PEDIDOS(state,val){//actualiza el pedido (cantidad)
-      for (let i = 0; i < state.pedidos.length; i++) {
-        for (let e = 0; e < state.pedidos[i].detalles.length; e++) {
-          if(state.pedidos[i].detalles[e].id == val.id){
-            if(val.suma == 1){
-              state.pedidos[i].detalles[e].cantidad = Number.parseInt(state.pedidos[i].detalles[e].cantidad) + 1;
-              break;
-            }else{
-              state.pedidos[i].detalles[e].cantidad = Number.parseInt(state.pedidos[i].detalles[e].cantidad) - 1;
-              break;
-            }
-          }
+      state.pedidos = state.pedidos.filter(a => a.detalles.filter(b => {
+        if(b.id == val.id){
+          if(val.suma == 1){
+            return b.cantidad = Number.parseInt(b.cantidad) + 1;
+          }else{
+            return b.cantidad = Number.parseInt(b.cantidad) - 1;
+          } 
         }
-      }
+      }));
     },
 
     UPDATE_STATUS(state,val){//actualiza el estatus del pedido de 1 a 2 (2 = por facturar)

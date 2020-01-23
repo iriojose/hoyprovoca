@@ -22,7 +22,7 @@
                         </v-list-item-avatar>
 
                         <v-list-item-content>
-                            <v-list-item-title>{{nombre+' '+apellido}}</v-list-item-title>
+                            <v-list-item-title>{{perfil.nombre+' '+perfil.apellido}}</v-list-item-title>
                         </v-list-item-content>
 
                     </v-list-item>
@@ -63,6 +63,7 @@
 <script>
 //vuex
 import {mapGetters,mapActions} from 'vuex';
+import store from '@/store';
 //services
 import Usuario from '@/services/Usuario';
 //router
@@ -72,8 +73,7 @@ import router from '@/router';
         data(){
             return{
                 imagen:'https://us.123rf.com/450wm/thesomeday123/thesomeday1231712/thesomeday123171200009/91087331-icono-de-perfil-de-avatar-predeterminado-para-hombre-marcador-de-posici%C3%B3n-de-foto-gris-vector-de-ilustr.jpg?ver=6',
-                nombre:'irio',
-                apellido:'gomez',
+                perfil:{},
                 link:[
                     {text:'Ajustes de cuentas',path:'/account/profile',icon:'build'},
                     {text:'Agregar metodo de pago',path:'/account/metodo-de-pago',icon:'credit_card'},
@@ -95,20 +95,21 @@ import router from '@/router';
                 Usuario().post("/validate", {
                     user_token:this.user.token
                 }).then((response) => {
-                    console.log(response.data);
-                }).cathc(e => {
+                    this.perfil=response.data.data;
+                }).catch(e => {
                     console.log(e);
                 });
             },
 
             logOut(){
                 this.logout();
+                store.state.pedidos=[];
                 router.push('/login');
             },
         },
         
         mounted(){//se trae el cliente
-            //this.getUsuario();
+            this.getUsuario();
         }
     }
 </script>

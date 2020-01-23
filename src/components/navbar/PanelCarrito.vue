@@ -205,6 +205,7 @@ import Conceptos from '@/services/Conceptos';
 
             //LLAMADAS A LA API
             getPedidosUsuario(id){//trae los pedidos del usuario logeado
+                console.log(id);
                 Usuario().get(`/${id}/pedidos`).then((response) =>{
                     if(response.data !== 'This entity is empty'){
                         this.setPedidosServices(response.data.data);//local method

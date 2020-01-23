@@ -130,8 +130,8 @@ import {mapState} from 'vuex';
         data(){
             return {
                 page:1,
-                min:0,
-                max:4,
+                min:1,
+                max:5,
                 totalPage:1,
                 aux:[],
                 auxGrupos:[],
@@ -278,15 +278,15 @@ import {mapState} from 'vuex';
                 this.longitudPage(this.auxConceptos.length);
 
                 if(this.page > 1){
-                    this.min = this.page*4;
+                    this.min = ((this.page*5)-5+1);
                     this.max=(this.min+4);
                 }else{
-                    this.min=0;
-                    this.max=4;
+                    this.min=1;
+                    this.max=5;
                 }
 
                 for (let i = 0; i < this.auxConceptos.length; i++){
-                    if(i <= this.max && i >= this.min){
+                    if(i+1 >= this.min && i+1 <= this.max){
                         aux.push(this.auxConceptos[i]);
                     }
                 }
