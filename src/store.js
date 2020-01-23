@@ -68,6 +68,12 @@ export default new Vuex.Store({
     SET_DETALLE_PEDIDOS(state,val){//empuja el detalle al pedido deseado
       //agarra el id de los conceptos agregados
       state.conceptosId.push(val.conceptos_id);
+      
+      //const inte = (a,b) => a.filter(value => b.indexOf(value) > -1);
+      const intersec = state.pedidos.filter(a => a.id == val.rest_pedidos_id 
+        
+      );
+      console.log(intersec);
 
       for (let i = 0; i < state.pedidos.length; i++){
         if(state.pedidos[i].id == val.rest_pedidos_id){
