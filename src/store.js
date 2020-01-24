@@ -38,12 +38,11 @@ export default new Vuex.Store({
       state.totalCarrito = null;
       state.totalPedido = [];
 
-      for(let i = 0; i < state.pedidos.length; i++){
-        let suma = 0;
-        state.pedidos[i].detalles.filter(a => suma+=Number.parseFloat(a.precio)*a.cantidad);
-        state.totalCarrito+=suma;
-        state.totalPedido.push(suma); 
-      }
+      state.pedidos.filter(a => {
+        a.detalles.filter(b => state.totalCarrito+=Number.parseFloat(b.precio)*b.cantidad);
+        state.totalPedido.push(state.totalCarrito);
+        return null;
+      });
     },
     
     SET_PEDIDOS_SERVICES(state,val){//cuando viene de la api
@@ -52,53 +51,34 @@ export default new Vuex.Store({
     },
 
     SET_DETALLE_PEDIDOS(state,val){//empuja el detalle al pedido deseado
-      //agarra el id de los conceptos agregados
       state.conceptosId.push(val.conceptos_id);
-      state.pedidos.filter(a => a.id == val.rest_pedidos_id ? a.detalles.push(val):null);
+      state.pedidos = state.pedidos.filter(a => {
+        if(a.id = val.rest_pedidos_id){
+          return a.detalles.push(val);
+        }
+        return a;
+      });
     },
 
     DELETE_DETALLE_PEDIDOS(state,val){//elimina el detalle de un pedido
-      const a = state.pedidos.filter(a => a.detalles.filter(b => b.id !== val.id));
-      state.conceptosId = state.conceptosId.filter(a => a !== val.conceptos_id);
-      state.pedidos = a;
-
-      /*for (let i = 0; i < state.pedidos.length; i++){
-        for (let e = 0; e < state.pedidos[i].detalles.length; e++){
-          if(state.pedidos[i].detalles[e].id == val.id){
-            if(state.pedidos[i].detalles.length == 1){
-              //elimina el id del arreglo conceptosId (sigue siendo un solo detalle)
-              for (let f = 0; f < state.conceptosId.length; f++){
-                if(state.conceptosId[f] == state.pedidos[i].detalles[e].conceptos_id){
-                  state.conceptosId.splice(f,1);
-                  break;
-                }
-              }
-              state.pedidos.splice(i,1);
-              break;
-            }else{
-              //elimina el id del arreglo conceptosId
-              for (let f = 0; f < state.conceptosId.length; f++) {
-                if(state.conceptosId[f] == state.pedidos[i].detalles[e].conceptos_id){
-                  state.conceptosId.splice(f,1);
-                  break;
-                }
-              }
-
-              state.pedidos[i].detalles.splice(e,1);
-              break;
-            }
-          }
+      const a = state.pedidos.filter(a => a.detalles.filter(b => {
+        if(b.id == val.id){
+          return null;
         }
-      }*/
+        return b;
+      }));
+      console.log(a);
+      state.conceptosId = state.conceptosId.filter(a => a !== val.conceptos_id);
     },
 
     DELETE_PEDIDOS(state,val){//elimina un pedido
       let aux = null;
-      state.pedidos= state.pedidos.filter(a => {
+      state.pedidos=state.pedidos.filter(a => {
         if(a.id == val){
-          aux = a;
+          aux = a.detalles;
           return null;
         }
+        return a;
       });
       console.log(aux);
     },

@@ -12,9 +12,6 @@
                             :src="concepto.imagen"
                             :gradient="hover ? 'to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)':null"
                         >
-                            <!-- <div class="ribbon" v-if="concepto.agotado">
-                                <v-icon color="#fff">schedule</v-icon>
-                            </div>-->
                             <v-row
                                 v-if="hover"
                                 class="fill-height"
@@ -48,9 +45,6 @@
                             src="@/assets/noimage.png"
                             :gradient="hover ? 'to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)':null"
                         >
-                            <!-- <div class="ribbon" v-if="concepto.agotado">
-                                <v-icon color="#fff">schedule</v-icon>
-                            </div>-->
                             <v-row
                                 v-if="hover"
                                 class="fill-height"
@@ -94,7 +88,10 @@
         </v-tooltip>
 
         <v-snackbar color="red" v-model="snackbar" right>
-            No hay mas existencia.
+            <v-icon dark class="mx-2">
+                cancel
+            </v-icon>
+            Existencia agotada.
         </v-snackbar>
     </div>
 </template>
@@ -102,6 +99,7 @@
 <script>
 //state globales
 import {mapState,mapActions} from 'vuex';
+import router from '@/router';
 //services
 import Conceptos from '@/services/Conceptos';
 import Pedidos from '@/services/Pedidos';
@@ -167,7 +165,24 @@ import Usuario from '@/services/Usuario';
                 loading:false,
                 existencia:null,
                 snackbar:false,
-                id:0
+                id:0,
+                data:{
+                    rest_mesas_id:1,
+                    rest_estatus_id:1,
+                    estado:'Activo',
+                    cant_personas:1,
+                    usuario_id:0,
+                    empresa_id:0,
+                },
+                data1:[
+                    {
+                        conceptos_id:0,
+                        cantidad:1,
+                        precio:0,
+                        rest_estatus_id:1,
+                        estado:'Disponible',
+                    }
+                ]
             }
         },
         computed: {
@@ -190,11 +205,19 @@ import Usuario from '@/services/Usuario';
             getConceptosExistencia(id){//trae la existencia del concepto del deposito de la web
                 Conceptos().get(`/${id}/depositos`).then((response) => {
                     this.existencia = response.data.data[0]; 
+                    this.revisionDeExistencia(this.existencia);
+                }).catch(e => {
+                    console.log(e);
+                    this.loading=false;
+                });
+            },
 
-                    if(Number.parseInt(this.existencia.existencia) > 0){
+            revisionDeExistencia(existencia){
+                if(existencia !== undefined){
+                    if(Number.parseInt(existencia.existencia) > 0){
                         if(this.producto.tipos_conceptos_id == 5){
-                            this.setValidacionConcepto(true);
                             this.loading=false;
+                            this.setValidacionConcepto(true);
                             return;
                         }else{
                             if(this.pedidos.length == 0){
@@ -206,62 +229,28 @@ import Usuario from '@/services/Usuario';
                     }else{
                         this.snackbar=true;
                     }
-                }).catch(e => {
-                    console.log(e);
+                }else{
                     this.loading=false;
-                });
+                    this.snackbar=true;
+                }
             },
-
             //posts de la Api
             postPedidos(){//crea un pedido y su primer detalle
+                let data=this.data;
+                data.usuario_id=this.id;
+                data.empresa_id=this.producto.empresa_id;
 
-                let data = {
-                    rest_mesas_id:1,
-                    rest_estatus_id:1,
-                    estado:'ACTIVO',
-                    cant_personas:1,
-                    usuario_id:this.id,
-                    empresa_id:this.producto.empresa_id,
-                }
-
-                let data1 = [
-                    {
-                        conceptos_id:this.producto.id,
-                        cantidad:1,
-                        precio:this.producto.precio_a,
-                        rest_estatus_id:1,
-                        estado:'Disponible',
-                    }
-                ]
+                let data1=this.data1;
+                data1[0].conceptos_id =this.producto.id;
+                data1[0].precio = this.producto.precio_a;
 
                 Pedidos().post("/",{data,data1}).then((response) => {
                     console.log(response.data.data);
-
-                    let data3 = {
-                        id:response.data.data.id,
-                        rest_mesas_id:1,
-                        rest_estatus_id:1,
-                        estado:'ACTIVO',
-                        cant_personas:1,
-                        usuario_id:this.id,
-                        empresa_id:this.producto.empresa_id,
-                        detalles:[]
-                    }
-
-                    let data2 = [
-                        {
-                            id:response.data.data.detalles[0].id,
-                            conceptos_id:this.producto.id,
-                            cantidad:1,
-                            precio:this.producto.precio_a,
-                            rest_estatus_id:1,
-                            estado:'Disponible',
-                            rest_pedidos_id:response.data.data.id
-                        }
-                    ]
-
-                    this.setPedidos(data3);//local
-                    this.setDetallePedidos(data2[0]);//local
+                    let pedido= response.data.data;
+                    let detalle = response.data.data.detalles[0];
+                    console.log(detalle);
+                    this.setPedidos(pedido);//local
+                    this.setDetallePedidos(detalle);//local
                     this.loading=false;
                 }).catch(e =>{
                     console.log(e);
@@ -270,9 +259,19 @@ import Usuario from '@/services/Usuario';
             },
 
             validacionSiExistePedidos(){//si existe un pedido a la empresa que pertenece ese concepto
+                
+                let valor = this.pedidos.filter(a => {
+                    if(a.empresa_id == this.producto.empresa_id){
+                        return a;
+                    }
+                    return null;
+                });
+                
+                console.log(valor);
+
                 let bandera = false;
                 let id=null;
-
+                
                 for (let i = 0; i < this.pedidos.length; i++){
                     if(this.pedidos[i].empresa_id == this.producto.empresa_id){
                         bandera=true;
@@ -288,26 +287,14 @@ import Usuario from '@/services/Usuario';
             },
             
             postPedidosDetalle(id){//agrega un detalle a un pedido
-                let data = {//api
-                        rest_pedidos_id:id,
-                        conceptos_id:this.producto.id,
-                        cantidad:1,
-                        precio:this.producto.precio_a,
-                        rest_estatus_id:7,
-                        estado:'vendible',
-                    }
+                let data = this.data1[0];
+                data.conceptos_id=this.producto.id;
+                data.precio=this.producto.precio_a;
+                data.rest_pedidos_id=id;
 
                 Pedidos().post(`/${id}/detalles`,{data}).then((response) => {
-                    let data2 = {//local
-                        id:response.data.data.id,
-                        rest_pedidos_id:id,
-                        conceptos_id:this.producto.id,
-                        cantidad:1,
-                        precio:this.producto.precio_a,
-                        rest_estatus_id:7,
-                        estado:'vendible',
-                    }
-
+                    console.log(response);
+                    let data2 = response.data.data;
                     this.setDetallePedidos(data2);//metodo local
                     this.loading=false;
                 }).catch(e => {
@@ -331,13 +318,6 @@ import Usuario from '@/services/Usuario';
 </script>
 
 <style lang="css" scope>
-    .ribbon {
-        width: 0px;
-        height: 80px;
-        border-left: 50px solid #d9534f;
-        border-right: 50px solid #d9534f;
-        border-bottom: 35px solid transparent;
-    }
     .modif{
         width: 100%;
         height: 40px;
