@@ -317,6 +317,7 @@ import {mapState, mapActions,mapGetters} from 'vuex';
                 let formdata = new FormData();
                 formdata.append('image',this.imagen);
                 formdata.append('data',JSON.stringify(data));
+                
                 Conceptos().post("/",formdata).then((response) => {
                     console.log(response);
                 }).catch(e => {

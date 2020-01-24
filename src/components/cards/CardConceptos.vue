@@ -5,44 +5,10 @@
                 <v-hover v-slot:default="{hover}">
                     <v-card v-on="on" tile :height="heightCard" :width="widthCard" :elevation="hover ? 15:5">
                         <v-img 
-                            v-if="!concepto.imagen"
                             :height="heightImg" 
                             :width="widthImg" 
                             contain 
-                            :src="concepto.imagen"
-                            :gradient="hover ? 'to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)':null"
-                        >
-                            <v-row
-                                v-if="hover"
-                                class="fill-height"
-                                align="center"
-                                justify="center"
-                            >
-                                <v-scale-transition>
-                                    <v-btn  
-                                        :loading="loading"
-                                        color="#005598"
-                                        dark
-                                        width="50%"
-                                        class="text-capitalize body font-weight-bold"
-                                        @click="agregarConceptos(concepto)"
-                                        v-if="!concepto.agregado"
-                                    >
-                                        Agregar
-                                    </v-btn>
-                                    <div v-else class="white--text title">
-                                        agregado
-                                    </div>
-                                </v-scale-transition>
-                            </v-row>
-                        </v-img>
-                        <!--cuando no tiene imagen -->
-                        <v-img  
-                            v-else
-                            :height="heightImg" 
-                            :width="widthImg" 
-                            contain 
-                            src="@/assets/noimage.png"
+                            :src="'http://192.168.0.253:81/api/images/'+concepto.imagen"
                             :gradient="hover ? 'to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)':null"
                         >
                             <v-row
@@ -247,8 +213,8 @@ import Usuario from '@/services/Usuario';
                 Pedidos().post("/",{data,data1}).then((response) => {
                     console.log(response.data.data);
                     let pedido= response.data.data;
-                    let detalle = response.data.data.detalles[0];
-                    console.log(detalle);
+                    let detalle = pedido.detalles[0];
+                    pedido.detalles=[];
                     this.setPedidos(pedido);//local
                     this.setDetallePedidos(detalle);//local
                     this.loading=false;
@@ -259,16 +225,6 @@ import Usuario from '@/services/Usuario';
             },
 
             validacionSiExistePedidos(){//si existe un pedido a la empresa que pertenece ese concepto
-                
-                let valor = this.pedidos.filter(a => {
-                    if(a.empresa_id == this.producto.empresa_id){
-                        return a;
-                    }
-                    return null;
-                });
-                
-                console.log(valor);
-
                 let bandera = false;
                 let id=null;
                 
@@ -278,7 +234,7 @@ import Usuario from '@/services/Usuario';
                         id=this.pedidos[i].id;
                     }
                 }
-            
+    
                 if(bandera){
                     this.postPedidosDetalle(id);
                 }else{
@@ -293,9 +249,9 @@ import Usuario from '@/services/Usuario';
                 data.rest_pedidos_id=id;
 
                 Pedidos().post(`/${id}/detalles`,{data}).then((response) => {
-                    console.log(response);
+                    console.log(response.data.data);
                     let data2 = response.data.data;
-                    this.setDetallePedidos(data2);//metodo local
+                    this.setDetallePedidos(data2);
                     this.loading=false;
                 }).catch(e => {
                     console.log(e);
@@ -306,7 +262,6 @@ import Usuario from '@/services/Usuario';
             getUsuario(){//metodo get para el usuario logeado
                 Usuario().post("/validate", {user_token:this.user.token}).then((response) => {
                     this.id=response.data.data.id;
-                    this.loading=false;
                     this.postPedidos();
                 }).catch(e => {
                     console.log(e);
