@@ -20,7 +20,7 @@
                     >
                         <v-card-text>
                             <!--sugerencia.imagen-->
-                            <v-img contain src="https://cdn.pixabay.com/photo/2015/12/27/05/48/turntable-1109588_960_720.jpg"/> 
+                            <v-img contain :src="'http://192.168.0.253:81/api/images/'+sugerencia.imagen"/> 
                         </v-card-text>
                     </v-card>
                     

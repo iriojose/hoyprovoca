@@ -4,7 +4,7 @@
         <v-card-text>
             <v-hover v-slot:default="{hover}">
                 <v-avatar size="150">
-                    <v-img :src="imagen" :class="hover ? 'elevation-10':'elevation-2'">
+                    <v-img :src="fotografia" :class="hover ? 'elevation-10':'elevation-2'">
                         <v-row class="fill-height" align="center" justify="center">
                             <template v-if="hover">
                                 <v-btn fab color="blue darken-5" @click="modal= !modal" elevation="3">
@@ -15,9 +15,6 @@
                     </v-img>
                 </v-avatar>
             </v-hover>
-            <div class="mt-2 font-weight-black subtitle-1">
-                {{nombre+' '+apellido }}
-            </div>
         </v-card-text>
 
         <!--modal para editar foto -->
@@ -89,33 +86,46 @@
             </v-card>
         </v-dialog>
         <v-snackbar v-model="snackbar" bottom right color="green" :timeout="time">
-            Se ha editado exitosamente
+            <div>
+                <v-icon dark>
+                check_circle
+                </v-icon>
+                Se ha editado exitosamente
+            </div>
         </v-snackbar>
     </v-card>
 </template>
 
 <script>
+import Usuario from '@/services/Usuario';
+import {mapState} from 'vuex';
+
     export default {
         data(){
             return{
                 modal:false,
-                nombre: "Irio",
-                apellido: "Gòmez",
-                imagen: "https://us.123rf.com/450wm/thesomeday123/thesomeday1231712/thesomeday123171200009/91087331-icono-de-perfil-de-avatar-predeterminado-para-hombre-marcador-de-posici%C3%B3n-de-foto-gris-vector-de-ilustr.jpg?ver=6",
                 snackbar:false,
                 time:2000,
                 myCroppa:{},
                 sliderVal:0,
                 sliderMin:0,
                 sliderMax:0,
+                fotografia:'http://192.168.0.253:81/api/images/default.png'
             }
         },
         mounted() {
-            //this.getProfile();
+            this.getUsuario();
+        },
+        computed: {
+            ...mapState(['user'])
         },
         methods: {
-            async getProfile() {//metodo para traer perfil
-                //solo nombre,apellido,e imagen
+            getUsuario(){
+                Usuario().post('/validate',{user_token:this.user.token}).then((response) => {
+                    this.fotografia = response.data.data.fotografia;
+                }).catch(e => {
+                    console.log(e);
+                });
             },
             //al colocar una nueva imagen
             onNewImage() {
@@ -148,7 +158,7 @@
                     alert('No imagen');
                     return
                 }else{
-                    this.imagen=url;
+                    this.fotografia=url;
                     this.snackbar=true;
                     this.modal=false;
                 }

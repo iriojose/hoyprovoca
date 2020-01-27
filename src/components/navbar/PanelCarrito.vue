@@ -142,6 +142,9 @@
         </v-card>
 
         <v-snackbar v-model="snackbar" right color="red" class="white--text">
+            <v-icon dark>
+                cancel
+            </v-icon>
             Existencia maxima alcanzada.
         </v-snackbar>
     </v-navigation-drawer>
@@ -205,7 +208,6 @@ import Conceptos from '@/services/Conceptos';
 
             //LLAMADAS A LA API
             getPedidosUsuario(id){//trae los pedidos del usuario logeado
-                console.log(id);
                 Usuario().get(`/${id}/pedidos`).then((response) =>{
                     if(response.data !== 'This entity is empty'){
                         this.setPedidosServices(response.data.data);//local method

@@ -94,7 +94,7 @@ import {mapState,mapActions} from 'vuex';
                         id:this.pedidos[i].id,
                         detalles:this.pedidos[i].detalles.length,
                         articulos:articulos,
-                        total:"BsS."+this.totalPedido[i],
+                        total:"Bs."+this.totalPedido[i],
                         estado:"Por Facturar"
                     }
                     this.pedidosStados.push(data);

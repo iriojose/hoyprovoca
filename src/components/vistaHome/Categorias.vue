@@ -14,7 +14,7 @@
                 <v-hover v-slot:default="{hover}">
                     <v-card height="250" width="300" elevation="10" @click="push(categoria)">
                         <v-card-text>
-                            <v-img contain src="https://cdn.pixabay.com/photo/2017/12/09/08/18/pizza-3007395_960_720.jpg"/>
+                            <v-img contain :src="'http://192.168.0.253:81/api/images/'+categoria.imagen"/>
                         </v-card-text>
                     </v-card>
                 </v-hover>

@@ -181,9 +181,15 @@
         <!--snakbar para mensaje de registro completado o fallido-->
         <v-snackbar v-model="snackbar" :color="error != null? 'red':'green'" right>
             <div v-if="error==null">
+                <v-icon dark>
+                  check_circle
+                </v-icon>
                 se ha registrado exitosamente.
             </div>
             <div v-if="error">
+                <v-icon dark>
+                  calcel
+                </v-icon>
                 {{error}}
             </div>
         </v-snackbar>

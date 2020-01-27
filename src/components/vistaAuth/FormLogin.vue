@@ -55,9 +55,15 @@
         <!--snakbar para mensaje de login completado o fallido-->
         <v-snackbar v-model="snackbar" :color="error != null? 'red':'green'" right>
             <div v-if="error==null">
+              <v-icon dark>
+                  check_circle
+              </v-icon>
                 se ha logeado exitosamente.
             </div>
             <div v-if="error">
+              <v-icon dark>
+                  cancel
+              </v-icon>
                 {{error}}
             </div>
         </v-snackbar>

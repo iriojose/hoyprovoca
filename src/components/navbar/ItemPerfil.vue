@@ -18,7 +18,7 @@
                 <v-list >
                     <v-list-item>
                         <v-list-item-avatar color="grey" dark size="70">
-                            <img :src="imagen">
+                            <img :src="'http://192.168.0.253:81/api/images/'+perfil.fotografia">
                         </v-list-item-avatar>
 
                         <v-list-item-content>
@@ -72,8 +72,9 @@ import router from '@/router';
     export default {
         data(){
             return{
-                imagen:'https://us.123rf.com/450wm/thesomeday123/thesomeday1231712/thesomeday123171200009/91087331-icono-de-perfil-de-avatar-predeterminado-para-hombre-marcador-de-posici%C3%B3n-de-foto-gris-vector-de-ilustr.jpg?ver=6',
-                perfil:{},
+                perfil:{
+                    fotografia:'http://192.168.0.253:81/api/images/default.png'
+                },
                 link:[
                     {text:'Ajustes de cuentas',path:'/account/profile',icon:'build'},
                     {text:'Agregar metodo de pago',path:'/account/metodo-de-pago',icon:'credit_card'},
@@ -96,6 +97,9 @@ import router from '@/router';
                     user_token:this.user.token
                 }).then((response) => {
                     this.perfil=response.data.data;
+                    if(response.data.data.nombre  == undefined){
+                        this.logout();
+                    }
                 }).catch(e => {
                     console.log(e);
                 });
@@ -109,7 +113,11 @@ import router from '@/router';
         },
         
         mounted(){//se trae el cliente
-            this.getUsuario();
+            if(this.user.loggedIn){
+                this.getUsuario();
+            }else{
+                this.logout();
+            }
         }
     }
 </script>
