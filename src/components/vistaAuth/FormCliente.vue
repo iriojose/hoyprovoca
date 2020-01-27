@@ -13,10 +13,9 @@
                     step="2" 
                     :complete="valid2" 
                     :color="valid2 ? 'green':'#005598'"
-                >Telefono
+                >Datos privados
                 </v-stepper-step>
                 <v-divider></v-divider>
-                <v-stepper-step step="3" :complete="valid3" :color="valid3 ? 'green':'#005598'">Datos privados</v-stepper-step>
             </v-stepper-header>
 
             <v-stepper-items>
@@ -27,7 +26,7 @@
                                 <v-col cols="12" lg="6" md="6" sm="12">
                                     <v-text-field 
                                         type="text"
-                                        v-model="user.nombre"
+                                        v-model="data.nombre"
                                         label="Nombre(s)"
                                         color="#005598"
                                         outlined
@@ -43,7 +42,7 @@
                                     <v-text-field 
                                         type="text"
                                         append-icon="person"
-                                        v-model="user.apellido"
+                                        v-model="data.apellido"
                                         label="Apellido(s)"
                                         clearable
                                         color="#005598"
@@ -53,28 +52,11 @@
                                         :rules="[required('Apellido(s)'), minLength('Apellido(s)',3),maxLength('Apellido(s)',40)]"
                                     />
                                 </v-col>
-
-                                <v-col cols="12" lg="6" md="6" sm="12" :offset="$vuetify.breakpoint.smAndDown ? null:3">
-                                    <v-text-field 
-                                        type="text"
-                                        append-icon="payment"
-                                        v-model="user.cedula"
-                                        prefix="V-"
-                                        clearable
-                                        color="#005598"
-                                        outlined
-                                        single-line
-                                        dense
-                                        counter="8"
-                                        autofocus
-                                        :rules="[required('Cedula'), minLength('Cedula',6),maxLength('Cedula',8)]"
-                                    />
-                                </v-col>
                             </v-row>
                         </v-form>
                         <v-card-actions>
                             <v-spacer></v-spacer>
-                            <v-btn @click="e1=2" color="info" :disabled="!valid1">
+                            <v-btn @click="e1=2" color="#005598" :disabled="!valid1" class="white--text">
                                 Siguiente
                             </v-btn>
                         </v-card-actions>
@@ -82,45 +64,13 @@
                 </v-stepper-content>
 
                 <v-stepper-content step="2">
-                    <v-card elevation="0">
-                        <v-form v-model="valid2" @submit.prevent="">
-                            <v-row>
-                                <v-col cols="12" lg="6" md="6" sm="12" :offset="$vuetify.breakpoint.smAndDown ? null:3">
-                                    <v-text-field 
-                                        type="text"
-                                        v-model="user.telefono"
-                                        color="#005598"
-                                        outlined
-                                        append-icon="phone"
-                                        prefix="+58"
-                                        counter="10"
-                                        :rules="[required('Telefono'), minLength('Telefono',10),maxLength('Telefono',10)]"
-                                    />
-                                </v-col>
-                            </v-row>
-                        </v-form>
-                        <v-card-actions>
-                            <v-btn @click="e1=1" text icon>
-                                <v-icon large>
-                                    arrow_back
-                                </v-icon>
-                            </v-btn>
-                            <v-spacer></v-spacer>
-                            <v-btn @click="e1=3" color="info" :disabled="!valid2">
-                                Siguiente
-                            </v-btn>
-                        </v-card-actions>
-                    </v-card>
-                </v-stepper-content>
-
-                <v-stepper-content step="3">
-                    <v-form v-model="valid3" @submit.prevent="">
+                    <v-form v-model="valid2" @submit.prevent="">
                         <v-card elevation="0">
                             <v-row>
                                 <v-col cols="12" lg="6" md="6" sm="12" :offset="$vuetify.breakpoint.smAndDown ? null:3">
                                     <v-text-field
                                         label="Email"
-                                        v-model="user.email"
+                                        v-model="data.email"
                                         type="email"
                                         clearable
                                         prepend-inner-icon="email"
@@ -132,9 +82,24 @@
                                         :rules="[required('Email'), emailFormat(), maxLength('Email',50)]"
                                     />
                                 </v-col>
+                                <v-col cols="12" md="6" sm="12" :offset="$vuetify.breakpoint.smAndDown ? null:3">
+                                    <v-text-field
+                                        label="Usuario"
+                                        v-model="data.login"
+                                        type="text"
+                                        clearable
+                                        prepend-inner-icon="person"
+                                        outlined
+                                        color="#005598"
+                                        dense
+                                        single-line
+                                        counter="50"
+                                        :rules="[required('Usuario'),minLength('Usuario',2), maxLength('Usuario',50)]"
+                                    />
+                                </v-col>
                                 <v-col cols="12" lg="6" md="6" sm="12" :offset="$vuetify.breakpoint.smAndDown ? null:3">
                                     <v-text-field
-                                        v-model="user.password"
+                                        v-model="data.password"
                                         label="Password"
                                         counter="true"
                                         single-line
@@ -150,7 +115,7 @@
                                 </v-col>
                             </v-row>
                             <v-card-actions>
-                                <v-btn @click="e1=2" text icon>
+                                <v-btn @click="e1=1" text icon>
                                     <v-icon large>
                                         arrow_back
                                     </v-icon>
@@ -158,9 +123,9 @@
                                 <v-spacer></v-spacer>
                                 <v-btn 
                                     type="submit" 
-                                    :disabled="!valid3 || loading" 
+                                    :disabled="!valid2 || loading" 
                                     color="#005598" 
-                                    :dark="valid3 && !loading"
+                                    :dark="valid2 && !loading"
                                     :loading="loading"
                                     @click="register()"
                                 >
@@ -179,7 +144,7 @@
         </v-stepper>
         
         <!--snakbar para mensaje de registro completado o fallido-->
-        <v-snackbar v-model="snackbar" :color="error != null? 'red':'green'" right>
+        <v-snackbar v-model="snackbar" :color="error != null? '#D32F2F':'#388E3C'" right>
             <div v-if="error==null">
                 <v-icon dark>
                   check_circle
@@ -212,21 +177,19 @@ import {mapState,mapActions} from 'vuex';
                 valid:false,
                 valid1:false,
                 valid2:false,
-                valid3:false,
                 showPassword:false,
                 error:null,
                 snackbar:false,
                 terms:false,
                 conditions:false,
-                user:{
+                data:{
                     nombre:'',
                     apellido:'',
                     email:'',
                     password:'',
-                    telefono:'',
-                    sexo:'',
-                    fechaNac:'',
-                    cedula:'',
+                    login:'',
+                    fotografia:'default.png',
+                    perfil_id:1
                 },
                 ...validations,
                 e1:0,
@@ -249,15 +212,7 @@ import {mapState,mapActions} from 'vuex';
             },
 
             SignUp(){//metodo para registrarse
-                let data ={//hardcoded 
-                    password:this.user.password,
-                    nombre:this.user.nombre,
-                    apellido:this.user.apellido,
-                    login:this.user.email,
-                    perfil_id:1
-                }
-
-                Usuario().post("/signup",{data}).then((response) => {
+                Usuario().post("/signup",{data:this.data}).then((response) => {
                     console.log(response);
                     this.snackbar=true;
                     this.logged(response.data.token);//se guarda token en state

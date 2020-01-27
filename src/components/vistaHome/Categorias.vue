@@ -12,9 +12,9 @@
                 class="mx-4 mb-8"
             >
                 <v-hover v-slot:default="{hover}">
-                    <v-card height="250" width="300" elevation="10" @click="push(categoria)">
+                    <v-card height="250" width="250" elevation="10" @click="push(categoria)">
                         <v-card-text>
-                            <v-img contain :src="'http://192.168.0.253:81/api/images/'+categoria.imagen"/>
+                            <v-img height="250" width="250" contain :src="'http://192.168.0.253:81/api/images/'+categoria.imagen"/>
                         </v-card-text>
                     </v-card>
                 </v-hover>

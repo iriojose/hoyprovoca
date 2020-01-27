@@ -4,8 +4,8 @@
             <v-row>
                 <v-col cols="12" md="12" xs="12">
                     <v-text-field
-                        label="Email"
-                        v-model="usuario.email"
+                        label="Usuario/Email"
+                        v-model="data.email"
                         type="email"
                         clearable
                         outlined
@@ -13,12 +13,12 @@
                         color="#005598"
                         dense
                         counter="50"
-                        :rules="[required('Email'), emailFormat(), maxLength('Email',50)]"
+                        :rules="[required('Usuario/Email'), maxLength('Usuario/Email',50)]"
                     />
                 </v-col>
                 <v-col cols="12" md="12" xs="12">
                     <v-text-field
-                        v-model="usuario.password"
+                        v-model="data.password"
                         label="Password"
                         counter="true"
                         :type="showPassword ? 'text' : 'password' "
@@ -53,7 +53,7 @@
         </v-container>
 
         <!--snakbar para mensaje de login completado o fallido-->
-        <v-snackbar v-model="snackbar" :color="error != null? 'red':'green'" right>
+        <v-snackbar v-model="snackbar" :color="error != null? '#D32F2F':'#388E3C'" right>
             <div v-if="error==null">
               <v-icon dark>
                   check_circle
@@ -83,8 +83,8 @@ import Usuario from '@/services/Usuario';
     export default {
         data(){
             return {
-                usuario: {
-                    email: "",
+                data: {
+                    usuario: "",
                     password: "",
                 },
                 error:null,
@@ -103,12 +103,7 @@ import Usuario from '@/services/Usuario';
 
             login(){
                 this.loading = true;
-                let data = {
-                    usuario:this.usuario.email,
-                    password:this.usuario.password
-                }
-
-                Usuario().post("/login",{data}).then((response) => {
+                Usuario().post("/login",{data:this.data}).then((response) => {
                     console.log(response);
                     this.snackbar=true;
                     this.logged(response.data.token);//se guarda token en state
@@ -123,7 +118,7 @@ import Usuario from '@/services/Usuario';
                     console.log(e);
                     this.loading = false;
                     this.snackbar=true;
-                    this.error="error";
+                    this.error="Usuario y/o contraseña invalida.";
                 });
             }
 
