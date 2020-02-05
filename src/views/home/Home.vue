@@ -114,7 +114,7 @@ export default {
     },
 
     getGrupos(){//trae las categorias (grupos)
-        Grupos().get('/?limit=8').then((response) => {
+        Grupos().get('/?limit=15').then((response) => {
           this.categorias = response.data.data;
         }).catch(e => {
           console.log(e);
