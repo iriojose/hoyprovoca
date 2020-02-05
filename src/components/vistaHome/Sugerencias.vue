@@ -14,16 +14,15 @@
                 <v-hover v-slot:default="{hover}">
                     <v-card    
                         height="250" 
-                        width="300" 
+                        width="250" 
                         :elevation="hover ? 15:0"
                         @click="push(sugerencia)"
                     >
                         <v-card-text>
                             <!--sugerencia.imagen-->
-                            <v-img contain :src="'http://192.168.0.253:81/api/images/'+sugerencia.logo"/> 
+                            <v-img contain width="250" height="250" :src="ruta+sugerencia.logo" /> 
                         </v-card-text>
                     </v-card>
-                    
                 </v-hover>
             </v-slide-item>
         </v-slide-group>
@@ -33,13 +32,18 @@
 <script>
 //router
 import router from '@/router';
+import url from '@/services/ruta';
 
     export default {
         props: ["sugerencias", "title"],
         data() {
             return {
                 model: 1,
+                ruta:null,
             }
+        },
+        mounted() {
+            this.ruta=url;
         },
         methods: {
             push(item){

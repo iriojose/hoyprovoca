@@ -3,12 +3,12 @@
         <v-tooltip bottom>
             <template v-slot:activator="{ on }">
                 <v-hover v-slot:default="{hover}">
-                    <v-card v-on="on" tile :height="heightCard" :width="widthCard" :elevation="hover ? 15:5">
+                    <v-card v-on="on" tile :height="heightCard" :width="widthCard" :elevation="hover ? 15:0">
                         <v-img 
                             :height="heightImg" 
                             :width="widthImg" 
                             contain 
-                            :src="'http://192.168.0.253:81/api/images/'+concepto.imagen"
+                            :src="ruta+concepto.imagen"
                             :gradient="hover ? 'to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)':null"
                         >
                             <v-row
@@ -72,6 +72,7 @@ import router from '@/router';
 import Conceptos from '@/services/Conceptos';
 import Pedidos from '@/services/Pedidos';
 import Usuario from '@/services/Usuario';
+import url from '@/services/ruta';
 
     export default {
         props:{
@@ -130,6 +131,8 @@ import Usuario from '@/services/Usuario';
         },
         data() {
             return {
+                ruta:null,
+                imagen:null,
                 loading:false,
                 existencia:null,
                 snackbar:false,
@@ -152,6 +155,9 @@ import Usuario from '@/services/Usuario';
                     }
                 ]
             }
+        },
+        created(){
+            this.ruta=url;
         },
         computed: {
             ...mapState(['validacionConcep','user','producto','pedidos']),
@@ -214,7 +220,11 @@ import Usuario from '@/services/Usuario';
                 data1[0].conceptos_id =this.producto.id;
                 data1[0].precio = this.producto.precio_a;
 
-                Pedidos().post("/",{data,data1}).then((response) => {
+                let formdata = new FormData();
+                formdata.append('data',JSON.stringify(data));
+                formdata.append('data1',JSON.stringify(data1));
+
+                Pedidos().post("/",formdata).then((response) => {
                     console.log(response.data.data);
                     let pedido= response.data.data;
                     let detalle = pedido.detalles[0];

@@ -12,11 +12,13 @@
                 class="mx-4 mb-8"
             >
                 <v-hover v-slot:default="{hover}">
-                    <v-card height="250" width="250" :elevation="hover ? 15:0" @click="push(categoria)">
-                        <v-card-text>
-                            <v-img height="250" width="250" contain :src="'http://192.168.0.253:81/api/images/'+categoria.imagen"/>
-                        </v-card-text>
-                    </v-card>
+                    
+                            <v-card height="250" width="250" :elevation="hover ? 15:0" @click="push(categoria)">
+                                <v-card-text>
+                                    <v-img height="250" width="250" contain :src="ruta+categoria.imagen"/>
+                                </v-card-text>
+                            </v-card>
+                        
                 </v-hover>
             </v-slide-item>
         </v-slide-group>
@@ -26,13 +28,18 @@
 <script>
 //router
 import router from '@/router';
+import url from '@/services/ruta';
 
     export default {
         props: ["categorias", "title"],
         data() {
             return {
                 model: 1,
+                ruta:null
             };
+        },
+        created(){
+            this.ruta = url;
         },
         methods: {
             push(item){

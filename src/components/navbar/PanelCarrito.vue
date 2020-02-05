@@ -43,7 +43,7 @@
                             <v-spacer></v-spacer>
 
                             <v-avatar class="elevation-10" color="#eee" size="50">
-                                <v-img src="@/assets/noimage.png"></v-img>
+                                <v-img src="http://192.168.0.253:81/api/images/default.png"></v-img>
                             </v-avatar>
                             <!--
                             <v-spacer></v-spacer>
@@ -59,7 +59,7 @@
                                 width="50" 
                                 height="50" 
                                 contain 
-                                src="@/assets/noimage.png"
+                                src="http://192.168.0.253:81/api/images/default.png"
                             />
 
                             <v-spacer></v-spacer>
@@ -211,8 +211,6 @@ import Conceptos from '@/services/Conceptos';
                 Usuario().get(`/${id}/pedidos`).then((response) =>{
                     if(response.data !== 'This entity is empty'){
                         this.setPedidosServices(response.data.data);//local method
-                    }else{
-                        console.log('no tienes pedidos');
                     }
                 }).catch(e => {
                     console.log(e);

@@ -4,7 +4,7 @@
         <v-card-text>
             <v-hover v-slot:default="{hover}">
                 <v-avatar size="150">
-                    <v-img :src="fotografia" :class="hover ? 'elevation-10':'elevation-2'">
+                    <v-img :src="ruta+fotografia" :class="hover ? 'elevation-10':'elevation-2'">
                         <v-row class="fill-height" align="center" justify="center">
                             <template v-if="hover">
                                 <v-btn fab color="blue darken-5" @click="modal= !modal" elevation="3">
@@ -99,10 +99,12 @@
 <script>
 import Usuario from '@/services/Usuario';
 import {mapState} from 'vuex';
+import url from '@/services/ruta';
 
     export default {
         data(){
             return{
+                ruta:null,
                 modal:false,
                 snackbar:false,
                 time:2000,
@@ -110,10 +112,11 @@ import {mapState} from 'vuex';
                 sliderVal:0,
                 sliderMin:0,
                 sliderMax:0,
-                fotografia:'http://192.168.0.253:81/api/images/default.png'
+                fotografia:'default.png'
             }
         },
         mounted() {
+            this.ruta=url;
             this.getUsuario();
         },
         computed: {
