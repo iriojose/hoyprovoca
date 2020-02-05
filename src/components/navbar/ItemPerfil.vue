@@ -18,7 +18,7 @@
                 <v-list >
                     <v-list-item>
                         <v-list-item-avatar color="grey" dark size="70">
-                            <img :src="'http://192.168.0.253:81/api/images/'+perfil.fotografia">
+                            <img :src="'http://localhost:81/api/images/default.png'">
                         </v-list-item-avatar>
 
                         <v-list-item-content>

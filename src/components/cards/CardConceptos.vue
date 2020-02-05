@@ -54,10 +54,12 @@
         </v-tooltip>
 
         <v-snackbar color="red" v-model="snackbar" right>
-            <v-icon dark class="mx-2">
-                cancel
-            </v-icon>
-            Existencia agotada.
+            <div>
+                <v-icon dark class="mx-2">
+                    cancel
+                </v-icon>
+                Existencia agotada.
+            </div>
         </v-snackbar>
     </div>
 </template>
@@ -164,6 +166,7 @@ import Usuario from '@/services/Usuario';
                     this.setProducto(item);
                     this.getConceptosExistencia(item.id);
                 }else{
+                    this.loading=false;
                     router.push('/login');
                 }
             },
@@ -193,6 +196,7 @@ import Usuario from '@/services/Usuario';
                             }
                         }
                     }else{
+                        this.loading=false;
                         this.snackbar=true;
                     }
                 }else{

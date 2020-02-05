@@ -47,7 +47,7 @@
 
                <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn text class="decoracion text-lowercase" depressed>
+                  <v-btn text class="decoracion text-lowercase" depressed @click="press">
                      Olvido su contraseña?
                   </v-btn>
                </v-card-actions>
@@ -70,11 +70,17 @@
 <script>
 import FormLogin from '@/components/vistaAuth/FormLogin';
 import SubFooter from '@/components/footer/SubFooter';
+import axios from 'axios';
 
 export default {
    components:{
       FormLogin,
       SubFooter,
+   },
+   methods: {
+      press(){
+         
+      }
    },
 }
 </script>
