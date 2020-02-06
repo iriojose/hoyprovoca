@@ -101,16 +101,7 @@ export default {
 
   methods: {
     addOrder(){
-      for (let i = 0; i < this.conceptos.length; i++) {
-        for (let e = 0; e < this.conceptosId.length; e++) {
-          if(this.conceptos[i].id == this.conceptosId[e]){
-            this.conceptos[i].agregado=true;
-            break;
-          }else{
-            this.conceptos[i].agregado=false;
-          }
-        }
-      }
+      this.conceptos.filter(a=> this.conceptosId.filter(b=> a.id==b ? a.agregado=true:null));
     },
 
     getGrupos(){//trae las categorias (grupos)

@@ -53,13 +53,17 @@
             <span>{{concepto.nombre}}</span>
         </v-tooltip>
 
-        <v-snackbar color="red" v-model="snackbar" right>
+        <v-snackbar color="red" v-model="snackbar" right bottom>
             <div>
                 <v-icon dark class="mx-2">
                     cancel
                 </v-icon>
                 Existencia agotada.
             </div>
+        </v-snackbar>
+        <v-snackbar dark class="white--text" v-model="loading" right>
+            <div class="caption" v-if="!error">Agregando...</div>
+            <div class="caption" v-else>{{error}}</div>
         </v-snackbar>
     </div>
 </template>
@@ -131,7 +135,10 @@ import url from '@/services/ruta';
         },
         data() {
             return {
+                espera:false,
                 ruta:null,
+                exito:'',
+                error:'',
                 imagen:"default.png",
                 loading:false,
                 existencia:null,
@@ -167,7 +174,6 @@ import url from '@/services/ruta';
 
             agregarConceptos(item){
                 this.loading=true;
-
                 if(this.user.loggedIn){
                     this.setProducto(item);
                     this.getConceptosExistencia(item.id);
@@ -176,34 +182,28 @@ import url from '@/services/ruta';
                     router.push('/login');
                 }
             },
-
             getConceptosExistencia(id){//trae la existencia del concepto del deposito de la web
                 Conceptos().get(`/${id}/depositos`).then((response) => {
-                    this.existencia = response.data.data[0]; 
-                    this.revisionDeExistencia(this.existencia);
+                    if(response.data == 'This entity is empty'){
+                        this.loading=false;
+                        this.snackbar=true;
+                    }else{
+                        this.existencia = response.data.data[0]; 
+                        this.revisionDeExistencia(this.existencia);
+                    }
                 }).catch(e => {
                     console.log(e);
                     this.loading=false;
                 });
             },
-
             revisionDeExistencia(existencia){
-                if(existencia !== undefined){
-                    if(Number.parseInt(existencia.existencia) > 0){
-                        if(this.producto.tipos_conceptos_id == 5){
-                            this.loading=false;
-                            this.setValidacionConcepto(true);
-                            return;
-                        }else{
-                            if(this.pedidos.length == 0){
-                                this.getUsuario();
-                            }else{
-                                this.validacionSiExistePedidos();
-                            }
-                        }
-                    }else{
+                if(Number.parseInt(existencia.existencia) > 0){
+                    if(this.producto.tipos_conceptos_id == 5){
                         this.loading=false;
-                        this.snackbar=true;
+                        this.setValidacionConcepto(true);
+                        return;
+                    }else{
+                        this.pedidos.length == 0 ? this.getUsuario():this.validacionSiExistePedidos();
                     }
                 }else{
                     this.loading=false;
@@ -227,7 +227,7 @@ import url from '@/services/ruta';
 
                 Pedidos().post("/",{data,data1}).then((response) => {
                     console.log(response.data.data);
-                    let pedido= response.data.data;
+                    let pedido=response.data.data;
                     let detalle = pedido.detalles[0];
                     pedido.detalles=[];
                     this.setPedidos(pedido);//local
@@ -238,25 +238,9 @@ import url from '@/services/ruta';
                     this.loading=false;
                 });
             },
-
             validacionSiExistePedidos(){//si existe un pedido a la empresa que pertenece ese concepto
-                let bandera = false;
-                let id=null;
-                
-                for (let i = 0; i < this.pedidos.length; i++){
-                    if(this.pedidos[i].empresa_id == this.producto.empresa_id){
-                        bandera=true;
-                        id=this.pedidos[i].id;
-                    }
-                }
-    
-                if(bandera){
-                    this.postPedidosDetalle(id);
-                }else{
-                    this.getUsuario();
-                }
+                this.pedidos.filter(a=> a.empresa_id == this.producto.empresa_id ? this.postPedidosDetalle(a.id):this.getUsuario());
             },
-            
             postPedidosDetalle(id){//agrega un detalle a un pedido
                 let data = this.data1[0];
                 data.conceptos_id=this.producto.id;
