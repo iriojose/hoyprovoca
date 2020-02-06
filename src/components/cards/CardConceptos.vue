@@ -132,7 +132,7 @@ import url from '@/services/ruta';
         data() {
             return {
                 ruta:null,
-                imagen:null,
+                imagen:"default.png",
                 loading:false,
                 existencia:null,
                 snackbar:false,
@@ -220,11 +220,12 @@ import url from '@/services/ruta';
                 data1[0].conceptos_id =this.producto.id;
                 data1[0].precio = this.producto.precio_a;
 
-                let formdata = new FormData();
-                formdata.append('data',JSON.stringify(data));
-                formdata.append('data1',JSON.stringify(data1));
+                //let formdata = new FormData();
+                //formdata.append('data',JSON.stringify(data));
+                //formdata.append('data1',JSON.stringify(data1));
+                //formdata.append('image',this.imagen);
 
-                Pedidos().post("/",formdata).then((response) => {
+                Pedidos().post("/",{data,data1}).then((response) => {
                     console.log(response.data.data);
                     let pedido= response.data.data;
                     let detalle = pedido.detalles[0];
