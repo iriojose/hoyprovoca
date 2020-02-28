@@ -7,6 +7,7 @@
         :show-arrows="false"
         mandatory
         dark
+        tr
         delimiter-icon="bubble_chart"
         :height="$vuetify.breakpoint.smAndDown ? 200:350"
         :style="$vuetify.breakpoint.smAndDown ? 'margin-top:65px':'margin-top:5px'"

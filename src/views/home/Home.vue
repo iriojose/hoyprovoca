@@ -10,18 +10,18 @@
     <MasVendidos :conceptos="conceptos" v-if="activoConcepto" />
     <SkeletonCard v-else/>
 
-    <v-divider class="my-12"></v-divider>
-
     <MasVendidos :conceptos="conceptos" v-if="activoConcepto" />
     <SkeletonCard v-else/>
-    
+
+    <Banner2 class="my-10 mx-2" />
+
     <Categorias title="Categorias" :categorias="categorias" v-if="activoCategoria" />
     <SkeletonCard v-else/>
 
     <Sugerencias :sugerencias="sugerencias" v-if="activoSugerencia" />
     <SkeletonCard v-else/>
 
-    <!-- <BannerAbajo />-->
+    <!-- <Banner2 />-->
     <Footer />
     <ValidacionConcepto />
   </div>
@@ -37,7 +37,7 @@ import Banner from "@/components/vistaHome/Banner";
 import Categorias from "@/components/vistaHome/Categorias";
 import Sugerencias from "@/components/vistaHome/Sugerencias";
 import SkeletonCard from "@/components/layouts/SkeletonCard";
-import BannerAbajo from '@/components/vistaHome/Banner2';
+import Banner2 from '@/components/vistaHome/Banner2';
 import MasVendidos from '@/components/vistaHome/MasVendidos';
 import error500 from '@/views/s500';
 import ValidacionConcepto from '@/components/dialogs/ValidacionConcepto';
@@ -49,85 +49,80 @@ import Empresa from '@/services/Empresa';
 import router from '@/router';
 
 export default {
-  name: "home",
-  components: {
-    AppBar,
-    Footer,
-    Banner,
-    Categorias,
-    Sugerencias,
-    SkeletonCard,
-    BannerAbajo,
-    MasVendidos,
-    error500,
-    ValidacionConcepto
-  },
-  data() {
-    return {
-      error:false,
-      categorias: [],
-      sugerencias:[],
-      conceptos:[],
-      activoConcepto:false,
-      activoCategoria:false,
-      activoSugerencia:false,
-    };
-  },
-
-  created() {
-      this.getEmpresas();
-      this.getConceptos();
-      this.getGrupos();
-      this.addOrder();
-  },
-  computed: {
-    ...mapState(['conceptosId','user']),
-  },
-  watch: {
-    //cuando las variables cambien se quita el modo de espera
-    conceptosId(){//se refresca cada que agregan
-      this.addOrder();
+    name: "home",
+    components: {
+        AppBar,
+        Footer,
+        Banner,
+        Categorias,
+        Sugerencias,
+        SkeletonCard,
+        Banner2,
+        MasVendidos,
+        error500,
+        ValidacionConcepto
     },
-    conceptos(){
-      this.activoConcepto=true;
+    data() {
+        return {
+            error:false,
+            categorias: [],
+            sugerencias:[],
+            conceptos:[],
+            activoConcepto:false,
+            activoCategoria:false,
+            activoSugerencia:false,
+        };
     },
-    categorias() {
-      this.activoCategoria = true;
+    created() {
+        this.getEmpresas();
+        this.getConceptos();
+        this.getGrupos();
+        this.addOrder();
     },
-    sugerencias(){
-      this.activoSugerencia=true;
-    }
-  },
-
-  methods: {
-    addOrder(){
-      this.conceptos.filter(a=> this.conceptosId.filter(b=> a.id==b ? a.agregado=true:null));
+    computed: {
+        ...mapState(['conceptosId','user']),
     },
-
-    getGrupos(){//trae las categorias (grupos)
-        Grupos().get('/?limit=15').then((response) => {
-          this.categorias = response.data.data;
-        }).catch(e => {
-          console.log(e);
-        });
+    watch: {
+        //cuando las variables cambien se quita el modo de espera
+        conceptosId(){//se refresca cada que agregan
+            this.addOrder();
+        },
+        conceptos(){
+            this.activoConcepto=true;
+        },
+        categorias() {
+            this.activoCategoria = true;
+        },
+        sugerencias(){
+            this.activoSugerencia=true;
+        }
     },
-
-    getEmpresas(){//trae empresas (sugerencias)
-        Empresa().get('/?limit=8').then((response) => {
-            this.sugerencias= response.data.data;
-        }).catch(e => {
-          console.log(e);
-        });
-    },
-    
-    getConceptos(){//trae conceptos (productos/servicios)
-        Conceptos().get('/?limit=15').then((response) => {
-            this.conceptos = response.data.data;
-            this.addOrder();//pone bandera de agregado a pedidos
-        }).catch(e => {
+    methods: {
+        addOrder(){
+            this.conceptos.filter(a=> this.conceptosId.filter(b=> a.id==b ? a.agregado=true:null));
+        },
+        getGrupos(){//trae las categorias (grupos)
+            Grupos().get('/?limit=15').then((response) => {
+                this.categorias = response.data.data;
+            }).catch(e => {
+                console.log(e);
+            });
+        },
+        getEmpresas(){//trae empresas (sugerencias)
+            Empresa().get('/?limit=8').then((response) => {
+                this.sugerencias= response.data.data;
+            }).catch(e => {
             console.log(e);
-        });
+            });
+        },
+        getConceptos(){//trae conceptos (productos/servicios)
+            Conceptos().get('/?limit=15').then((response) => {
+                this.conceptos = response.data.data;
+                this.addOrder();//pone bandera de agregado a pedidos
+            }).catch(e => {
+                console.log(e);
+            });
+        }
     }
-  }
 };
 </script>

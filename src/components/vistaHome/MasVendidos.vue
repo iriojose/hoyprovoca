@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <v-container>
         <div class="headline ml-12 mt-12 font-weight-black">Productos mas vendidos</div>
         <SliderConceptos 
             :conceptos="conceptos"
@@ -10,7 +10,8 @@
             margen_bottom="mb-8"
             margen_x="mx-4"
         />
-    </div>
+        <v-divider class="my-12 mx-12"></v-divider>
+    </v-container>
 </template>
 
 <script>

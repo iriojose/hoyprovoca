@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <v-container>
         <v-divider class="my-12"></v-divider>
         <div class="headline ml-12 mt-12 font-weight-black">Visita nuestras tiendas</div>
         <v-slide-group
@@ -26,7 +26,7 @@
                 </v-hover>
             </v-slide-item>
         </v-slide-group>
-    </div>
+    </v-container>
 </template>
 
 <script>
