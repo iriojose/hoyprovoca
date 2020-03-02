@@ -5,7 +5,7 @@
                 <v-col cols="12" md="12" xs="12">
                     <v-text-field
                         label="Usuario/Email"
-                        v-model="data.email"
+                        v-model="data.user"
                         type="email"
                         clearable
                         outlined
@@ -22,7 +22,7 @@
                         label="Password"
                         counter="true"
                         :type="showPassword ? 'text' : 'password' "
-                        :rules="[required('password'), minLength('password',8)]"
+                        :rules="[required('password'), minLength('password',6)]"
                         @click:append="showPassword = !showPassword"
                         :append-icon="showPassword ?  'visibility' : 'visibility_off'"
                         :prepend-inner-icon="showPassword ?  'lock_open' : 'lock'"
@@ -78,13 +78,13 @@ import router from '@/router';
 //state globales
 import {mapState,mapActions} from 'vuex';
 //servicios
-import Usuario from '@/services/Usuario';
+import Auth from '@/services/Auth';
 
     export default {
         data(){
             return {
                 data: {
-                    usuario: "",
+                    user: "",
                     password: "",
                 },
                 error:null,
@@ -103,7 +103,7 @@ import Usuario from '@/services/Usuario';
 
             login(){
                 this.loading = true;
-                Usuario().post("/login",{data:this.data}).then((response) => {
+                Auth().post("/login",{data:this.data}).then((response) => {
                     console.log(response);
                     this.snackbar=true;
                     this.logged(response.data.token);//se guarda token en state
@@ -127,40 +127,40 @@ import Usuario from '@/services/Usuario';
 </script>
 
 <style>
-  .custom-loader {
-    animation: loader 1s infinite;
-    display: flex;
-  }
-  @-moz-keyframes loader {
-    from {
-      transform: rotate(0);
+    .custom-loader {
+        animation: loader 1s infinite;
+        display: flex;
     }
-    to {
-      transform: rotate(360deg);
+    @-moz-keyframes loader {
+        from {
+            transform: rotate(0);
+        }
+        to {
+            transform: rotate(360deg);
+        }
     }
-  }
-  @-webkit-keyframes loader {
-    from {
-      transform: rotate(0);
+    @-webkit-keyframes loader {
+        from {
+            transform: rotate(0);
+        }
+        to {
+            transform: rotate(360deg);
+        }
     }
-    to {
-      transform: rotate(360deg);
+    @-o-keyframes loader {
+        from {
+            transform: rotate(0);
+        }
+        to {
+            transform: rotate(360deg);
+        }
     }
-  }
-  @-o-keyframes loader {
-    from {
-      transform: rotate(0);
+    @keyframes loader {
+        from {
+            transform: rotate(0);
+        }
+        to {
+            transform: rotate(360deg);
+        }
     }
-    to {
-      transform: rotate(360deg);
-    }
-  }
-  @keyframes loader {
-    from {
-      transform: rotate(0);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
 </style>

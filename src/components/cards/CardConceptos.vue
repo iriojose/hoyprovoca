@@ -75,7 +75,7 @@ import router from '@/router';
 //services
 import Conceptos from '@/services/Conceptos';
 import Pedidos from '@/services/Pedidos';
-import Usuario from '@/services/Usuario';
+import Auth from '@/services/Auth';
 import url from '@/services/ruta';
 
     export default {
@@ -259,7 +259,7 @@ import url from '@/services/ruta';
             },
 
             getUsuario(){//metodo get para el usuario logeado
-                Usuario().post("/validate", {user_token:this.user.token}).then((response) => {
+                Auth().post("/sesion", {token:this.user.token}).then((response) => {
                     this.id=response.data.data.id;
                     this.postPedidos();
                 }).catch(e => {

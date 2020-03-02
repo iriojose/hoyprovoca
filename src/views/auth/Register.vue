@@ -1,29 +1,38 @@
 <template>
     <div>
-        <v-app-bar app height="50">
-            <v-btn text to="/login" elevation="0" depressed>
-                <v-icon x-large>
-                    keyboard_arrow_left
-                </v-icon>
-                volver
-            </v-btn>
+        <v-toolbar elevation="0" color="#005598" width="100%">
+            <v-toolbar-items>
+                <v-btn color="#005598" elevation="0" to="/" icon>
+                    <v-icon large color="#fff">
+                        home
+                    </v-icon>
+                </v-btn>
+            </v-toolbar-items>
             <v-spacer></v-spacer>
-            <v-toolbar-title class="color">
-                Bienvenido a Aftim
-            </v-toolbar-title>
-            <v-spacer></v-spacer>
-        </v-app-bar>
+            <v-toolbar-items>
+                <v-btn color="#005598" elevation="0" to="/login">
+                    <span class="white--text">
+                        Inicia sesión
+                    </span>
+                    <v-icon x-large color="#fff">
+                        keyboard_arrow_right
+                    </v-icon>
+                </v-btn>
+            </v-toolbar-items>
+        </v-toolbar>
 
-        <v-tabs class="mt-2" color="#005598" background-color="#eee" centered>
+        <!-- <v-tabs class="mt-2" color="#005598" background-color="#eee" centered>
             <v-tab to="/register/cliente">Persona</v-tab>
             <v-tab to="/register/empresa">Compañia</v-tab>
-        </v-tabs>
+        </v-tabs> -->
 
-       <transition name="slide-fade">
+        <transition name="slide-fade">
             <router-view />
-       </transition>
-    
-        <SubFooter />
+        </transition>
+
+        <v-footer fixed>
+            <SubFooter />
+        </v-footer>
     </div>
 </template>
 

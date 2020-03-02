@@ -5,22 +5,21 @@
         
         <!-- subgrupos -->
         <div v-for="(subgrupo,i) in subgrupos" :key="subgrupo.id" v-else>
-            <div class="headline ml-12 mt-12 font-weight-black">{{subgrupo.nombre}}</div>
-            <v-slide-group
-                show-arrows
-                class="my-5"
-            >
-            <!--conceptos de subgrupos -->
-                <div v-if="!conceptos[i]">
-                   No se encontraron resultados...
-                </div>
-                <SliderConceptos 
-                    :conceptos="conceptos[i]" 
-                    margen_x="mx-2" 
-                    margen_bottom="mb-10" 
-                    margen_top="mt-5"
-                />
-            </v-slide-group>  
+            <div v-if="conceptos[i]">
+                <div class="headline ml-12 mt-12 font-weight-black">{{subgrupo.nombre}}</div>
+                <v-slide-group
+                    show-arrows
+                    class="my-5"
+                >
+                    <!--conceptos de subgrupos -->
+                    <SliderConceptos
+                        :conceptos="conceptos[i]" 
+                        margen_x="mx-2" 
+                        margen_bottom="mb-10" 
+                        margen_top="mt-5"
+                    />
+                </v-slide-group>  
+            </div>
         </div> 
     </div>
 </template>

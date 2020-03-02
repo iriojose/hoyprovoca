@@ -1,10 +1,10 @@
 import axios from 'axios';
 import header from './header';
-import extension from './extension';
+import autorizacion from './autorizacion';
 
 export default () => {
     return axios.create({
-        baseURL:`http://${extension}/api/Usuario`,
+        baseURL:`http://${autorizacion}/`,
         withCredentials:false,
         headers:{
             Accept:'application/json',

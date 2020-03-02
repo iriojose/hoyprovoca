@@ -75,7 +75,6 @@ import {mapState} from 'vuex';
         methods: {
             getGruposSubGrupos(id){//trae los subgrupos del grupo buscado (sale en la ruta id,nombre)
                 this.conceptos=[]; //cuando se ejecute otra vez no debe quedar ninguno del anterior
-
                 Grupos().get(`/${id}/subgrupos/`).then((response) => {
                     this.subgrupos = response.data.data;
                     for (let i=0; i < this.subgrupos.length; i++){
@@ -86,7 +85,6 @@ import {mapState} from 'vuex';
                     console.log(e);
                 });
             },
-
             getSubgruposConceptos(id){//trae los conceptos del subgrupo
                 SubGrupos().get(`/${id}/conceptos`).then((response) => {
                     this.conceptos.push(response.data.data);
@@ -95,10 +93,13 @@ import {mapState} from 'vuex';
                     console.log(e);
                 });
             },
-
             //se utiliza para verificar que coceptos estan agregados en los pedidos
             addOrder(){//el array de conceptos de esta vista posee mas array en sus posiciones (pendiente cuando debuggen)
-                for (let i = 0; i < this.conceptos.length; i++){
+                //codigo experimental
+                this.conceptos.filter(a => a.filter(b => this.conceptosId.filter(c => b.id == c ? b.agregado=true:b.agregado=false)));
+                
+                //old code
+                /*for (let i = 0; i < this.conceptos.length; i++){
                     for (let e = 0; e < this.conceptos[i].length; e++){
                         for (let f = 0; f < this.conceptosId.length; f++){
                             if(this.conceptos[i][e].id == this.conceptosId[f]){
@@ -109,7 +110,7 @@ import {mapState} from 'vuex';
                             }
                         }
                     }
-                }
+                }*/
             },
         }
 

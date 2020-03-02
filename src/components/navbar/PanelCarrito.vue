@@ -153,8 +153,9 @@
 <script>
 import {mapState,mapActions,mapGetters} from 'vuex';
 import Pedidos from '@/services/Pedidos';
-import Usuario from '@/services/Usuario';
+import Auth from '@/services/Auth';
 import Conceptos from '@/services/Conceptos';
+import Usuario from '@/services/Usuario';
 
     export default {
         data(){
@@ -218,7 +219,7 @@ import Conceptos from '@/services/Conceptos';
             },
 
             getUsuario(){//metodo get para el usuario logeado
-                Usuario().post("/validate", {user_token:this.user.token}).then((response) => {
+                Auth().post("/sesion", {token:this.user.token}).then((response) => {
                     this.getPedidosUsuario(response.data.data.id);
                 }).catch(e => {
                     console.log(e);

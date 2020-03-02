@@ -2,13 +2,13 @@
     <div>
         <div v-if="error">
             <AppBar />
-            <div class="text-center mt-10">
-                <strong class="grey--text">No se encontraron resultados...</strong>
+            <div class="text-center my-10">
                 <v-row justify="center" align="center">
                     <v-col cols="12" md="6">
                         <v-img src="@/assets/nodata.svg" height="500" contain />
                     </v-col>
                 </v-row>
+                <strong class="grey--text mb-12 headline font-weight-black">Catálogo no Disponible...</strong>
             </div>
             <Footer />
         </div>
@@ -74,10 +74,9 @@ import { mapState } from 'vuex';
             }
         },
         methods:{
-            //antes de debuguear este codigo entienda que el asincronismo de vue es raro
-            //puse los metodos de los servicios uno dentro del otro por que si no a la 
-            //hora de filtrar los datos eran undefined
-
+            //las llamadas a la api se deben hacer continuas (una despues de otra)
+            //no funciona el async await ***
+            
             getEmpresa(id){//trae los datos de la empresa
                 Empresa().get(`/${id}`).then((response)=> {
                     this.empresa = response.data.data;
@@ -87,9 +86,8 @@ import { mapState } from 'vuex';
                     console.log(e);
                 });
             },
-
-            getEmpresaGrupos(){
-                Empresa().get(`/${this.id}/grupos`).then((response) => {
+            getEmpresaGrupos(id){
+                Empresa().get(`/${id}/grupos`).then((response) => {
                     this.grupos = response.data.data;
                     this.getEmpresaSubgrupos();
                 }).catch(e => {
@@ -97,7 +95,6 @@ import { mapState } from 'vuex';
                     console.log(e);
                 });
             },
-
             getEmpresaSubgrupos(){
                 Empresa().get(`/${this.id}/subgrupos`).then((response) => {
                     this.subgrupos=response.data.data;
@@ -116,9 +113,11 @@ import { mapState } from 'vuex';
                     console.log(e);
                 });
             },
-
             addOrder(){
-                for (let i = 0; i < this.conceptos.length; i++) {
+                this.conceptos.filter(a => this.conceptosId.filter(b => a.id == b ? a.gregado=true:a.gregado=false));
+                 
+                //old code
+                /*for (let i = 0; i < this.conceptos.length; i++) {
                     for (let e = 0; e < this.conceptosId.length; e++) {
                         if(this.conceptos[i].id == this.conceptosId[e]){
                             this.conceptos[i].agregado=true;
@@ -127,7 +126,7 @@ import { mapState } from 'vuex';
                             this.conceptos[i].agregado=false;
                         }
                     }
-                }
+                }*/
             }
         }
     }

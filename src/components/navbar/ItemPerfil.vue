@@ -18,7 +18,7 @@
                 <v-list >
                     <v-list-item>
                         <v-list-item-avatar color="grey" dark size="70">
-                            <img :src="'http://192.168.0.253:81/api/images/default.png'">
+                            <img :src="ruta+perfil.fotografia">
                         </v-list-item-avatar>
 
                         <v-list-item-content>
@@ -65,16 +65,16 @@
 import {mapGetters,mapActions} from 'vuex';
 import store from '@/store';
 //services
-import Usuario from '@/services/Usuario';
+import Auth from '@/services/Auth';
 //router
 import router from '@/router';
+import url from '@/services/ruta';
 
     export default {
         data(){
             return{
-                perfil:{
-                    fotografia:'http://192.168.0.253:81/api/images/default.png'
-                },
+                ruta:null,
+                perfil:{},
                 link:[
                     {text:'Ajustes de cuentas',path:'/account/profile',icon:'build'},
                     {text:'Agregar metodo de pago',path:'/account/metodo-de-pago',icon:'credit_card'},
@@ -91,28 +91,25 @@ import router from '@/router';
             transition(){//transition del menu
                 return "slide-y-transition"
             },
-
             getUsuario(){//metodo get para el usuario logeado
-                Usuario().post("/validate", {
-                    user_token:this.user.token
-                }).then((response) => {
+                Auth().post("/sesion", {token:this.user.token}).then((response) => {
                     this.perfil=response.data.data;
-                    if(response.data.data.nombre  == undefined){
+                    if(response.data.data == undefined){
                         this.logout();
                     }
                 }).catch(e => {
                     console.log(e);
                 });
             },
-
             logOut(){
                 this.logout();
                 store.state.pedidos=[];
                 router.push('/login');
             },
         },
-        
-        mounted(){//se trae el cliente
+        mounted(){
+            this.ruta=url;
+
             if(this.user.loggedIn){
                 this.getUsuario();
             }else{

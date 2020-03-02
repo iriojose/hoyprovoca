@@ -48,7 +48,7 @@
                 <v-col cols="12" md="3" sm="6">
                     <div class="text-center subtitle-1 decoracion">Redes sociales</div>
                     <v-list dense rounded color="#f5f5f5">
-                        <v-list-item class="text-center" @click="method" dense v-for="red in redes" :key="red.text">
+                        <v-list-item class="text-center" @click="method" dense v-for="red in redes" :key="red.text" :href="red.to">
                             <v-list-item-title></v-list-item-title>
                             <v-list-item-avatar size="25">
                                 <v-img :src="require('@/assets/'+red.img)"/>
@@ -88,9 +88,9 @@ import PreFooter from './PreFooter';
                     {text:'Preguntas frecuentes'}
                 ],
                 redes:[
-                    {img:'svgfacebook.svg',text:'Facebbok'},
-                    {img:'svgyoutu.svg',text:'YouTube'},
-                    {img:'instagramsvg.svg',text:'Instagram'}
+                    {img:'svgfacebook.svg',text:'Facebbok',to:''},
+                    {img:'svgyoutu.svg',text:'YouTube',to:'https://www.youtube.com/channel/UCRxWOVR7AVYep0AqNoN-zhA'},
+                    {img:'instagramsvg.svg',text:'Instagram',to:''}
                 ],
                 apps:[
                     {img:'app-store.png',text:'Iphone'},

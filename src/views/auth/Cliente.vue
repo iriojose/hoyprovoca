@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="mt-12">
         <v-row :class="$vuetify.breakpoint.smAndDown ? 'mx-4':null">
             <v-col cols="12" md="6" lg="6" sm="12" :offset="$vuetify.breakpoint.smAndDown ? null:1">
                 <v-card elevation="15" class="pa-5 my-5">

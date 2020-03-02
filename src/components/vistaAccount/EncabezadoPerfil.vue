@@ -97,7 +97,7 @@
 </template>
 
 <script>
-import Usuario from '@/services/Usuario';
+import Auth from '@/services/Auth';
 import {mapState} from 'vuex';
 import url from '@/services/ruta';
 
@@ -112,7 +112,7 @@ import url from '@/services/ruta';
                 sliderVal:0,
                 sliderMin:0,
                 sliderMax:0,
-                fotografia:'default.png'
+                fotografia:null
             }
         },
         mounted() {
@@ -124,7 +124,7 @@ import url from '@/services/ruta';
         },
         methods: {
             getUsuario(){
-                Usuario().post('/validate',{user_token:this.user.token}).then((response) => {
+                Auth().post('/sesion',{token:this.user.token}).then((response) => {
                     this.fotografia = response.data.data.fotografia;
                 }).catch(e => {
                     console.log(e);

@@ -164,7 +164,7 @@
 //metodos de validacion
 import validations from '@/validations/validations';
 //servicios
-import Usuario from '@/services/Usuario';
+import Auth from '@/services/Auth';
 //router
 import router from '@/router';
 //state globales
@@ -188,7 +188,7 @@ import {mapState,mapActions} from 'vuex';
                     email:'',
                     password:'',
                     login:'',
-                    fotografia:'default.png',
+                    fotografia:'perfil.jpg',
                     perfil_id:1
                 },
                 ...validations,
@@ -212,7 +212,7 @@ import {mapState,mapActions} from 'vuex';
             },
 
             SignUp(){//metodo para registrarse
-                Usuario().post("/signup",{data:this.data}).then((response) => {
+                Auth().post("/signup",{data:this.data}).then((response) => {
                     console.log(response);
                     this.snackbar=true;
                     this.logged(response.data.token);//se guarda token en state
