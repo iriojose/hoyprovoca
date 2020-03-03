@@ -15,7 +15,7 @@
                     <!--panel de grupos y subgrupos-->
                     <div  v-else>   
                         <v-card-title class="mx-3">
-                            <v-img contain width="80" height="80" src="@/assets/noimage.png"/>
+                            <v-img contain width="80" height="80" :src="ruta+empresa.logo"/>
                             {{empresa.nombre_comercial}}
                         </v-card-title>
                         <v-divider dark></v-divider>
@@ -69,6 +69,7 @@
 
 <script>
 import Conceptos from '@/components/vistaAliados/Conceptos';
+import url from '@/services/ruta';
 
     export default {
         props:{
@@ -89,6 +90,9 @@ import Conceptos from '@/components/vistaAliados/Conceptos';
                 default: () => {}
             },
 
+        },
+        created(){
+            this.ruta=url;
         },
         data() {
             return {

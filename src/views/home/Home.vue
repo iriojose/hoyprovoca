@@ -48,81 +48,91 @@ import Empresa from '@/services/Empresa';
 //router
 import router from '@/router';
 
-export default {
-    name: "home",
-    components: {
-        AppBar,
-        Footer,
-        Banner,
-        Categorias,
-        Sugerencias,
-        SkeletonCard,
-        Banner2,
-        MasVendidos,
-        error500,
-        ValidacionConcepto
-    },
-    data() {
-        return {
-            error:false,
-            categorias: [],
-            sugerencias:[],
-            conceptos:[],
-            activoConcepto:false,
-            activoCategoria:false,
-            activoSugerencia:false,
-        };
-    },
-    created() {
-        this.getEmpresas();
-        this.getConceptos();
-        this.getGrupos();
-        this.addOrder();
-    },
-    computed: {
-        ...mapState(['conceptosId','user']),
-    },
-    watch: {
-        //cuando las variables cambien se quita el modo de espera
-        conceptosId(){//se refresca cada que agregan
+    export default {
+        name: "home",
+        components: {
+            AppBar,
+            Footer,
+            Banner,
+            Categorias,
+            Sugerencias,
+            SkeletonCard,
+            Banner2,
+            MasVendidos,
+            error500,
+            ValidacionConcepto
+        },
+        head:{
+            title(){
+                return {
+                    inner:this.title,
+                    separator:'|',
+                    complement: 'Home'
+                }
+            }
+        },
+        data() {
+            return {
+                title:'HoyProvoca',
+                error:false,
+                categorias: [],
+                sugerencias:[],
+                conceptos:[],
+                activoConcepto:false,
+                activoCategoria:false,
+                activoSugerencia:false,
+            };
+        },
+        created() {
+            this.getEmpresas();
+            this.getConceptos();
+            this.getGrupos();
             this.addOrder();
         },
-        conceptos(){
-            this.activoConcepto=true;
+        computed: {
+            ...mapState(['conceptosId','user']),
         },
-        categorias() {
-            this.activoCategoria = true;
+        watch: {
+            //cuando las variables cambien se quita el modo de espera
+            conceptosId(){//se refresca cada que agregan
+                this.addOrder();
+            },
+            conceptos(){
+                this.activoConcepto=true;
+            },
+            categorias() {
+                this.activoCategoria = true;
+            },
+            sugerencias(){
+                this.activoSugerencia=true;
+            }
         },
-        sugerencias(){
-            this.activoSugerencia=true;
-        }
-    },
-    methods: {
-        addOrder(){
-            this.conceptos.filter(a=> this.conceptosId.filter(b=> a.id==b ? a.agregado=true:null));
-        },
-        getGrupos(){//trae las categorias (grupos)
-            Grupos().get('/?limit=15').then((response) => {
-                this.categorias = response.data.data;
-            }).catch(e => {
+        methods: {
+            addOrder(){
+                this.conceptos.filter(a=> this.conceptosId.filter(b=> a.id==b ? a.agregado=true:null));
+            },
+            getGrupos(){//trae las categorias (grupos)
+                Grupos().get('/?limit=15').then((response) => {
+                    this.categorias = response.data.data;
+                }).catch(e => {
+                    console.log(e);
+                });
+            },
+            getEmpresas(){//trae empresas (sugerencias)
+                Empresa().get('/?limit=8').then((response) => {
+                    this.sugerencias= response.data.data;
+                }).catch(e => {
                 console.log(e);
-            });
-        },
-        getEmpresas(){//trae empresas (sugerencias)
-            Empresa().get('/?limit=8').then((response) => {
-                this.sugerencias= response.data.data;
-            }).catch(e => {
-            console.log(e);
-            });
-        },
-        getConceptos(){//trae conceptos (productos/servicios)
-            Conceptos().get('/?limit=15').then((response) => {
-                this.conceptos = response.data.data;
-                this.addOrder();//pone bandera de agregado a pedidos
-            }).catch(e => {
-                console.log(e);
-            });
+                });
+            },
+            getConceptos(){//trae conceptos (productos/servicios)
+                Conceptos().get('/?limit=15').then((response) => {
+                    this.conceptos = response.data.data;
+                    this.addOrder();//pone bandera de agregado a pedidos
+                }).catch(e => {
+                    console.log(e);
+                });
+            }
         }
-    }
-};
+    };
 </script>

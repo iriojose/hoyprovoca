@@ -34,6 +34,15 @@ export default {
         PanelIzquierdo,
         AppBar,
         Footer
-    }
+    },
+    head:{
+        title(){
+            return {
+                inner:'HoyProvoca',
+                separator:'|',
+                complement: 'Account'
+            }
+        }
+    },
 }
 </script>

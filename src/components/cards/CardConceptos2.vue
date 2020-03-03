@@ -4,19 +4,14 @@
             <template v-slot:activator="{ on }">
                 <v-hover v-slot:default="{hover}">
                     <v-card v-on="on" tile :height="heightCard" :width="widthCard" :elevation="hover ? 15:0">
-                        <v-img 
+                        <v-img
                             :height="heightImg" 
                             :width="widthImg" 
                             contain 
                             :src="ruta+concepto.imagen"
                             :gradient="hover ? 'to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)':null"
                         >
-                            <v-row
-                                v-if="hover"
-                                class="fill-height"
-                                align="center"
-                                justify="center"
-                            >
+                            <v-row v-if="hover" align="center" justify="center" class="fill-height">
                                 <v-scale-transition>
                                     <v-btn  
                                         :loading="loading"
@@ -24,13 +19,13 @@
                                         dark
                                         width="50%"
                                         class="text-capitalize body font-weight-bold"
-                                        @click="agregarConceptos(concepto)"
+                                        @click="add(concepto)"
                                         v-if="!concepto.agregado"
                                     >
                                         Agregar
                                     </v-btn>
-                                    <div v-else class="white--text title">
-                                        agregado
+                                    <div v-else class="red--text title">
+                                        Agregado
                                     </div>
                                 </v-scale-transition>
                             </v-row>
@@ -47,8 +42,8 @@
                                 {{concepto.descripcion}}
                             </div>
                         </div>
-                    </v-card> 
-                </v-hover> 
+                    </v-card>
+                </v-hover>
             </template>
             <span>{{concepto.nombre}}</span>
         </v-tooltip>
@@ -61,29 +56,12 @@
                 Existencia agotada.
             </div>
         </v-snackbar>
-        <!-- <v-overlay :value="loading" absolute>
-            <v-row justify="center" align="center">
-                <v-col md="4" sm="4" cols="12">
-                    <v-progress-circular
-                        size="100"
-                        indeterminate
-                        color="#005598"
-                    ></v-progress-circular>
-                </v-col>
-            </v-row>
-        </v-overlay>
-        <v-snackbar dark class="white--text" v-model="loading" right>
-            <div class="caption" v-if="!error">Agregando...</div>
-            <div class="caption" v-else>{{error}}</div>
-        </v-snackbar>-->
     </div>
 </template>
 
 <script>
-//state globales
 import {mapState,mapActions} from 'vuex';
 import router from '@/router';
-//services
 import Conceptos from '@/services/Conceptos';
 import Pedidos from '@/services/Pedidos';
 import Auth from '@/services/Auth';
@@ -146,15 +124,11 @@ import url from '@/services/ruta';
         },
         data() {
             return {
-                espera:false,
                 ruta:null,
-                exito:'',
-                error:'',
-                imagen:"default.png",
+                exito:null,
+                error:null,
                 loading:false,
-                existencia:null,
                 snackbar:false,
-                id:0,
                 data:{
                     rest_mesas_id:1,
                     rest_estatus_id:1,
@@ -180,77 +154,63 @@ import url from '@/services/ruta';
         computed: {
             ...mapState(['validacionConcep','user','producto','pedidos']),
         },
-        methods: {
+        methods:{
             ...mapActions(['setProducto','setValidacionConcepto','setPedidos','setDetallePedidos']),
-            
-            agregarConceptos(item){
-                this.loading=true;
+
+            add(concepto){
+                this.loading = true;
                 if(this.user.loggedIn){
-                    this.setProducto(item);
-                    this.getConceptosExistencia(item.id);
+                    this.setProducto(concepto);
+                    this.getConceptoExistencia(concepto);
                 }else{
                     this.loading=false;
                     router.push('/login');
                 }
             },
-            getConceptosExistencia(id){//trae la existencia del concepto del deposito de la web
-                Conceptos().get(`/${id}/depositos`).then((response) => {
-                    if(response.data == 'This entity is empty'){
-                        this.loading=false;
-                        this.snackbar=true;
-                    }else{
-                        this.existencia = response.data.data[0]; 
-                        this.revisionDeExistencia(this.existencia);
-                    }
-                }).catch(e => {
-                    console.log(e);
-                    this.loading=false;
-                });
-            },
-            revisionDeExistencia(existencia){
+            validaExistencia(existencia){
                 if(Number.parseInt(existencia.existencia) > 0){
-                    if(this.producto.tipos_conceptos_id == 5){
+                    /*if(this.producto.tipos_conceptos_id == 5){
                         this.loading=false;
                         this.setValidacionConcepto(true);
                         return;
-                    }else{
-                        this.pedidos.length == 0 ? this.getUsuario():this.validacionSiExistePedidos();
-                    }
+                    }else{*/
+                        this.pedidos.filter(a=> a.empresa_id == this.producto.empresa_id ? this.postPedidosDetalle(a.id):this.getUsuario());
+                    //}
                 }else{
                     this.loading=false;
                     this.snackbar=true;
                 }
             },
-            //posts de la Api
-            postPedidos(){//crea un pedido y su primer detalle
+
+            //llamadas a la API
+            getUsuario(){//trae la informacion del usaurio
+                Auth().post("/sesion",{token:this.user.token}).then((response) => {
+                    this.postPedidos(response.data.data);
+                }).catch(e => {
+                    console.log(e);
+                    this.loading=false;
+                });
+            },
+            postPedidos(user){//crea el pedido
                 let data=this.data;
-                data.usuario_id=this.id;
+                data.usuario_id=user.id;
                 data.empresa_id=this.producto.empresa_id;
 
                 let data1=this.data1;
                 data1[0].conceptos_id =this.producto.id;
                 data1[0].precio = this.producto.precio_a;
 
-                //let formdata = new FormData();
-                //formdata.append('data',JSON.stringify(data));
-                //formdata.append('data1',JSON.stringify(data1));
-                //formdata.append('image',this.imagen);
-
-                Pedidos().post("/",{data,data1}).then((response) => {
-                    console.log(response.data.data);
+                Pedidos().post("/",{data:data,data1:data1}).then((response) => {
                     let pedido=response.data.data;
                     let detalle = pedido.detalles[0];
                     pedido.detalles=[];
                     this.setPedidos(pedido);//local
                     this.setDetallePedidos(detalle);//local
                     this.loading=false;
-                }).catch(e =>{
+                }).catch(e => {
                     console.log(e);
                     this.loading=false;
                 });
-            },
-            validacionSiExistePedidos(){//si existe un pedido a la empresa que pertenece ese concepto
-                this.pedidos.filter(a=> a.empresa_id == this.producto.empresa_id ? this.postPedidosDetalle(a.id):this.getUsuario());
             },
             postPedidosDetalle(id){//agrega un detalle a un pedido
                 let data = this.data1[0];
@@ -258,36 +218,28 @@ import url from '@/services/ruta';
                 data.precio=this.producto.precio_a;
                 data.rest_pedidos_id=id;
 
-                Pedidos().post(`/${id}/detalles`,{data}).then((response) => {
-                    console.log(response.data.data);
+                Pedidos().post(`/${id}/detalles`,{data:data}).then((response) => {
                     let data2 = response.data.data;
                     this.setDetallePedidos(data2);
                     this.loading=false;
                 }).catch(e => {
                     console.log(e);
                     this.loading=false;
-                })
+                });
             },
-
-            getUsuario(){//metodo get para el usuario logeado
-                Auth().post("/sesion", {token:this.user.token}).then((response) => {
-                    this.id=response.data.data.id;
-                    this.postPedidos();
+            getConceptoExistencia(concepto){//trae la existencia del concepto solicitado
+                Conceptos().get(`/${concepto.id}/depositos`).then((response) => {
+                    if(response.data == 'This entity is empty'){
+                        this.loading=false;
+                        this.snackbar=true;
+                    }else{ 
+                        this.validaExistencia(response.data.data[0]);
+                    }
                 }).catch(e => {
                     console.log(e);
                     this.loading=false;
                 });
-            },
-        },
+            }
+        }
     }
 </script>
-
-<style lang="css" scope>
-    .modif{
-        width: 100%;
-        height: 40px;
-        background: rgba(0,0,0,0.5);
-        color: #fff;
-        padding-top: 10px;
-    }
-</style>

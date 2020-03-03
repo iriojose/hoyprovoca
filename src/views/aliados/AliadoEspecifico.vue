@@ -56,6 +56,15 @@ import { mapState } from 'vuex';
                 this.error=true;
             }
         },
+        head:{
+            title(){
+                return {
+                    inner:'HoyProvoca',
+                    separator:'|',
+                    complement: 'Aliado'
+                }
+            }
+        },
         computed:{
             ...mapState(['conceptosId'])
         },

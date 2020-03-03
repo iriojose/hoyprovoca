@@ -114,6 +114,15 @@ import {mapState} from 'vuex';
                 this.addOrder();
             },
         },
+        head:{
+            title(){
+                return {
+                    inner:'HoyProvoca',
+                    separator:'|',
+                    complement: 'Search'
+                }
+            }
+        },
         methods:{
             getConceptos(nombre){
                 Conceptos().get(`/?nombre=${nombre}`).then((response) => {

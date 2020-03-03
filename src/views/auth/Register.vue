@@ -42,7 +42,21 @@ import SubFooter from '@/components/footer/SubFooter';
     export default {
         components:{
             SubFooter,
-        }
+        },
+        data() {
+            return {
+                title:'HoyProvoca'
+            }
+        },
+        head:{
+            title(){
+                return {
+                    inner:this.title,
+                    separator:'|',
+                    complement: 'Registro'
+                }
+            }
+        },
     }
 </script>
 

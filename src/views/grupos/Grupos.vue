@@ -44,7 +44,16 @@ import {mapState} from 'vuex';
                 error:false,
                 id:'',
                 subgrupos:[],
-                conceptos:[]
+                conceptos:[],
+            }
+        },
+        head:{
+            title(){
+                return {
+                    inner:'HoyProvoca',
+                    separator:'|',
+                    complement: 'Categorias'
+                }
             }
         },
         mounted(){//al montarse revisas la ruta
