@@ -16,15 +16,13 @@
             <!-- lista de opciones-->
             <v-card width="300">
                 <v-list >
-                    <v-list-item>
+                    <v-list-item class="ml-8">
                         <v-list-item-avatar color="grey" dark size="70">
                             <img :src="ruta+perfil.fotografia">
                         </v-list-item-avatar>
-
                         <v-list-item-content>
                             <v-list-item-title>{{perfil.nombre+' '+perfil.apellido}}</v-list-item-title>
                         </v-list-item-content>
-
                     </v-list-item>
                 </v-list>
 
@@ -94,11 +92,9 @@ import url from '@/services/ruta';
             getUsuario(){//metodo get para el usuario logeado
                 Auth().post("/sesion", {token:this.user.token}).then((response) => {
                     this.perfil=response.data.data;
-                    if(response.data.data == undefined){
-                        this.logout();
-                    }
                 }).catch(e => {
                     console.log(e);
+                    this.logOut();
                 });
             },
             logOut(){

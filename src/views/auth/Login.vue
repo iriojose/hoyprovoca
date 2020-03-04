@@ -63,7 +63,9 @@
                 ></v-img>
             </v-col>
         </v-row>
-        <SubFooter />
+        <v-footer fixed>
+            <SubFooter />
+        </v-footer>
    </div>
 </template>
 

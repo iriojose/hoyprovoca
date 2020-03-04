@@ -35,14 +35,6 @@ import Search from "./views/search/Search";
 import Aliados from "./views/aliados/Aliados";
 import AliadoEspecifico from "./views/aliados/AliadoEspecifico";
 
-//rutas de adminitrador
-import Admin from './views/admin/Admin';
-import Dashboard from './views/admin/Dashboard';
-import Usuarios from './views/admin/Usuarios';
-import Notificaciones2 from './views/admin/Notificaciones';
-import Aliados2 from './views/admin/Aliados';
-import Ventas from './views/admin/Ventas';
-
 //ruta checkout de pedidos
 import Checkout from './views/pedidos/Checkout';
 
@@ -51,6 +43,7 @@ import DetalleProducto from './views/productos/DetalleProducto';
 
 //ruta de grupos y subgrupos 
 import Grupos from './views/grupos/Grupos';
+import GruposDetalle from './views/grupos/GruposDetalle';
 
 Vue.use(Router);
 
@@ -75,9 +68,17 @@ const router = new Router({
             }
         },
         {
+            path:"/grupos",
+            name:"grupos",
+            component:Grupos,
+            meta:{
+                auth: false
+            }
+        },
+        {
             path: "/grupos/:text/:id",
-            name: "grupos",
-            component: Grupos,
+            name: "gruposDetalle",
+            component: GruposDetalle,
             meta: {
                 auth: false
             }
@@ -220,43 +221,7 @@ const router = new Router({
             name: "notfound",
             component: NotFound
         },
-        {
-            path:'/admin',
-            name:'admin',
-            component:Admin , 
-            meta: {
-                auth: true,
-                mediador:true
-            },
-
-            children:[
-                {
-                    path:'dashboard',
-                    name:'Dashboard',
-                    component:Dashboard
-                },
-                {
-                    path:'usuarios',
-                    name:'Usuarios',
-                    component:Usuarios,
-                },
-                {
-                    path:'aliados',
-                    name:'Aliados',
-                    component:Aliados2
-                },
-                {
-                    path:'notificaciones',
-                    name:'Notificaciones',
-                    component:Notificaciones2
-                },
-                {
-                    path:'ventas',
-                    name:'Ventas',
-                    component:Ventas
-                }
-            ]
-        }
+        
     ],
 
     linkActiveClass: 'router-link-active', // <router-link> default active class

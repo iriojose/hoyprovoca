@@ -5,14 +5,14 @@
                 <v-stepper-step 
                     step="1" 
                     :complete="valid1" 
-                    :color="valid1 ? 'green':'#005598'"
+                    :color="valid1 ? '#2E7D32':'#005598'"
                 >Datos basicos
                 </v-stepper-step>
-                <v-divider></v-divider>
+                <v-divider v-if="$vuetify.breakpoint.smAndDown ? true:false"></v-divider>
                 <v-stepper-step 
                     step="2" 
                     :complete="valid2" 
-                    :color="valid2 ? 'green':'#005598'"
+                    :color="valid2 ? '#2E7D32':'#005598'"
                 >Datos privados
                 </v-stepper-step>
                 <v-divider></v-divider>
@@ -144,7 +144,7 @@
         </v-stepper>
         
         <!--snakbar para mensaje de registro completado o fallido-->
-        <v-snackbar v-model="snackbar" :color="error != null? '#D32F2F':'#388E3C'" right>
+        <v-snackbar v-model="snackbar" :color="error != null? '#D32F2F':'#2E7D32'" right>
             <div v-if="error==null">
                 <v-icon dark>
                   check_circle

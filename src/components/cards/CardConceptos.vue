@@ -71,11 +71,11 @@
                     ></v-progress-circular>
                 </v-col>
             </v-row>
-        </v-overlay>
+        </v-overlay  -->
         <v-snackbar dark class="white--text" v-model="loading" right>
             <div class="caption" v-if="!error">Agregando...</div>
             <div class="caption" v-else>{{error}}</div>
-        </v-snackbar>-->
+        </v-snackbar>
     </div>
 </template>
 

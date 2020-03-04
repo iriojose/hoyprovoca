@@ -52,20 +52,23 @@
             </v-row>
         </v-container>
 
+        <v-snackbar v-model="loading" dark right>
+            autenticando...
+        </v-snackbar>
         <!--snakbar para mensaje de login completado o fallido-->
-        <v-snackbar v-model="snackbar" :color="error != null? '#D32F2F':'#388E3C'" right>
+        <v-snackbar v-model="snackbar" :color="error != null? '#D32F2F':'#2E7D32'" right>
             <div v-if="error==null">
-              <v-icon dark>
-                  check_circle
-              </v-icon>
+                <v-icon dark>
+                    check_circle
+                </v-icon>
                 se ha logeado exitosamente.
             </div>
-            <div v-if="error">
-              <v-icon dark>
-                  cancel
-              </v-icon>
-                {{error}}
-            </div>
+                <div v-if="error">
+                    <v-icon dark>
+                        cancel
+                    </v-icon>
+                    {{error}}
+                </div>
         </v-snackbar>
     </v-form>
 </template>

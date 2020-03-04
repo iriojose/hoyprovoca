@@ -11,12 +11,8 @@
         <v-card color="#f7f7f7" elevation="0" height="100%">
             <!--HEADER DEL PANEL -->
             <v-toolbar elevation="0">
-                <div class="title">
-                    HoyProvoca 
-                </div>
-                <v-subheader>
-                    compra ahora mismo
-                </v-subheader>
+                <div class="title">HoyProvoca</div>
+                <v-subheader>compra ahora mismo</v-subheader>
                 <v-spacer></v-spacer>
                 <v-btn icon text depressed @click="change">
                     <v-icon>close</v-icon>
@@ -32,11 +28,7 @@
 
             <!--pedidos-->
             <v-expansion-panels v-else>
-                <v-expansion-panel
-                    v-for="(pedido,i) in pedidos"
-                    :key="i"
-                    class="my-1"
-                >
+                <v-expansion-panel v-for="(pedido,i) in pedidos" :key="i" class="my-1">
                     <v-expansion-panel-header>
                         <v-toolbar elevation="0" height="60">
                             <v-btn icon @click="deletePedido(pedido.id)"><v-icon>delete</v-icon></v-btn>   
@@ -141,12 +133,17 @@
             </div>
         </v-card>
 
-        <v-snackbar v-model="snackbar" right color="red" class="white--text">
+        <v-snackbar v-model="snackbar" right :color="error ? '#D32F2F':'#2E7D32'" :timeout="2000">
+            <div v-if="error">Error, No se realizo la acciòn</div>
+            <div v-else>Se ejecuto la acciòn correctamente</div>
+        </v-snackbar>
+
+        <!-- v-snackbar v-model="snackbar" right color="red" class="white--text">
             <v-icon dark>
                 cancel
             </v-icon>
             Existencia maxima alcanzada.
-        </v-snackbar>
+        </v-snackbar-->
     </v-navigation-drawer>
 </template>
 
@@ -160,6 +157,8 @@ import Usuario from '@/services/Usuario';
     export default {
         data(){
             return{
+                exito:null,
+                error:false,
                 dolares:53,
                 totales:[],
                 loading:false,
@@ -167,13 +166,11 @@ import Usuario from '@/services/Usuario';
                 snackbar:false
             }
         },
-
         mounted(){
             if(this.user.loggedIn){
                 this.getUsuario();
             }
         },
-
         computed: {
             ...mapState(['panel','pedidos','totalCarrito','totalPedido']),
             ...mapGetters(['user']),
@@ -187,18 +184,16 @@ import Usuario from '@/services/Usuario';
                 }
             }
         },
-
         methods: {
             ...mapActions(['setPanel','deletePedidos','deleteDetallePedidos','setPedidosServices','setDetallePedidos','updateDetallePedidosLocal']),
 
             transition(){//animacion del panel
-              if(this.panel){
-                return "slide-x-transition";
-              }else{
-                return "slide-y-transition";
-              }
+                if(this.panel){
+                    return "slide-x-transition";
+                }else{
+                    return "slide-y-transition";
+                }
             },
-
             change(){//cambia estado del panel de true a false
                 if(this.panel==true){
                     this.setPanel(false);
@@ -206,21 +201,19 @@ import Usuario from '@/services/Usuario';
                     this.setPanel(true);
                 }
             },
-
             //LLAMADAS A LA API
-            getPedidosUsuario(id){//trae los pedidos del usuario logeado
-                Usuario().get(`/${id}/pedidos`).then((response) =>{
-                    if(response.data !== 'This entity is empty'){
-                        this.setPedidosServices(response.data.data);//local method
-                    }
+            getUsuario(){
+                Auth().post("/sesion",{token:this.user.token}).then((response) => {
+                    this.getPedidosUsuario(response.data.data.id);
                 }).catch(e => {
                     console.log(e);
                 });
             },
-
-            getUsuario(){//metodo get para el usuario logeado
-                Auth().post("/sesion", {token:this.user.token}).then((response) => {
-                    this.getPedidosUsuario(response.data.data.id);
+            getPedidosUsuario(id){
+                Usuario().get(`/${id}`).then((response) => {
+                    if(response.data !== 'This entity is empty'){
+                        this.setPedidosServices(response.data.data);//local method
+                    }
                 }).catch(e => {
                     console.log(e);
                 });
@@ -236,9 +229,13 @@ import Usuario from '@/services/Usuario';
                         console.log(response);
                         this.deleteDetallePedidos(detalle);//local method
                         this.loading=false;
+                        this.snackbar = true;
+                        this.error=false;
                     }).catch(e => {
                         console.log(e);
                         this.loading=false;
+                        this.snackbar = true;
+                        this.error=true;
                     });
                 }
             },
@@ -250,9 +247,13 @@ import Usuario from '@/services/Usuario';
                     console.log(response);
                     this.deletePedidos(id);//metodo local 
                     this.loading=false;
+                    this.snackbar = true;
+                    this.error=false;
                 }).catch(e => {
                     console.log(e);
                     this.loading=false;
+                    this.snackbar = true;
+                    this.error=true;
                 });
             },
 
@@ -296,8 +297,12 @@ import Usuario from '@/services/Usuario';
                 Pedidos().post(`/${detalle1.rest_pedidos_id}/detalles/${detalle1.id}`,{data}).then((response) => {
                     console.log(response.data);
                     this.updateDetallePedidosLocal(detalle1);//local method
+                    this.snackbar = true;
+                    this.error=false;
                 }).catch(e => {
                     console.log(e);
+                    this.snackbar = true;
+                    this.error=true;
                 })
             },
         },
