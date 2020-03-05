@@ -79,7 +79,7 @@
 
             <!--mientras no se esta logeado -->
              <v-toolbar-items v-if="!user.loggedIn">
-                <v-btn text to="/login" class="white--text">
+                <v-btn text to="/login" class="white--text text-capitalize">
                     Iniciar sesión
                 </v-btn>
             </v-toolbar-items>
