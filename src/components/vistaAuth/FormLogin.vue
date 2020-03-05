@@ -1,57 +1,44 @@
 <template>
-    <v-form v-model="valid" class="center" @submit.prevent="">
-        <v-container>
-            <v-row>
-                <v-col cols="12" md="12" xs="12">
-                    <v-text-field
-                        label="Usuario/Email"
-                        v-model="data.user"
-                        type="email"
-                        clearable
-                        outlined
-                        prepend-inner-icon="email"
-                        color="#005598"
-                        dense
-                        counter="50"
-                        :rules="[required('Usuario/Email'), maxLength('Usuario/Email',50)]"
-                    />
-                </v-col>
-                <v-col cols="12" md="12" xs="12">
-                    <v-text-field
-                        v-model="data.password"
-                        label="Password"
-                        counter="true"
-                        :type="showPassword ? 'text' : 'password' "
-                        :rules="[required('password'), minLength('password',6)]"
-                        @click:append="showPassword = !showPassword"
-                        :append-icon="showPassword ?  'visibility' : 'visibility_off'"
-                        :prepend-inner-icon="showPassword ?  'lock_open' : 'lock'"
-                        outlined
-                        color="#005598"
-                        dense
-                    />
-                </v-col>
-                <v-col cols="12">
-                    <v-btn 
-                        block 
-                        type="submit" 
-                        :disabled="!valid || loading" 
-                        color="#005598" 
-                        :dark="valid && !loading"
-                        :loading="loading"
-                        @click="login()"
-                    >
-                        Enviar
-                        <template v-slot:loader>
-                            <span class="custom-loader">
-                            <v-icon light>cached</v-icon>
-                            </span>
-                        </template>
-                    </v-btn>
-                </v-col>
-            </v-row>
-        </v-container>
-
+    <v-form v-model="valid" class="center mx-5" @submit.prevent="">
+        <v-text-field
+            label="Usuario/Email"
+            v-model="data.user"
+            type="email"
+            outlined
+            prepend-inner-icon="email"
+            color="#005598"
+            dense
+            single-line
+            :rules="[required('Usuario/Email'), maxLength('Usuario/Email',50)]"
+        />    
+        <v-text-field
+            v-model="data.password"
+            label="Password"
+            single-line
+            :type="showPassword ? 'text' : 'password' "
+            :rules="[required('password'), minLength('password',6)]"
+            @click:append="showPassword = !showPassword"
+            :append-icon="showPassword ?  'visibility' : 'visibility_off'"
+            :prepend-inner-icon="showPassword ?  'lock_open' : 'lock'"
+            outlined
+            color="#005598"
+            dense
+        />  
+        <v-hover v-slot:default="{hover}" open-delay="200">
+            <v-btn 
+                block 
+                type="submit" 
+                class="text-capitalize mt-5"
+                :disabled="!valid || loading" 
+                color="#005598" 
+                :dark="valid && !loading"
+                :loading="loading"
+                :elevation="hover ? 5:0"
+                @click="login()"
+            >
+                Iniciar Sesión
+            </v-btn>
+        </v-hover>
         <v-snackbar v-model="loading" dark right>
             autenticando...
         </v-snackbar>
