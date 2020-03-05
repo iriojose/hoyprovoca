@@ -36,10 +36,10 @@
                     <v-list dense rounded color="#f5f5f5">
                         <v-list-item class="text-center" @click="method" dense v-for="app in apps" :key="app.text">
                             <v-list-item-title></v-list-item-title>
-                            <v-list-item-avatar size="25">
-                                <v-img :src="require('@/assets/'+app.img)"/>
-                            </v-list-item-avatar>
-                            <v-list-item-title>{{app.text}}</v-list-item-title>
+                                <v-list-item-avatar size="25">
+                                    <v-img :src="require('@/assets/'+app.img)"/>
+                                </v-list-item-avatar>
+                                <v-list-item-title>{{app.text}}</v-list-item-title>
                             <v-list-item-title></v-list-item-title>
                         </v-list-item>
                     </v-list>
@@ -50,10 +50,10 @@
                     <v-list dense rounded color="#f5f5f5">
                         <v-list-item class="text-center" @click="method" dense v-for="red in redes" :key="red.text" :href="red.to">
                             <v-list-item-title></v-list-item-title>
-                            <v-list-item-avatar size="25">
-                                <v-img :src="require('@/assets/'+red.img)"/>
-                            </v-list-item-avatar>
-                            <v-list-item-title>{{red.text}}</v-list-item-title>
+                                <v-list-item-avatar size="25">
+                                    <v-img :src="require('@/assets/'+red.img)"/>
+                                </v-list-item-avatar>
+                                <v-list-item-title>{{red.text}}</v-list-item-title>
                             <v-list-item-title></v-list-item-title>
                         </v-list-item>
                     </v-list>

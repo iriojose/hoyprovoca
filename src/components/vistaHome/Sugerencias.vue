@@ -5,7 +5,7 @@
             <div class="headline ml-12 mt-12 font-weight-black">Visita nuestras tiendas</div>
             <v-spacer></v-spacer>
             <v-hover v-slot:default="{hover}">
-                <v-btn width="100" text depressed class="caption text-capitalize mt-10">
+                <v-btn to="/aliados" width="100" text depressed class="caption text-capitalize mt-10">
                     Ver todas 
                     <v-slide-x-transition>
                         <v-icon v-show="hover">keyboard_arrow_right</v-icon>
@@ -51,7 +51,9 @@ import url from '@/services/ruta';
         },
         methods: {
             push(item){
-                router.push({name:'local',params:{text:item.nombre_comercial,id:item.id}});
+                var re = / /gi; 
+                const nombre = item.nombre_comercial.replace(re,'-');
+                router.push({name:'aliadoEspecifico',params:{text:nombre,id:item.id}});
             }
         }
     }

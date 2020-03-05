@@ -52,7 +52,7 @@ import {mapState} from 'vuex';
                 return {
                     inner:'HoyProvoca',
                     separator:'|',
-                    complement: 'Categorias'
+                    complement: 'Grupo'
                 }
             }
         },

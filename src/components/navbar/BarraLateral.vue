@@ -73,7 +73,9 @@ import router from '@/router';
 
             push(item){//empuja a la vista 
                 this.setDrawer(false);
-                router.push({name:'grupos', params:{text: item.nombre , id:item.id}});
+                var re = / /gi; 
+                const nombre = item.nombre.replace(re,'-');
+                router.push({name:'gruposDetalle', params:{text:nombre,id:item.id}});
             },
 
             transition(){//metodo para animacion de transition

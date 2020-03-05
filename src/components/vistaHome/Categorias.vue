@@ -47,7 +47,9 @@ import url from '@/services/ruta';
         },
         methods: {
             push(item){
-                router.push({name:'grupos', params:{text:item.nombre,id:item.id}});
+                var re = / /gi; 
+                const nombre = item.nombre.replace(re,'-');
+                router.push({name:'gruposDetalle', params:{text:nombre,id:item.id}});
             }
         },
     };

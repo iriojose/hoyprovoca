@@ -32,8 +32,8 @@ import Historial from "./views/account/Historial";
 import Search from "./views/search/Search";
 
 //ruta de perfil de aliados
-import Aliados from "./views/aliados/Aliados";
-import AliadoEspecifico from "./views/aliados/AliadoEspecifico";
+import AliadosEspecifico from "./views/aliados/AliadosEspecifico";
+import Aliados from './views/aliados/Aliados';
 
 //ruta checkout de pedidos
 import Checkout from './views/pedidos/Checkout';
@@ -190,21 +190,20 @@ const router = new Router({
             ]
         },
         {
-            path: "/aliados",
-            name: "aliados",
-            component: Aliados,
+            path: "/aliados/:text/:id",
+            name: "aliadoEspecifico",
+            component: AliadosEspecifico,
             meta: {
                 auth: false
             },
-
-            children:[
-                {
-                    path:":text/:id",
-                    name:"local",
-                    component:AliadoEspecifico,
-                }
-
-            ]
+        },
+        {
+            path:"/aliados",
+            name:"aliados",
+            component:Aliados,
+            meta:{
+                auth: false
+            }
         },
         {
             path:"/noAutorizado",

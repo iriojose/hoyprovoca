@@ -7,8 +7,6 @@
                     show-arrows
                     class="pa-5"
                     v-model="model"
-                    prev-icon="arrow_back"
-                    next-icon="arrow_forward"
                 >
                     <v-slide-item v-for="n in 7" :key="n">
                         <v-card

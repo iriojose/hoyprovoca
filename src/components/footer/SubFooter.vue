@@ -1,7 +1,7 @@
 <template>
     <v-sheet dark width="100%">
         <div class="text-center py-2 white--text">
-            &copy; {{ new Date().getFullYear() }} <strong>HoyProvoca.com</strong>
+            <strong>HoyProvoca.com</strong> &copy; {{ new Date().getFullYear() }} 
         </div>
     </v-sheet>
 </template>
