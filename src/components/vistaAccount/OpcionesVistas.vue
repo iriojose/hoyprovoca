@@ -26,12 +26,13 @@
                     { 
                         icon: "build", 
                         text: "Ajustes de cuenta", 
-                        path: "/account/profile" },
-                    {
+                        path: "/account/profile" 
+                    },
+                    /*{
                         icon: "credit_card",
                         text: "Metodos de pago",
                         path: "/account/metodo-de-pago"
-                    },
+                    },*/
                     {
                         icon: "calendar_today",
                         text: "Ultimos pedidos",
