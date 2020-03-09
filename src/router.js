@@ -16,6 +16,7 @@ import Login from "./views/auth/Login.vue";
 import Register from "./views/auth/Register.vue";
 import Cliente from "./views/auth/Cliente";
 import Empresa from "./views/auth/Empresa";
+import Forgot from './views/auth/Forgot';
 
 //pruebas
 import Pruebas from './views/pruebas/Pruebas';
@@ -136,6 +137,14 @@ const router = new Router({
                     component: Empresa
                 }
             ]
+        },
+        {
+            path: "/forgot",
+            name: "forgot",
+            component: Forgot,
+            meta: {
+                auth: false
+            }
         },
         {
             path: "/account",
