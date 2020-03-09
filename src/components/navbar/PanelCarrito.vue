@@ -210,7 +210,7 @@ import Usuario from '@/services/Usuario';
                 });
             },
             getPedidosUsuario(id){
-                Usuario().get(`/${id}`).then((response) => {
+                Usuario().get(`/${id}/pedidos`).then((response) => {
                     if(response.data !== 'This entity is empty'){
                         this.setPedidosServices(response.data.data);//local method
                     }

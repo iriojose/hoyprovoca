@@ -276,7 +276,9 @@ router.beforeEach((to, from, next) => {
                 next({name:'home'});
             }else if(to.name == 'cliente' && user){
                 next({name:'home'});
-            }else if(to.name == 'empresa'&& user){
+            }else if(to.name == 'empresa' && user){
+                next({name:'home'});
+            }else if(to.name == 'forgot' && user){
                 next({name:'home'});
             }else{
                 next();

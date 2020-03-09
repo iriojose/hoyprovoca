@@ -8,7 +8,7 @@
             <v-img contain width="100%" height="300" :src="require('@/assets/undrawregistro2.svg')"></v-img>
         </v-col>
         <v-col cols="12" md="3" sm="10">
-            <v-card elevation="5" class="py-5" width="100%" height="400">
+            <v-card elevation="5" class="py-5" width="100%">
                 <div class="text-center my-5 font-weight-black subtitle-1">Registrate en Aftim</div>
                 <v-card-text>
                     <FormCliente />

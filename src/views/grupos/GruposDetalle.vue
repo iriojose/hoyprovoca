@@ -57,6 +57,8 @@ import {mapState} from 'vuex';
             }
         },
         mounted(){//al montarse revisas la ruta
+            console.log(this.$route);
+            
             if(this.$route.params.id){
                 this.id=this.$route.params.id;
                 this.getGruposSubGrupos(this.id);
@@ -102,13 +104,9 @@ import {mapState} from 'vuex';
                     console.log(e);
                 });
             },
-            //se utiliza para verificar que coceptos estan agregados en los pedidos
-            addOrder(){//el array de conceptos de esta vista posee mas array en sus posiciones (pendiente cuando debuggen)
-                //codigo experimental
-                this.conceptos.filter(a => a.filter(b => this.conceptosId.filter(c => b.id == c ? b.agregado=true:b.agregado=false)));
-                
-                //old code
-                /*for (let i = 0; i < this.conceptos.length; i++){
+            addOrder(){
+                //this.conceptos.filter(a => a.filter(b => this.conceptosId.filter(c => b.agregado==true || b.id == c  ? b.agregado=true:b.agregado=false)));
+                for (let i = 0; i < this.conceptos.length; i++){
                     for (let e = 0; e < this.conceptos[i].length; e++){
                         for (let f = 0; f < this.conceptosId.length; f++){
                             if(this.conceptos[i][e].id == this.conceptosId[f]){
@@ -119,7 +117,7 @@ import {mapState} from 'vuex';
                             }
                         }
                     }
-                }*/
+                }
             },
         }
 

@@ -85,7 +85,7 @@
                                 color="#005598"
                                 :dark="valid2 && !loading"
                                 :loading="loading"
-                                @click="signup()"
+                                @click="signUp()"
                             >Registrarse</v-btn>
                         </v-card-actions>
                     </v-form>
@@ -97,7 +97,7 @@
             autenticando...
         </v-snackbar>
         <!--snakbar para mensaje de login completado o fallido-->
-        <v-snackbar v-model="snackbar" :color="error != null? '#D32F2F':'#2E7D32'" right>
+        <v-snackbar v-model="snackbar" :color="error != null? '#D32F2F':'#2E7D32'" right :timeout="2000">
             <div v-if="error==null">
                 <v-icon dark>
                     check_circle
@@ -127,6 +127,7 @@ export default {
             valid1: false,
             valid2: false,
             error:null,
+            snackbar:false,
             showPassword: false,
             loading: false,
             e1: 0,
@@ -149,11 +150,11 @@ export default {
             Auth().post("/signup", { data: this.data }).then(response => {
                 console.log(response);
                 this.snackbar = true;
-                this.logged(response.data.token);
+                //this.logged(response.data.token);
                 setTimeout(() => {
                     this.loading = false;
                     this.error = null;
-                    router.push("/");
+                    router.push("/login");
                 }, 1000);
             }).catch(e => {
                 console.log(e);
