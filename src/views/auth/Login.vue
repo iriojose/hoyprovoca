@@ -47,10 +47,11 @@
                         <v-divider></v-divider>
                     </div>
                     <v-hover v-slot:default="{hover}">
-                        <div
-                            :class="hover ? 'mx-2 subtitle-2 text-color decoracion text-center':'mx-2 subtitle-2 text-color text-center'"
-                            @click="push()"
-                        >¿No puede iniciar sesión?</div>
+                        <div @click="push()" class="text-center" >
+                            <a :class="hover ? 'mx-2 subtitle-2 text-color decoracion':'mx-2 subtitle-2 text-color'">
+                                ¿No puede iniciar sesión?
+                            </a>
+                        </div>
                     </v-hover>
                 </v-card>
 

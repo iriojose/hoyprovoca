@@ -78,7 +78,7 @@
             <v-divider></v-divider>
         </v-card>
 
-        <v-snackbar v-model="snackbar" color="green" right :timeout="time">
+        <v-snackbar v-model="snackbar" color="green" right :timeout="2000">
             Se ha editado exitosamente.
         </v-snackbar>
     </div>
@@ -93,12 +93,15 @@ import { mapGetters } from "vuex";
         data() {
             return {
                 ...validations,
-                cedula:0,
                 valid: false,
                 editable:false,
-                perfil:{},
+                perfil:{
+                    nombre:'',
+                    apellido:'',
+                    email:'',
+                    fotografia:'default.png'
+                },
                 snackbar:false,
-                time:2000
             };
         },
         mounted() {
@@ -128,7 +131,7 @@ import { mapGetters } from "vuex";
             getUsuario(){
                 Auth().post("/sesion",{token:this.user.token}).then((response) => {
                     this.perfil = response.data.data;
-                    console.log(response);
+                    console.log(response.data.data);
                 }).catch(e =>{
                     console.log(e);
                 });

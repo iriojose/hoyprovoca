@@ -14,7 +14,12 @@
         </div>
         <div v-else>
             <AppBar />
-            <GruposData :subgrupos="subgrupos" :conceptos="conceptos"/>
+            <v-card width="100%" height="500" v-if="loading" color="#eee" elevation="0"> 
+                <v-row justify="center" align="center" class="fill-height">
+                    <v-progress-circular size="100" color="#005598" indeterminate></v-progress-circular>
+                </v-row>
+            </v-card>
+            <GruposData v-else :subgrupos="subgrupos" :conceptos="conceptos"/>
             <Footer />
             <ValidacionConcepto />
         </div>
@@ -42,6 +47,7 @@ import {mapState} from 'vuex';
         data(){
             return{
                 error:false,
+                loading:true,
                 id:'',
                 subgrupos:[],
                 conceptos:[],
@@ -91,6 +97,7 @@ import {mapState} from 'vuex';
                     for (let i=0; i < this.subgrupos.length; i++){
                        this.getSubgruposConceptos(this.subgrupos[i].id);
                     }
+                    this.loading=false;
                 }).catch(e => {
                     this.error=true;
                     console.log(e);

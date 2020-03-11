@@ -3,19 +3,15 @@
             <div class="display-1 font-weight-bold">{{title}}</div>
 
             <v-sheet elevation="0" color="#eee">
-                <v-slide-group
-                    show-arrows
-                    class="pa-5"
-                    v-model="model"
-                >
+                <v-slide-group show-arrows class="pa-5" v-model="model">
                     <v-slide-item v-for="n in 7" :key="n">
                         <v-card
-                            elevation="2"
+                            elevation="4"
                             class="ma-2"
-                            height="300"
-                            width="250"
+                            height="200"
+                            width="200"
                         >
-                            <v-skeleton-loader max-width="250" type="card" />
+                            <v-skeleton-loader width="200" height="200" type="image" />
                         </v-card>
                     </v-slide-item>
                 </v-slide-group>

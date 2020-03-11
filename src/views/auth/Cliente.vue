@@ -17,9 +17,11 @@
                     <v-divider></v-divider>
                 </div>
                 <v-hover v-slot:default="{hover}">
-                    <div @click="push"
-                        :class="hover ? 'mx-2 subtitle-2 text-color decoracion text-center':'mx-2 subtitle-2 text-color text-center'"
-                    >ya tienes una cuenta? inicie sesión</div>
+                    <div @click="push()" class="text-center" >
+                        <a :class="hover ? 'mx-2 subtitle-2 text-color decoracion':'mx-2 subtitle-2 text-color'">
+                            ¿ya tienes una cuenta? inicie sesión
+                        </a>
+                    </div>
                 </v-hover>
             </v-card>
             <div class="text-center my-3">

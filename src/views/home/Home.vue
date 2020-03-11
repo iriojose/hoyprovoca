@@ -7,19 +7,17 @@
 
     <Banner />
 
-    <MasVendidos :conceptos="conceptos" v-if="activoConcepto" />
+    <MasVendidos :conceptos="conceptos" v-if="loadingC"/>
     <SkeletonCard v-else/>
 
-    <MasVendidos :conceptos="conceptos" v-if="activoConcepto" />
+    <MasVendidos :conceptos="conceptos" v-if="loadingC"/>
     <SkeletonCard v-else/>
 
     <Banner2 class="my-10 mx-2" />
 
-    <Categorias title="Categorias" :categorias="categorias" v-if="activoCategoria" />
-    <SkeletonCard v-else/>
+    <Categorias title="Categorias" :categorias="categorias" />
 
-    <Sugerencias :sugerencias="sugerencias" v-if="activoSugerencia" />
-    <SkeletonCard v-else/>
+    <Sugerencias :sugerencias="sugerencias" />
 
     <!-- <Banner2 />-->
     <Footer />
@@ -78,9 +76,9 @@ import router from '@/router';
                 categorias: [],
                 sugerencias:[],
                 conceptos:[],
-                activoConcepto:false,
-                activoCategoria:false,
-                activoSugerencia:false,
+                loadingC:false,
+                loadinG:false,
+                loadingE:false,
             };
         },
         created() {
@@ -97,15 +95,6 @@ import router from '@/router';
             conceptosId(){//se refresca cada que agregan
                 this.addOrder();
             },
-            conceptos(){
-                this.activoConcepto=true;
-            },
-            categorias() {
-                this.activoCategoria = true;
-            },
-            sugerencias(){
-                this.activoSugerencia=true;
-            }
         },
         methods: {
             addOrder(){
@@ -114,23 +103,29 @@ import router from '@/router';
             getGrupos(){//trae las categorias (grupos)
                 Grupos().get('/?limit=15').then((response) => {
                     this.categorias = response.data.data;
+                    this.loadinG = true;
                 }).catch(e => {
                     console.log(e);
+                    this.error = true;
                 });
             },
             getEmpresas(){//trae empresas (sugerencias)
                 Empresa().get('/?limit=8').then((response) => {
                     this.sugerencias= response.data.data;
+                    this.loadingE = true;
                 }).catch(e => {
-                console.log(e);
+                    console.log(e);
+                    this.error = true;
                 });
             },
             getConceptos(){//trae conceptos (productos/servicios)
                 Conceptos().get('/?limit=15').then((response) => {
                     this.conceptos = response.data.data;
                     this.addOrder();//pone bandera de agregado a pedidos
+                    this.loadingC = true;
                 }).catch(e => {
                     console.log(e);
+                    this.error = true;
                 });
             }
         }

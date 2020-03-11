@@ -1,16 +1,10 @@
 <template>
     <div :class="$vuetify.breakpoint.smAndDown ? 'mx-2 pt-10':'mx-10'">
-        <!--componente de espera -->
-        <SkeletonCategorias v-if="loading"/>
-        
-        <!-- subgrupos -->
-        <div v-for="(subgrupo,i) in subgrupos" :key="subgrupo.id" v-else>
+
+        <div v-for="(subgrupo,i) in subgrupos" :key="subgrupo.id">
             <div v-if="conceptos[i]">
                 <div class="headline ml-12 mt-12 font-weight-black">{{subgrupo.nombre}}</div>
-                <v-slide-group
-                    show-arrows
-                    class="my-5"
-                >
+                <v-slide-group show-arrows class="my-5">
                     <!--conceptos de subgrupos -->
                     <SliderConceptos
                         :conceptos="conceptos[i]" 
@@ -26,7 +20,6 @@
 
 <script>
 //components
-import SkeletonCategorias from '@/components/layouts/SkeletonCategorias';
 import CardConceptos from '@/components/cards/CardConceptos';
 import SliderConceptos from '@/components/sliders/SliderConceptos';
 //services
@@ -35,7 +28,6 @@ import Pedidos from '@/services/Pedidos';
 
     export default {
         components:{
-            SkeletonCategorias,
             CardConceptos,
             SliderConceptos
         },
@@ -49,15 +41,9 @@ import Pedidos from '@/services/Pedidos';
                 default: () => []
             }
         },
-        watch:{
-            subgrupos(){//cuando la variable cambie se renderiza
-                this.loading=false;
-            },
-        },
         data() {
             return {
                 model:1,
-                loading:true,
             }
         },
     }
