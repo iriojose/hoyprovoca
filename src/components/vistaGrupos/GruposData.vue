@@ -3,7 +3,7 @@
 
         <div v-for="(subgrupo,i) in subgrupos" :key="subgrupo.id">
             <div v-if="conceptos[i]">
-                <div class="headline ml-12 mt-12 font-weight-black">{{subgrupo.nombre}}</div>
+                <div class="headline ml-12 mt-12 font-weight-black text-center">{{subgrupo.nombre}}</div>
                 <v-slide-group show-arrows class="my-5">
                     <!--conceptos de subgrupos -->
                     <SliderConceptos

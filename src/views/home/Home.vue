@@ -2,8 +2,20 @@
     <div>
         <AppBar />
         <Banner />
+
+        <v-scroll-x-transition>
+            <MasVendidos :conceptos="conceptos" v-show="loadingC" />
+        </v-scroll-x-transition>
+        <SkeletonCard v-if="!loadingC"/>
+
         <Parallax />
+
+        <Categorias title="Categorias" :categorias="grupos" />
+
+        <Sugerencias :sugerencias="empresas" />
+
         <Footer />
+        <ValidacionConcepto />
     </div>
 </template>
 
@@ -12,6 +24,11 @@ import AppBar from "@/components/navbar/AppBar";
 import Footer from "@/components/footer/Footer";
 import Banner from "@/components/vistaHome/Banner";
 import Parallax from '@/components/vistaHome/Parallax';
+import SkeletonCard from "@/components/layouts/SkeletonCard";
+import MasVendidos from '@/components/vistaHome/MasVendidos';
+import Categorias from "@/components/vistaHome/Categorias";
+import Sugerencias from "@/components/vistaHome/Sugerencias";
+import ValidacionConcepto from '@/components/dialogs/ValidacionConcepto';
 import { mapState } from "vuex";
 import Conceptos from '@/services/Conceptos';
 import Grupos from '@/services/Grupos';
@@ -19,7 +36,7 @@ import Empresa from '@/services/Empresa';
 
     export default {
         components:{
-            AppBar,Footer,Banner,Parallax
+            AppBar,Footer,Banner,Parallax,SkeletonCard,MasVendidos,Categorias,Sugerencias,ValidacionConcepto
         },
         head:{
             title(){
@@ -32,6 +49,8 @@ import Empresa from '@/services/Empresa';
         },
         data() {
             return {
+                loadingC:false,
+                error:false,
                 grupos:[],
                 empresas:[],
                 conceptos:[]
@@ -74,6 +93,8 @@ import Empresa from '@/services/Empresa';
             },
             getConceptos(){//trae conceptos (productos/servicios)
                 Conceptos().get('/?limit=15').then((response) => {
+                    this.loadingC = true;
+                    console.log(response);
                     this.conceptos = response.data.data;
                     this.addOrder();//pone bandera de agregado a pedidos
                 }).catch(e => {
@@ -84,7 +105,3 @@ import Empresa from '@/services/Empresa';
         },
     }
 </script>
-
-<style lang="scss" scoped>
-
-</style>

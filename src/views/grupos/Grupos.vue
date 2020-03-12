@@ -1,43 +1,44 @@
 <template>
     <div>
         <AppBar />
-
-        <div :class="$vuetify.breakpoint.smAndDown ? 'text-center mt-12':'my-10 text-center headline font-weight-black'">
-            Todas las categorias
-        </div>
-
-        <v-card width="100%" height="500" v-if="loading" color="#eee" elevation="0"> 
-            <v-row justify="center" align="center" class="fill-height">
-                <v-progress-circular size="100" color="#005598" indeterminate></v-progress-circular>
-            </v-row>
-        </v-card>
-
-        <v-row v-else justify="center" align="center" :class="$vuetify.breakpoint.smAndDown ? 'fill-height mx-12 mt-12':'fill-height'">
-            <v-col cols="12" md="8" sm="10">
-                <v-row justify="center" align="center" class="fill-height">
-                    <v-col cols="12" md="3" sm="6" v-for="grupo in grupos" :key="grupo.id">
-                        <v-hover v-slot:default="{hover}">
-                            <v-card width="100%" height="150" :elevation="hover ? 10:3" @click="push(grupo)">
-                                <v-img contain width="100%" height="150" :src="ruta+grupo.imagen" :gradient="hover ? 'to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)':null">
-                                    <v-row justify="center" align="center" v-if="hover" class="fill-height">
-                                        <v-slide-x-transition>
-                                            <div class="headline white--text font-weight-black">{{grupo.nombre}}</div>
-                                        </v-slide-x-transition>
-                                    </v-row>    
-                                </v-img>
-                            </v-card>
-                        </v-hover>
-                    </v-col>
-                </v-row>
-            </v-col>
+        
+        <v-row justify="center" align="center" class="fill-height" v-if="loading">
+            <v-img contain width="500" height="500" :src="require('@/assets/loading.gif')"></v-img>
         </v-row>
-
+        <div :class="$vuetify.breakpoint.smAndDown ? 'text-center mt-12':'my-10 text-center headline font-weight-black'">
+            Todas las Categorías
+        </div>
+        <v-slide-x-transition>
+            <v-row justify="center" align="center" :class="$vuetify.breakpoint.smAndDown ? 'fill-height mx-12 mt-12 py-5':'fill-height py-5'" v-show="!loading">
+                <v-col cols="12" md="8" sm="10">
+                    <v-row justify="center" align="center" class="fill-height">
+                        <v-col cols="12" md="3" sm="6" v-for="grupo in grupos" :key="grupo.id">
+                            <v-hover v-slot:default="{hover}">
+                                <v-card width="100%" height="150" :elevation="hover ? 10:3" @click="push(grupo)">
+                                    <v-img contain width="100%" height="150" :src="ruta+grupo.imagen" :gradient="hover ? 'to top right, rgba(100,115,101,.1), rgba(55,30,72,.4)':null">
+                                        <v-row justify="center" align="center" v-if="hover" class="fill-height">
+                                            <v-slide-x-transition>
+                                                <div class="headline white--text font-weight-black">{{grupo.nombre}}</div>
+                                            </v-slide-x-transition>
+                                        </v-row>    
+                                    </v-img>
+                                </v-card>
+                            </v-hover>
+                        </v-col>
+                    </v-row>
+                </v-col>
+                <v-col cols="12" md="12" sm="12" v-if="total >= 50">
+                    <v-row justify="center" align="center" class="fill-height">
+                        <v-btn text depressed class="text-capitalize">Ver más</v-btn>
+                    </v-row>
+                </v-col>
+            </v-row>
+        </v-slide-x-transition>
         <Footer />
     </div>
 </template>
 
 <script>
-//componentes
 import AppBar from "@/components/navbar/AppBar";
 import Footer from "@/components/footer/Footer";
 import Grupos from '@/services/Grupos';
@@ -46,28 +47,28 @@ import router from '@/router';
 
     export default {
         components:{
-            AppBar,
-            Footer,
+            AppBar,Footer
         },
         data() {
             return {
                 ruta:null,
                 grupos:[],
+                total:0,
                 loading:true,
             }
+        },
+        mounted() {
+            this.ruta = url;
+            this.getGrupos();
         },
         head:{
             title(){
                 return {
                     inner:'HoyProvoca',
                     separator:'|',
-                    complement: 'Grupos'
+                    complement: 'Categorías'
                 }
             }
-        },
-        mounted() {
-            this.ruta = url;
-            this.getGrupos();
         },
         methods: {
             push(item){
@@ -78,11 +79,16 @@ import router from '@/router';
             getGrupos(){
                 Grupos().get("/").then((response) => {
                     this.grupos = response.data.data;
+                    this.total = this.grupos.length;
                     this.loading=false;
                 }).catch(e => {
                     console.log(e);
                 });
-            }
+            },
         },
     }
 </script>
+
+<style lang="scss" scoped>
+
+</style>

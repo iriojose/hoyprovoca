@@ -3,66 +3,47 @@
         <PreFooter />
         <v-divider />
 
-        <v-sheet class="py-4">
-            <v-row justify="center" align="center" class="fill-height">
-                <v-col cols="12" md="3" sm="6">
-
+        <v-sheet class="py-4 px-12">
+            <v-row align="baseline" justify="center" class="fill-height px-10"> 
+                <v-col cols="12" md="2" sm="6">
+                    <v-list class="font-weight-black">
+                        <v-subheader class="text-center">Categorias</v-subheader>
+                        <v-list-item dense v-for="(categoria,i) in categorias" :key="i">
+                            <v-list-item-title>
+                                {{categoria.text}}
+                            </v-list-item-title>
+                        </v-list-item>
+                    </v-list>
+    
                 </v-col>
-            </v-row>
-            <v-row align="baseline">
                 <v-col cols="12" md="3" sm="6">
-                    <div class="text-center subtitle-1 font-weight-bold">Categorias</div>
-                    <v-list dense rounded>
-                        <v-list-item @click="method" dense v-for="categoria in categorias" :key="categoria.text">
-                            <v-hover v-slot:default="{hover}">
-                                <v-list-item-title :class="hover ? 'decoracion text-center':'text-center'">
-                                    {{categoria.text}}
-                                </v-list-item-title>
-                            </v-hover>
+                    <v-list dense>
+                        <v-subheader class="text-center">Informaciòn de interes</v-subheader>
+                        <v-list-item dense v-for="(interes,i) in intereses" :key="i">
+                            <v-list-item-title>
+                                {{interes.text}}
+                            </v-list-item-title>
                         </v-list-item>
                     </v-list>
                 </v-col>
 
-                <v-col cols="12" md="3" sm="6">
-                    <div class="text-center subtitle-1 font-weight-bold">Informaciòn de interes</div>
+                <v-col cols="12" md="2" sm="6">
                     <v-list dense rounded>
-                        <v-list-item @click="method" dense v-for="interes in intereses" :key="interes.text">
-                            <v-hover v-slot:default="{hover}">
-                                <v-list-item-title :class="hover ? 'decoracion text-center':'text-center'">
-                                    {{interes.text}}
-                                </v-list-item-title>
-                            </v-hover>
-                        </v-list-item>
-                    </v-list>
-                </v-col>
-
-                <v-col cols="12" md="3" sm="6">
-                    <div class="text-center subtitle-1 font-weight-bold">Descarga la app</div>
-                    <v-list dense rounded>
-                        <v-list-item class="text-center" @click="method" dense v-for="app in apps" :key="app.text">
-                            <v-list-item-title></v-list-item-title>
+                        <v-subheader class="text-center">Descarga la app</v-subheader>
+                        <v-list-item dense v-for="app in apps" :key="app.text">
                                 <v-list-item-avatar size="25">
                                     <v-img :src="require('@/assets/'+app.img)"/>
                                 </v-list-item-avatar>
                                 <v-list-item-title>{{app.text}}</v-list-item-title>
-                            <v-list-item-title></v-list-item-title>
                         </v-list-item>
                     </v-list>
                 </v-col>
-
-                <v-col cols="12" md="3" sm="6">
-                    <div class="text-center subtitle-1 font-weight-bold">Redes sociales</div>
-                    <v-list dense rounded>
-                        <v-list-item class="text-center" @click="method" dense v-for="red in redes" :key="red.text" :href="red.to">
-                            <v-list-item-title></v-list-item-title>
-                                <v-list-item-avatar size="25">
-                                    <v-img :src="require('@/assets/'+red.img)"/>
-                                </v-list-item-avatar>
-                                <v-list-item-title>{{red.text}}</v-list-item-title>
-                            <v-list-item-title></v-list-item-title>
-                        </v-list-item>
-                    </v-list>
-                </v-col>
+            </v-row>
+            <v-divider></v-divider>
+            <v-row align="center" justify="center" class="fill-height pa-4">
+                <v-btn width="30" height="30" elevation="0" fab class="mx-2" v-for="(red,i) in redes" :key="i">
+                    <v-img contain width="30" height="30" :src="require('@/assets/'+red.img)"></v-img>
+                </v-btn>
             </v-row>
         </v-sheet>
 

@@ -61,7 +61,7 @@
         <!--items mientras esta logeado -->
             <!--item notificacion-->
             <v-btn v-if="user.loggedIn" icon class="mx-2" to="/account/notificaciones">
-                <v-badge transition="fade-transition" color="teal" left overlap>
+                <v-badge transition="fade-transition" color="#232323" left overlap>
                     <v-icon size="25" color="#fff">notifications</v-icon>
                     <template v-slot:badge>
                         0
