@@ -1,43 +1,87 @@
 <template>
-    <div>
+    <!--error en el servidor -->
+    <error500 v-if="error"/>
+
+    <div v-else>
         <AppBar />
+
         <Banner />
-        <Parallax />
+
+        <MasVendidos :conceptos="conceptos" v-if="loadingC"/>
+        <SkeletonCard v-else/>
+
+        <MasVendidos :conceptos="conceptos" v-if="loadingC"/>
+        <SkeletonCard v-else/>
+
+        <Parallax class="my-10 mx-2" />
+
+        <Categorias title="Categorias" :categorias="categorias" />
+
+        <Sugerencias :sugerencias="sugerencias" />
+
+        <!-- <Banner2 />-->
         <Footer />
+        <ValidacionConcepto />
     </div>
 </template>
 
 <script>
+//store
+import { mapState } from "vuex";
+//components
 import AppBar from "@/components/navbar/AppBar";
 import Footer from "@/components/footer/Footer";
 import Banner from "@/components/vistaHome/Banner";
+import Categorias from "@/components/vistaHome/Categorias";
+import Sugerencias from "@/components/vistaHome/Sugerencias";
+import SkeletonCard from "@/components/layouts/SkeletonCard";
 import Parallax from '@/components/vistaHome/Parallax';
-import { mapState } from "vuex";
+import MasVendidos from '@/components/vistaHome/MasVendidos';
+import error500 from '@/views/s500';
+import ValidacionConcepto from '@/components/dialogs/ValidacionConcepto';
+//servicios
 import Conceptos from '@/services/Conceptos';
 import Grupos from '@/services/Grupos';
 import Empresa from '@/services/Empresa';
+//router
+import router from '@/router';
 
     export default {
-        components:{
-            AppBar,Footer,Banner,Parallax
+        name: "home",
+        components: {
+            AppBar,
+            Footer,
+            Banner,
+            Categorias,
+            Sugerencias,
+            SkeletonCard,
+            Parallax,
+            MasVendidos,
+            error500,
+            ValidacionConcepto
         },
         head:{
             title(){
                 return {
-                    inner:'HoyProvoca',
+                    inner:this.title,
                     separator:'|',
-                    complement: 'Inicio'
+                    complement: 'Home'
                 }
             }
         },
         data() {
             return {
-                grupos:[],
-                empresas:[],
-                conceptos:[]
-            }
+                title:'HoyProvoca',
+                error:false,
+                categorias: [],
+                sugerencias:[],
+                conceptos:[],
+                loadingC:false,
+                loadinG:false,
+                loadingE:false,
+            };
         },
-        mounted() {
+        created() {
             this.getEmpresas();
             this.getConceptos();
             this.getGrupos();
@@ -57,8 +101,9 @@ import Empresa from '@/services/Empresa';
                 this.conceptos.filter(a=> this.conceptosId.filter(b=> a.id==b ? a.agregado=true:null));
             },
             getGrupos(){//trae las categorias (grupos)
-                Grupos().get('/?limit=10').then((response) => {
-                    this.grupos = response.data.data;
+                Grupos().get('/?limit=15').then((response) => {
+                    this.categorias = response.data.data;
+                    this.loadinG = true;
                 }).catch(e => {
                     console.log(e);
                     this.error = true;
@@ -66,7 +111,8 @@ import Empresa from '@/services/Empresa';
             },
             getEmpresas(){//trae empresas (sugerencias)
                 Empresa().get('/?limit=8').then((response) => {
-                    this.empresas= response.data.data;
+                    this.sugerencias= response.data.data;
+                    this.loadingE = true;
                 }).catch(e => {
                     console.log(e);
                     this.error = true;
@@ -76,15 +122,12 @@ import Empresa from '@/services/Empresa';
                 Conceptos().get('/?limit=15').then((response) => {
                     this.conceptos = response.data.data;
                     this.addOrder();//pone bandera de agregado a pedidos
+                    this.loadingC = true;
                 }).catch(e => {
                     console.log(e);
                     this.error = true;
                 });
             }
-        },
-    }
+        }
+    };
 </script>
-
-<style lang="scss" scoped>
-
-</style>

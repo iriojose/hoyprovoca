@@ -3,11 +3,16 @@
         <PreFooter />
         <v-divider />
 
-        <v-sheet class="py-4" color="#f5f5f5">
+        <v-sheet class="py-4">
+            <v-row justify="center" align="center" class="fill-height">
+                <v-col cols="12" md="3" sm="6">
+
+                </v-col>
+            </v-row>
             <v-row align="baseline">
                 <v-col cols="12" md="3" sm="6">
-                    <div class="text-center subtitle-1 decoracion">Categorias</div>
-                    <v-list dense rounded color="#f5f5f5">
+                    <div class="text-center subtitle-1 font-weight-bold">Categorias</div>
+                    <v-list dense rounded>
                         <v-list-item @click="method" dense v-for="categoria in categorias" :key="categoria.text">
                             <v-hover v-slot:default="{hover}">
                                 <v-list-item-title :class="hover ? 'decoracion text-center':'text-center'">
@@ -19,8 +24,8 @@
                 </v-col>
 
                 <v-col cols="12" md="3" sm="6">
-                    <div class="text-center subtitle-1 decoracion">Informaciòn de interes</div>
-                    <v-list dense rounded color="#f5f5f5">
+                    <div class="text-center subtitle-1 font-weight-bold">Informaciòn de interes</div>
+                    <v-list dense rounded>
                         <v-list-item @click="method" dense v-for="interes in intereses" :key="interes.text">
                             <v-hover v-slot:default="{hover}">
                                 <v-list-item-title :class="hover ? 'decoracion text-center':'text-center'">
@@ -32,8 +37,8 @@
                 </v-col>
 
                 <v-col cols="12" md="3" sm="6">
-                    <div class="text-center subtitle-1 decoracion">Descarga la app</div>
-                    <v-list dense rounded color="#f5f5f5">
+                    <div class="text-center subtitle-1 font-weight-bold">Descarga la app</div>
+                    <v-list dense rounded>
                         <v-list-item class="text-center" @click="method" dense v-for="app in apps" :key="app.text">
                             <v-list-item-title></v-list-item-title>
                                 <v-list-item-avatar size="25">
@@ -46,8 +51,8 @@
                 </v-col>
 
                 <v-col cols="12" md="3" sm="6">
-                    <div class="text-center subtitle-1 decoracion">Redes sociales</div>
-                    <v-list dense rounded color="#f5f5f5">
+                    <div class="text-center subtitle-1 font-weight-bold">Redes sociales</div>
+                    <v-list dense rounded>
                         <v-list-item class="text-center" @click="method" dense v-for="red in redes" :key="red.text" :href="red.to">
                             <v-list-item-title></v-list-item-title>
                                 <v-list-item-avatar size="25">
