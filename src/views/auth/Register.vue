@@ -36,9 +36,7 @@
             <router-view />
         </transition>
 
-        <v-footer fixed color="#eee">
-            <SubFooter />
-        </v-footer>
+        <SubFooter class="mt-5" />
     </div>
 </template>
 

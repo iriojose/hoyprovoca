@@ -24,7 +24,7 @@
             return {
                 opciones: [
                     { 
-                        icon: "build", 
+                        icon: "settings", 
                         text: "Ajustes de cuenta", 
                         path: "/account/profile" 
                     },

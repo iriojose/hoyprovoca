@@ -76,7 +76,7 @@ import Empresa from '@/services/Empresa';
                 this.conceptos.filter(a=> this.conceptosId.filter(b=> a.id==b ? a.agregado=true:null));
             },
             getGrupos(){//trae las categorias (grupos)
-                Grupos().get('/?limit=10').then((response) => {
+                Grupos().get('/?after-id=2&before-id=11').then((response) => {
                     this.grupos = response.data.data;
                 }).catch(e => {
                     console.log(e);

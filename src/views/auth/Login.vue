@@ -37,7 +37,7 @@
                 <v-img contain width="100%" height="300" :src="require('@/assets/undrawlogin.svg')"></v-img>
             </v-col>
 
-            <v-col cols="12" md="3" sm="10">
+            <v-col cols="12" md="4" sm="10">
                 <v-card width="100%" height="400" elevation="5" class="py-5">
                     <div class="text-center my-5 font-weight-black subtitle-1">Iniciar sesión en Aftim</div>
                     <v-card-text>
@@ -74,9 +74,7 @@
             </v-col>
         </v-row>
 
-        <v-footer fixed color="#eee">
-            <SubFooter />
-        </v-footer>
+        <SubFooter class="mt-5" />
     </div>
 </template>
 

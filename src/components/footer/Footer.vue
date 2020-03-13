@@ -7,20 +7,20 @@
             <v-row align="baseline" justify="center" class="fill-height px-10"> 
                 <v-col cols="12" md="2" sm="6">
                     <v-list class="font-weight-black">
-                        <v-subheader class="text-center">Categorias</v-subheader>
+                        <div class="text-center subtitle-2 grey--text">Categorías</div>
                         <v-list-item dense v-for="(categoria,i) in categorias" :key="i">
-                            <v-list-item-title>
+                            <v-list-item-title class="text-center">
                                 {{categoria.text}}
                             </v-list-item-title>
                         </v-list-item>
                     </v-list>
     
                 </v-col>
-                <v-col cols="12" md="3" sm="6">
+                <v-col cols="12" md="4" sm="6">
                     <v-list dense>
-                        <v-subheader class="text-center">Informaciòn de interes</v-subheader>
+                        <div class="text-center subtitle-2 grey--text">Informaciòn de interes</div>
                         <v-list-item dense v-for="(interes,i) in intereses" :key="i">
-                            <v-list-item-title>
+                            <v-list-item-title class="text-center">
                                 {{interes.text}}
                             </v-list-item-title>
                         </v-list-item>
@@ -29,7 +29,7 @@
 
                 <v-col cols="12" md="2" sm="6">
                     <v-list dense rounded>
-                        <v-subheader class="text-center">Descarga la app</v-subheader>
+                        <div class="text-center subtitle-2 grey--text">Descarga la app</div>
                         <v-list-item dense v-for="app in apps" :key="app.text">
                                 <v-list-item-avatar size="25">
                                     <v-img :src="require('@/assets/'+app.img)"/>
@@ -40,9 +40,9 @@
                 </v-col>
             </v-row>
             <v-divider></v-divider>
-            <v-row align="center" justify="center" class="fill-height pa-4">
-                <v-btn width="30" height="30" elevation="0" fab class="mx-2" v-for="(red,i) in redes" :key="i">
-                    <v-img contain width="30" height="30" :src="require('@/assets/'+red.img)"></v-img>
+            <v-row align="center" justify="center" class="fill-height pt-4">
+                <v-btn width="40" height="40" elevation="0" fab class="mx-2" v-for="(red,i) in redes" :key="i">
+                    <v-img contain width="40" height="40" :src="require('@/assets/'+red.img)"></v-img>
                 </v-btn>
             </v-row>
         </v-sheet>

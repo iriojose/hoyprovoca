@@ -14,42 +14,38 @@
                 </v-avatar>
             </template>
             <!-- lista de opciones-->
-            <v-card width="300">
-                <v-list >
-                    <v-list-item class="ml-8">
-                        <v-list-item-avatar color="grey" dark size="70">
-                            <img :src="ruta+perfil.fotografia">
+            <v-card id="#cono">
+                <v-list width="300" elevation="0">
+                    <v-list-item class="border">
+                        <v-list-item-avatar>
+                            <v-img :src="ruta+perfil.fotografia"></v-img>
                         </v-list-item-avatar>
                         <v-list-item-content>
-                            <v-list-item-title>{{perfil.nombre+' '+perfil.apellido}}</v-list-item-title>
+                            <v-list-item-title class="color" v-text="perfil.nombre+' '+perfil.apellido"></v-list-item-title>
+                            <v-list-item-subtitle>Cliente</v-list-item-subtitle>
                         </v-list-item-content>
                     </v-list-item>
                 </v-list>
-
                 <v-divider></v-divider>
-
-                <v-list>
-                    <v-list-item v-for="item in link" :key="item.text" :to="item.path">   
-                        <v-list-item-icon>
-                            <v-icon color="">{{item.icon}}</v-icon>
-                        </v-list-item-icon>
-                        <v-list-item-title>
-                            {{item.text}}
-                        </v-list-item-title>
-                                
-                    </v-list-item>
-
-                    <v-divider/>
+                <v-list dense>
                     <v-hover v-slot:default="{hover}">
-                        <v-list-item @click="logOut()">
+                        <v-list-item to="/account/profile">   
                             <v-list-item-icon>
-                                <v-icon :color="hover ? '#005598':null">
-                                    power_settings_new
-                                </v-icon>
+                                <v-icon :color="hover ? '#005598':null">settings</v-icon>
                             </v-list-item-icon>
                             <v-list-item-title>
-                                Cerrar sesión
-                            </v-list-item-title>
+                                Ajustes
+                            </v-list-item-title>        
+                        </v-list-item>
+                    </v-hover>
+                    <v-hover v-slot:default="{hover}">
+                        <v-list-item @click="logOut()">   
+                            <v-list-item-icon>
+                                <v-icon :color="hover ? '#005598':null">exit_to_app</v-icon>
+                            </v-list-item-icon>
+                            <v-list-item-title>
+                                Cerrar sesíon
+                            </v-list-item-title>        
                         </v-list-item>
                     </v-hover>
                 </v-list>
@@ -73,11 +69,6 @@ import url from '@/services/ruta';
             return{
                 ruta:null,
                 perfil:{},
-                link:[
-                    {text:'Ajustes de cuentas',path:'/account/profile',icon:'build'},
-                    {text:'Agregar metodo de pago',path:'/account/metodo-de-pago',icon:'credit_card'},
-                    {text:'Centro de ayuda',path:'/account/ayuda',icon:'help'},
-                ],
             }
         },
         computed: {
@@ -114,3 +105,44 @@ import url from '@/services/ruta';
         }
     }
 </script>
+
+<style scope>
+    .color{
+        color:#005598;
+    }
+
+    .border {
+        border-left: 4px solid #005598;
+    }
+
+    #cono:before {
+            border-bottom: 12px solid rgba(0, 0, 0, 0.1);
+            border-right: 12px solid rgba(0, 0, 0, 0);
+            border-top: 12px solid rgba(0, 0, 0, 0);
+            content: "";
+            display: inline-block;
+            position: absolute;
+            top: -24px;
+        }
+    #cono:after {
+        border-bottom: 12px solid #fff;
+        border-right: 12px solid rgba(0, 0, 0, 0);
+        border-top: 12px solid rgba(0, 0, 0, 0);
+        content: "";
+        display: inline-block;
+        position: absolute;
+        top: -22px;
+    }
+
+    #cono:before,
+    #cono:after {
+        content: ' ';
+        height: 0;
+        position: absolute;
+        width: 0;
+        border: 11px solid transparent;
+        /* arrow size */
+        left: 50%;
+        transform: translateX(50%);
+    }
+</style>
