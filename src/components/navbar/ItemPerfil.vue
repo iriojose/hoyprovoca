@@ -14,8 +14,8 @@
                 </v-avatar>
             </template>
             <!-- lista de opciones-->
-            <v-card id="#cono">
-                <v-list width="300" elevation="0">
+            <v-card id="cono">
+                <v-list width="250" elevation="0">
                     <v-list-item class="border">
                         <v-list-item-avatar>
                             <v-img :src="ruta+perfil.fotografia"></v-img>

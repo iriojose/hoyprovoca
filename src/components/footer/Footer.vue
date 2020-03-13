@@ -42,7 +42,9 @@
             <v-divider></v-divider>
             <v-row align="center" justify="center" class="fill-height pt-4">
                 <v-btn width="40" height="40" elevation="0" fab class="mx-2" v-for="(red,i) in redes" :key="i">
-                    <v-img contain width="40" height="40" :src="require('@/assets/'+red.img)"></v-img>
+                    <a :href="red.to">
+                        <v-img contain width="40" height="40" :src="require('@/assets/'+red.img)"></v-img>
+                    </a>
                 </v-btn>
             </v-row>
         </v-sheet>
@@ -74,9 +76,9 @@ import PreFooter from './PreFooter';
                     {text:'Preguntas frecuentes'}
                 ],
                 redes:[
-                    {img:'svgfacebook.svg',text:'Facebbok',to:''},
+                    {img:'svgfacebook.svg',text:'Facebbok',to:'https://es-la.facebook.com/somossistemasca'},
                     {img:'svgyoutu.svg',text:'YouTube',to:'https://www.youtube.com/channel/UCRxWOVR7AVYep0AqNoN-zhA'},
-                    {img:'instagramsvg.svg',text:'Instagram',to:''}
+                    {img:'instagramsvg.svg',text:'Instagram',to:'https://www.instagram.com/somossistemas/?hl=es-la'}
                 ],
                 apps:[
                     {img:'app-store.png',text:'Iphone'},
