@@ -19,7 +19,7 @@
             </v-row>
             <v-slide-x-transition>
                 <v-row justify="center" align="center" class="fill-height" v-show="!loading">
-                    <v-col cols="12" md="10" sm="12">
+                    <v-col cols="12" md="11" sm="12">
                         <GruposData :subgrupos="subgrupos" :conceptos="conceptos" />
                     </v-col>
                 </v-row>

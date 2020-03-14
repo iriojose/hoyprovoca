@@ -93,12 +93,3 @@ import PreFooter from './PreFooter';
         },
     }
 </script>
-
-<style lang="scss" scoped>
-    .decoracion{
-        text-decoration: underline;
-        text-decoration-color: #005598;
-        transition-delay: 2s;
-        transition-duration: 1s;
-    }
-</style>

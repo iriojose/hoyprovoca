@@ -3,7 +3,7 @@
         <AppBar />
         
         <v-row justify="center"  :class="$vuetify.breakpoint.smAndDown ? 'mt-12 mx-5':'mt-5'">
-            <v-col cols="12" md="2" sm="12">
+            <v-col cols="12" md="3" sm="12">
                 <v-card width="100%" height="320" elevation="0" class="mt-3 pa-5">
                     <v-btn color="#828282" to="" outlined block rounded elevation="0" active-class="" class="mb-4 text-capitalize overline font-weight-bold">
                         Tiendas / Mercados
@@ -28,7 +28,7 @@
                     </v-btn>
                 </v-card>
             </v-col>
-            <v-col cols="12" md="9" sm="12" >
+            <v-col cols="12" md="8" sm="12">
                 <v-row justify="center">
                     <v-col cols="12" md="12" sm="12"> 
                         <v-card width="100%" height="200" elevation="0" class="pa-5">

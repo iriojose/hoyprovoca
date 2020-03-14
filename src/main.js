@@ -8,7 +8,9 @@ import "roboto-fontface/css/roboto/roboto-fontface.css";
 import "@mdi/font/css/materialdesignicons.css";
 import Croppa from 'vue-croppa'
 import VueHead from 'vue-head'
+import accounting from 'accounting';
 
+Vue.use(accounting);
 Vue.use(VueHead);
 Vue.use(Croppa);
 Vue.config.productionTip = false;
