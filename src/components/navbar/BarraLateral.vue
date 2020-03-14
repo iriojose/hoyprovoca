@@ -1,12 +1,12 @@
 <template>
     <v-navigation-drawer 
-      app
-      v-model="drawers" 
-      :transition="transition()"  
-      temporary
-      hide-overlay
-      width="300"
-      :style="$vuetify.breakpoint.smAndDown ? 'margin-top:115px;':'margin-top:58px'"
+        app
+        v-model="drawers" 
+        :transition="transition()"  
+        temporary
+        hide-overlay
+        width="270"
+        :style="$vuetify.breakpoint.smAndDown ? 'margin-top:115px;':'margin-top:64px'"
     >
         <div class="text-center mt-12" v-if="loading">
             <v-progress-circular
@@ -17,7 +17,7 @@
             ></v-progress-circular>
         </div>
         <v-list v-else>
-            <v-subheader>Comprar por categorias</v-subheader>
+            <div class="text-center font-weight-bold my-2">Categorías</div>
             <v-divider></v-divider>
             <v-list-item 
                 link 
@@ -26,12 +26,8 @@
                 @click="push(item)"
             >
                 <v-list-item-content>
-                    <v-list-item-title class="text-lowercase">{{ item.nombre }}</v-list-item-title>
+                    <v-list-item-title class="text-center text-lowercase">{{ item.nombre }}</v-list-item-title>
                 </v-list-item-content>
-
-                <v-list-item-icon>
-                    <v-icon>keyboard_arrow_right</v-icon>
-                </v-list-item-icon>
             </v-list-item>
         </v-list>
     </v-navigation-drawer>
@@ -74,10 +70,9 @@ import router from '@/router';
             push(item){//empuja a la vista 
                 this.setDrawer(false);
                 var re = / /gi; 
-                const nombre = item.nombre.replace(re,'-');
+                const nombre = item.nombre.replace(re,'-');//remplaza los espacios por guiones
                 router.push({name:'gruposDetalle', params:{text:nombre,id:item.id}});
             },
-
             transition(){//metodo para animacion de transition
                 if(this.drawer){
                   return "slide-x-transition";
@@ -85,7 +80,6 @@ import router from '@/router';
                   return "slide-y-transition";
                 }
             },
-
             getGrupos(){//trae los grupos
                 Grupos().get('/').then((response) => {
                     this.grupos = response.data.data;

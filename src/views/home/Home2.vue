@@ -1,62 +1,87 @@
 <template>
-    <div>
+    <!--error en el servidor -->
+    <error500 v-if="error"/>
+
+    <div v-else>
         <AppBar />
+
         <Banner />
 
-        <v-scroll-x-transition>
-            <MasVendidos :conceptos="conceptos" v-show="loadingC" />
-        </v-scroll-x-transition>
-        <SkeletonCard v-if="!loadingC"/>
+        <MasVendidos :conceptos="conceptos" v-if="loadingC"/>
+        <SkeletonCard v-else/>
 
-        <Parallax />
+        <MasVendidos :conceptos="conceptos" v-if="loadingC"/>
+        <SkeletonCard v-else/>
 
-        <Categorias title="Categorias" :categorias="grupos" />
+        <Parallax class="my-10 mx-2" />
 
-        <Sugerencias :sugerencias="empresas" />
+        <Categorias title="Categorias" :categorias="categorias" />
 
+        <Sugerencias :sugerencias="sugerencias" />
+
+        <!-- <Banner2 />-->
         <Footer />
         <ValidacionConcepto />
     </div>
 </template>
 
 <script>
+//store
+import { mapState } from "vuex";
+//components
 import AppBar from "@/components/navbar/AppBar";
 import Footer from "@/components/footer/Footer";
 import Banner from "@/components/vistaHome/Banner";
-import Parallax from '@/components/vistaHome/Parallax';
-import SkeletonCard from "@/components/layouts/SkeletonCard";
-import MasVendidos from '@/components/vistaHome/MasVendidos';
 import Categorias from "@/components/vistaHome/Categorias";
 import Sugerencias from "@/components/vistaHome/Sugerencias";
+import SkeletonCard from "@/components/layouts/SkeletonCard";
+import Parallax from '@/components/vistaHome/Parallax';
+import MasVendidos from '@/components/vistaHome/MasVendidos';
+import error500 from '@/views/s500';
 import ValidacionConcepto from '@/components/dialogs/ValidacionConcepto';
-import { mapState } from "vuex";
+//servicios
 import Conceptos from '@/services/Conceptos';
 import Grupos from '@/services/Grupos';
 import Empresa from '@/services/Empresa';
+//router
+import router from '@/router';
 
     export default {
-        components:{
-            AppBar,Footer,Banner,Parallax,SkeletonCard,MasVendidos,Categorias,Sugerencias,ValidacionConcepto
+        name: "home",
+        components: {
+            AppBar,
+            Footer,
+            Banner,
+            Categorias,
+            Sugerencias,
+            SkeletonCard,
+            Parallax,
+            MasVendidos,
+            error500,
+            ValidacionConcepto
         },
         head:{
             title(){
                 return {
-                    inner:'HoyProvoca',
+                    inner:this.title,
                     separator:'|',
-                    complement: 'Inicio'
+                    complement: 'Home'
                 }
             }
         },
         data() {
             return {
-                loadingC:false,
+                title:'HoyProvoca',
                 error:false,
-                grupos:[],
-                empresas:[],
-                conceptos:[]
-            }
+                categorias: [],
+                sugerencias:[],
+                conceptos:[],
+                loadingC:false,
+                loadinG:false,
+                loadingE:false,
+            };
         },
-        mounted() {
+        created() {
             this.getEmpresas();
             this.getConceptos();
             this.getGrupos();
@@ -76,8 +101,9 @@ import Empresa from '@/services/Empresa';
                 this.conceptos.filter(a=> this.conceptosId.filter(b=> a.id==b ? a.agregado=true:null));
             },
             getGrupos(){//trae las categorias (grupos)
-                Grupos().get('/?after-id=2&before-id=11').then((response) => {
-                    this.grupos = response.data.data;
+                Grupos().get('/?limit=15').then((response) => {
+                    this.categorias = response.data.data;
+                    this.loadinG = true;
                 }).catch(e => {
                     console.log(e);
                     this.error = true;
@@ -85,7 +111,8 @@ import Empresa from '@/services/Empresa';
             },
             getEmpresas(){//trae empresas (sugerencias)
                 Empresa().get('/?limit=8').then((response) => {
-                    this.empresas= response.data.data;
+                    this.sugerencias= response.data.data;
+                    this.loadingE = true;
                 }).catch(e => {
                     console.log(e);
                     this.error = true;
@@ -93,15 +120,14 @@ import Empresa from '@/services/Empresa';
             },
             getConceptos(){//trae conceptos (productos/servicios)
                 Conceptos().get('/?limit=15').then((response) => {
-                    this.loadingC = true;
-                    console.log(response);
                     this.conceptos = response.data.data;
                     this.addOrder();//pone bandera de agregado a pedidos
+                    this.loadingC = true;
                 }).catch(e => {
                     console.log(e);
                     this.error = true;
                 });
             }
-        },
-    }
+        }
+    };
 </script>

@@ -1,5 +1,5 @@
 <template>
-    <v-parallax dark src="@/assets/parallax.jpg">
+    <v-parallax dark src="@/assets/parallax.jpg" class="my-5">
         <v-row align="center" justify="center">
             <v-col class="text-center" cols="12">
                 <h1 class="display-1 font-weight-thin mb-4">Aftim</h1>

@@ -39,6 +39,7 @@
                 Iniciar Sesión
             </v-btn>
         </v-hover>
+
         <v-snackbar v-model="loading" dark right>
             autenticando...
         </v-snackbar>
@@ -48,7 +49,7 @@
                 <v-icon dark>
                     check_circle
                 </v-icon>
-                se ha logeado exitosamente.
+                Ha iniciado sesión exitosamente.
             </div>
                 <div v-if="error">
                     <v-icon dark>

@@ -26,7 +26,7 @@
             </v-btn>
             
             <!--titulo y logo de la pagina -->
-            <v-toolbar-title :class="$vuetify.breakpoint.smAndDown ? null:'mx-5'">
+            <v-toolbar-title>
                 <v-btn to="/" text>
                     <v-img 
                         contain 
@@ -44,26 +44,24 @@
             <v-text-field
                 v-model="busquedas"
                 label="Buscar producto..."
-                prepend-inner-icon="search"
-                clearable
+                append-icon="search"
                 hide-details
                 dense 
                 outlined
                 v-on:keyup.enter="search"
                 class="hidden-sm-and-down ml-10"
-                background-color="#f7f7f7"
-                color="#006788"
+                background-color="#f5f5f5"
+                color="#232323"
                 single-line
             />
 
             <!--items de navegacion -->
             <v-spacer/>
-            <v-divider dark vertical class="hidden-sm-and-down mx-2"></v-divider>
         
         <!--items mientras esta logeado -->
             <!--item notificacion-->
             <v-btn v-if="user.loggedIn" icon class="mx-2" to="/account/notificaciones">
-                <v-badge transition="fade-transition" color="teal" left overlap>
+                <v-badge transition="fade-transition" color="#232323" left overlap>
                     <v-icon size="25" color="#fff">notifications</v-icon>
                     <template v-slot:badge>
                         0
@@ -78,11 +76,17 @@
             <ItemPerfil />
 
             <!--mientras no se esta logeado -->
-             <v-toolbar-items v-if="!user.loggedIn">
-                <v-btn text to="/login" class="white--text text-capitalize">
+            <div v-if="!user.loggedIn">
+                <v-btn text to="/login" class="mx-1 font-weight-bold white--text text-capitalize">
                     Iniciar sesión
                 </v-btn>
-            </v-toolbar-items>
+                
+                <v-hover v-slot:default="{hover}">
+                    <v-btn :elevation="hover ? 5:0" color="#fff" height="30" to="/register/cliente" class="mx-1 hidden-sm-and-down font-weight-bold color text-capitalize">
+                        Registrate
+                    </v-btn>
+                </v-hover>
+            </div>
 
             <!--aparece al presionar buscar en el text field -->
             <v-progress-linear
@@ -101,15 +105,14 @@
             <v-text-field
                 v-model="busquedas"
                 label="Buscar producto..."
-                prepend-inner-icon="search"
-                clearable
+                append-icon="search"
                 hide-details
                 dense 
                 outlined
-                background-color="#f7f7f7"
-                color="#006788"
-                single-line
                 v-on:keyup.enter="search"
+                background-color="#f5f5f5"
+                color="#232323"
+                single-line
                 class="mx-5"
             />
         </v-toolbar>
