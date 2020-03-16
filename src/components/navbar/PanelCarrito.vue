@@ -35,7 +35,7 @@
                             <v-spacer></v-spacer>
 
                             <v-avatar class="elevation-10" color="#eee" size="50">
-                                <v-img src="http://192.168.0.253:81/api/images/default.png"></v-img>
+                                <v-img :src="ruta+pedido.imagen"></v-img>
                             </v-avatar>
                             <!--
                             <v-spacer></v-spacer>
@@ -47,12 +47,15 @@
                     <v-expansion-panel-content>
                         <v-divider></v-divider>
                         <v-toolbar elevation="0" height="60" v-for="(detalle,i) in pedido.detalles" :key="i">
-                            <v-img 
-                                width="50" 
-                                height="50" 
-                                contain 
-                                src="http://192.168.0.253:81/api/images/default.png"
-                            />
+                            <v-avatar class="elevation-2" size="50">
+                                <v-img 
+                                    width="50" 
+                                    height="50" 
+                                    contain 
+                                    :src="ruta+detalle.imagen"
+                                />
+                            </v-avatar>
+                            
 
                             <v-spacer></v-spacer>
 
@@ -153,6 +156,7 @@ import Pedidos from '@/services/Pedidos';
 import Auth from '@/services/Auth';
 import Conceptos from '@/services/Conceptos';
 import Usuario from '@/services/Usuario';
+import url from '@/services/ruta';
 
     export default {
         data(){
@@ -163,10 +167,12 @@ import Usuario from '@/services/Usuario';
                 totales:[],
                 loading:false,
                 index:null,
-                snackbar:false
+                snackbar:false,
+                ruta:null
             }
         },
         mounted(){
+            this.ruta = url;
             if(this.user.loggedIn){
                 this.getUsuario();
             }
