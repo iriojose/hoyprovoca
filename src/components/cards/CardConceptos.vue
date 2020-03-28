@@ -1,293 +1,149 @@
 <template>
-    <div>
-        <v-tooltip bottom>
-            <template v-slot:activator="{ on }">
-                <v-hover v-slot:default="{hover}">
-                    <v-card v-on="on" tile :height="heightCard" :width="widthCard" :elevation="hover ? 15:0">
-                        <v-img 
-                            :height="heightImg" 
-                            :width="widthImg" 
-                            contain 
-                            :src="ruta+concepto.imagen"
-                            :gradient="hover ? 'to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)':null"
+    <v-hover v-slot:default="{hover}">
+        <v-card width="200" height="250" class="ma-2 pa-3" elevation="0">
+            <v-img contain width="200" height="150" :src="image+concepto.imagen" class="pb-3">
+                <v-fade-transition>
+                    <v-row justify="center" align="end" class="fill-height" v-show="hover">
+                        <v-btn 
+                            :disabled="concepto.agregado"
+                            :loading="loading" 
+                            @click="getExistencia(concepto)" 
+                            block color="#005598" 
+                            class="white--text text-capitalize"
                         >
-                            <v-row
-                                v-if="hover"
-                                class="fill-height"
-                                align="center"
-                                justify="center"
-                            >
-                                <v-scale-transition>
-                                    <v-btn  
-                                        :loading="loading"
-                                        color="#005598"
-                                        dark
-                                        width="50%"
-                                        class="text-capitalize body font-weight-bold"
-                                        @click="agregarConceptos(concepto)"
-                                        v-if="!concepto.agregado"
-                                    >
-                                        Agregar
-                                    </v-btn>
-                                    <div v-else class="white--text title">
-                                        agregado
-                                    </div>
-                                </v-scale-transition>
-                            </v-row>
-                        </v-img>
-                        <v-divider></v-divider>
-                        <div class="text-center mt-2">
-                            <div class="body display-inline text-truncate font-weight-black">
-                                Bs. {{concepto.precio_a}}
-                            </div>
-                            <div v-if="tipo !== 3" class="body display-inline text-truncate font-weight-bold">
-                                {{concepto.nombre}}
-                            </div>
-                            <div v-if="tipo !== 3" class="caption grey--text display-inline text-truncate font-weight-bold">
-                                {{concepto.descripcion}}
-                            </div>
-                        </div>
-                    </v-card> 
-                </v-hover> 
-            </template>
-            <span>{{concepto.nombre}}</span>
-        </v-tooltip>
+                            Agregar
+                        </v-btn>
+                    </v-row>
+                </v-fade-transition>
+            </v-img>
+            <div class="text-truncate caption font-weight-black text-capitalize">Bs {{concepto.precio_a}},00</div>
+            <div class="text-truncate font-weight-medium text-capitalize">{{concepto.nombre}}</div>
+            <div class="text-truncate body-2 grey--text text-capitalize">{{concepto.descripcion}}</div>
 
-        <v-snackbar color="red" v-model="snackbar" right bottom>
-            <div>
-                <v-icon dark class="mx-2">
-                    cancel
-                </v-icon>
-                Existencia agotada.
-            </div>
-        </v-snackbar>
-        <!-- <v-overlay :value="loading" absolute>
-            <v-row justify="center" align="center">
-                <v-col md="4" sm="4" cols="12">
-                    <v-progress-circular
-                        size="100"
-                        indeterminate
-                        color="#005598"
-                    ></v-progress-circular>
-                </v-col>
-            </v-row>
-        </v-overlay  -->
-        <v-snackbar dark class="white--text" v-model="loading" right>
-            <div class="caption" v-if="!error">Agregando...</div>
-            <div class="caption" v-else>{{error}}</div>
-        </v-snackbar>
-    </div>
+            <v-snackbar v-model="snackbar" :color="color" right :timeout="2000">
+                <div>
+                    <v-icon color="#fff" class="mx-2">{{icon}}</v-icon>{{mensaje}}
+                </div>
+            </v-snackbar>
+        </v-card>
+    </v-hover>
 </template>
 
 <script>
-//state globales
+import variables from '@/services/variables_globales';
 import {mapState,mapActions} from 'vuex';
-import router from '@/router';
-//services
 import Conceptos from '@/services/Conceptos';
 import Pedidos from '@/services/Pedidos';
-import Auth from '@/services/Auth';
-import url from '@/services/ruta';
+import Empresa from '@/services/Empresa';
 
     export default {
         props:{
             concepto:{
                 type:Object,
-                default: () => {}
-            },
-            rows:{
-                type:Boolean,
-                default:false
-            },
-            widthCard:{
-                type:Number,
-                default:200
-            },
-            heightCard:{
-                type:Number,
-                default:300
-            },
-            widthImg:{
-                type:Number,
-                default:200
-            },
-            heightImg:{
-                type:Number,
-                default:220
-            },
-            margen_x:{
-                type:String,
-                default:""
-            },
-            margen_y:{
-                type:String,
-                default:""
-            },
-            margen_top:{
-                type:String,
-                default:""
-            },
-            margen_bottom:{
-                type:String,
-                default:""
-            },
-            margen_left:{
-                type:String,
-                default:""
-            },
-            margen_right:{
-                type:String,
-                default:""
-            },
-            tipo:{//define el tipo de card de conceptos
-                type:Number,
-                default:1
+                default:() => ({})
             }
         },
-        data() {
+        data(){
             return {
-                espera:false,
-                ruta:null,
-                exito:'',
-                error:'',
-                imagen:"default.png",
+                ...variables,
+                encontradoPedido:0,
                 loading:false,
-                existencia:null,
                 snackbar:false,
-                id:0,
+                mensaje:'',
+                icon:'',
+                color:'',
                 data:{
-                    rest_mesas_id:1,
-                    rest_estatus_id:1,
-                    estado:'Activo',
-                    cant_personas:1,
                     usuario_id:0,
-                    empresa_id:0,
+                    adm_empresa_id:0,
+                    imagen:'',
+                    fecha_at:new Date().toLocaleDateString(),
+                    fecha_in:new Date().toLocaleDateString()
                 },
                 data1:[
                     {
-                        conceptos_id:0,
+                        adm_conceptos_id:0,
                         cantidad:1,
                         precio:0,
-                        rest_estatus_id:1,
-                        estado:'Disponible',
+                        imagen:'',
+                        fecha_at:new Date().toLocaleDateString(),
+                        fecha_in:new Date().toLocaleDateString()
                     }
                 ]
             }
         },
-        created(){
-            this.ruta=url;
-        },
-        computed: {
-            ...mapState(['validacionConcep','user','producto','pedidos']),
+        computed:{
+            ...mapState(['user','pedidos'])
         },
         methods: {
-            ...mapActions(['setProducto','setValidacionConcepto','setPedidos','setDetallePedidos']),
-            
-            agregarConceptos(item){
-                this.loading=true;
-                if(this.user.loggedIn){
-                    this.setProducto(item);
-                    this.getConceptosExistencia(item.id);
-                }else{
-                    this.loading=false;
-                    router.push('/login');
-                }
+            ...mapActions(['addPedidos','addDetalle']),
+
+            mensajeSnackbar(color,texto,icon){
+                this.mensaje = texto;
+                this.color=color;
+                this.icon=icon;
+                this.snackbar=true;
+                this.loading = false;
             },
-            getConceptosExistencia(id){//trae la existencia del concepto del deposito de la web
-                Conceptos().get(`/${id}/depositos`).then((response) => {
-                    if(response.data == 'This entity is empty'){
-                        this.loading=false;
-                        this.snackbar=true;
+            getExistencia(item){
+                this.loading = true;
+                Conceptos().get(`/${item.id}/depositos`).then((response) => {
+                    if(Number.parseInt(response.data.data[0].existencia) < 1){
+                        this.mensajeSnackbar("#D32F2F",'Quedan '+response.data.data[0].existencia+' unidades en el stock.',"error");
                     }else{
-                        this.existencia = response.data.data[0]; 
-                        this.revisionDeExistencia(this.existencia);
+                        this.getEmpresa(item);
                     }
-                }).catch(e => {
-                    console.log(e);
-                    this.loading=false;
-                });
-            },
-            revisionDeExistencia(existencia){
-                if(Number.parseInt(existencia.existencia) > 0){
-                    if(this.producto.tipos_conceptos_id == 5){
-                        this.loading=false;
-                        this.setValidacionConcepto(true);
-                        return;
-                    }else{
-                        this.pedidos.length == 0 ? this.getUsuario():this.validacionSiExistePedidos();
-                    }
-                }else{
-                    this.loading=false;
-                    this.snackbar=true;
-                }
-            },
-            //posts de la Api
-            postPedidos(){//crea un pedido y su primer detalle
-                let data=this.data;
-                data.usuario_id=this.id;
-                data.empresa_id=this.producto.empresa_id;
-
-                let data1=this.data1;
-                data1[0].conceptos_id =this.producto.id;
-                data1[0].precio = this.producto.precio_a;
-
-                //let formdata = new FormData();
-                //formdata.append('data',JSON.stringify(data));
-                //formdata.append('data1',JSON.stringify(data1));
-                //formdata.append('image',this.imagen);
-
-                Pedidos().post("/",{data,data1}).then((response) => {
-                    console.log(response.data.data);
-                    let pedido=response.data.data;
-                    let detalle = pedido.detalles[0];
-                    pedido.detalles=[];
-                    this.setPedidos(pedido);//local
-                    this.setDetallePedidos(detalle);//local
-                    this.loading=false;
                 }).catch(e =>{
                     console.log(e);
-                    this.loading=false;
+                    this.mensajeSnackbar("#D32F2F","Ooops, Intente mas tarde.","error");
                 });
             },
-            validacionSiExistePedidos(){//si existe un pedido a la empresa que pertenece ese concepto
-                this.pedidos.filter(a=> a.empresa_id == this.producto.empresa_id ? this.postPedidosDetalle(a.id):this.getUsuario());
+            getEmpresa(item){
+                Empresa().get(`/${item.adm_empresa_id}/?fields=logo`).then((response) => {
+                    this.data.imagen =response.data.data.logo; 
+                    this.data.adm_empresa_id = item.adm_empresa_id;
+                    this.validacion(item);
+                }).catch(e => {
+                    console.log(e);
+                    this.mensajeSnackbar("#D32F2F","Ooops, Intente mas tarde.","error");
+                });
             },
-            postPedidosDetalle(id){//agrega un detalle a un pedido
+            validacion(item){
+                this.pedidos.filter(a => a.adm_empresa_id == item.adm_empresa_id ? this.encontradoPedido=a.id:null);
+                if(this.encontradoPedido > 0 ){
+                    this.postPedidosDetalle(item);
+                }else{
+                    this.postPedidos(item);
+                }
+            },
+            postPedidos(item){
+                this.data.usuario_id = this.user.data.id;
+                this.data1[0].adm_conceptos_id = item.id;
+                this.data1[0].precio = item.precio_a;
+                this.data1[0].imagen = item.imagen;
+
+                Pedidos().post("/",{data:this.data,data1:this.data1}).then((response) => {
+                    this.addPedidos(response.data.data);
+                    this.mensajeSnackbar("#388E3C","Agregado exitosamente.","done");
+                }).catch(e => {
+                    console.log(e);
+                    this.mensajeSnackbar("#D32F2F","Ooops, Intente mas tarde.","error");
+                });
+            },
+            postPedidosDetalle(item){
+                this.data1[0].adm_conceptos_id = item.id;
+                this.data1[0].precio = item.precio_a;
+                this.data1[0].imagen = item.imagen;
                 let data = this.data1[0];
-                data.conceptos_id=this.producto.id;
-                data.precio=this.producto.precio_a;
-                data.rest_pedidos_id=id;
-
-                Pedidos().post(`/${id}/detalles`,{data}).then((response) => {
-                    console.log(response.data.data);
-                    let data2 = response.data.data;
-                    this.setDetallePedidos(data2);
-                    this.loading=false;
+                
+                Pedidos().post(`/${this.encontradoPedido}/detalles`,{data:data}).then((response) => {
+                    this.encontradoPedido = 0;
+                    this.addDetalle(response.data.data);
+                    this.mensajeSnackbar("#388E3C","Agregado exitosamente.","done");
                 }).catch(e => {
                     console.log(e);
-                    this.loading=false;
-                })
-            },
-
-            getUsuario(){//metodo get para el usuario logeado
-                Auth().post("/sesion", {token:this.user.token}).then((response) => {
-                    this.id=response.data.data.id;
-                    this.postPedidos();
-                }).catch(e => {
-                    console.log(e);
-                    this.loading=false;
+                    this.mensajeSnackbar("#D32F2F","Ooops, Intente mas tarde.","error");
                 });
-            },
+            }
         },
     }
 </script>
-
-<style lang="css" scope>
-    .modif{
-        width: 100%;
-        height: 40px;
-        background: rgba(0,0,0,0.5);
-        color: #fff;
-        padding-top: 10px;
-    }
-</style>

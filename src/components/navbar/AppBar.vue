@@ -1,46 +1,33 @@
 <template>
     <div>
-        <!--Barra lateral , solo sale un menu de grupos y subgrupos 
-        de conceptos-->
         <BarraLateral />
 
-        <!--navbar principal -->
-        <v-app-bar 
+        <v-app-bar color="#005598" app
             :elevation="$vuetify.breakpoint.smAndDown ? 0:null" 
             :elevate-on-scroll="$vuetify.breakpoint.smAndDown ? false:true" 
-            fade-img-on-scroll 
-            app 
-            color="#005598"
         >
-
-            <!--botones de abrir y cerrar la navegacion lateral -->
             <v-app-bar-nav-icon 
                 dark
-                @click="change()" 
                 v-if="drawer==false"
+                @click="change"
             />
-            <v-btn fab v-else  @click="change()" icon depressed>
+
+            <v-btn fab v-else  @click="change" icon depressed>
                 <v-icon color="#fff">
                     close
                 </v-icon>
             </v-btn>
-            
-            <!--titulo y logo de la pagina -->
+
             <v-toolbar-title>
-                <v-btn to="/" text>
+                <v-btn to="/" text class="mx-3">
                     <v-img 
                         contain 
-                        width="120" 
-                        height="120" 
-                        src="@/assets/logo2.png"
+                        width="120"  
+                        src="@/assets/logoaftim.png"
                     />
                 </v-btn>
             </v-toolbar-title>
 
-            <!--text field para buscar conceptos,
-                PD:al darle enter mientras se esta en focus
-                redireccion a a la vista buscar
-            -->
             <v-text-field
                 v-model="busquedas"
                 label="Buscar producto..."
@@ -48,18 +35,15 @@
                 hide-details
                 dense 
                 outlined
-                v-on:keyup.enter="search"
+                v-on:keyup.enter="push"
                 class="hidden-sm-and-down ml-10"
-                background-color="#f5f5f5"
-                color="#232323"
+                background-color="#fff"
+                color="secondary"
                 single-line
             />
 
-            <!--items de navegacion -->
-            <v-spacer/>
-        
-        <!--items mientras esta logeado -->
-            <!--item notificacion-->
+            <v-spacer></v-spacer>
+
             <v-btn v-if="user.loggedIn" icon class="mx-2" to="/account/notificaciones">
                 <v-badge transition="fade-transition" color="#232323" left overlap>
                     <v-icon size="25" color="#fff">notifications</v-icon>
@@ -69,39 +53,23 @@
                 </v-badge>
             </v-btn>
 
-             <!--y panel de carrito -->
-            <ItemCarrito /> 
+            <Carrito /> 
+            <Perfil />
 
-            <!--perfil del usuario -->
-            <ItemPerfil />
-
-            <!--mientras no se esta logeado -->
             <div v-if="!user.loggedIn">
                 <v-btn text to="/login" class="mx-1 font-weight-bold white--text text-capitalize">
                     Iniciar sesión
                 </v-btn>
                 
                 <v-hover v-slot:default="{hover}">
-                    <v-btn :elevation="hover ? 5:0" color="#fff" height="30" to="/register/cliente" class="mx-1 hidden-sm-and-down font-weight-bold color text-capitalize">
+                    <v-btn :elevation="hover ? 10:0" color="#fff" height="30" to="/register" class="mx-1 hidden-sm-and-down font-weight-bold color text-capitalize">
                         Registrate
                     </v-btn>
                 </v-hover>
             </div>
-
-            <!--aparece al presionar buscar en el text field -->
-            <v-progress-linear
-                :active="loading"
-                :indeterminate="loading"
-                absolute
-                bottom
-                color="#fff"
-            ></v-progress-linear>
         </v-app-bar>
 
-        <!--toolbar para movil ,aparece cuando la pantalla esta en
-            tamaño sm (sm=900px)
-        -->
-        <v-toolbar color="#005598" width="100%" class="px-5 fix" v-if="$vuetify.breakpoint.smAndDown">
+        <v-toolbar dense color="#005598" width="100%" class="px-5 fix" v-if="$vuetify.breakpoint.smAndDown">
             <v-text-field
                 v-model="busquedas"
                 label="Buscar producto..."
@@ -109,9 +77,9 @@
                 hide-details
                 dense 
                 outlined
-                v-on:keyup.enter="search"
-                background-color="#f5f5f5"
-                color="#232323"
+                v-on:keyup.enter="push"
+                background-color="#fff"
+                color="#secondary"
                 single-line
                 class="mx-5"
             />
@@ -120,80 +88,41 @@
 </template>
 
 <script>
-//router
+import {mapState,mapActions} from 'vuex';
+import BarraLateral from '@/components/navbar/BarraLateral';
+import Perfil from './Perfil';
+import Carrito from './Carrito';
 import router from '@/router';
-//components
-import ItemCarrito from './ItemCarrito';
-import ItemPerfil from './ItemPerfil';
-import BarraLateral from './BarraLateral';
-//vuex , (state globales)
-import {mapState,mapActions,mapGetters} from  'vuex';
 
     export default {
         components:{
             BarraLateral,
-            ItemCarrito,
-            ItemPerfil
-        },
-        data(){
-            return {
-                loading:false
-            }
+            Carrito,
+            Perfil
         },
         computed: {
-            ...mapGetters(['user']),
-            ...mapState(['drawer','busqueda','validarBusqueda']),
+            ...mapState(['drawer','user','search']),
 
             busquedas:{
-                get(){
-                    return this.busqueda;
-                },
-                set(val){
-                    this.setBusqueda(val);
-                }
+                get(){ return this.search},
+                set(val){ this.setBuscar(val)}
             },
-            validaBusquedas:{
-                get(){
-                    return this.validarBusqueda;
-                },
-                set(val){
-                    this.setValidaBusqueda(val);
-                }
-            }
         },
         methods: {
-            ...mapActions(['setDrawer','setBusqueda','setValidaBusqueda']),
+            ...mapActions(['setDrawer']),
             
-            search() {//metodo para cambiar a la vista buscar
-                this.validaBusquedas=true;
-                this.loading=true;
-                setTimeout(() => {
-                    this.loading=false;
-                    router.push("/search");
-                },1000);
+            change(){
+                this.drawer ? this.setDrawer(false):this.setDrawer(true);
             },
-            change(){//cambia el valor de la barra de navegacion
-                if(this.drawer==true){
-                    this.setDrawer(false);
-                }else{
-                    this.setDrawer(true);
-                }
-            },
-        }
+            push(){ router.push("/search") }
+        },
     }
 </script>
 
-<style lang="scss" scoped>
-    .color{
-        color:#005598;
-    }
+<style scoped>
     .fix{
         position:fixed;
         z-index:3;
         top: 56px;
-        
-    }
-    .margen{
-        margin-top:65px;
     }
 </style>

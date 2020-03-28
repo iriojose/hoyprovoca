@@ -7,9 +7,8 @@
         :show-arrows="false"
         mandatory
         dark
-        delimiter-icon="bubble_chart"
         :height="$vuetify.breakpoint.smAndDown ? 200:350"
-        :style="$vuetify.breakpoint.smAndDown ? 'margin-top:56px':null"
+        :style="$vuetify.breakpoint.smAndDown ? 'margin-top:106px':'margin-top:56px'"
     >
         <v-carousel-item 
             v-for="img in images" 

@@ -1,21 +1,10 @@
 <template>
     <v-navigation-drawer 
-        app
-        v-model="drawers" 
-        :transition="transition()"  
-        temporary
-        hide-overlay
-        width="270"
-        :style="$vuetify.breakpoint.smAndDown ? 'margin-top:115px;':'margin-top:64px'"
+        app v-model="drawers" temporary hide-overlay width="270"
+        :style="$vuetify.breakpoint.smAndDown ? 'margin-top:106px;':'margin-top:64px'"
     >
-        <div class="text-center mt-12" v-if="loading">
-            <v-progress-circular
-                :size="50"
-                color="#005598"
-                :indeterminate="loading"
-                class="mt-12"
-            ></v-progress-circular>
-        </div>
+        <LoaderRect v-if="loading" />
+
         <v-list v-else>
             <div class="text-center font-weight-bold my-2">Categorías</div>
             <v-divider></v-divider>
@@ -34,24 +23,27 @@
 </template>
 
 <script>
-//vuex, state globales
 import {mapState,mapActions} from 'vuex';
-//services
 import Grupos from '@/services/Grupos';
-//router
 import router from '@/router';
+import LoaderRect from '@/components/loaders/LoaderRect';
 
     export default {
-        name: 'BarraLateral',
-        data(){
-            return{
+        components:{
+            LoaderRect
+        },
+        data() {
+            return {
                 grupos:[],
                 loading:true
             }
         },
-        computed: {
-          ...mapState(['drawer']),
-            //cambiar el drawer de la navegacion
+        mounted() {
+            this.getGrupos();
+        },
+        computed:{
+            ...mapState(['drawer']),
+
             drawers:{
                 get(){
                     return this.drawer;
@@ -61,34 +53,22 @@ import router from '@/router';
                 }
             }
         },
-        mounted(){//se trae los grupos al montarse el componente
-            this.getGrupos();
-        },
-        methods:{
+        methods: {
             ...mapActions(['setDrawer']),
 
-            push(item){//empuja a la vista 
-                this.setDrawer(false);
+            push(item){
                 var re = / /gi; 
                 const nombre = item.nombre.replace(re,'-');//remplaza los espacios por guiones
-                router.push({name:'gruposDetalle', params:{text:nombre,id:item.id}});
+                router.push({name:'grupoDetalle', params:{text:nombre,id:item.id}});
             },
-            transition(){//metodo para animacion de transition
-                if(this.drawer){
-                  return "slide-x-transition";
-                }else{
-                  return "slide-y-transition";
-                }
-            },
-            getGrupos(){//trae los grupos
-                Grupos().get('/').then((response) => {
+            getGrupos(){
+                Grupos().get("/?limit=50").then((response) => {
                     this.grupos = response.data.data;
-                    this.loading=false;
+                    this.loading = false;
                 }).catch(e => {
                     console.log(e);
                 });
             },
-        }
+        },
     }
 </script>
-

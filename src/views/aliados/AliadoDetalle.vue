@@ -1,0 +1,143 @@
+<template>
+    <div>
+        <AppBar />
+
+        <v-row class="margen" >
+            <v-col cols="12" sm="12" md="3" :class="$vuetify.breakpoint.smAndDown ? 'px-6':'pl-12'">
+                <PanelCategorias :grupos="grupos" :empresa="empresa" />
+            </v-col>
+            
+            <v-col sm="12" md="9" cols="12" v-if="$route.name=='aliadoDetalle' && loading">
+                <LoaderRect />
+            </v-col>
+        
+            <v-col v-if="$route.name=='aliadoDetalle' && !loading" sm="12" md="9" cols="12" :class="$vuetify.breakpoint.smAndDown ? 'px-6':'pr-12'">
+                <DataAliados :grupos="grupos" :conceptos="conceptos" />
+            </v-col>
+
+            <v-col 
+                v-if="$route.name=='aliadoGrupo'" 
+                cols="12" sm="12" md="9" 
+                :class="$vuetify.breakpoint.smAndDown ? 'px-6':'pr-12'">
+                <router-view/>
+            </v-col>
+        </v-row>
+
+        <Footer class="margen-footer" />
+    </div>
+</template>
+
+<script>
+import AppBar from "@/components/navbar/AppBar";
+import Footer from "@/components/footer/Footer";
+import Empresa from '@/services/Empresa';
+import Grupos from '@/services/Grupos';
+import LoaderRect from '@/components/loaders/LoaderRect';
+import PanelCategorias from '@/components/vistaAliados/PanelCategorias';
+import DataAliados from '@/components/vistaAliados/DataAliados';
+import {mapState} from 'vuex';
+
+    export default {
+        components:{
+            AppBar,
+            Footer,
+            LoaderRect,
+            PanelCategorias,
+            DataAliados
+        },
+        computed: {
+            ...mapState(['agregados'])
+        },
+        data() {
+            return {
+                intersect:false,
+                loading:true,
+                error:false,
+                bandera:false,
+                conceptos:[],
+                grupos:[],
+                empresa:{}
+            }
+        },
+        mounted() {
+            if(this.$route.params.text){
+                this.getEmpresa(this.$route.params.text);
+            }else{
+                this.loading = false;
+                this.error=true;
+            }
+        },
+        watch: {
+            agregados(){
+                this.bandera ?  this.revision():this.bandera=true;
+            },
+            '$route'(val){
+               if(val.params.text){
+                    this.loading = true;
+                    this.getEmpresa(val.params.text); 
+                    this.error=false;
+                }else{
+                    this.error=true;
+                }
+            },
+        },
+        head:{
+            title(){
+                return {
+                    inner:'HoyProvoca',
+                    separator:'|',
+                    complement: 'Aliados'
+                }
+            }
+        },
+        methods: {
+            getEmpresa(text){
+                Empresa().get(`/?nombre_comercial=${text}`).then((response) => {
+                    this.empresa = response.data.data[0];
+                    this.getGrupos(this.empresa.id);
+                }).catch(e => {
+                    console.log(e);
+                });
+            },
+            getGrupos(id){
+                Empresa().get(`/${id}/grupos`).then((response) => {
+                    this.grupos = response.data.data;
+                    if(!this.$route.params.text2){
+                        this.grupos.filter((a,i) => i > 9 ? null:this.getConceptos(a.id));
+                        this.loading = false;
+                    }else{
+                        this.loading = false;
+                    }
+                }).catch(e => {
+                    console.log(e);
+                });
+            },
+            getConceptos(id){
+                Grupos().get(`/${id}/conceptos/?adm_empresa_id=${this.empresa.id}&limit=10`).then((response) => {
+                    response.data.data.filter(a => a.agregado=false);
+                    response.data.data.filter(a => this.agregados.filter(b => a.id == b ? a.agregado=true:null));
+                    this.conceptos.push(response.data.data);
+                }).catch(e => {
+                    console.log(e);
+                });
+            },
+            revision(){
+                this.conceptos.filter(a => a.filter(b => b.agregado=false));
+                this.conceptos.filter(a => a.filter(b => this.agregados.filter(c => b.id == c ? b.agregado=true:null)));
+            }
+        },
+    }
+</script>
+
+<style lang="css" scoped>
+    .margen{
+        margin-top:75px;
+    }
+    .margen-footer{
+        margin-top:250px;
+    }
+    .fix{
+        position:fixed;
+        width: 20%;
+    }
+</style>

@@ -2,41 +2,33 @@
     <div>
         <AppBar />
         <Banner />
-
-        <v-scroll-x-transition>
-            <MasVendidos :conceptos="conceptos" v-show="loadingC" />
-        </v-scroll-x-transition>
-        <SkeletonCard v-if="!loadingC"/>
-
-        <Parallax />
-
-        <Categorias title="Categorias" :categorias="grupos" />
-
-        <Sugerencias :sugerencias="empresas" />
-
+        <MasVendidos :conceptos="conceptos" />
+        <CategoriasSugeridas :grupos="grupos"/>
+        <EmpresasSugeridas :empresas="empresas" />
         <Footer />
-        <ValidacionConcepto />
     </div>
 </template>
 
 <script>
-import AppBar from "@/components/navbar/AppBar";
-import Footer from "@/components/footer/Footer";
-import Banner from "@/components/vistaHome/Banner";
-import Parallax from '@/components/vistaHome/Parallax';
-import SkeletonCard from "@/components/layouts/SkeletonCard";
-import MasVendidos from '@/components/vistaHome/MasVendidos';
-import Categorias from "@/components/vistaHome/Categorias";
-import Sugerencias from "@/components/vistaHome/Sugerencias";
-import ValidacionConcepto from '@/components/dialogs/ValidacionConcepto';
-import { mapState } from "vuex";
+import Footer from '@/components/footer/Footer';
 import Conceptos from '@/services/Conceptos';
-import Grupos from '@/services/Grupos';
 import Empresa from '@/services/Empresa';
+import Grupos from '@/services/Grupos';
+import AppBar from '@/components/navbar/AppBar';
+import Banner from '@/components/vistaHome/Banner'
+import MasVendidos from '@/components/vistaHome/MasVendidos';
+import EmpresasSugeridas from '@/components/vistaHome/EmpresasSugeridas';
+import CategoriasSugeridas from '@/components/vistaHome/CategoriasSugeridas';
+import {mapState} from 'vuex';
 
     export default {
         components:{
-            AppBar,Footer,Banner,Parallax,SkeletonCard,MasVendidos,Categorias,Sugerencias,ValidacionConcepto
+            AppBar,
+            Banner,
+            Footer,
+            MasVendidos,
+            EmpresasSugeridas,
+            CategoriasSugeridas
         },
         head:{
             title(){
@@ -49,59 +41,52 @@ import Empresa from '@/services/Empresa';
         },
         data() {
             return {
-                loadingC:false,
-                error:false,
-                grupos:[],
+                conceptos:[],
                 empresas:[],
-                conceptos:[]
+                grupos:[],
+                bandera:false
             }
         },
-        mounted() {
-            this.getEmpresas();
-            this.getConceptos();
-            this.getGrupos();
-            this.addOrder();
-        },
-        computed: {
-            ...mapState(['conceptosId','user']),
+        computed:{
+            ...mapState(['agregados'])
         },
         watch: {
-            //cuando las variables cambien se quita el modo de espera
-            conceptosId(){//se refresca cada que agregan
-                this.addOrder();
+            agregados(){
+                this.bandera ?  this.revision():this.bandera=true;
             },
         },
-        methods: {
-            addOrder(){
-                this.conceptos.filter(a=> this.conceptosId.filter(b=> a.id==b ? a.agregado=true:null));
+        mounted() {
+            this.getConceptos();
+            this.getEmpresas();
+            this.getGrupos();
+        },
+        methods:{
+            getConceptos(){
+                Conceptos().get("/mostsold/?limit=10").then((response) => {
+                    this.conceptos = response.data.data;
+                    this.revision();
+                }).catch(e => {
+                    console.log(e);
+                });
             },
-            getGrupos(){//trae las categorias (grupos)
+            getEmpresas(){
+                Empresa().get('/?limit=8').then((response) => {
+                    this.empresas = response.data.data;
+                }).catch(e => {
+                    console.log(e);
+                });
+            },
+            getGrupos(){
                 Grupos().get('/?after-id=2&before-id=11').then((response) => {
                     this.grupos = response.data.data;
                 }).catch(e => {
                     console.log(e);
-                    this.error = true;
                 });
             },
-            getEmpresas(){//trae empresas (sugerencias)
-                Empresa().get('/?limit=8').then((response) => {
-                    this.empresas= response.data.data;
-                }).catch(e => {
-                    console.log(e);
-                    this.error = true;
-                });
-            },
-            getConceptos(){//trae conceptos (productos/servicios)
-                Conceptos().get('/?limit=15').then((response) => {
-                    this.loadingC = true;
-                    console.log(response);
-                    this.conceptos = response.data.data;
-                    this.addOrder();//pone bandera de agregado a pedidos
-                }).catch(e => {
-                    console.log(e);
-                    this.error = true;
-                });
+            revision(){
+                this.conceptos.filter(a => a.gregado = false);
+                this.conceptos.filter(a => this.agregados.filter(b => a.id == b ? a.agregado=true:null));
             }
-        },
+        }
     }
 </script>

@@ -2,32 +2,40 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
-import vuetify from "./plugins/vuetify";
+import head from "./plugins/head";
+import croppa from "./plugins/croppa";
+import vuetify from './plugins/vuetify';
 import "@babel/polyfill";
 import "roboto-fontface/css/roboto/roboto-fontface.css";
 import "@mdi/font/css/materialdesignicons.css";
-import Croppa from 'vue-croppa'
-import VueHead from 'vue-head'
-import accounting from 'accounting';
+import Auth from '@/services/Auth';
 
-Vue.use(accounting);
-Vue.use(VueHead);
-Vue.use(Croppa);
 Vue.config.productionTip = false;
-
 let token = window.localStorage.getItem('token');
 
-if(token){
-    store.state.user.loggedIn=true;
-    store.state.user.token=token;
-}else{
-    store.state.user.loggedIn=false;
-    store.state.user.token="";
-}
+Auth().post("/sesion",{token:token}).then((response) => {
+    store.state.user.data = response.data.data;
+    store.state.user.loggedIn = true;
+    store.state.user.token = token;
 
-new Vue({
-    store,
-    router,
-    vuetify,
-    render: h => h(App)
-}).$mount("#app");
+    new Vue({
+        store,
+        router,
+        vuetify,
+        head,
+        croppa,
+        render: h => h(App)
+    }).$mount("#app");
+
+}).catch(() => {
+    new Vue({
+        store,
+        router,
+        vuetify,
+        head,
+        croppa,
+        render: h => h(App)
+    }).$mount("#app");
+});
+
+

@@ -1,13 +1,12 @@
 <template>
     <div>
-        <v-row justify="center" align="center" class="fill-height mt-12 mb-5">
-            <v-img contain width="100" height="30" :src="require('@/assets/log.png')"></v-img>
+        <v-row justify="center" align="center" class="mt-12 mb-5">
+            <v-img contain width="100" height="30" :src="require('@/assets/logoaftim2.png')"></v-img>
         </v-row>
 
-        <v-row justify="center" align="center" class="fill-height">
-
+        <v-row justify="center" align="center">
             <v-col cols="12" md="4" lg="4" class="hidden-sm-and-down">
-                <v-img contain width="100%" :height="send ? 400:300" :src="require('@/assets/forgot.svg')"></v-img>
+                <v-img contain width="100%" height="400" :src="require('@/assets/forgot.svg')"></v-img>
             </v-col>
 
             <v-col cols="12" md="4" sm="12">
@@ -18,7 +17,6 @@
                         <div class="font-weight-black body-2 mb-2">Le enviaremos un enlace de recuperación</div>
                         <v-form v-model="valid" @submit.prevent>
                             <v-text-field
-                                v-if="!send"
                                 label="Introduzca su correo electrónico"
                                 single-line
                                 outlined 
@@ -26,18 +24,7 @@
                                 color="#005598"
                                 v-model="correo"
                                 type="text"
-                                :rules="[required('Correo Electrónico'),emailFormat()]"
-                            />
-                            <v-text-field 
-                                v-if="send"
-                                v-model="codigo"
-                                single-line
-                                label="Codigo de recuperacion"
-                                dense 
-                                outlined
-                                color="#005598"
-                                type="text"
-                                :rules="[required('Codigo')]"
+                                :rules="[required('Correo Electrónico')]"
                             />
                             <v-hover v-slot:default="{hover}">
                                 <v-btn 
@@ -76,20 +63,29 @@
         <v-footer fixed color="#eee">
             <SubFooter />
         </v-footer>
+
+        <Snackbar :color="color" :mensaje="mensaje" :icon="icon" />
     </div>
 </template>
 
 <script>
 import validations from '@/validations/validations';
-import router from '@/router';
 import SubFooter from "@/components/footer/SubFooter";
+import Snackbar from '@/components/snackbars/Snackbar';
+import Auth from '@/services/Auth';
+import {mapActions} from 'vuex';
+import router from '@/router';
 
     export default {    
         components:{
-            SubFooter
+            SubFooter,
+            Snackbar
         },
         data() {
             return {
+                mensaje:'',
+                icon:'',
+                color:'',
                 valid:false,
                 loading:false,
                 send:false,
@@ -99,25 +95,50 @@ import SubFooter from "@/components/footer/SubFooter";
             }
         },
         methods: {
-            push(){
-                router.push('/login');
+            ...mapActions(['setSnackbar']),
+
+            push(){ router.push('/login') },
+            push2(){ router.push('/reset') },
+
+            mensajeSnackbar(color,mensaje,icon){
+                this.color = color;
+                this.mensaje = mensaje;
+                this.icon = icon;
+                this.setSnackbar(true);
+                this.loading = false;
             },
             sendMail(){
-                this.send = true;
+                this.loading = true;
+                Auth().post("/sendmail",{data:{mail:this.correo}}).then((response) => {
+                    console.log(response);
+                    this.mensajeSnackbar("#388E3C","Codigo enviado exitosamente.","done");
+                    this.send = true;
+                }).catch(e => {
+                    console.log(e);
+                    this.mensajeSnackbar("#D32F2F","Ooops, Error al intentar enviar el codigo.","error");
+                });
             },
-            validar(){
-                console.log('valido');
-            }
+            validCode(){
+                this.loading = true;
+                Auth().post("/validcode",{data:{mail:this.correo,hash:this.codigo}}).then((response) => {
+                    console.log(response);
+                    this.mensajeSnackbar("#388E3C","Codigo validado exitosamente.","done");
+                    this.push2();
+                }).catch(e => {
+                    console.log(e);
+                    this.mensajeSnackbar("#D32F2F","Ooops, Error al validar el codigo.","error");
+                });
+            },
         },
         head: {
-        title() {
-            return {
-                inner: "HoyProvoca",
-                separator: "|",
-                complement: "Forgot"
-            };
+            title() {
+                return {
+                    inner: "Forgot",
+                    separator: " ",
+                    complement: " "
+                };
+            }
         }
-    }
     }
 </script>
 
