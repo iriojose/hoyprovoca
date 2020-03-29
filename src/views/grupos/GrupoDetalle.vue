@@ -17,7 +17,7 @@
         </v-card>
     
         <v-slide-x-transition>
-            <v-row justify="center" align="center" class="fill-height mt-12" v-show="!loading">
+            <v-row justify="center" align="center" :class="$vuetify.breakpoint.smAndDown ? 'fill-height  mt-12 mx-5':'fill-height mt-12'" v-show="!loading">
                 <v-col cols="12" md="11" sm="12">
                     <GruposData :subgrupos="subgrupos" :conceptos="conceptos" />
                 </v-col>
@@ -118,3 +118,9 @@ import GruposData from '@/components/vistaGrupos/GruposData';
         },
     }
 </script>
+
+<style lang="css" scoped>
+    .shadow{
+        box-shadow: 0px 6px 5px -4px rgba(35,35,35,0.4);
+    }
+</style>

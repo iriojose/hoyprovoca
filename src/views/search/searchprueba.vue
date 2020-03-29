@@ -151,16 +151,7 @@ import Conceptos from '@/services/Conceptos';
         text-decoration: none;
         position: relative;
 
-        /*
-        webkit-transition: all 0.15s ease-out;
-        -moz-transition: all 0.15s ease-out;
-        -o-transition: all 0.15s ease-out;
-        -ms-transition: all 0.15s ease-out;
-        transition: all 0.15s ease-out;
-        */
-
-        &:before {s
-            content: "";
+        &:before {
             position: absolute;
             width: 100%;
             height: 1px;

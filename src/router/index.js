@@ -17,6 +17,12 @@ import GrupoDetalle from '@/views/grupos/GrupoDetalle';
 import AliadoDetalle from '@/views/aliados/AliadoDetalle';
 import AliadoGrupo from '@/views/aliados/AliadoGrupo';
 
+import Account from '@/views/account/Account';
+import Profile from '@/views/account/Profile';
+import Ayuda from '@/views/account/Ayuda';
+import Notificaciones from '@/views/account/Notificaciones';
+import Ordenes from '@/views/account/Ordenes';
+
 Vue.use(Router);
 
 const router = new Router({
@@ -27,7 +33,7 @@ const router = new Router({
             path: "/",
             name: "home",
             component: Home,
-            menta:{
+            meta:{
                 auth:false
             }
         },
@@ -35,7 +41,7 @@ const router = new Router({
             path: "/login",
             name:"login",
             component:Login,
-            menta:{
+            meta:{
                 auth:false
             }
         },
@@ -43,7 +49,7 @@ const router = new Router({
             path: "/register",
             name:"register",
             component:Register,
-            menta:{
+            meta:{
                 auth:false
             }
         },
@@ -51,7 +57,7 @@ const router = new Router({
             path: "/forgot",
             name:"forgot",
             component:Forgot,
-            menta:{
+            meta:{
                 auth:false
             }
         },
@@ -59,7 +65,7 @@ const router = new Router({
             path: "/reset",
             name:"resetPassword",
             component:ResetPassword,
-            menta:{
+            meta:{
                 auth:false
             }
         },
@@ -67,7 +73,7 @@ const router = new Router({
             path: "/grupo/:text/:id",
             name:"grupoDetalle",
             component:GrupoDetalle,
-            menta:{
+            meta:{
                 auth:false
             }
         },
@@ -75,7 +81,7 @@ const router = new Router({
             path: "/aliados/:text",
             name:"aliadoDetalle",
             component:AliadoDetalle,
-            menta:{
+            meta:{
                 auth:false
             },
             children:[
@@ -89,7 +95,53 @@ const router = new Router({
         {
             path:'/search',
             name:'search',
-            component:Search
+            component:Search,
+            meta:{
+                auth:false
+            },
+        },
+        {
+            path:'/account',
+            name:'account',
+            component:Account,
+            meta:{
+                auth:true
+            },
+
+            children:[
+                {
+                    path: "profile",
+                    name: "profile",
+                    component: Profile,
+                    meta: {
+                        auth: true
+                    }
+                },
+                {
+                    path: "ayuda",
+                    name: "ayuda",
+                    component: Ayuda,
+                    meta: {
+                        auth: true
+                    }
+                },
+                {
+                    path: "notificaciones",
+                    name: "ayuda",
+                    component: Notificaciones,
+                    meta: {
+                        auth: true
+                    }
+                },
+                {
+                    path: "ordenes",
+                    name: "ordenes",
+                    component: Ordenes,
+                    meta: {
+                        auth: true
+                    }
+                }
+            ]
         },
         {
             path: "*",

@@ -3,7 +3,7 @@
         <LoaderRect />
     </v-card>
     <v-card width="100%" elevation="0" color="#f7f7f7" v-else>
-        <v-row class="mx-10">
+        <v-row class="ml-5">
             <CardConceptos :concepto="concepto" v-for="(concepto,i) in conceptos" :key="i"/>
         </v-row>
         <v-row justify="center" align="center" v-if="conceptos.length==20" class="mt-5">

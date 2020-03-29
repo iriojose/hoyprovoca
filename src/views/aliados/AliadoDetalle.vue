@@ -2,8 +2,8 @@
     <div>
         <AppBar />
 
-        <v-row class="margen" >
-            <v-col cols="12" sm="12" md="3" :class="$vuetify.breakpoint.smAndDown ? 'px-6':'pl-12'">
+        <v-row :class="$vuetify.breakpoint.smAndDown ? 'margen-movil mx-5':'margen-top mx-10'">
+            <v-col cols="12" sm="12" md="3" >
                 <PanelCategorias :grupos="grupos" :empresa="empresa" />
             </v-col>
             
@@ -11,19 +11,19 @@
                 <LoaderRect />
             </v-col>
         
-            <v-col v-if="$route.name=='aliadoDetalle' && !loading" sm="12" md="9" cols="12" :class="$vuetify.breakpoint.smAndDown ? 'px-6':'pr-12'">
+            <v-col v-if="$route.name=='aliadoDetalle' && !loading" sm="12" md="9" cols="12">
                 <DataAliados :grupos="grupos" :conceptos="conceptos" />
             </v-col>
 
             <v-col 
                 v-if="$route.name=='aliadoGrupo'" 
                 cols="12" sm="12" md="9" 
-                :class="$vuetify.breakpoint.smAndDown ? 'px-6':'pr-12'">
+            >
                 <router-view/>
             </v-col>
         </v-row>
 
-        <Footer class="margen-footer" />
+        <Footer class="margen" />
     </div>
 </template>
 
@@ -131,11 +131,18 @@ import {mapState} from 'vuex';
 
 <style lang="css" scoped>
     .margen{
+        margin-top:200px;
+    }
+    .margen-top{
         margin-top:75px;
     }
-    .margen-footer{
-        margin-top:250px;
+    .margen-movil{
+        margin-top:120px;
     }
+    .shadow{
+        box-shadow: 0px 6px 5px -4px rgba(35,35,35,0.4);
+    }
+    
     .fix{
         position:fixed;
         width: 20%;
