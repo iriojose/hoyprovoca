@@ -23,6 +23,8 @@ import Ayuda from '@/views/account/Ayuda';
 import Notificaciones from '@/views/account/Notificaciones';
 import Ordenes from '@/views/account/Ordenes';
 
+import Checkout from '@/views/checkout/Checkout';
+
 Vue.use(Router);
 
 const router = new Router({
@@ -101,6 +103,14 @@ const router = new Router({
             },
         },
         {
+            path:'/checkout/:text',
+            name:'checkout',
+            component:Checkout,
+            meta:{
+                auth:true
+            },
+        },
+        {
             path:'/account',
             name:'account',
             component:Account,
@@ -127,7 +137,7 @@ const router = new Router({
                 },
                 {
                     path: "notificaciones",
-                    name: "ayuda",
+                    name: "notificaciones",
                     component: Notificaciones,
                     meta: {
                         auth: true

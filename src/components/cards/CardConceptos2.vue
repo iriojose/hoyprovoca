@@ -16,7 +16,7 @@
                     </v-row>
                 </v-fade-transition>
             </v-img>
-            <div class="text-truncate font-weight-black text-capitalize caption">Bs {{concepto.precio_a}},00</div>
+            <div class="text-truncate font-weight-black text-capitalize caption">{{sale}}</div>
             <div class="text-truncate font-weight-medium text-capitalize">{{concepto.nombre}}</div>
             <div class="text-truncate body-2 grey--text text-capitalize">{{concepto.descripcion}}</div>
 
@@ -47,6 +47,7 @@ import Empresa from '@/services/Empresa';
             return {
                 ...variables,
                 encontradoPedido:0,
+                sale:'',
                 loading:false,
                 snackbar:false,
                 mensaje:'',
@@ -70,6 +71,9 @@ import Empresa from '@/services/Empresa';
                     }
                 ]
             }
+        },
+        mounted() {
+            this.sale = accounting.formatMoney(+this.concepto.precio_a,{symbol:"Bs ",thousand:'.',decimal:','});
         },
         computed:{
             ...mapState(['user','pedidos'])

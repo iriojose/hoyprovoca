@@ -17,7 +17,7 @@
         </v-card>
     
         <v-slide-x-transition>
-            <v-row justify="center" align="center" :class="$vuetify.breakpoint.smAndDown ? 'fill-height  mt-12 mx-5':'fill-height mt-12'" v-show="!loading">
+            <v-row justify="center" :class="$vuetify.breakpoint.smAndDown ? 'mt-12 mx-5':'mt-12'" v-show="!loading">
                 <v-col cols="12" md="11" sm="12">
                     <GruposData :subgrupos="subgrupos" :conceptos="conceptos" />
                 </v-col>
@@ -105,6 +105,8 @@ import GruposData from '@/components/vistaGrupos/GruposData';
                         response.data.data.filter(a => a.agregado=false);
                         response.data.data.filter(a => this.agregados.filter(b => a.id == b ? a.agregado=true:null));
                         this.conceptos.push(response.data.data);
+                    }else{
+                        this.conceptos.push([]);
                     }
                 }).catch(e => {
                     this.error=true;

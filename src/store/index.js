@@ -5,19 +5,21 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     state:{
-        user:{
+        user:{//variabla de sesion
             token:null,
             data:{},
             loggedIn:false
         },
         search:'',
+        //banderas
         drawer:false,
         snackbar:false,
         carrito:false,
-        pedidos:[],
-        agregados:[],
-        totalPedidos:[],
-        producto:{}
+        //arrays
+        pedidos:[],//guarda los pedidos
+        agregados:[],//guarda ids de los conceptos agregados a pedidos
+        totalPedidos:[],//guarda el total de cada pedido
+        producto:{}//bandera para un producto seleccionado
     },
     getters: {
         
@@ -41,22 +43,22 @@ export default new Vuex.Store({
         },
 
         //autenticacion
-        SET_LOGGED(state,val){
+        SET_LOGGED(state,val){//logea al usuario
             state.user.loggedIn = true;
             state.user.token= val.token;
             state.user.data = val.data;
             window.localStorage.setItem('token',val.token);
         },
-        LOGOUT(state){
+        LOGOUT(state){//cierra la sesion
             state.user.token=null;
             state.user.data={};
             state.user.loggedIn=false;
-            state.pedidos = [];
-            window.localStorage.setItem('token',"");
+            state.pedidos = [];//se elimina los pedidos en local
+            window.localStorage.setItem('token',"");//se elimina el token del storage
         },
 
         //pedidos
-        CALCULATOR(state){
+        CALCULATOR(state){//calcula segun los cambios que se aplican en los pedidos
             state.totalPedidos = [];
             for (let i = 0; i < state.pedidos.length; i++) {
                 let suma = 0;
@@ -66,31 +68,36 @@ export default new Vuex.Store({
                 state.totalPedidos.push(suma);
             }
         },
-        SET_PEDIDOS(state,val){
+        SET_PEDIDOS(state,val){//añade todos los pedidos que vengan de la api
             state.pedidos = val;
             state.pedidos.filter(a => a.detalles.filter(b => state.agregados.push(b.adm_conceptos_id)));
         },
-        ADD_PEDIDOS(state,val){
-            state.agregados.push(val.detalles[0].adm_conceptos_id);
+        ADD_PEDIDOS(state,val){//añade un pedido (solo cuando se crea el pedido se usa)
+            state.agregados.push(val.detalles[0].adm_conceptos_id);//se añade el id del producto
             state.pedidos.push(val);
         },
-        ADD_DETALLE(state,val){
+        ADD_DETALLE(state,val){//se añade un detalle a un pedido existente
             state.agregados.push(val.adm_conceptos_id);
             state.pedidos.filter(a=> a.id == val.rest_pedidos_id ? a.detalles.push(val):null);
         },
-        DELETE_PEDIDO(state,index){
+        DELETE_PEDIDO(state,index){//se elimina un pedido
             let aux=[],aux2=[];
+            //se guarda los ids de los conceptos en aux[]
             state.pedidos[index].detalles.filter(a => aux.push(a.adm_conceptos_id));
+            //se revisa si los ids estan en agregados para eliminarlos
             state.agregados.filter(a => aux.filter(b => !a == b ? aux2.push(a):null));
-            state.agregados = aux2;
-            state.pedidos.splice(index,1);
+            state.agregados = aux2;//se asigna los ids que quedan
+            state.pedidos.splice(index,1);//se elimna el pedido
         },
-        DELETE_DETALLE(state,data){
+        DELETE_DETALLE(state,data){//se elimina el detalle de un pedido
+            //se consigue el concepto a eliminar
             let val = state.pedidos[data.indexPedido].detalles[data.indexDetalle].adm_conceptos_id;
+            //se elimina antes del array de agregados
             state.agregados.splice(state.agregados.indexOf(val),1);
+            //se elimina del array de detalles del pedido
             state.pedidos[data.indexPedido].detalles.splice(data.indexDetalle,1);
         },
-        UPDATE_DETALLE(state,data){
+        UPDATE_DETALLE(state,data){//actualiza la cantidad de un detalle
             state.pedidos[data.indexPedido].detalles[data.indexDetalle].cantidad = data.cantidad;
         },
 

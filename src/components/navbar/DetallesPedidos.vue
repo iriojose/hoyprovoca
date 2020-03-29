@@ -33,7 +33,7 @@
             </v-hover>
 
             <v-spacer></v-spacer>
-            <div class="font-weight-black">Bs {{detalle.precio}}</div>
+            <div class="font-weight-black">{{sales[i]}}</div>
         </v-toolbar>
 
         <v-snackbar absolute v-model="snackbar" :color="color" bottom right :timeout="3000">
@@ -49,6 +49,7 @@ import variables from '@/services/variables_globales';
 import Pedidos from '@/services/Pedidos';
 import Conceptos from '@/services/Conceptos';
 import {mapActions} from 'vuex';
+import accounting from 'accounting';
 
     export default {
         props:{
@@ -73,8 +74,17 @@ import {mapActions} from 'vuex';
                     indexDetalle:-1,
                     indexPedido:-1,
                     cantidad:0
-                }
+                },
+                sales:[]
             }
+        },
+        watch: {
+            detalles(){
+                this.detalles.filter(a => this.sales.push(accounting.formatMoney(+a.precio,{symbol:"Bs ",thousand:'.',decimal:','})));
+            }
+        },
+        mounted() {
+            this.detalles.filter(a => this.sales.push(accounting.formatMoney(+a.precio,{symbol:"Bs ",thousand:'.',decimal:','})));
         },
         methods: {
             ...mapActions(['setSnackbar','updatePedidoStore','deleteDetalleStore','updateDetalleStore']),
@@ -103,7 +113,6 @@ import {mapActions} from 'vuex';
                 this.loading = true;
                 let cantidad = Number.parseInt(detalle.cantidad);
                 cantidad+=1;
-                console.log(cantidad);
                 this.getConceptoExistencia(detalle,cantidad,i);
             },
             resta(detalle,i){

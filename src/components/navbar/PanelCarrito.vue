@@ -52,17 +52,11 @@ import {mapActions,mapState} from 'vuex';
 import EncabezadoPedido from './EncabezadoPedido';
 import DetallesPedidos from './DetallesPedidos';
 import Usuario from '@/services/Usuario';
-import accounting from 'accounting';
 
     export default {
         components:{
             EncabezadoPedido,
             DetallesPedidos,
-        },
-        data() {
-            return {
-                totales:[],
-            }
         },
         computed: {
             ...mapState(['pedidos','carrito','user','totalPedidos']),
@@ -84,7 +78,6 @@ import accounting from 'accounting';
             getPedidosUsuario(){
                 Usuario().get(`/${this.user.data.id}/pedidos`).then((response) => {
                     response.data !== 'This entity is empty' ? this.setPedidos(response.data.data):null;
-                    this.totalPedidos.filter(a => this.totales.push(accounting.formatNumber(a,{symbol:'Bs', thousand:'.',decimal:','})));
                 }).catch(e => {
                     console.log(e);
                 });

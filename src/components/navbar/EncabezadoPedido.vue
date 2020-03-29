@@ -21,7 +21,7 @@
 
         <v-spacer></v-spacer>
 
-        <div class="font-weight-black">Bs {{total+',00'}}</div>
+        <div class="font-weight-black">{{sale}}</div>
 
         <v-snackbar v-model="snackbar" :color="color" bottom right :timeout="3000">
             <div>
@@ -35,6 +35,7 @@
 import variables from '@/services/variables_globales';
 import Pedidos from '@/services/Pedidos';
 import {mapActions} from 'vuex';
+import accounting from 'accounting';
 
     export default {
         props:{
@@ -59,7 +60,16 @@ import {mapActions} from 'vuex';
                 icon:'',
                 loading:false,
                 snackbar:false,
+                sale:'',
             }
+        },
+        watch: {
+            total(){
+                this.sale = accounting.formatMoney(+this.total,{symbol:"Bs ",thousand:'.',decimal:','});
+            }
+        },
+        mounted() {
+            this.sale = accounting.formatMoney(+this.total,{symbol:"Bs ",thousand:'.',decimal:','});
         },
         methods:{
             ...mapActions(['deletePedidoStore']),

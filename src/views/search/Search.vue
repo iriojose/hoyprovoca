@@ -74,7 +74,7 @@
                 </div>
 
                 <div class="shadow mt-5" v-for="(empresa,i) in empresas" :key="i">
-                    <v-card width="100%" height="400" elevation="0" class="px-5 pt-3">
+                    <v-card width="100%" height="400" elevation="0" class="px-5 pt-3" v-if="conceptos[i].length > 0">
                         <v-card-title >
                             <v-btn fab @click="push(empresa)" elevation="0">
                                 <v-avatar size="50" class="elevation-5">
@@ -83,6 +83,13 @@
                             </v-btn> 
                             <div style="cursor: pointer" @click="push(empresa)" class="mx-2 font-weight-black subtitle-2 underline">{{empresa.nombre_comercial}}</div>
                         </v-card-title>
+                        <v-card-text>
+                            <v-slide-group show-arrows class="my-2">
+                                <v-slide-item v-for="(concepto,e) in conceptos[i]" :key="e" class="mx-3">
+                                    <CardConceptos :concepto="concepto" />
+                                </v-slide-item>
+                            </v-slide-group>
+                        </v-card-text>
                     </v-card>
                 </div>
             </v-col>
@@ -98,7 +105,7 @@ import Footer from "@/components/footer/Footer";
 import LoaderRect from '@/components/loaders/LoaderRect';
 import {mapState} from 'vuex';
 import Empresa from '@/services/Empresa';
-import Conceptos from '@/services/Conceptos';
+import CardConceptos from '@/components/cards/CardConceptos';
 import variables from '@/services/variables_globales';
 import router from '@/router';
 
@@ -107,10 +114,12 @@ import router from '@/router';
             AppBar,
             Footer,
             LoaderRect,
+            CardConceptos
         },
         data() {
             return {
                 loading:true,
+                bandera:false,
                 empresas:[],
                 conceptos:[],
                 ...variables
@@ -126,11 +135,15 @@ import router from '@/router';
             }
         },
         mounted() {
-            this.getConceptos();
             this.getEmpresas();
         },
         computed: {
             ...mapState(['agregados'])
+        },
+        watch: {
+            agregados(){
+                this.bandera ?  this.revision():this.bandera=true;
+            }
         },
         methods:{
             push(item){
@@ -141,17 +154,29 @@ import router from '@/router';
             getEmpresas(){
                 Empresa().get("/").then((response) => {
                     this.empresas = response.data.data;
+                    response.data.data.filter((a,i)=> this.getConceptos(a.id));
                 }).catch(e => {
                     console.log(e);
                 });
             },
-            getConceptos(){
-                Conceptos().get("/").then((response) => {
-                    this.conceptos = response.data.data;
+            async getConceptos(id){
+                await Empresa().get(`/${id}/conceptos/?limit=10`).then((response) => {
+                    if(response.data !== "This entity is empty"){
+                        response.data.data.filter(a => a.agregado=false);
+                        response.data.data.filter(a => this.agregados.filter(b => a.id == b ? a.agregado=true:null));
+                        this.conceptos.push(response.data.data);
+                    }else{
+                        this.conceptos.push([]);
+                    }
+                    console.log(this.conceptos);
                 }).catch(e => {
                     console.log(e);
                 });
             },
+            revision(){
+                this.conceptos.filter(a => a.filter(b => b.agregado=false));
+                this.conceptos.filter(a => a.filter(b => this.agregados.filter(c => b.id == c ? b.agregado=true:null)));
+            }
         }
     }
 </script>
@@ -175,14 +200,21 @@ import router from '@/router';
     .underline{
         text-decoration: none;
         position: relative;
-
+        /*
+        webkit-transition: all 0.15s ease-out;
+        -moz-transition: all 0.15s ease-out;
+        -o-transition: all 0.15s ease-out;
+        -ms-transition: all 0.15s ease-out;
+        transition: all 0.15s ease-out;
+        */
         &:before {
+            content: "";
             position: absolute;
             width: 100%;
             height: 1px;
             bottom: 0;
             left: 0;
-            background-color: #232323;
+            background-color: #005598;
             visibility: hidden;
             -webkit-transform: scaleX(0);
             transform: scaleX(0);
