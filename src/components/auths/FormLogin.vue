@@ -74,7 +74,7 @@ import router from '@/router';
             }
         },
         methods: {
-            ...mapActions(['setSnackbar','logged']),
+            ...mapActions(['setSnackbar','logged','setModalSesion']),
 
             error(){
                 this.color="#D32F2F"
@@ -89,7 +89,12 @@ import router from '@/router';
                 this.mensaje = "Bienvenido "+nombre+" "+apellido+".";
                 this.setSnackbar(true);
                 this.loading = false;
-                setTimeout(() =>{ router.push('/') },1000);
+                setTimeout(() =>{ 
+                    if(this.$router.name=='login'){
+                        router.push('/');
+                    }
+                    this.setModalSesion(false);
+                },1000);
             },
             login(){
                 this.loading = true;

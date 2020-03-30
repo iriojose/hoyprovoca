@@ -13,6 +13,19 @@
             </v-btn>
         </v-hover>
 
+        <v-hover v-slot:default="{hover}">
+            <v-btn  
+                icon
+                text
+                :elevation="hover ? 5:0"
+                class="mx-4"
+                title="ir a pagar"
+                @click="push(pedido)"
+            >
+                <v-icon>attach_money</v-icon>
+            </v-btn>
+        </v-hover>
+
         <v-spacer></v-spacer>
 
         <v-avatar class="elevation-10" color="#eee" size="50">
@@ -36,6 +49,7 @@ import variables from '@/services/variables_globales';
 import Pedidos from '@/services/Pedidos';
 import {mapActions} from 'vuex';
 import accounting from 'accounting';
+import router from '@/router';
 
     export default {
         props:{
@@ -74,6 +88,9 @@ import accounting from 'accounting';
         methods:{
             ...mapActions(['deletePedidoStore']),
             
+            push(pedido){
+                router.push('/checkout/ALMENDRAS');
+            },
             mensajeSnackbar(color,icon,mensaje){
                 this.color=color;
                 this.icon=icon;

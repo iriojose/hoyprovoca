@@ -15,6 +15,8 @@ export default new Vuex.Store({
         drawer:false,
         snackbar:false,
         carrito:false,
+        modalsesion:false,
+        modalcarrito:false,
         //arrays
         pedidos:[],//guarda los pedidos
         agregados:[],//guarda ids de los conceptos agregados a pedidos
@@ -28,6 +30,12 @@ export default new Vuex.Store({
         //banderas
         SET_DRAWER(state,val){
             val ? state.drawer = true:state.drawer = false;
+        },
+        SET_MODAL_SESION(state,val){
+            val ? state.modalsesion = true:state.modalsesion = false;
+        },
+        SET_MODAL_CARRITO(state,val){
+            val ? state.modalcarrito = true:state.modalcarrito = false;
         },
         SET_CARRITO(state,val){
             val ? state.carrito = true:state.carrito = false;
@@ -80,6 +88,10 @@ export default new Vuex.Store({
             state.agregados.push(val.adm_conceptos_id);
             state.pedidos.filter(a=> a.id == val.rest_pedidos_id ? a.detalles.push(val):null);
         },
+        DELETE_CARRITO(state){
+            state.pedidos = [];
+            state.agregados = [];
+        },
         DELETE_PEDIDO(state,index){//se elimina un pedido
             let aux=[],aux2=[];
             //se guarda los ids de los conceptos en aux[]
@@ -108,6 +120,12 @@ export default new Vuex.Store({
         },
         setCarrito({commit},val){
             commit('SET_CARRITO',val);
+        },
+        setModalCarrito({commit},val){
+            commit('SET_MODAL_CARRITO',val);
+        },
+        setModalSesion({commit},val){
+            commit('SET_MODAL_SESION',val);
         },
         setSnackbar({commit},val){
             commit('SET_SNACKBAR',val);
@@ -147,6 +165,9 @@ export default new Vuex.Store({
         addDetalle({commit},val){
             commit('ADD_DETALLE',val);
             commit('CALCULATOR');
+        },
+        deleteCarrito({commit}){
+            commit('DELETE_CARRITO');
         }
     }
 });

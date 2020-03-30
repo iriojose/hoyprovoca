@@ -7,7 +7,7 @@
                         <v-btn 
                             :disabled="concepto.agregado"
                             :loading="loading" 
-                            @click="getExistencia(concepto)" 
+                            @click="modal(concepto)" 
                             block color="#005598" 
                             class="white--text text-capitalize"
                         >
@@ -35,6 +35,7 @@ import {mapState,mapActions} from 'vuex';
 import Conceptos from '@/services/Conceptos';
 import Pedidos from '@/services/Pedidos';
 import Empresa from '@/services/Empresa';
+import accounting from 'accounting';
 
     export default {
         props:{
@@ -79,7 +80,7 @@ import Empresa from '@/services/Empresa';
             ...mapState(['user','pedidos'])
         },
         methods: {
-            ...mapActions(['addPedidos','addDetalle']),
+            ...mapActions(['addPedidos','addDetalle','setModalSesion']),
 
             mensajeSnackbar(color,texto,icon){
                 this.mensaje = texto;
@@ -87,6 +88,13 @@ import Empresa from '@/services/Empresa';
                 this.icon=icon;
                 this.snackbar=true;
                 this.loading = false;
+            },
+            modal(concepto){
+                if(this.user.loggedIn){
+                    this.getExistencia(concepto);
+                }else{
+                    this.setModalSesion(true);
+                }
             },
             getExistencia(item){
                 this.loading = true;

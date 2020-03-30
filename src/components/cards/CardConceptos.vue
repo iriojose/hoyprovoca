@@ -7,7 +7,7 @@
                         <v-btn 
                             :disabled="concepto.agregado"
                             :loading="loading" 
-                            @click="getExistencia(concepto)" 
+                            @click="modal(concepto)" 
                             block color="#005598" 
                             class="white--text text-capitalize"
                         >
@@ -80,7 +80,7 @@ import accounting from 'accounting';
             ...mapState(['user','pedidos'])
         },
         methods: {
-            ...mapActions(['addPedidos','addDetalle']),
+            ...mapActions(['addPedidos','addDetalle','setModalSesion']),
 
             mensajeSnackbar(color,texto,icon){
                 this.mensaje = texto;
@@ -88,6 +88,13 @@ import accounting from 'accounting';
                 this.icon=icon;
                 this.snackbar=true;
                 this.loading = false;
+            },
+            modal(concepto){
+                if(this.user.loggedIn){
+                    this.getExistencia(concepto);
+                }else{
+                    this.setModalSesion(true);
+                }
             },
             getExistencia(item){
                 this.loading = true;

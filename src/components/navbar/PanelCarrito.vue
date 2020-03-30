@@ -8,7 +8,7 @@
         width="500"
         color="#f5f5f5"
     >
-        <v-toolbar width="100%" elevation="1">
+        <v-toolbar width="100%" elevation="1" v-if="user.loggedIn">
             <v-toolbar-title>HoyProvoca</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-hover v-slot:default="{hover}">
@@ -40,15 +40,22 @@
         
         <v-footer absolute width="100%" height="60" color="#fff" class="px-12">
             <v-divider></v-divider>
-            <v-btn block rounded color="#005598" class="white--text text-capitalize" :disabled="pedidos.length == 0 ? true:false">
+            <v-btn 
+                block rounded color="#005598" @click="modal"
+                class="white--text text-capitalize" 
+                :disabled="pedidos.length == 0 ? true:false"
+            >
                 Vaciar carrito
             </v-btn>
         </v-footer>
+
+        <VaciarCarrito />
     </v-navigation-drawer>
 </template>
 
 <script>
 import {mapActions,mapState} from 'vuex';
+import VaciarCarrito from '@/components/dialogs/VaciarCarrito';
 import EncabezadoPedido from './EncabezadoPedido';
 import DetallesPedidos from './DetallesPedidos';
 import Usuario from '@/services/Usuario';
@@ -57,6 +64,7 @@ import Usuario from '@/services/Usuario';
         components:{
             EncabezadoPedido,
             DetallesPedidos,
+            VaciarCarrito
         },
         computed: {
             ...mapState(['pedidos','carrito','user','totalPedidos']),
@@ -66,14 +74,24 @@ import Usuario from '@/services/Usuario';
                 set(val){ this.setCarrito(val)}
             }
         },
+        watch: {
+            user(){
+                this.getPedidosUsuario();
+            }
+        },
         mounted() {
-            this.getPedidosUsuario();
+            if(this.user.loggedIn){
+                this.getPedidosUsuario();
+            }
         },
         methods: {
-            ...mapActions(['setCarrito','setPedidos']),
+            ...mapActions(['setCarrito','setPedidos','setModalCarrito']),
 
             change(){
                 this.carrito ?  this.setCarrito(false):this.setCarrito(true);
+            },
+            modal(){
+                this.setModalCarrito(true);
             },
             getPedidosUsuario(){
                 Usuario().get(`/${this.user.data.id}/pedidos`).then((response) => {

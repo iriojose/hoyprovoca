@@ -23,7 +23,8 @@
                 </v-col>
             </v-row>
         </v-slide-x-transition>
-            
+        
+        <ModalSesion />
         <Footer />
     </div>
 </template>
@@ -36,12 +37,14 @@ import SubGrupos from '@/services/SubGrupos';
 import {mapState} from 'vuex';
 import LoaderRect from '@/components/loaders/LoaderRect';
 import GruposData from '@/components/vistaGrupos/GruposData';
+import ModalSesion from '@/components/dialogs/ModalSesion';
 
     export default {
         components:{
             AppBar,
             Footer,
             LoaderRect,
+            ModalSesion,
             GruposData
         },
         data() {

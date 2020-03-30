@@ -22,7 +22,8 @@
                 <router-view/>
             </v-col>
         </v-row>
-
+        
+        <ModalSesion />
         <Footer class="margen" />
     </div>
 </template>
@@ -35,6 +36,7 @@ import Grupos from '@/services/Grupos';
 import LoaderRect from '@/components/loaders/LoaderRect';
 import PanelCategorias from '@/components/vistaAliados/PanelCategorias';
 import DataAliados from '@/components/vistaAliados/DataAliados';
+import ModalSesion from '@/components/dialogs/ModalSesion';
 import {mapState} from 'vuex';
 
     export default {
@@ -42,6 +44,7 @@ import {mapState} from 'vuex';
             AppBar,
             Footer,
             LoaderRect,
+            ModalSesion,
             PanelCategorias,
             DataAliados
         },
@@ -113,7 +116,7 @@ import {mapState} from 'vuex';
                 });
             },
             getConceptos(id){
-                Grupos().get(`/${id}/conceptos/?adm_empresa_id=${this.empresa.id}&limit=10`).then((response) => {
+                Grupos().get(`/${id}/conceptos/?limit=10`).then((response) => {
                     response.data.data.filter(a => a.agregado=false);
                     response.data.data.filter(a => this.agregados.filter(b => a.id == b ? a.agregado=true:null));
                     this.conceptos.push(response.data.data);

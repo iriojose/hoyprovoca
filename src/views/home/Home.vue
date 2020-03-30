@@ -2,9 +2,20 @@
     <div>
         <AppBar />
         <Banner />
-        <MasVendidos :conceptos="conceptos" />
-        <CategoriasSugeridas :grupos="grupos"/>
+
+        <v-scroll-x-transition>
+            <MasVendidos :conceptos="conceptos" v-show="!loadingC" />
+        </v-scroll-x-transition>
+        <SkeletonCard v-if="loadingC" :width="200" :height="250" />
+
+         <v-scroll-x-transition>
+            <CategoriasSugeridas :grupos="grupos" v-show="!loadingG"/>
+        </v-scroll-x-transition>
+        <SkeletonCard v-if="loadingG" :width="300" :height="200" />
+        
         <EmpresasSugeridas :empresas="empresas" />
+
+        <ModalSesion />
         <Footer />
     </div>
 </template>
@@ -15,20 +26,26 @@ import Conceptos from '@/services/Conceptos';
 import Empresa from '@/services/Empresa';
 import Grupos from '@/services/Grupos';
 import AppBar from '@/components/navbar/AppBar';
+import SkeletonCard from '@/components/loaders/SkeletonCard';
 import Banner from '@/components/vistaHome/Banner'
+import Banner2 from '@/components/vistaHome/Banner2'
 import MasVendidos from '@/components/vistaHome/MasVendidos';
 import EmpresasSugeridas from '@/components/vistaHome/EmpresasSugeridas';
 import CategoriasSugeridas from '@/components/vistaHome/CategoriasSugeridas';
 import {mapState} from 'vuex';
+import ModalSesion from '@/components/dialogs/ModalSesion';
 
     export default {
         components:{
             AppBar,
             Banner,
+            Banner2,
             Footer,
             MasVendidos,
             EmpresasSugeridas,
-            CategoriasSugeridas
+            CategoriasSugeridas,
+            SkeletonCard,
+            ModalSesion
         },
         head:{
             title(){
@@ -44,7 +61,9 @@ import {mapState} from 'vuex';
                 conceptos:[],
                 empresas:[],
                 grupos:[],
-                bandera:false
+                bandera:false,
+                loadingC:true,
+                loadingG:true
             }
         },
         computed:{
@@ -65,6 +84,7 @@ import {mapState} from 'vuex';
                 Conceptos().get("/mostsold/?limit=10").then((response) => {
                     this.conceptos = response.data.data;
                     this.revision();
+                    this.loadingC = false;
                 }).catch(e => {
                     console.log(e);
                 });
@@ -77,8 +97,9 @@ import {mapState} from 'vuex';
                 });
             },
             getGrupos(){
-                Grupos().get('/?after-id=2&before-id=11').then((response) => {
+                Grupos().get('/mostsold').then((response) => {
                     this.grupos = response.data.data;
+                    this.loadingG = false;
                 }).catch(e => {
                     console.log(e);
                 });
