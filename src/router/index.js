@@ -4,32 +4,38 @@ import store from '@/store';
 
 import Home from "@/views/home/Home";
 
+//errores
 import Error404 from "@/views/mistakes/Error404";
 import Error403 from "@/views/mistakes/Error403";
 
+//sesiones
 import Login from '@/views/auth/Login';
 import Register from '@/views/auth/Register';
 import Forgot from '@/views/auth/Forgot';
 import ResetPassword from '@/views/auth/ResetPassword';
 
+//vistas
 import Search from '@/views/search/Search';
 import GrupoDetalle from '@/views/grupos/GrupoDetalle';
+import Grupos from '@/views/grupos/Grupos';
 import AliadoDetalle from '@/views/aliados/AliadoDetalle';
 import AliadoGrupo from '@/views/aliados/AliadoGrupo';
 
+//perfil
 import Account from '@/views/account/Account';
 import Profile from '@/views/account/Profile';
 import Ayuda from '@/views/account/Ayuda';
 import Notificaciones from '@/views/account/Notificaciones';
 import Ordenes from '@/views/account/Ordenes';
 
+//checkout
 import Checkout from '@/views/checkout/Checkout';
 
 Vue.use(Router);
 
 const router = new Router({
     mode: "history",
-    base:'/hoyProvoca',
+    base:'/a',
     routes: [
         {
             path: "/",
@@ -67,6 +73,14 @@ const router = new Router({
             path: "/reset",
             name:"resetPassword",
             component:ResetPassword,
+            meta:{
+                auth:false
+            }
+        },
+        {
+            path: "/grupos/",
+            name:"grupos",
+            component:Grupos,
             meta:{
                 auth:false
             }

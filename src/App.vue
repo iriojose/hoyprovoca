@@ -19,27 +19,28 @@
     .fade-enter, .fade-leave-to{
         opacity: 0;
     }
-    body::-webkit-scrollbar {
-        width: 8px;     
-        height: 8px;    
+    ::-webkit-scrollbar {
+        width: 8px;     /* Tamaño del scroll en vertical */
+        height: 8px;    /* Tamaño del scroll en horizontal */
     }
-    body::-webkit-scrollbar-thumb {
+    ::-webkit-scrollbar-thumb {
         background: #ccc;
-        border-radius: 4px;
+        border-radius: 12px;
     }
-    body::-webkit-scrollbar-thumb:hover {
+    ::-webkit-scrollbar-thumb:hover {
         background: #b3b3b3;
         box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
     }
-    body::-webkit-scrollbar-thumb:active {
+    ::-webkit-scrollbar-thumb:active {
         background-color: #999999;
     }
-    body::-webkit-scrollbar-track {
-        background: #e1e1e1;
-        border-radius: 4px;
+    ::-webkit-scrollbar-track {
+        background: #fff;
+        border-radius: 12px;
     }
-    body::-webkit-scrollbar-track:hover,
-    body::-webkit-scrollbar-track:active {
-        background: #d4d4d4;
+    ::-webkit-scrollbar-track:hover,
+    ::-webkit-scrollbar-track:active {
+        background: #fff;
     }
+    
 </style>

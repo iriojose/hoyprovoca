@@ -90,7 +90,7 @@ import router from '@/router';
                 this.setSnackbar(true);
                 this.loading = false;
                 setTimeout(() =>{ 
-                    if(this.$router.name=='login'){
+                    if(this.$route.name=='login'){
                         router.push('/');
                     }
                     this.setModalSesion(false);

@@ -1,25 +1,30 @@
 <template>
-    <v-navigation-drawer 
-        app v-model="drawers" temporary hide-overlay width="270"
-        :style="$vuetify.breakpoint.smAndDown ? 'margin-top:106px;':'margin-top:64px'"
-    >
-        <LoaderRect v-if="loading" />
+    <div>
+        <v-navigation-drawer 
+            app v-model="drawers" temporary hide-overlay width="270"
+            :style="$vuetify.breakpoint.smAndDown ? 'margin-top:106px;':'margin-top:64px'"
+        >
+            <LoaderRect v-if="loading" />
 
-        <v-list v-else>
-            <div class="text-center font-weight-bold my-2">Categorías</div>
-            <v-divider></v-divider>
-            <v-list-item 
-                link 
-                v-for="item in grupos" 
-                :key="item.id"
-                @click="push(item)"
-            >
-                <v-list-item-content>
-                    <v-list-item-title class="text-center text-lowercase">{{ item.nombre }}</v-list-item-title>
-                </v-list-item-content>
-            </v-list-item>
-        </v-list>
-    </v-navigation-drawer>
+            <v-list v-else >
+                <div class="text-center font-weight-bold my-2">Categorías</div>
+                <v-divider></v-divider>
+
+                <div v-for="item in grupos" :key="item.id" class="mx-2">
+                    <v-hover v-slot:default="{hover}">
+                        <v-list-item @click="push(item)" :class="hover ? 'shadow':null">
+                            <v-list-item-avatar>
+                                <v-img :src="image+item.imagen"></v-img>
+                            </v-list-item-avatar>
+                            <v-list-item-content>
+                                <v-list-item-title class="text-lowercase font-weight-bold">{{ item.nombre }}</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                    </v-hover>
+                </div>
+            </v-list>
+        </v-navigation-drawer>
+    </div>
 </template>
 
 <script>
@@ -27,6 +32,7 @@ import {mapState,mapActions} from 'vuex';
 import Grupos from '@/services/Grupos';
 import router from '@/router';
 import LoaderRect from '@/components/loaders/LoaderRect';
+import variables from '@/services/variables_globales';
 
     export default {
         components:{
@@ -35,7 +41,8 @@ import LoaderRect from '@/components/loaders/LoaderRect';
         data() {
             return {
                 grupos:[],
-                loading:true
+                loading:true,
+                ...variables
             }
         },
         mounted() {
@@ -62,7 +69,7 @@ import LoaderRect from '@/components/loaders/LoaderRect';
                 router.push({name:'grupoDetalle', params:{text:nombre,id:item.id}});
             },
             getGrupos(){
-                Grupos().get("/?limit=50").then((response) => {
+                Grupos().get("/mostsold").then((response) => {
                     this.grupos = response.data.data;
                     this.loading = false;
                 }).catch(e => {
@@ -72,3 +79,16 @@ import LoaderRect from '@/components/loaders/LoaderRect';
         },
     }
 </script>
+
+<style lang="css" scope>
+    .shadow{
+        box-shadow: 0px 0px 7px 0px rgba(153,153,153,1);
+    }
+    .move{
+        position: absolute;
+        padding-left: 10px;
+        transition-property:left;
+        transition-duration: 1s;
+        transition-delay: 0.4s;
+    }
+</style>

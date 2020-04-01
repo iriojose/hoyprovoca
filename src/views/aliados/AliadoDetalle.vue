@@ -57,7 +57,9 @@ import {mapState} from 'vuex';
                 loading:true,
                 error:false,
                 bandera:false,
-                conceptos:[],
+                conceptos:[
+                    {id:1,id:2,id:3,id:4,id:5,id:6,id:7,id:8,id:9,id:10}
+                ],
                 grupos:[],
                 empresa:{}
             }
@@ -94,20 +96,19 @@ import {mapState} from 'vuex';
             }
         },
         methods: {
-            getEmpresa(text){
-                Empresa().get(`/?nombre_comercial=${text}`).then((response) => {
+            async getEmpresa(text){
+                await Empresa().get(`/?nombre_comercial=${text}`).then((response) => {
                     this.empresa = response.data.data[0];
                     this.getGrupos(this.empresa.id);
                 }).catch(e => {
                     console.log(e);
                 });
             },
-            getGrupos(id){
-                Empresa().get(`/${id}/grupos`).then((response) => {
+            async getGrupos(id){
+                await Empresa().get(`/${id}/grupos`).then((response) => {
                     this.grupos = response.data.data;
                     if(!this.$route.params.text2){
-                        this.grupos.filter((a,i) => i > 9 ? null:this.getConceptos(a.id));
-                        this.loading = false;
+                        this.grupos.filter((a,i) => i > 9 ? null:this.getConceptos(a.id,i));
                     }else{
                         this.loading = false;
                     }
@@ -115,11 +116,12 @@ import {mapState} from 'vuex';
                     console.log(e);
                 });
             },
-            getConceptos(id){
-                Grupos().get(`/${id}/conceptos/?limit=10`).then((response) => {
+            async getConceptos(id,i){
+                await Grupos().get(`/${id}/conceptos/?limit=10`).then((response) => {
                     response.data.data.filter(a => a.agregado=false);
                     response.data.data.filter(a => this.agregados.filter(b => a.id == b ? a.agregado=true:null));
-                    this.conceptos.push(response.data.data);
+                    this.conceptos[i] = response.data.data;
+                    i == 9 ?    this.loading = false:null;
                 }).catch(e => {
                     console.log(e);
                 });
@@ -145,7 +147,6 @@ import {mapState} from 'vuex';
     .shadow{
         box-shadow: 0px 6px 5px -4px rgba(35,35,35,0.4);
     }
-    
     .fix{
         position:fixed;
         width: 20%;

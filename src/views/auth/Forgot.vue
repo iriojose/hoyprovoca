@@ -4,9 +4,9 @@
             <v-img contain width="100" height="30" :src="require('@/assets/logoaftim2.png')"></v-img>
         </v-row>
 
-        <v-row justify="center" align="center">
+        <v-row justify="center" align="center" :class="$vuetify.breakpoint.smAndDown ? 'mx-5':null">
             <v-col cols="12" md="4" lg="4" class="hidden-sm-and-down">
-                <v-img contain width="100%" height="400" :src="require('@/assets/forgot.svg')"></v-img>
+                <v-img contain width="100%" height="450" :src="require('@/assets/forgot.svg')"></v-img>
             </v-col>
 
             <v-col cols="12" md="4" sm="12">
@@ -14,20 +14,32 @@
                     <div class="text-center my-5 font-weight-black subtitle-1">¿No puede iniciar sesión?</div>
 
                     <v-card-text>
-                        <div class="font-weight-black body-2 mb-2">Le enviaremos un enlace de recuperación</div>
                         <v-form v-model="valid" @submit.prevent>
+                            <div class="font-weight-black body-2 mb-2">Le enviaremos un enlace de recuperación</div>
                             <v-text-field
                                 label="Introduzca su correo electrónico"
                                 single-line
                                 outlined 
                                 dense
+                                :disabled="send"
                                 color="#005598"
                                 v-model="correo"
                                 type="text"
                                 :rules="[required('Correo Electrónico')]"
                             />
+                            <div v-if="send" class="font-weight-black body-2 mb-2">Ingresar codigo de recuperación</div>
+                            <v-text-field
+                                label="Codigo"
+                                single-line
+                                outlined 
+                                dense
+                                color="#005598"
+                                v-model="codigo"
+                                type="text"
+                                :rules="[required('Codigo')]"
+                            />
                             <v-hover v-slot:default="{hover}">
-                                <v-btn 
+                                <v-btn v-if="!send"
                                     block 
                                     type="submit" 
                                     class="text-capitalize mt-5"
@@ -38,13 +50,27 @@
                                     :elevation="hover ? 5:0"
                                     @click="sendMail"
                                 >
-                                    Enviar enlace de recuperación
+                                   <div> Enviar enlace de recuperación</div>
+                                </v-btn>
+
+                                <v-btn v-else
+                                    block 
+                                    type="submit" 
+                                    class="text-capitalize mt-5"
+                                    :disabled="!valid || loading" 
+                                    color="#005598" 
+                                    :dark="valid && !loading"
+                                    :loading="loading"
+                                    :elevation="hover ? 5:0"
+                                    @click="validCode"
+                                >
+                                   Validar codigo
                                 </v-btn>
                             </v-hover>
                         </v-form>
                     </v-card-text>
 
-                    <div class="mx-10 my-5">
+                    <!--div class="mx-10 my-5">
                         <v-divider></v-divider>
                     </div>
 
@@ -54,7 +80,7 @@
                                 Regresar al incio de sesión
                             </a>
                         </div>
-                    </v-hover>
+                    </v-hover-->
                 </v-card>
             </v-col>
             <v-col cols="12" md="4" lg="4" class="hidden-sm-and-down"></v-col>
@@ -109,8 +135,7 @@ import router from '@/router';
             },
             sendMail(){
                 this.loading = true;
-                Auth().post("/sendmail",{data:{mail:this.correo}}).then((response) => {
-                    console.log(response);
+                Auth().post("/sendmail",{data:{user:this.correo}}).then((response) => {
                     this.mensajeSnackbar("#388E3C","Codigo enviado exitosamente.","done");
                     this.send = true;
                 }).catch(e => {
@@ -120,7 +145,7 @@ import router from '@/router';
             },
             validCode(){
                 this.loading = true;
-                Auth().post("/validcode",{data:{mail:this.correo,hash:this.codigo}}).then((response) => {
+                Auth().post("/validcode",{data:{user:this.correo,hash:this.codigo}}).then((response) => {
                     console.log(response);
                     this.mensajeSnackbar("#388E3C","Codigo validado exitosamente.","done");
                     this.push2();

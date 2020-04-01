@@ -51,7 +51,3 @@ import router from '@/router';
         }
     }
 </script>
-
-<style lang="scss" scoped>
-
-</style>

@@ -9,7 +9,7 @@
                     <CardConceptos :concepto="concepto" />
                 </v-slide-item>
 
-                <v-slide-item v-if="arrays.length > 9" class="mx-5" >
+                <v-slide-item class="mx-5">
                     <v-card elevation="0" height="250" width="150">
                         <v-row justify="center" align="center" class="fill-height">
                             <div>

@@ -21,7 +21,7 @@
                             <v-img :src="image+user.data.fotografia"></v-img>
                         </v-list-item-avatar>
                         <v-list-item-content>
-                            <v-list-item-title class="color" v-text="user.data.nombre+' '+user.data.apellido"></v-list-item-title>
+                            <v-list-item-title v-text="user.data.nombre+' '+user.data.apellido"></v-list-item-title>
                             <v-list-item-subtitle>Cliente</v-list-item-subtitle>
                         </v-list-item-content>
                     </v-list-item>

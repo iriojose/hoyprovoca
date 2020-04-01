@@ -8,7 +8,9 @@
         </v-scroll-x-transition>
         <SkeletonCard v-if="loadingC" :width="200" :height="250" />
 
-         <v-scroll-x-transition>
+        <Banner2 />
+        
+        <v-scroll-x-transition>
             <CategoriasSugeridas :grupos="grupos" v-show="!loadingG"/>
         </v-scroll-x-transition>
         <SkeletonCard v-if="loadingG" :width="300" :height="200" />

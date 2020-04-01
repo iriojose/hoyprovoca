@@ -6,13 +6,18 @@
         </v-card-title>
         <v-divider></v-divider>
         <v-card-text>
-            <v-list dense>
-                <v-list-item @click="push(grupo)" dense v-for="grupo in grupos" :key="grupo.id">
+            <v-list dense rounded>
+                <v-list-item 
+                    :to="'/aliados/'+empresa.nombre_comercial+'/'+grupo.nombre" 
+                    dense v-for="grupo in grupos" :key="grupo.id" active-class="shadow white--text color"
+                >
                     <v-list-item-content>
                         {{grupo.nombre}}
                     </v-list-item-content>
                     <v-list-item-icon>
-                        <v-icon small color="#005598">chevron_right</v-icon>
+                        <v-icon :dark="$route.params.text2 == grupo.nombre ? true:false">
+                            chevron_right
+                        </v-icon>
                     </v-list-item-icon>
                 </v-list-item>
             </v-list>
@@ -22,7 +27,6 @@
 
 <script>
 import variables from '@/services/variables_globales';
-import router from '@/router';
 
     export default {
         props:{
@@ -40,10 +44,14 @@ import router from '@/router';
                 ...variables
             }
         },
-        methods: {
-            push(grupo){
-                router.push({name:'aliadoGrupo',params:{text2:grupo.nombre}});
-            }
-        },
     }
 </script>
+
+<style lang="css" scope>    
+    .color{
+        background: #17468b;
+    }
+    .shadow{
+        box-shadow: 1px 1px 9px 1px rgba(153,153,153,0.5);
+    }
+</style>
