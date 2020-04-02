@@ -1,12 +1,12 @@
 <template>
     <div>
-        <v-toolbar elevation="2">
+        <v-toolbar elevation="2" color="#005598">
             <v-toolbar-title>
-                <v-img contain height="150" width="100" src="@/assets/logoaftim2.png"></v-img>
+                <v-img contain height="150" width="100" src="@/assets/logoaftim.png"></v-img>
             </v-toolbar-title>
             <v-spacer></v-spacer>
             <v-hover v-slot:default="{hover}">
-                <v-btn :elevation="hover ? 2:0" color="#232323" dark 
+                <v-btn :elevation="hover ? 2:0" color="#fff"
                     class="text-capitalize body-2 font-weight-bold" to="/"
                 >
                     Seguir comprando
@@ -30,13 +30,11 @@
                             <v-list-item-avatar>
                                 <v-img :src="image+detalle.imagen"></v-img>
                             </v-list-item-avatar>
-                            <v-list-item-content></v-list-item-content>
-                            <v-list-item-content>
-                                Cantidad:
+
+                            <v-list-item-content class="mx-4">
+                                Cantidad: {{Number.parseInt(detalle.cantidad)}}
                             </v-list-item-content>
-                            <v-list-item-content>
-                                {{Number.parseInt(detalle.cantidad)}}
-                            </v-list-item-content>
+
                             <v-list-item-content>
                                 {{sales[i]}}
                             </v-list-item-content>
@@ -64,6 +62,7 @@ import {mapState} from 'vuex';
 import variables from '@/services/variables_globales';
 import Empresa from '@/services/Empresa';
 import Usuario from '@/services/Usuario';
+import Pedidos from '@/services/Pedidos';
 
     export default {
         data() {
@@ -71,7 +70,7 @@ import Usuario from '@/services/Usuario';
                 ...variables,
                 pedido:{},
                 empresa:{},
-                sales:[]
+                sales:[],
             }
         },
         mounted() {
@@ -107,7 +106,8 @@ import Usuario from '@/services/Usuario';
                 }).catch(e => {
                     console.log(e);
                 });
-            }
+            },
+
         }
     }
 </script>

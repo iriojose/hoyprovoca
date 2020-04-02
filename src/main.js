@@ -10,7 +10,7 @@ import "roboto-fontface/css/roboto/roboto-fontface.css";
 import "@mdi/font/css/materialdesignicons.css";
 import Auth from '@/services/Auth';
 
-Vue.config.productionTip = false;
+Vue.config.productionTip = true;
 let token = window.localStorage.getItem('token');
 
 Auth().post("/sesion",{token:token}).then((response) => {

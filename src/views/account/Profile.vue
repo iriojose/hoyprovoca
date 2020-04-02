@@ -11,7 +11,7 @@
                     dense
                     color="#005598"
                     label="Nombre(s)"
-                    v-model="user.data.nombre"
+                    v-model="data.nombre"
                     type="text"
                 />
             </v-col>
@@ -23,7 +23,7 @@
                     dense
                     color="#005598"
                     label="Apellido(s)"
-                    v-model="user.data.apellido"
+                    v-model="data.apellido"
                     type="text"
                 />
             </v-col>
@@ -37,7 +37,7 @@
                     append-icon="lock"
                     disabled
                     label="Correo electrónico"
-                    v-model="user.data.email"
+                    v-model="data.email"
                     type="text"
                 />
             </v-col>
@@ -51,7 +51,7 @@
                     append-icon="lock"
                     disabled
                     label="Usuario"
-                    v-model="user.data.login"
+                    v-model="data.login"
                     type="text"
                 />
             </v-col>
@@ -100,16 +100,16 @@
             </v-col>
             <v-col cols="12" md="12" sm="12">
                 <v-card-actions>
-                    <v-spacer></v-spacer>
                     <v-hover v-slot:default="{hover}">
                         <v-btn 
                             color="#005598" dark :elevation="hover ? 2:0" 
                             :loading="loading" @click="updateUsuario(user.data.id)"
-                            class="text-capitalize body-2" rounded disabled
+                            class="text-capitalize body-2" :disabled="change ? true:false"
                         >
                             Atualizar datos
                         </v-btn>
                     </v-hover>
+                    <v-spacer></v-spacer>
                 </v-card-actions>
             </v-col>
         </v-row>
@@ -132,13 +132,24 @@ import Snackbar from '@/components/snackbars/Snackbar';
                 mensaje:'',
                 color:'',
                 icon:'',
+                change:false,
                 loading:false,
                 telefono:null,
+                data:{},
                 date: new Date().toISOString().substr(0, 10),
             }
         },
         computed:{
             ...mapState(['user'])
+        },
+        watch: {
+            data(){
+                this.change = false;
+            },
+        },
+        mounted() {
+            this.data = Object.assign({},this.user.data);
+            this.date = this.data.fecha_nac.substr(0,10);
         },
         methods:{
             ...mapActions(['setSnackbar']),
@@ -151,14 +162,13 @@ import Snackbar from '@/components/snackbars/Snackbar';
                 this.loading = false;
             },
             updateUsuario(id){
-                let data ={
-                    nombre:this.user.data.nombre,
-                    apellido: this.user.data.apellido,
-                    fecha_nac:this.date
-                }
                 this.loading = true;
-                Usuario().post(`/${id}`,{data:data}).then((response) => {
+                this.data.fecha_nac = this.date;
+
+                Usuario().post(`/${id}`,{data:this.data}).then((response) => {
                     this.mensajeSnackbar('#388E3C','done','Actualizado extisamente.');
+                    this.user.data = this.data;
+                    this.change = false;
                 }).catch(e => {
                     console.log(e);
                     this.mensajeSnackbar('#D32F2F','error','Opsss, Error al intentar actualizar.');

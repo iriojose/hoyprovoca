@@ -1,7 +1,6 @@
 <template>
     <div>
         <!--div v-if="error">
-            <AppBar />
             <div :class="$vuetify.breakpoint.smAndDown ? 'text-center margen':'text-center mt-10'">
                 <strong class="grey--text">No se encontraron resultados...</strong>
                 <v-row justify="center" align="center" class="fill-height">
@@ -10,7 +9,6 @@
             </div>
             <Footer />
         </div-->
-        <AppBar />
 
         <v-card v-if="loading" elevation="0" color="#eee" width="100%" height="500">
             <LoaderRect />
@@ -32,7 +30,6 @@
 </template>
 
 <script>
-import AppBar from "@/components/navbar/AppBar";
 import Footer from "@/components/footer/Footer";
 import Grupos from '@/services/Grupos';
 import SubGrupos from '@/services/SubGrupos';
@@ -43,7 +40,6 @@ import ModalSesion from '@/components/dialogs/ModalSesion';
 
     export default {
         components:{
-            AppBar,
             Footer,
             LoaderRect,
             ModalSesion,
@@ -97,20 +93,21 @@ import ModalSesion from '@/components/dialogs/ModalSesion';
                 this.conceptos = [];
                 await Grupos().get(`/${id}/subgrupos`).then((response) => {
                     this.subgrupos = response.data.data;
-                    this.subgrupos.filter(a => this.getSubgruposConceptos(a.id));
-                    this.loading = false;
+                    this.subgrupos.filter((a,i)=> this.getSubgruposConceptos(a.id,i));
                 }).catch(e => { 
                     console.log(e);
                     this.error = true;
                 });
             },
-            async getSubgruposConceptos(id){
+            async getSubgruposConceptos(id,i){
                 await SubGrupos().get(`/${id}/conceptos/?limit=10`).then((response) => {
                     if(!response.data == ""){
+                        i > 9 ? this.loading = false:null;
                         response.data.data.filter(a => a.agregado=false);
                         response.data.data.filter(a => this.agregados.filter(b => a.id == b ? a.agregado=true:null));
                         this.conceptos.push(response.data.data);
                     }else{
+                        i > 9 ? this.loading = false:null;
                         this.conceptos.push([]);
                     }
                 }).catch(e => {

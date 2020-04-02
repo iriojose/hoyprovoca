@@ -1,7 +1,5 @@
 <template>
     <div>
-        <AppBar />
-
         <!--v-card v-if="loading" elevation="0" color="#eee" width="100%" height="500">
             <LoaderRect />
         </v-card -->
@@ -100,7 +98,6 @@
 </template>
 
 <script>
-import AppBar from "@/components/navbar/AppBar";
 import Footer from "@/components/footer/Footer";
 import LoaderRect from '@/components/loaders/LoaderRect';
 import {mapState} from 'vuex';
@@ -111,7 +108,6 @@ import router from '@/router';
 
     export default {
         components:{
-            AppBar,
             Footer,
             LoaderRect,
             CardConceptos

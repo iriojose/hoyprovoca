@@ -14,7 +14,7 @@
                 </v-avatar>
             </template>
             <!-- lista de opciones-->
-            <v-card id="cono">
+            <v-card class="customized">
                 <v-list width="250" elevation="0">
                     <v-list-item class="border">
                         <v-list-item-avatar>
@@ -81,3 +81,43 @@ import router from '@/router';
         },
     }
 </script>
+
+<style lang="scss">
+    .customized {
+        margin-top: 10px;
+    }
+    .customized {
+        border: 1px solid #d5cec8;
+        display: block;
+        background: white;
+    }
+    .customized:before,
+    .customized:after {
+        content: " ";
+        height: 0;
+        position: absolute;
+        width: 0;
+        border: 11px solid transparent;
+        /* arrow size */
+        right: 1%;
+        transform: translateX(-100%);
+    }
+    .customized:before {
+        border-bottom: 12px solid rgba(0, 0, 0, 0.1);
+        border-right: 12px solid rgba(0, 0, 0, 0);
+        border-top: 12px solid rgba(0, 0, 0, 0);
+        content: "";
+        display: inline-block;
+        position: absolute;
+        top: -24px;
+    }
+    .customized:after {
+        border-bottom: 12px solid #fff;
+        border-right: 12px solid rgba(0, 0, 0, 0);
+        border-top: 12px solid rgba(0, 0, 0, 0);
+        content: "";
+        display: inline-block;
+        position: absolute;
+        top: -22px;
+    }
+</style>

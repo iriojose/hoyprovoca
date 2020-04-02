@@ -52,9 +52,11 @@ export default new Vuex.Store({
 
         //autenticacion
         SET_LOGGED(state,val){//logea al usuario
-            state.user.loggedIn = true;
-            state.user.token= val.token;
-            state.user.data = val.data;
+            let data = {};
+            data.loggedIn = true;
+            data.token = val.token;
+            data.data = val.data;
+            state.user = data;
             window.localStorage.setItem('token',val.token);
         },
         LOGOUT(state){//cierra la sesion

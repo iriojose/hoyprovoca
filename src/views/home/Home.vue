@@ -1,6 +1,5 @@
 <template>
     <div>
-        <AppBar />
         <Banner />
 
         <v-scroll-x-transition>
@@ -27,7 +26,6 @@ import Footer from '@/components/footer/Footer';
 import Conceptos from '@/services/Conceptos';
 import Empresa from '@/services/Empresa';
 import Grupos from '@/services/Grupos';
-import AppBar from '@/components/navbar/AppBar';
 import SkeletonCard from '@/components/loaders/SkeletonCard';
 import Banner from '@/components/vistaHome/Banner'
 import Banner2 from '@/components/vistaHome/Banner2'
@@ -39,7 +37,6 @@ import ModalSesion from '@/components/dialogs/ModalSesion';
 
     export default {
         components:{
-            AppBar,
             Banner,
             Banner2,
             Footer,

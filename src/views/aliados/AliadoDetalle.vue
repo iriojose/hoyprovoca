@@ -1,7 +1,5 @@
 <template>
     <div>
-        <AppBar />
-
         <v-row :class="$vuetify.breakpoint.smAndDown ? 'margen-movil mx-5':'margen-top mx-10'">
             <v-col cols="12" sm="12" md="3" >
                 <PanelCategorias :grupos="grupos" :empresa="empresa" />
@@ -29,7 +27,6 @@
 </template>
 
 <script>
-import AppBar from "@/components/navbar/AppBar";
 import Footer from "@/components/footer/Footer";
 import Empresa from '@/services/Empresa';
 import Grupos from '@/services/Grupos';
@@ -41,7 +38,6 @@ import {mapState} from 'vuex';
 
     export default {
         components:{
-            AppBar,
             Footer,
             LoaderRect,
             ModalSesion,
@@ -96,16 +92,16 @@ import {mapState} from 'vuex';
             }
         },
         methods: {
-            async getEmpresa(text){
-                await Empresa().get(`/?nombre_comercial=${text}`).then((response) => {
+            getEmpresa(text){
+                Empresa().get(`/?nombre_comercial=${text}`).then((response) => {
                     this.empresa = response.data.data[0];
                     this.getGrupos(this.empresa.id);
                 }).catch(e => {
                     console.log(e);
                 });
             },
-            async getGrupos(id){
-                await Empresa().get(`/${id}/grupos`).then((response) => {
+            getGrupos(id){
+                Empresa().get(`/${id}/grupos`).then((response) => {
                     this.grupos = response.data.data;
                     if(!this.$route.params.text2){
                         this.grupos.filter((a,i) => i > 9 ? null:this.getConceptos(a.id,i));
@@ -116,8 +112,8 @@ import {mapState} from 'vuex';
                     console.log(e);
                 });
             },
-            async getConceptos(id,i){
-                await Grupos().get(`/${id}/conceptos/?limit=10`).then((response) => {
+            getConceptos(id,i){
+                Grupos().get(`/${id}/conceptos/?limit=10`).then((response) => {
                     response.data.data.filter(a => a.agregado=false);
                     response.data.data.filter(a => this.agregados.filter(b => a.id == b ? a.agregado=true:null));
                     this.conceptos[i] = response.data.data;

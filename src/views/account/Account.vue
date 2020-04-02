@@ -1,7 +1,5 @@
 <template>
     <div>
-        <AppBar />
-
         <v-row justify="center" :class="$vuetify.breakpoint.smAndDown ? 'margen-movil mx-10':'margen mx-10'">
             <v-col cols="12" sm="12" md="3">
                 <div class="shadow">
@@ -19,9 +17,9 @@
                         <v-divider></v-divider>
 
                         <v-list class="mt-5">
-                            <v-list-item v-for="(opcion,i) in opciones" :key="i" :to="opcion.path" active-class="grey--text">
+                            <v-list-item v-for="(opcion,i) in opciones" :key="i" :to="opcion.path" active-class="color shadow2 white--text">
                                 <v-list-item-icon>
-                                    <v-icon color="#005598" small>{{opcion.icon}}</v-icon>
+                                    <v-icon :color="$route.path == opcion.path ? '#fff':'#005598'" small>{{opcion.icon}}</v-icon>
                                 </v-list-item-icon>
                                 <v-list-item-content>
                                     {{opcion.text}}
@@ -45,14 +43,12 @@
 </template>
 
 <script>
-import AppBar from "@/components/navbar/AppBar";
 import Footer from "@/components/footer/Footer";
 import {mapState} from 'vuex';
 import variables from '@/services/variables_globales';
 
     export default {
         components:{
-            AppBar,
             Footer
         },
         data() {
@@ -93,5 +89,11 @@ import variables from '@/services/variables_globales';
     }
     .shadow{
         box-shadow: 0px 6px 5px -4px rgba(35,35,35,0.4);
+    }
+    .color{
+        background: #17468b;
+    }
+    .shadow2{
+        box-shadow: 1px 1px 9px 1px rgba(153,153,153,0.5);
     }
 </style>
