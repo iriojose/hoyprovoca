@@ -1,5 +1,5 @@
 <template>
-    <v-dialog v-model="dialogs" close-delay width="500" :persistent="loading"> 
+    <v-dialog v-model="dialogs" close-delay width="500" :persistent="loading" transition="dialog-bottom-transition"> 
         <v-card width="100%" height="250" class="px-10 py-5">
             <div class="text-center font-weight-black subtitle-1">
                 ¡Oopss!

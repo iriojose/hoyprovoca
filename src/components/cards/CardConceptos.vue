@@ -1,6 +1,6 @@
 <template>
     <v-hover v-slot:default="{hover}">
-        <v-card width="200" height="250" class="ma-2 pa-3" elevation="0">
+        <v-card width="200" height="250" class="ma-2 pa-3" elevation="2">
             <v-img contain width="200" height="150" :src="image+concepto.imagen" class="pb-3">
                 <v-fade-transition>
                     <v-row justify="center" align="end" class="fill-height" v-show="hover">

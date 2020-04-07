@@ -1,5 +1,5 @@
 <template>
-    <v-card elevation="0" width="100%" :class="$vuetify.breakpoint.smAndDown ? 'mx-2':'mx-2'">
+    <v-card elevation="0" width="100%" class="mx-2">
         <v-card-title class="px-4 pb-2 caption">
             <v-img contain width="100" height="100" :src="image+empresa.logo"/>
             {{empresa.nombre_comercial}}
@@ -53,5 +53,10 @@ import variables from '@/services/variables_globales';
     }
     .shadow{
         box-shadow: 1px 1px 9px 1px rgba(153,153,153,0.5);
+    }
+    .shadow2{
+        -webkit-box-shadow: 0px 0px 14px 0px rgba(153,153,153,1);
+        -moz-box-shadow: 0px 0px 14px 0px rgba(153,153,153,1);
+        box-shadow: 0px 0px 14px 0px rgba(153,153,153,1);
     }
 </style>

@@ -24,7 +24,8 @@ import AppBar from '@/components/navbar/AppBar';
                     this.$route.name == 'notauthorized' ||
                     this.$route.name == 'notfound' ||
                     this.$route.name == 'checkout' ||
-                    this.$route.name == 'resetpassword' 
+                    this.$route.name == 'resetpassword' ||
+                    this.$route.name == 'prueba'
                 ){
                     return false;
                 }else{
@@ -43,8 +44,8 @@ import AppBar from '@/components/navbar/AppBar';
         opacity: 0;
     }
     ::-webkit-scrollbar {
-        width: 8px;     /* Tamaño del scroll en vertical */
-        height: 8px;    /* Tamaño del scroll en horizontal */
+        width: 8px;     
+        height: 8px;   
     }
     ::-webkit-scrollbar-thumb {
         background: #ccc;

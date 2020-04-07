@@ -18,14 +18,13 @@
                 </v-icon>
             </v-btn>
 
-            <v-toolbar-title>
-                <v-btn to="/" text class="mx-3">
-                    <v-img 
-                        contain 
-                        width="120"  
-                        src="@/assets/logoaftim.png"
-                    />
-                </v-btn>
+            <v-toolbar-title @click="push2" class="cursor">
+                <v-img 
+                    contain 
+                    height="100"
+                    width="150"  
+                    src="@/assets/logoaftim.png"
+                />
             </v-toolbar-title>
 
             <v-text-field
@@ -34,23 +33,25 @@
                 append-icon="search"
                 hide-details
                 dense 
-                outlined
                 v-on:keyup.enter="push"
-                class="hidden-sm-and-down ml-10"
-                background-color="#fff"
-                color="secondary"
+                solo
+                class="ml-10 hidden-sm-and-down"
                 single-line
+                color="#005598"
             />
 
             <v-spacer></v-spacer>
 
-            <v-btn v-if="user.loggedIn" icon class="mx-2" to="/account/notificaciones">
-                <v-badge transition="fade-transition" color="#232323" left overlap>
-                    <v-icon size="25" color="#fff">notifications</v-icon>
-                    <template v-slot:badge>
-                        0
-                    </template>
-                </v-badge>
+            <v-divider vertical dark class="mx-2"></v-divider>
+
+            <v-btn 
+                fab :class="$vuetify.breakpoint.smAndDown ? 'mx-1':'mx-3'" 
+                small to="/account/notificaciones"
+                v-if="user.loggedIn"
+            >
+                <v-icon dark>
+                    notifications
+                </v-icon>
             </v-btn>
 
             <Carrito /> 
@@ -76,12 +77,10 @@
                 append-icon="search"
                 hide-details
                 dense 
-                outlined
                 v-on:keyup.enter="push"
-                background-color="#fff"
-                color="#secondary"
+                solo
                 single-line
-                class="mx-5"
+                color="#005598"
             />
         </v-toolbar>
     </div>
@@ -114,7 +113,9 @@ import router from '@/router';
             change(){
                 this.drawer ? this.setDrawer(false):this.setDrawer(true);
             },
-            push(){ router.push("/search") }
+            push(){ router.push("/search") },
+           
+            push2(){ router.push('/')}
         },
     }
 </script>
@@ -124,5 +125,8 @@ import router from '@/router';
         position:fixed;
         z-index:3;
         top: 56px;
+    }
+    .cursor{
+        cursor:pointer;
     }
 </style>

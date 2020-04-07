@@ -1,7 +1,7 @@
 <template>
     <div :class="$vuetify.breakpoint.smAndDown ? 'mx-2 pt-10 mt-12':'mt-5 mx-10'">
         <div v-for="(subgrupo,i) in subgrupos" :key="i" class="ma-5">
-            <v-card width="100%" height="350" elevation="0" class="pa-4 shadow" v-if="conceptos[i].length > 0">
+            <v-card width="100%" height="350" elevation="0" class="pa-4 shadow">
                 <v-card-title class="font-weight-black">
                     {{subgrupo.nombre}}
                 </v-card-title>

@@ -5,15 +5,21 @@
         <v-scroll-x-transition>
             <MasVendidos :conceptos="conceptos" v-show="!loadingC" />
         </v-scroll-x-transition>
-        <SkeletonCard v-if="loadingC" :width="200" :height="250" />
+        <SkeletonCard v-if="loadingC" :width="200" :height="200" />
+        
+        <v-divider class="mt-12"></v-divider>
 
         <Banner2 />
-        
+
+        <v-divider class="mt-12"></v-divider>
+
         <v-scroll-x-transition>
             <CategoriasSugeridas :grupos="grupos" v-show="!loadingG"/>
         </v-scroll-x-transition>
         <SkeletonCard v-if="loadingG" :width="300" :height="200" />
-        
+
+        <v-divider class="mt-12"></v-divider>
+
         <EmpresasSugeridas :empresas="empresas" />
 
         <ModalSesion />

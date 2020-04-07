@@ -7,11 +7,11 @@
             offset-y
         >
             <template v-slot:activator="{ on }">
-                <v-avatar color="#f5f5f5" size="40" class="mx-2 elevation-3">
-                    <v-btn icon v-on="on">
-                        <v-icon>person</v-icon>
-                    </v-btn>
-                </v-avatar>
+                <v-btn v-on="on" fab :class="$vuetify.breakpoint.smAndDown ? 'mx-1':'mx-3'" small>
+                    <v-icon dark>
+                        person
+                    </v-icon>
+                </v-btn>
             </template>
             <!-- lista de opciones-->
             <v-card class="customized">

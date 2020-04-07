@@ -1,8 +1,12 @@
 <template>
     <div>
-        <v-btn v-if="user.loggedIn" icon class="mx-2" @click="change">
-            <v-badge transition="fade-transition" color="#232323" left overlap>
-                <v-icon size="25" color="#fff">shopping_cart</v-icon>
+
+        <v-btn s
+            fab :class="$vuetify.breakpoint.smAndDown ? 'mx-1':'mx-3'" 
+            small @click="change" v-if="user.loggedIn && pedidos.length !== 0"
+        >
+            <v-badge color="#232323" bottom overlap>
+                <v-icon dark>shopping_cart</v-icon>
                 <template v-slot:badge>
                     {{pedidos.length}}
                 </template>

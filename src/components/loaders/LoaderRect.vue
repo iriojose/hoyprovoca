@@ -1,5 +1,5 @@
 <template>
-    <v-row justify="center" align="top" class="py-12">
+    <v-row justify="center" align="top" class="padding">
         <svg width="51px" height="50px" viewBox="0 0 51 50">
             <rect y="0" width="13" height="50" fill="#4527A0">
                 <animate attributeName="height" values="50;10;50" begin="0s" dur="1s" repeatCount="indefinite" />
@@ -19,3 +19,8 @@
     </v-row>
 </template>
 
+<style lang="css" scope>
+    .padding{
+        padding-top:150px;
+    }
+</style>

@@ -16,7 +16,7 @@
 
         <v-card width="100%" elevation="0" color="#f7f7f7">
             <v-slide-x-transition>
-                <v-row justify="center" :class="$vuetify.breakpoint.smAndDown ? 'mt-12 mx-5':'mt-12'" v-show="!loading">
+                <v-row justify="center" align="center" :class="$vuetify.breakpoint.smAndDown ? 'mt-12 mx-5':'mt-12'" v-show="!loading">
                     <v-col cols="12" md="11" sm="12">
                         <GruposData :subgrupos="subgrupos" :conceptos="conceptos" />
                     </v-col>
@@ -90,10 +90,12 @@ import ModalSesion from '@/components/dialogs/ModalSesion';
         },
         methods: {
             async getGruposSubGrupos(id){
+                this.subgrupos = [];
                 this.conceptos = [];
                 await Grupos().get(`/${id}/subgrupos`).then((response) => {
                     this.subgrupos = response.data.data;
                     this.subgrupos.filter((a,i)=> this.getSubgruposConceptos(a.id,i));
+                    this.loading = false;
                 }).catch(e => { 
                     console.log(e);
                     this.error = true;
@@ -102,12 +104,10 @@ import ModalSesion from '@/components/dialogs/ModalSesion';
             async getSubgruposConceptos(id,i){
                 await SubGrupos().get(`/${id}/conceptos/?limit=10`).then((response) => {
                     if(!response.data == ""){
-                        i > 9 ? this.loading = false:null;
                         response.data.data.filter(a => a.agregado=false);
                         response.data.data.filter(a => this.agregados.filter(b => a.id == b ? a.agregado=true:null));
                         this.conceptos.push(response.data.data);
                     }else{
-                        i > 9 ? this.loading = false:null;
                         this.conceptos.push([]);
                     }
                 }).catch(e => {

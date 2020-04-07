@@ -1,14 +1,13 @@
 <template>
     <v-carousel
         cycle
-        progress-color="#6772e5"
-        progress
         continuous
+        progress-color="#005598"
+        progress
+        height="300"
         :show-arrows="false"
         mandatory
-        dark
-        :height="$vuetify.breakpoint.smAndDown ? 200:350"
-        :style="$vuetify.breakpoint.smAndDown ? 'margin-top:106px':'margin-top:56px'"
+        :style="$vuetify.breakpoint.smAndDown ? 'margin-top:103px':'margin-top:64px'"
     >
         <v-carousel-item 
             v-for="img in images" 

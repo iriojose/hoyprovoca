@@ -130,7 +130,7 @@ import {mapState} from 'vuex';
     }
 </script>
 
-<style lang="css" scoped>
+<style lang="scss" scoped>
     .margen{
         margin-top:200px;
     }

@@ -1,30 +1,38 @@
 <template>
-    <v-container>
-        <v-divider class="my-12"></v-divider>
-        <v-card-actions>
-            <div class="headline ml-12 mt-12 font-weight-black">Visita nuestras tiendas</div>
-            <v-spacer></v-spacer>
-            <v-hover v-slot:default="{hover}">
-                <v-btn to="/aliados" width="100" text depressed class="caption text-capitalize mt-10">
-                    Ver todas 
-                    <v-slide-x-transition>
-                        <v-icon v-show="hover">keyboard_arrow_right</v-icon>
-                    </v-slide-x-transition>
-                </v-btn>
-            </v-hover>
-        </v-card-actions>
+    <div>
+        <div 
+            :class="$vuetify.breakpoint.smAndDown ? 'font-weight-black text-center headline mt-12':'headline ml-12 mt-12 font-weight-black'"
+        >Categorias más buscadas</div>
 
-        <v-slide-group show-arrows class="my-5 py-5">
-            <v-slide-item v-for="empresa in  empresas" :key="empresa.id" class="mx-4 mb-8">
+        <v-slide-group show-arrows :class="$vuetify.breakpoint.smAndDown ? 'my-4':'my-4 mx-10'">
+            <v-slide-item v-for="empresa in  empresas" :key="empresa.id" class="mx-2 mb-8">
                 <v-hover v-slot:default="{hover}">
-                    <v-card height="200" width="300" :elevation="hover ? 5:0" @click="push(empresa)">
-                        <v-img contain width="300" height="200" :src="image+empresa.logo" /> 
+                    <v-card height="200" width="300" :elevation="hover ? 0:4" @click="push(empresa)">
+                        <v-img height="160" width="300" contain :src="image+empresa.logo" />
                         <div class="mt-2 px-5">{{empresa.nombre_comercial}}</div>
                     </v-card>
                 </v-hover>
             </v-slide-item>
+
+            <v-slide-item>
+                <v-card height="200" width="300" elevation="0" color="#f7f7f7">
+                    <v-row justify="center" align="center" class="fill-height">
+                        <v-hover v-slot:default="{hover}">
+                            <v-btn 
+                                color="#005598"
+                                depressed 
+                                dark
+                                class="caption text-capitalize"
+                                :elevation="hover ? 2:0"
+                            >
+                                Ver todas 
+                            </v-btn>
+                        </v-hover>
+                    </v-row>
+                </v-card>
+            </v-slide-item>
         </v-slide-group>
-    </v-container>
+    </div>
 </template>
 
 <script>

@@ -1,5 +1,5 @@
 <template>
-    <v-dialog v-model="sesion" close-delay width="600">
+    <v-dialog v-model="sesion" close-delay width="600" transition="dialog-bottom-transition">
         <v-card width="600" class="px-5 py-2">
             <v-card-actions>
                 <v-spacer></v-spacer>
@@ -9,8 +9,8 @@
             </v-card-actions>
             <v-row justify="center" align="center" class="pa-2">
                 <v-col cols="12" sm="4" md="4" class="hidden-sm-and-down">
-                    <v-card width="100%" height="300" elevation="3">
-                        <v-img width="100%" height="300" contain src="@/assets/addcart.svg"></v-img>
+                    <v-card width="100%" height="250" elevation="3">
+                        <v-img width="100%" height="250" contain src="@/assets/addcart.svg"></v-img>
                     </v-card>
                 </v-col>
                 <v-col cols="12" sm="9" md="8">

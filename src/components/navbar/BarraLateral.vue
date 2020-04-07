@@ -9,10 +9,9 @@
             <v-list v-else >
                 <div class="text-center font-weight-bold my-2">Categorías</div>
                 <v-divider></v-divider>
-
                 <div v-for="item in grupos" :key="item.id" class="mx-2">
                     <v-hover v-slot:default="{hover}">
-                        <v-list-item @click="push(item)" :class="hover ? 'shadow':null">
+                        <v-list-item @click="push(item)" :class="hover ? 'shadow move':null">
                             <v-list-item-avatar>
                                 <v-img :src="image+item.imagen"></v-img>
                             </v-list-item-avatar>
