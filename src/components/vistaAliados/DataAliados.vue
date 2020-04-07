@@ -1,6 +1,12 @@
 <template>
     <div>
-        <v-card class="mb-5" elevation="0" width="100%" height="350" v-for="(arrays,i) in conceptos" :key="i">
+        <v-card 
+            class="mb-5" 
+            elevation="0" 
+            width="100%" 
+            :height="$vuetify.breakpoint.smAndDown ? 300:350" 
+            v-for="(arrays,i) in conceptos" :key="i"
+        >
             <v-card-title class="font-weight-black">
                 <div class="text-center">{{grupos[i].nombre}}</div>
             </v-card-title>
@@ -10,7 +16,11 @@
                 </v-slide-item>
 
                 <v-slide-item class="mx-5">
-                    <v-card elevation="0" height="250" width="150">
+                    <v-card 
+                        elevation="0" 
+                        :height="$vuetify.breakpoint.smAndDown ? 200:250" 
+                        :width="$vuetify.breakpoint.smAndDown ? 100:150"
+                    >
                         <v-row justify="center" align="center" class="fill-height">
                             <div>
                                 <div class="text-capitalize grey--text caption">
@@ -42,7 +52,7 @@
 </template>
 
 <script>
-import CardConceptos from '@/components/cards/CardConceptos';
+import CardConceptos from '@/components/cards/CardConceptos2';
 import router from '@/router';
 
     export default {

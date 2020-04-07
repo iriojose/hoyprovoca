@@ -7,15 +7,27 @@
         <v-slide-group show-arrows :class="$vuetify.breakpoint.smAndDown ? 'my-4':'my-4 mx-10'">
             <v-slide-item v-for="empresa in  empresas" :key="empresa.id" class="mx-2 mb-8">
                 <v-hover v-slot:default="{hover}">
-                    <v-card height="200" width="300" :elevation="hover ? 0:4" @click="push(empresa)">
-                        <v-img height="160" width="300" contain :src="image+empresa.logo" />
+                    <v-card 
+                        :height="$vuetify.breakpoint.smAndDown ? 200:200" 
+                        :width="$vuetify.breakpoint.smAndDown ? 200:300" 
+                        :elevation="hover ? 0:4" @click="push(empresa)"
+                    >
+                        <v-img 
+                            :height="$vuetify.breakpoint.smAndDown ? 160:160" 
+                            :width="$vuetify.breakpoint.smAndDown ? 200:300"  
+                            contain :src="image+empresa.logo" 
+                        />
                         <div class="mt-2 px-5">{{empresa.nombre_comercial}}</div>
                     </v-card>
                 </v-hover>
             </v-slide-item>
 
             <v-slide-item>
-                <v-card height="200" width="300" elevation="0" color="#f7f7f7">
+                <v-card 
+                    :height="$vuetify.breakpoint.smAndDown ? 150:200" 
+                    :width="$vuetify.breakpoint.smAndDown ? 200:300" 
+                    elevation="0" color="#f7f7f7"
+                >
                     <v-row justify="center" align="center" class="fill-height">
                         <v-hover v-slot:default="{hover}">
                             <v-btn 

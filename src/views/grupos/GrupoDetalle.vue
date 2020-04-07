@@ -16,8 +16,8 @@
 
         <v-card width="100%" elevation="0" color="#f7f7f7">
             <v-slide-x-transition>
-                <v-row justify="center" align="center" :class="$vuetify.breakpoint.smAndDown ? 'mt-12 mx-5':'mt-12'" v-show="!loading">
-                    <v-col cols="12" md="11" sm="12">
+                <v-row justify="center" align="center" :class="$vuetify.breakpoint.smAndDown ? 'mt-12':'mt-12 mx-10'" v-show="!loading">
+                    <v-col cols="12" md="12" sm="12">
                         <GruposData :subgrupos="subgrupos" :conceptos="conceptos" />
                     </v-col>
                 </v-row>

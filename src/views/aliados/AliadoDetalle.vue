@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-row :class="$vuetify.breakpoint.smAndDown ? 'margen-movil mx-5':'margen-top mx-10'">
+        <v-row :class="$vuetify.breakpoint.smAndDown ? 'margen-movil mx-3':'margen-top mx-10'">
             <v-col cols="12" sm="12" md="3" >
                 <PanelCategorias :grupos="grupos" :empresa="empresa" />
             </v-col>

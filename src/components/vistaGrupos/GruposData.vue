@@ -1,7 +1,11 @@
 <template>
-    <div :class="$vuetify.breakpoint.smAndDown ? 'mx-2 pt-10 mt-12':'mt-5 mx-10'">
-        <div v-for="(subgrupo,i) in subgrupos" :key="i" class="ma-5">
-            <v-card width="100%" height="350" elevation="0" class="pa-4 shadow">
+    <div class="mt-12">
+        <div v-for="(subgrupo,i) in subgrupos" :key="i" class="mt-4">
+            <v-card 
+                width="100%" 
+                :height="$vuetify.breakpoint.smAndDown ? 300:350" 
+                elevation="0" class="shadow"
+            >
                 <v-card-title class="font-weight-black">
                     {{subgrupo.nombre}}
                 </v-card-title>
@@ -18,7 +22,7 @@
 </template>
 
 <script>
-import CardConceptos from '@/components/cards/CardConceptos';
+import CardConceptos from '@/components/cards/CardConceptos2';
 
     export default {
         components:{
@@ -39,6 +43,8 @@ import CardConceptos from '@/components/cards/CardConceptos';
 
 <style lang="css" scoped>
     .shadow{
-        box-shadow: 0px 5px 8px 0px rgba(153,153,153,1);
+        -webkit-box-shadow: 1px 1px 11px 0px rgba(0,0,0,0.75);
+        -moz-box-shadow: 1px 1px 11px 0px rgba(0,0,0,0.75);
+        box-shadow: 1px 1px 11px 0px rgba(0,0,0,0.75);
     }
 </style>

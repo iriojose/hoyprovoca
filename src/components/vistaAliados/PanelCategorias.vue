@@ -1,5 +1,8 @@
 <template>
-    <v-card elevation="0" width="100%" class="mx-2">
+    <v-card 
+        elevation="0" width="100%" 
+        class="mx-2"
+    >
         <v-card-title class="px-4 pb-2 caption">
             <v-img contain width="100" height="100" :src="image+empresa.logo"/>
             {{empresa.nombre_comercial}}
