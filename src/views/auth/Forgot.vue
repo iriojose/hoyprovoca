@@ -16,7 +16,7 @@
                     <div class="text-center my-5 font-weight-black subtitle-1">¿No puede iniciar sesión?</div>
 
                     <v-card-text>
-                        <v-form v-model="valid" @submit.prevent="">
+                        <v-form v-model="valid" @submit.prevent="" v-if="!validcode">
                             <div class="font-weight-black body-2 mb-2" v-if="!send">
                                 Le enviaremos un enlace de recuperación
                             </div>
@@ -72,6 +72,39 @@
                                 </v-btn>
                             </v-hover>
                         </v-form>
+
+                        <v-form v-model="valid2" @submit.prevent="" v-if="validcode">
+                            <div class="font-weight-black body-2 mb-2">
+                                Ingrese nueva contraseña
+                            </div>
+
+                            <v-text-field
+                                v-model="contraseña"
+                                label="Contraseña"
+                                single-line
+                                :type="showPassword ? 'text' : 'password'"
+                                :rules="[required('Contraseña'), minLength('Contraseña',8)]"
+                                @click:append="showPassword = !showPassword"
+                                :append-icon="showPassword ?  'visibility' : 'visibility_off'"
+                                :prepend-inner-icon="showPassword ?  'lock_open' : 'lock'"
+                                solo
+                                color="#005598"
+                                dense
+                            />  
+
+                            <v-btn
+                                block 
+                                class="text-capitalize mt-5"
+                                :disabled="!valid2 || loading" 
+                                color="#005598" 
+                                :dark="valid2 && !loading"
+                                :loading="loading"
+                                :elevation="hover ? 5:0"
+                                @click="reset"
+                            >
+                                Nueva contraseña
+                            </v-btn>
+                        </v-form>
                     </v-card-text>
                 </v-card>
             </v-col>
@@ -81,7 +114,7 @@
             <SubFooter />
         </v-footer>
 
-        <Snackbar :color="color" :mensaje="mensaje" :icon="icon" />
+        <Snackbar :color="color" :mensaje="mensaje" :icon="icon" :time="1000" />
     </div>
 </template>
 
@@ -106,9 +139,13 @@ import Snackbar from '@/components/snackbars/Snackbar';
                 color:'',
                 mensaje:'',
                 icon:'',
+                contraseña:'',
                 send:false,
                 valid:false,
+                valid2:false,
                 loading:false,
+                validcode:false,
+                showPassword:false,
             }
         },
         methods: {
@@ -139,17 +176,29 @@ import Snackbar from '@/components/snackbars/Snackbar';
                 Auth().post("/validcode",{data:{user:this.email,hash:this.codigo}}).then((response) => {
                     console.log(response);
                     this.mensajeSnackbar("#388E3C","Codigo validado exitosamente.","done");
-                    this.push2();
+                    this.validcode=true;
                 }).catch(e => {
                     console.log(e);
                     this.mensajeSnackbar("#D32F2F","Ooops, Error al validar el codigo.","error");
                 });
             },
+            reset(){
+                this.loading = true;
+                Auth().post("/resetpassword",{data:{user:this.email,password:this.contraseña}}).then((response) => {
+                    this.mensajeSnackbar("#388E3C","Contraseña cambiada.","done");
+                    setTimeout(() => {
+                        this.push();
+                    },1000);
+                }).catch(e => {
+                    console.log(e);
+                    this.mensajeSnackbar("#D32F2F","Ooops, Error al resetear contraseña.","error");
+                });
+            }
         },
         head: {
             title() {
                 return {
-                    inner: "Forgot",
+                    inner: "Restablecer contraseña",
                     separator: " ",
                     complement: " "
                 };

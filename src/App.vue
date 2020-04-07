@@ -24,7 +24,6 @@ import AppBar from '@/components/navbar/AppBar';
                     this.$route.name == 'notauthorized' ||
                     this.$route.name == 'notfound' ||
                     this.$route.name == 'checkout' ||
-                    this.$route.name == 'resetpassword' ||
                     this.$route.name == 'prueba'
                 ){
                     return false;

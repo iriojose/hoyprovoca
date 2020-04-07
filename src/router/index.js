@@ -12,7 +12,6 @@ import Error403 from "@/views/mistakes/Error403";
 import Login from '@/views/auth/Login';
 import Register from '@/views/auth/Register';
 import Forgot from '@/views/auth/Forgot';
-import ResetPassword from '@/views/auth/ResetPassword';
 
 //vistas
 import Search from '@/views/search/Search';
@@ -75,14 +74,6 @@ const router = new Router({
             path: "/prueba",
             name:"prueba",
             component:Prueba,
-            meta:{
-                auth:false
-            }
-        },
-        {
-            path: "/reset",
-            name:"resetPassword",
-            component:ResetPassword,
             meta:{
                 auth:false
             }
