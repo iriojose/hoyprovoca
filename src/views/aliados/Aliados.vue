@@ -6,17 +6,17 @@
 
         <div v-else :class="$vuetify.breakpoint.smAndDown ? 'margen-movil mx-4':'mx-10 px-5 margen-top'">
             <div class="text-center font-weight-bold my-5 display-1">
-                Todos los grupos
+                Todas las empresas
             </div>
-
+            
             <v-row justify="center">
                 <v-card 
-                    @click="push(grupo)" 
-                    v-for="(grupo,i) in grupos" :key="i" 
+                    @click="push(empresa)" 
+                    v-for="(empresa,i) in empresas" :key="i" 
                     width="300" height="200" class="mx-2 my-2"
                 >
                     <v-img 
-                        :src="image+grupo.imagen" 
+                        :src="image+empresa.logo" 
                         contain width="300" height="200" 
                     />
                 </v-card>  
@@ -30,8 +30,8 @@
                         width="120"
                         height="40"
                         class="text-capitalize white--text"
-                        @click="getGrupos()"
-                        :disabled="grupos.length == total ? true:false"
+                        @click="getEmpresas()"
+                        :disabled="empresas.length == total ? true:false"
                     >
                         Ver más
                     </v-btn>
@@ -45,46 +45,40 @@
 
 <script>
 import LoaderRect from '@/components/loaders/LoaderRect';
-import Grupos from '@/services/Grupos';
+import Empresa from '@/services/Empresa';
 import variables from '@/services/variables_globales';
 import Footer from '@/components/footer/Footer';
 import router from '@/router';
 
     export default {
-        components:{
-            LoaderRect,
-            Footer
-        },
         data() {
             return {
+                empresas:[],
                 loading:true,
                 after:0,
                 total:0,
-                grupos:[],
                 ...variables
             }
-        },
-        mounted() {
-            this.getGrupos();
         },
         head:{
             title(){
                 return {
                     inner:'HoyProvoca',
                     separator:'|',
-                    complement: 'Categorías'
+                    complement: 'Aliados'
                 }
             }
         },
+        mounted() {
+            this.getEmpresas();
+        },
         methods:{
-            push(item){
-                var re = / /gi; 
-                const nombre = item.nombre.replace(re,'-');//remplaza los espacios por guiones
-                router.push({name:'grupoDetalle', params:{text:nombre,id:item.id}});
+            push(empresa){
+                router.push({name:'aliadoDetalle', params:{text:empresa.nombre_comercial}});
             },
-            getGrupos(){
-                Grupos().get(`/?limit=20&offset=${this.after}`).then((response) => {
-                    response.data.data.filter(a => this.grupos.push(a));
+            getEmpresas(){
+                Empresa().get(`/?limit=20&offset=${this.after}`).then((response) => {
+                    response.data.data.filter(a => this.empresas.push(a));
                     this.loading = false;
                     this.after +=20;
                     this.total = response.data.totalCount;

@@ -19,6 +19,7 @@ import GrupoDetalle from '@/views/grupos/GrupoDetalle';
 import Grupos from '@/views/grupos/Grupos';
 import AliadoDetalle from '@/views/aliados/AliadoDetalle';
 import AliadoGrupo from '@/views/aliados/AliadoGrupo';
+import Aliados from '@/views/aliados/Aliados';
 
 //perfil
 import Account from '@/views/account/Account';
@@ -79,7 +80,7 @@ const router = new Router({
             }
         },
         {
-            path: "/grupos/",
+            path: "/grupos",
             name:"grupos",
             component:Grupos,
             meta:{
@@ -93,6 +94,14 @@ const router = new Router({
             meta:{
                 auth:false
             }
+        },
+        {
+            path: "/aliados",
+            name:"aliados",
+            component:Aliados,
+            meta:{
+                auth:false
+            },
         },
         {
             path: "/aliados/:text",

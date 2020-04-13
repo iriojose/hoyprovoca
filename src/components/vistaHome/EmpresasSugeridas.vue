@@ -36,6 +36,7 @@
                                 depressed 
                                 block
                                 dark
+                                to="/aliados"
                                 class="caption text-capitalize"
                                 :elevation="hover ? 2:0"
                             >
