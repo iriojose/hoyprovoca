@@ -94,7 +94,7 @@ import Usuario from '@/services/Usuario';
                 this.setModalCarrito(true);
             },
             getPedidosUsuario(){
-                Usuario().get(`/${this.user.data.id}/pedidos`).then((response) => {
+                Usuario().get(`/${this.user.data.id}/pedidos/?rest_estatus_id=1`).then((response) => {
                     response.data !== 'This entity is empty' ? this.setPedidos(response.data.data):null;
                 }).catch(e => {
                     console.log(e);

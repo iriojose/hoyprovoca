@@ -2,7 +2,7 @@
     <div>
         <div 
             :class="$vuetify.breakpoint.smAndDown ? 'font-weight-black text-center headline mt-12':'headline ml-12 mt-12 font-weight-black'"
-        >Visita nuestras tiendas</div>
+        >{{title}}</div>
 
         <v-slide-group show-arrows :class="$vuetify.breakpoint.smAndDown ? 'my-4':'my-4 mx-10'">
             <v-slide-item v-for="grupo in  grupos" :key="grupo.id" class="mx-2 mb-8">
@@ -27,10 +27,12 @@
                     :height="$vuetify.breakpoint.smAndDown ? 150:200" 
                     :width="$vuetify.breakpoint.smAndDown ? 200:300" 
                     color="#f7f7f7" elevation="0"
+                    class="px-10"
                 >
                     <v-row justify="center" align="center" class="fill-height">
                         <v-hover v-slot:default="{hover}">
                             <v-btn 
+                                block
                                 to="/grupos"
                                 color="#005598"
                                 depressed 
@@ -57,6 +59,10 @@ import router from '@/router';
             grupos:{
                 type:Array,
                 default:() => ([])
+            },
+            title:{
+                Type:String,
+                default:''
             }
         },
         data(){

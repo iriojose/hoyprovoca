@@ -42,20 +42,6 @@
                 />
             </v-col>
             <v-col cols="12" md="5" sm="12">
-                <div class="grey--text font-regular mb-2">Usuario</div>
-                <v-text-field
-                    solo
-                    dense
-                    single-line
-                    color="#005598"
-                    append-icon="lock"
-                    disabled
-                    label="Usuario"
-                    v-model="data.login"
-                    type="text"
-                />
-            </v-col>
-            <v-col cols="12" md="5" sm="12">
                 <div class="grey--text font-regular mb-2">Celular</div>
                 <v-text-field
                     solo

@@ -89,7 +89,7 @@ import router from '@/router';
             ...mapActions(['deletePedidoStore']),
             
             push(pedido){
-                router.push('/checkout/ALMENDRAS');
+                router.push('/checkout');
             },
             mensajeSnackbar(color,icon,mensaje){
                 this.color=color;

@@ -3,24 +3,27 @@
         <Banner />
 
         <v-scroll-x-transition>
-            <MasVendidos :conceptos="conceptos" v-show="!loadingC" />
+            <MasVendidos :conceptos="conceptos" v-show="!loadingC" title="Productos más vendidos" />
         </v-scroll-x-transition>
-        <SkeletonCard v-if="loadingC" :width="200" :height="200" />
+        <SkeletonCard v-if="loadingC" :width="200" :height="200" title="Productos más vendidos" />
         
-        <v-divider class="mt-12"></v-divider>
+        <v-divider class="my-12"></v-divider>
 
         <Banner2 />
 
         <v-divider class="mt-12"></v-divider>
 
         <v-scroll-x-transition>
-            <CategoriasSugeridas :grupos="grupos" v-show="!loadingG"/>
+            <CategoriasSugeridas title="Categorías más buscadas" :grupos="grupos" v-show="!loadingG"/>
         </v-scroll-x-transition>
-        <SkeletonCard v-if="loadingG" :width="300" :height="200" />
+        <SkeletonCard v-if="loadingG" :width="300" :height="200" title="Categorías más buscadas" />
 
         <v-divider class="mt-12"></v-divider>
 
-        <EmpresasSugeridas :empresas="empresas" />
+        <v-scroll-x-transition>
+            <EmpresasSugeridas title="Visita nuestras tiendas" :empresas="empresas" v-show="!loadingE" />
+        </v-scroll-x-transition>
+        <SkeletonCard v-if="loadingE" :width="300" :height="200" title="Visita nuestras tiendas" />
 
         <ModalSesion />
         <Footer />
@@ -68,7 +71,8 @@ import ModalSesion from '@/components/dialogs/ModalSesion';
                 grupos:[],
                 bandera:false,
                 loadingC:true,
-                loadingG:true
+                loadingG:true,
+                loadingE:true
             }
         },
         computed:{
@@ -97,12 +101,13 @@ import ModalSesion from '@/components/dialogs/ModalSesion';
             getEmpresas(){
                 Empresa().get('/?limit=8').then((response) => {
                     this.empresas = response.data.data;
+                    this.loadingE = false;
                 }).catch(e => {
                     console.log(e);
                 });
             },
             getGrupos(){
-                Grupos().get('/mostsold').then((response) => {
+                Grupos().get('/mostsold/?limit=10').then((response) => {
                     this.grupos = response.data.data;
                     this.loadingG = false;
                 }).catch(e => {

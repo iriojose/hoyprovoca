@@ -3,7 +3,7 @@
         <div 
             :class="$vuetify.breakpoint.smAndDown ? 'font-weight-black text-center headline mt-12':'headline ml-12 mt-12 font-weight-black'"
         >
-            Productos más vendidos
+            {{title}}
         </div>
         <v-slide-group show-arrows :class="$vuetify.breakpoint.smAndDown ? 'my-2':'my-2 mx-10'">
             <v-slide-item v-for="(concepto,i) in conceptos" :key="i" class="mx-2">
@@ -23,6 +23,10 @@ import CardConceptos from '@/components/cards/CardConceptos';
             conceptos:{
                 type:Array,
                 default:() => ([])
+            },
+            title:{
+                type:String,
+                default:''
             }
         },
         components:{

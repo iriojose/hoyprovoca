@@ -92,6 +92,18 @@
                                 dense
                             />  
 
+                            <v-text-field
+                                v-model="contraseña2"
+                                label="Repetir Contraseña"
+                                single-line
+                                type="password"
+                                :rules="[required('Contraseña'),passwordConfirmationRule()]"
+                                prepend-inner-icon="lock"
+                                solo
+                                color="#005598"
+                                dense
+                            />  
+
                             <v-btn
                                 block 
                                 class="text-capitalize mt-5"
@@ -99,7 +111,7 @@
                                 color="#005598" 
                                 :dark="valid2 && !loading"
                                 :loading="loading"
-                                :elevation="hover ? 5:0"
+                                elevation="0"
                                 @click="reset"
                             >
                                 Nueva contraseña
@@ -140,6 +152,7 @@ import Snackbar from '@/components/snackbars/Snackbar';
                 mensaje:'',
                 icon:'',
                 contraseña:'',
+                contraseña2:'',
                 send:false,
                 valid:false,
                 valid2:false,
@@ -147,6 +160,11 @@ import Snackbar from '@/components/snackbars/Snackbar';
                 validcode:false,
                 showPassword:false,
             }
+        },
+        computed: {
+            passwordConfirmationRule() {
+                return () => (this.contraseña === this.contraseña2) || 'Las contraseñas no coinciden.';
+            },
         },
         methods: {
             ...mapActions(['setSnackbar']),

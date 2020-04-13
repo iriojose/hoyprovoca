@@ -118,7 +118,7 @@ const router = new Router({
             },
         },
         {
-            path:'/checkout/:text',
+            path:'/checkout',
             name:'checkout',
             component:Checkout,
             meta:{

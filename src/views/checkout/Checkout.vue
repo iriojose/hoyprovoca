@@ -1,13 +1,20 @@
 <template>
     <div>
-        <v-toolbar elevation="2" color="#005598">
+        <v-toolbar elevation="2" dark>
             <v-toolbar-title>
-                <v-img contain height="150" width="100" src="@/assets/logoaftim.png"></v-img>
+                <v-img 
+                    contain 
+                    height="100"
+                    width="150"  
+                    src="@/assets/logoaftim.png"
+                />
             </v-toolbar-title>
+
             <v-spacer></v-spacer>
+
             <v-hover v-slot:default="{hover}">
                 <v-btn :elevation="hover ? 2:0" color="#fff"
-                    class="text-capitalize body-2 font-weight-bold" to="/"
+                    class="text-capitalize body-2 font-weight-bold black--text" to="/"
                 >
                     Seguir comprando
                 </v-btn>
@@ -15,54 +22,128 @@
         </v-toolbar>
         <v-divider></v-divider>
 
-        <v-row justify="center" class="mx-10">
-            <v-col cols="12" md="12" sm="12">
-                <div class="headline font-weight-black mt-5 mx-10">Checkout</div>
-                <div v-if="pedido == {}" class="mx-10">
-                    no hay pedido
-                </div>
+        <div class="text-center my-5 display-1 font-weight-bold">Checkout</div>
+
+        <v-row justify="center" :class="$vuetify.breakpoint.smAndDown ? 'mx-2':'mx-10'">
+            <v-col cols="12" sm="12" md="7">
+                <v-card elevation="2" width="100%" height="300" class="py-3">
+                    <v-list>
+                        <v-list-item>
+                            <v-list-item-content>
+                                <v-list-item-title>Tus pedidos</v-list-item-title>
+                                <v-list-item-subtitle>{{pedidos.length +' '}} pedidos</v-list-item-subtitle>
+                            </v-list-item-content>
+                            <v-list-item-content></v-list-item-content>
+                        </v-list-item>
+                    </v-list>
+                    <v-slide-group show-arrows class="mx-5">
+                        <v-slide-item v-for="(pedido,i) in pedidos" :key="i" class="mx-2 my-2">
+                            <v-avatar size="50" class="elevation-2" @click="changePedido(i)">
+                                <v-img :src="image+pedido.imagen"></v-img>
+                            </v-avatar>
+                        </v-slide-item>
+                    </v-slide-group>
+
+                    <v-list>
+                        <v-list-item>
+                            <v-list-item-content>
+                                <v-list-item-title>Tus productos</v-list-item-title>
+                                <v-list-item-subtitle>{{pedido.detalles.length +' '}} item</v-list-item-subtitle>
+                            </v-list-item-content>
+                            <v-list-item-content></v-list-item-content>
+                        </v-list-item>
+                    </v-list>
+
+                    <v-slide-group show-arrows class="mx-5">
+                        <v-slide-item v-for="(detalle,i) in pedido.detalles" :key="i" class="mx-2 my-2">
+                            <v-avatar size="50" class="elevation-2">
+                                <v-img :src="image+detalle.imagen"></v-img>
+                            </v-avatar>
+                        </v-slide-item>
+                    </v-slide-group>
+                </v-card>
             </v-col>
 
-            <v-col cols="12" md="6" sm="12">
-                <v-card width="100%" height="400" elevation="0" class="px-5">
-                    <v-list>
-                        <v-list-item v-for="(detalle,i) in pedido.detalles" :key="i">
-                            <v-list-item-avatar>
-                                <v-img :src="image+detalle.imagen"></v-img>
-                            </v-list-item-avatar>
+            <v-col cols="12" sm="12" md="4">
+                <v-card elevation="2" width="100%" height="250">
+                    <v-list dense>
+                        <v-list-item>
+                            <v-list-item-content class="grey--text subtitle-1">Subtotal:</v-list-item-content>
+                            <v-list-item-content>{{total}}</v-list-item-content>
+                        </v-list-item>
+                        <v-list-item>
+                            <v-list-item-content class="grey--text subtitle-1">Propina:</v-list-item-content>
+                            <v-list-item-content>Bs 00,00</v-list-item-content>
+                        </v-list-item>
+                        <v-list-item>
+                            <v-list-item-content class="grey--text subtitle-1">Domicilio:</v-list-item-content>
+                            <v-list-item-content>Bs 00,00</v-list-item-content>
+                        </v-list-item>
 
-                            <v-list-item-content class="mx-4">
-                                Cantidad: {{Number.parseInt(detalle.cantidad)}}
+                        <v-divider class="mx-5 my-5"></v-divider>
+
+                        <v-list-item>
+                            <v-list-item-content class="font-weight-black title">
+                                Total:
                             </v-list-item-content>
-
                             <v-list-item-content>
-                                {{sales[i]}}
+                                {{total}}
                             </v-list-item-content>
                         </v-list-item>
                     </v-list>
                 </v-card>
             </v-col>
-            <v-col cols="12" md="4" sm="12">
-                <v-card width="100%" height="200" elevation="0" class="pa-5">
-                    <v-list>
-                        <v-list-item>
-                            <v-list-item-content>Subtotal:</v-list-item-content>
-                            <v-list-item-content>asas</v-list-item-content>
-                        </v-list-item>
-                    </v-list>
+
+            <v-col cols="12" md="8" sm="12">
+                <v-card elevation="2" width="100%" height="500">
+                    <v-row justify="center" align="center">
+                        <v-col cols="12" md="8" sm="12">
+                            <v-file-input
+                                label="Abjuntar Pago"
+                                counter
+                                prepend-icon="mdi-camera"
+                                accept="image/png, image/jpeg"
+                                @change="change($event)"
+                                dense
+                                color="#005598"
+                                outlined
+                            />
+                        </v-col>
+                        <v-col cols="12" md="12" sm="12">
+                            <v-img :width="$vuetify.breakpoint.smAndDown ? '100%':'100%'" height="350" contain v-if="bauche" :src="bauche" />
+                        </v-col>
+                        <v-col cols="12" md="12" sm="12" v-if="bauche">
+                            <v-btn 
+                                block color="#005598" 
+                                class="text-capitalize white--text" 
+                                rounded @click="pagar"
+                                :loading="loading"
+                            >
+                                Enviar pago
+                            </v-btn>
+                        </v-col>
+                    </v-row>
                 </v-card>
             </v-col>
         </v-row>
+
+        <v-snackbar v-model="snackbar" :color="color" bottom right :timeout="1000">
+            <div>
+                <v-icon color="#fff" class="mx-2">{{icon}}</v-icon>{{mensaje}}
+            </div>
+        </v-snackbar>
     </div>
 </template>
 
 <script>
 import accounting from 'accounting';
-import {mapState} from 'vuex';
+import {mapState,mapActions} from 'vuex';
 import variables from '@/services/variables_globales';
-import Empresa from '@/services/Empresa';
 import Usuario from '@/services/Usuario';
 import Pedidos from '@/services/Pedidos';
+import Images from '@/services/Images';
+import Movimiento_banco from '@/services/Movimiento_banco';
+import router from '@/router';
 
     export default {
         data() {
@@ -70,13 +151,27 @@ import Pedidos from '@/services/Pedidos';
                 ...variables,
                 pedido:{},
                 empresa:{},
+                total:'',
                 sales:[],
+                bauche:null,
+                imagen:null,
+                mensaje:'',
+                color:'',
+                icon:'',
+                loading:false,
+                snackbar:false,
+                index:0,
+                movimiento:{
+                    adm_banco_id: 1,
+                    adm_tipo_pago_id: 3,
+                    credito: 0,
+                    origen: "PEDIDO",
+                    documento: "0",
+                }
             }
         },
         mounted() {
-            if(this.$route.params.text){
-                this.getEmpresa(this.$route.params.text);
-            }
+            this.getPedidosUsuario();
         },
         head:{
             title(){
@@ -88,26 +183,81 @@ import Pedidos from '@/services/Pedidos';
             }
         },
         computed: {
-            ...mapState(['user'])
+            ...mapState(['user','pedidos','totalPedidos'])
         },
         methods:{
-            getEmpresa(text){
-                Empresa().get(`/?nombre_comercial=${text}`).then((response) => {
-                    this.empresa = response.data.data[0];
-                    this.getPedidos(this.empresa.id);
-                }).catch(e => {
-                    console.log(e);
-                });
+            ...mapActions(['setPedidos','deletePedidoStore']),
+            
+            change(evt){
+                this.bauche=null;
+                if(evt){
+                    var reader = new FileReader();
+                    reader.onload = (e) => {
+                        this.bauche = e.target.result;
+                        this.imagen = evt;
+                    }
+                    reader.readAsDataURL(evt);
+                }
             },
-            getPedidos(){
+            mensajeSnackbar(color,icon,mensaje){
+                this.color=color;
+                this.icon=icon;
+                this.mensaje=mensaje;
+                this.loading=false;
+                this.snackbar=true;
+            },
+            changePedido(index){
+                this.index = index;
+                this.pedido = this.pedidos[index];
+                this.total = accounting.formatMoney(+this.totalPedidos[index],{symbol:"Bs ",thousand:'.',decimal:','});
+            },
+            getPedidosUsuario(){
                 Usuario().get(`/${this.user.data.id}/pedidos`).then((response) => {
-                    response.data.data.filter(a => this.empresa.id == a.adm_empresa_id ? this.pedido=a:null);
-                    this.pedido.detalles.filter(a => this.sales.push(accounting.formatMoney(+a.precio,{symbol:"Bs ",thousand:'.',decimal:','})));
+                    if(response.data !== 'This entity is empty'){
+                        this.setPedidos(response.data.data);
+                        this.pedido = this.pedidos[0];
+                        this.total = accounting.formatMoney(+this.totalPedidos[0],{symbol:"Bs ",thousand:'.',decimal:','});
+                    }
                 }).catch(e => {
                     console.log(e);
                 });
             },
+            pagar(){
+                this.loading=true;
+                this.movimiento.credito = this.total;
+                this.movimiento.documento = this.pedido.id;
 
+                Movimiento_banco().post("/",{data:this.movimiento}).then((response) => {
+                    this.postImagen(response.data.response.data.id);
+                    //this.updatePedido(response.data.response.data.id);
+                }).catch(e => {
+                    console.log(e);
+                    this.mensajeSnackbar('#D32F2F','error','Ooops, ocurrio un error.');
+                });
+            },
+            postImagen(id){
+                let formdata = new FormData();
+                formdata.append('image',this.imagen);
+
+                Images().post(`/main/movimiento_banco/${id}`,formdata).then((response) => {
+                    this.mensajeSnackbar('#388E3C','done','Pago enviado exitosamente.');
+                    this.deletePedidoStore(this.index);
+                    setTimeout(() => { router.push("/") },1000);
+                }).catch(e =>  {
+                    console.log(e);
+                    this.mensajeSnackbar('#D32F2F','error','Ooops, ocurrio un error.');
+                });
+            },  
+            updatePedido(){
+                Pedidos().post(`/${this.pedido.id}`,{data:{rest_estatus_id:2}}).then((response) => {
+                    this.mensajeSnackbar('#388E3C','done','Pago enviado exitosamente.');
+                    setTimeout(() => { router.push("/") },1000);
+                    this.deletePedidoStore(this.index);
+                }).catch(e => {
+                    console.log(e);
+                    this.mensajeSnackbar('#D32F2F','error','Ooops, ocurrio un error.');
+                });
+            }
         }
     }
 </script>
@@ -120,6 +270,6 @@ import Pedidos from '@/services/Pedidos';
         margin-top:120px;
     }
     .shadow{
-        box-shadow: 0px 6px 5px -4px rgba(35,35,35,0.4);
+        box-shadow: 0px 5px 9px -1px rgba(135,127,135,1);
     }
 </style>
