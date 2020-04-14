@@ -17,6 +17,7 @@ export default new Vuex.Store({
         carrito:false,
         modalsesion:false,
         modalcarrito:false,
+        bandera:false,
         //arrays
         pedidos:[],//guarda los pedidos
         agregados:[],//guarda ids de los conceptos agregados a pedidos
@@ -28,6 +29,9 @@ export default new Vuex.Store({
     },
     mutations: {
         //banderas
+        SET_BANDERA(state,val){
+            state.bandera = val;
+        },
         SET_DRAWER(state,val){
             val ? state.drawer = true:state.drawer = false;
         },
@@ -122,6 +126,9 @@ export default new Vuex.Store({
         },
         setCarrito({commit},val){
             commit('SET_CARRITO',val);
+        },
+        setBandera({commit},val){
+            commit('SET_BANDERA',val);
         },
         setModalCarrito({commit},val){
             commit('SET_MODAL_CARRITO',val);

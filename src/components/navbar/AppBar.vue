@@ -100,7 +100,7 @@ import router from '@/router';
             Perfil
         },
         computed: {
-            ...mapState(['drawer','user','search']),
+            ...mapState(['drawer','user','search','bandera']),
 
             busquedas:{
                 get(){ return this.search},
@@ -108,12 +108,19 @@ import router from '@/router';
             },
         },
         methods: {
-            ...mapActions(['setDrawer']),
+            ...mapActions(['setDrawer','setBuscar','setBandera']),
             
             change(){
                 this.drawer ? this.setDrawer(false):this.setDrawer(true);
             },
-            push(){ router.push("/search") },
+            push(){ 
+                if(this.bandera){
+                    this.setBandera(false);
+                }else{
+                    this.setBandera(true);
+                }
+                router.push("/search") 
+            },
            
             push2(){ router.push('/')}
         },

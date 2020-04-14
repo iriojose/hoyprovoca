@@ -1,22 +1,19 @@
 <template>
     <div>
-        <!--div v-if="error">
-            <div :class="$vuetify.breakpoint.smAndDown ? 'text-center margen':'text-center mt-10'">
-                <strong class="grey--text">No se encontraron resultados...</strong>
-                <v-row justify="center" align="center" class="fill-height">
-                    <v-img src="@/assets/nodata.svg" contain width="500" height="500" />
-                </v-row>
-            </div>
-            <Footer />
-        </div-->
-
         <v-card v-if="loading" elevation="0" color="#eee" width="100%" height="500">
             <LoaderRect />
         </v-card>
 
+        <div class="text-center font-weight-bold headline" v-if="error" :class="$vuetify.breakpoint.smAndDown ? 'margen-movil':'margen-top'">
+            No se encontraron resultados
+        </div>
+        <v-row justify="center" v-if="error">
+            <v-img src="@/assets/nodata.svg" contain width="500" height="500" />
+        </v-row>
+
         <v-card width="100%" elevation="0" color="#f7f7f7">
             <v-slide-x-transition>
-                <v-row justify="center" align="center" :class="$vuetify.breakpoint.smAndDown ? 'mt-12':'mt-12 mx-10'" v-show="!loading">
+                <v-row justify="center" align="center" :class="$vuetify.breakpoint.smAndDown ? 'mt-12':'mt-12 mx-10'" v-show="!loading && !error">
                     <v-col cols="12" md="12" sm="12">
                         <GruposData :subgrupos="subgrupos" :conceptos="conceptos" />
                     </v-col>
@@ -93,9 +90,14 @@ import ModalSesion from '@/components/dialogs/ModalSesion';
                 this.subgrupos = [];
                 this.conceptos = [];
                 await Grupos().get(`/${id}/subgrupos`).then((response) => {
-                    this.subgrupos = response.data.data;
-                    this.subgrupos.filter((a,i)=> this.getSubgruposConceptos(a.id,i));
-                    this.loading = false;
+                    if(response.data.data !== undefined){
+                        this.subgrupos = response.data.data;
+                        this.subgrupos.filter((a,i)=> this.getSubgruposConceptos(a.id,i));
+                        this.loading = false;
+                    }else{
+                        this.error = true;
+                        this.loading = false;
+                    }
                 }).catch(e => { 
                     console.log(e);
                     this.error = true;
@@ -122,3 +124,18 @@ import ModalSesion from '@/components/dialogs/ModalSesion';
         },
     }
 </script>
+
+<style lang="scss" scoped>
+    .margen{
+        margin-top:200px;
+    }
+    .margen-top{
+        margin-top:75px;
+    }
+    .margen-movil{
+        margin-top:120px;
+    }
+    .shadow{
+        box-shadow: 0px 6px 5px -4px rgba(35,35,35,0.4);
+    }
+</style>
