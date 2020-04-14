@@ -11,8 +11,11 @@
                 <v-img contain width="100%" height="300" :src="require('@/assets/undrawregistro2.svg')"></v-img>
             </v-col>
 
-            <v-col cols="12" sm="10" md="4">
-                <v-card width="100%" height="500" elevation="5" class="py-5">
+            <v-col cols="12" sm="10" md="6">
+                <v-card 
+                    :width="$vuetify.breakpoint.smAndDown ? '100%':'80%'" 
+                    height="500" elevation="5" class="py-5"
+                >
                     <div class="text-center my-5 font-weight-black subtitle-1">Registrate en Aftim</div>
                      <v-card-text>
                         <FormRegister />
@@ -39,8 +42,6 @@
                     </span>
                 </div>
             </v-col>
-
-            <v-col cols="12" md="4" lg="4" class="hidden-sm-and-down"></v-col><v-col cols="12" md="4" class="hidden-sm-and-down"></v-col>
         </v-row>
         <SubFooter class="mt-5"/>
     </div>

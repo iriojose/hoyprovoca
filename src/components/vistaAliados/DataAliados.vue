@@ -39,7 +39,7 @@
                                         :dark="hover ? true:false"
                                         class="text-capitalize font-weight-bold"
                                     >
-                                        Ver mas 
+                                        Ver más 
                                     </v-btn>
                                 </v-hover>
                             </div>

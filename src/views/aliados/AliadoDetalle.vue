@@ -117,7 +117,7 @@ import {mapState} from 'vuex';
                     response.data.data.filter(a => a.agregado=false);
                     response.data.data.filter(a => this.agregados.filter(b => a.id == b ? a.agregado=true:null));
                     this.conceptos[i] = response.data.data;
-                    i == 9 ?    this.loading = false:null;
+                    i <= 9 ? this.loading = false:null;
                 }).catch(e => {
                     console.log(e);
                 });

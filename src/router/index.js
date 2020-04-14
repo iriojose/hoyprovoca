@@ -31,13 +31,11 @@ import Ordenes from '@/views/account/Ordenes';
 //checkout
 import Checkout from '@/views/checkout/Checkout';
 
-import Prueba from '@/views/pruebas/Pruebas';
-
 Vue.use(Router);
 
 const router = new Router({
     mode: "history",
-    base:'/',
+    base:'/hoyprovoca',
     routes: [
         {
             path: "/",
@@ -67,14 +65,6 @@ const router = new Router({
             path: "/forgot",
             name:"forgot",
             component:Forgot,
-            meta:{
-                auth:false
-            }
-        },
-        {
-            path: "/prueba",
-            name:"prueba",
-            component:Prueba,
             meta:{
                 auth:false
             }

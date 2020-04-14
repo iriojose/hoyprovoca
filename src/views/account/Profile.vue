@@ -41,7 +41,7 @@
                     type="text"
                 />
             </v-col>
-            <v-col cols="12" md="5" sm="12">
+            <!--v-col cols="12" md="5" sm="12">
                 <div class="grey--text font-regular mb-2">Celular</div>
                 <v-text-field
                     solo
@@ -54,7 +54,7 @@
                     v-model="telefono"
                     type="text"
                 />
-            </v-col>
+            </v-col-->
             <v-col cols="12" md="5" sm="12">
                 <div class="grey--text font-regular mb-2">Fecha de nacimiento</div>
                 <v-menu

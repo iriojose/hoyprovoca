@@ -1,9 +1,8 @@
 <template>
     <div>
-
-        <v-btn s
+        <v-btn
             fab :class="$vuetify.breakpoint.smAndDown ? 'mx-1':'mx-3'" 
-            small @click="change" v-if="user.loggedIn && pedidos.length !== 0"
+            small @click="change" v-if="user.loggedIn"
         >
             <v-badge color="#232323" bottom overlap>
                 <v-icon dark>shopping_cart</v-icon>

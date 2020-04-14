@@ -1,6 +1,8 @@
 <template>
     <div>
         <div class="font-weight-black subtitle-1">Mis últimos pedidos</div>
+
+        <div class="px-10 font-weight-bold body-2">No tiene pedidos pendientes...</div>
     </div>
 </template>
 

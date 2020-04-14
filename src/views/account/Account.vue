@@ -31,7 +31,7 @@
             </v-col>
             <v-col cols="12" sm="12" md="9">
                 <div class="shadow">
-                    <v-card elevation="0" height="600" width="100%" class="pa-5">
+                    <v-card elevation="0" height="500" width="100%" class="pa-5">
                         <router-view></router-view>
                     </v-card>
                 </div>

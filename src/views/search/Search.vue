@@ -152,10 +152,11 @@ import ModalSesion from '@/components/dialogs/ModalSesion';
         },
         watch: {
             bandera(){
+                this.error=false;
+                this.loading = true;
                 this.conceptos = [];
                 this.arrayConceptos = [];
                 this.empresas = [];
-                this.loading = true;
                 this.getConceptos();
             },
             agregados(){
@@ -171,6 +172,8 @@ import ModalSesion from '@/components/dialogs/ModalSesion';
                 Conceptos().get(`/?nombre=${this.search}`).then((response) => {
                     if(response.data !== "This entity is empty"){
                         this.conceptos = response.data.data;
+                        this.conceptos.filter(a => a.agregado=false);
+                        this.conceptos.filter(a => this.agregados.filter(b => a.id == b ? a.agregado=true:null));
                         let array = [];
                         response.data.data.filter(a => array.push(a.adm_empresa_id));
                         this.ids = [...new Set(array)];
