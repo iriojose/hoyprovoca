@@ -161,7 +161,8 @@ import {mapActions} from 'vuex';
             signup(){
                 this.loading = true;
                 Auth().post("/signup",{data:this.data}).then((response) => {
-                    this.mensajeSnackbar('#388E3C','done','Se registro exitosamente '+data.nombre);
+                    this.mensajeSnackbar('#388E3C','done','Se registro exitosamente '+this.data.nombre);
+                    router.push('/');
                 }).catch(e =>{
                     console.log(e);
                     this.mensajeSnackbar('#D32F2F','error','Oops error al registrarse.');
