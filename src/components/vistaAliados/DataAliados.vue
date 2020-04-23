@@ -21,7 +21,7 @@
                         :height="$vuetify.breakpoint.smAndDown ? 200:250" 
                         :width="$vuetify.breakpoint.smAndDown ? 100:150"
                     >
-                        <v-row justify="center" align="center" class="fill-height">
+                        <v-row justify="center" align="center" class="fill-height" v-if="arrays.length==10">
                             <div>
                                 <div class="text-capitalize grey--text caption">
                                     Ver todos los productos de
@@ -31,8 +31,9 @@
                                 </div>
                                 <v-hover v-slot:default="{hover}">
                                     <v-btn 
-                                        color="#005598"
+                                        color="#232323"
                                         block 
+                                        :disabled="arrays.length >= 10 ? false:true"
                                         @click="push(grupos[i])"
                                         :outlined="hover ? false:true"
                                         :elevation="hover ? 3:0"

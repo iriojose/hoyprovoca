@@ -11,6 +11,9 @@ export default new Vuex.Store({
             loggedIn:false
         },
         search:'',
+        foto: '',
+        fotoChanged:false,
+        fotoFile: null,
         //banderas
         drawer:false,
         snackbar:false,
@@ -119,6 +122,15 @@ export default new Vuex.Store({
             state.pedidos[data.indexPedido].detalles[data.indexDetalle].cantidad = data.cantidad;
         },
 
+        SET_FOTO(state, val){
+            state.foto = val;
+        },
+        SET_FOTOFILE(state, val){
+            state.fotoFile = val;
+        },
+        SET_CHANGEFOTO(state, val){
+            state.fotoChanged = val;
+        },
     },
     actions: {
         setDrawer({commit},val){
@@ -177,6 +189,15 @@ export default new Vuex.Store({
         },
         deleteCarrito({commit}){
             commit('DELETE_CARRITO');
-        }
+        },
+        setFoto({commit},val){
+            commit('SET_FOTO',val);
+        },
+        setFotoChanged({commit},val){
+            commit('SET_CHANGEFOTO',val);
+        },
+        setFotoFile({commit},val){
+            commit('SET_FOTOFILE',val);
+        },
     }
 });

@@ -1,7 +1,7 @@
 <template>
     <div>
-        <v-row justify="center" align="center" class="mt-8 mb-5">
-            <v-img contain width="100" height="30" :src="require('@/assets/logoaftim2.png')"></v-img>
+        <v-row justify="center" align="center" class="mt-5 mb-5">
+            <v-img contain width="100" height="50" :src="require('@/assets/logo2.png')"></v-img>
         </v-row>
 
         <v-row justify="center" align="center" :class="$vuetify.breakpoint.smAndDown ? 'mx-5':null">

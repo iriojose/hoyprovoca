@@ -25,7 +25,7 @@
             <v-row justify="center" class="my-5">
                 <v-hover v-slot:default="{hover}">
                     <v-btn 
-                        color="#005598" 
+                        color="#232323" 
                         :elevation="hover ? 2:0" 
                         width="120"
                         height="40"

@@ -29,12 +29,12 @@
                     color="#f7f7f7" elevation="0"
                     class="px-10"
                 >
-                    <v-row justify="center" align="center" class="fill-height">
+                    <v-row justify="center" align="center" class="fill-height px-5">
                         <v-hover v-slot:default="{hover}">
                             <v-btn 
                                 block
                                 to="/grupos"
-                                color="#005598"
+                                color="#232323"
                                 depressed 
                                 dark
                                 class="caption text-capitalize"

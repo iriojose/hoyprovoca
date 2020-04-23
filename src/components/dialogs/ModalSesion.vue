@@ -10,7 +10,7 @@
             <v-row justify="center" align="center" class="pa-2">
                 <v-col cols="12" sm="4" md="4" class="hidden-sm-and-down">
                     <v-card width="100%" height="250" elevation="3">
-                        <v-img width="100%" height="250" contain src="@/assets/addcart.svg"></v-img>
+                        <v-img width="100%" height="250" contain src="@/assets/negocio.svg"></v-img>
                     </v-card>
                 </v-col>
                 <v-col cols="12" sm="9" md="8">

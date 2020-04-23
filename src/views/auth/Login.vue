@@ -2,8 +2,8 @@
     <div>
         <Toolbar />
 
-        <v-row justify="center" align="center" class="mt-12 mb-5">
-            <v-img contain width="100" height="30" :src="require('@/assets/logoaftim2.png')"></v-img>
+        <v-row justify="center" align="center" class="mt-5 mb-5">
+            <v-img contain width="100" height="50" :src="require('@/assets/logo2.png')"></v-img>
         </v-row>
 
         <v-row justify="center" align="center" :class="$vuetify.breakpoint.smAndDown ? 'mx-5':null">
@@ -13,7 +13,7 @@
 
             <v-col cols="12" md="4" sm="10">
                 <v-card width="100%" height="400" elevation="5" class="py-5">
-                    <div class="text-center my-5 font-weight-black subtitle-1">Iniciar sesión en Aftim</div>
+                    <div class="text-center my-5 font-weight-black subtitle-1">Iniciar sesión en Hoyprovoca</div>
                     
                     <v-card-text>
                         <FormLogin />
@@ -101,7 +101,7 @@ import router from '@/router';
             height: 1px;
             bottom: 0;
             left: 0;
-            background-color: #005598;
+            background-color: #232323;
             visibility: hidden;
             -webkit-transform: scaleX(0);
             transform: scaleX(0);

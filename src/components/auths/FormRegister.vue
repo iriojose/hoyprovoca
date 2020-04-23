@@ -137,7 +137,7 @@ import {mapActions} from 'vuex';
                     password: "",
                     login: "",
                     fotografia: "perfil.jpg",
-                    perfil_id: 1
+                    perfil_id: 3
                 }
             }
         },

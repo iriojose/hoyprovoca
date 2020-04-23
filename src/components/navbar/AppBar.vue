@@ -2,7 +2,7 @@
     <div>
         <BarraLateral />
 
-        <v-app-bar color="#005598" app
+        <v-app-bar color="#232323" app
             :elevation="$vuetify.breakpoint.smAndDown ? 0:null" 
             :elevate-on-scroll="$vuetify.breakpoint.smAndDown ? false:true" 
         >
@@ -21,9 +21,9 @@
             <v-toolbar-title @click="push2" class="cursor">
                 <v-img 
                     contain 
-                    height="100"
-                    width="150"  
-                    src="@/assets/logoaftim.png"
+                    height="60"
+                    width="100"  
+                    src="@/assets/logo 4.png"
                 />
             </v-toolbar-title>
 
@@ -37,15 +37,24 @@
                 solo
                 class="ml-10 hidden-sm-and-down"
                 single-line
-                color="#005598"
+                color="#232323"
             />
-
             <v-spacer></v-spacer>
 
             <v-divider vertical dark class="mx-2"></v-divider>
+            
+            <v-btn 
+                fab class="mx-3" 
+                small 
+                v-if="user.loggedIn"
+            >
+                <v-icon dark>
+                    gps_fixed
+                </v-icon>
+            </v-btn>
 
             <v-btn 
-                fab :class="$vuetify.breakpoint.smAndDown ? 'mx-1':'mx-3'" 
+                fab class="mx-3" 
                 small to="/account/notificaciones"
                 v-if="user.loggedIn"
             >
@@ -70,7 +79,7 @@
             </div>
         </v-app-bar>
 
-        <v-toolbar dense color="#005598" width="100%" class="px-5 fix" v-if="$vuetify.breakpoint.smAndDown">
+        <v-toolbar dense color="#232323" width="100%" class="px-5 fix" v-if="$vuetify.breakpoint.smAndDown">
             <v-text-field
                 v-model="busquedas"
                 label="Buscar producto..."
@@ -80,7 +89,7 @@
                 v-on:keyup.enter="push"
                 solo
                 single-line
-                color="#005598"
+                color="#232323"
             />
         </v-toolbar>
     </div>

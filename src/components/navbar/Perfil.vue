@@ -7,7 +7,7 @@
             offset-y
         >
             <template v-slot:activator="{ on }">
-                <v-btn v-on="on" fab :class="$vuetify.breakpoint.smAndDown ? 'mx-1':'mx-3'" small>
+                <v-btn v-on="on" fab class="mx-3" small>
                     <v-icon dark>
                         person
                     </v-icon>

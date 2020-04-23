@@ -9,6 +9,7 @@
                 prepend-inner-icon="email"
                 color="#005598"
                 dense
+                :disabled="loading"
                 single-line
                 :rules="[required('Usuario / Correo'), maxLength('Usuario / Correo',100)]"
             />    
@@ -23,6 +24,7 @@
                 :prepend-inner-icon="showPassword ?  'lock_open' : 'lock'"
                 outlined
                 color="#005598"
+                :disabled="loading"
                 dense
             />  
             <v-hover v-slot:default="{hover}" open-delay="200">

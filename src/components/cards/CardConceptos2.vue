@@ -17,7 +17,7 @@
                             :disabled="concepto.agregado"
                             :loading="loading" 
                             @click="modal(concepto)" 
-                            block color="#005598" 
+                            block color="#D32F2F" 
                             class="white--text text-capitalize"
                         >
                             Agregar

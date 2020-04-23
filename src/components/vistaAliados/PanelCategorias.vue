@@ -52,7 +52,7 @@ import variables from '@/services/variables_globales';
 
 <style lang="css" scope>    
     .color{
-        background: #17468b;
+        background: #232323;
     }
     .shadow{
         box-shadow: 1px 1px 9px 1px rgba(153,153,153,0.5);

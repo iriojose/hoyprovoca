@@ -29,10 +29,10 @@
                     elevation="0" color="#f7f7f7"
                     class="px-10"
                 >
-                    <v-row justify="center" align="center" class="fill-height">
+                    <v-row justify="center" align="center" class="fill-height px-5" v-if="empresas.length > 7">
                         <v-hover v-slot:default="{hover}">
                             <v-btn 
-                                color="#005598"
+                                color="#232323"
                                 depressed 
                                 block
                                 dark

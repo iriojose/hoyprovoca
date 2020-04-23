@@ -19,7 +19,7 @@
                         <v-list class="mt-5">
                             <v-list-item v-for="(opcion,i) in opciones" :key="i" :to="opcion.path" active-class="color shadow2 white--text">
                                 <v-list-item-icon>
-                                    <v-icon :color="$route.path == opcion.path ? '#fff':'#005598'" small>{{opcion.icon}}</v-icon>
+                                    <v-icon :color="$route.path == opcion.path ? '#fff':'#232323'" small>{{opcion.icon}}</v-icon>
                                 </v-list-item-icon>
                                 <v-list-item-content>
                                     {{opcion.text}}
@@ -91,7 +91,7 @@ import variables from '@/services/variables_globales';
         box-shadow: 0px 6px 5px -4px rgba(35,35,35,0.4);
     }
     .color{
-        background: #17468b;
+        background: #232323;
     }
     .shadow2{
         box-shadow: 1px 1px 9px 1px rgba(153,153,153,0.5);

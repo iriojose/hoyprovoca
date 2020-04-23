@@ -41,7 +41,7 @@
         <v-footer absolute width="100%" height="60" color="#fff" class="px-12">
             <v-divider></v-divider>
             <v-btn 
-                block rounded color="#005598" @click="modal"
+                block rounded color="#232323" @click="modal"
                 class="white--text text-capitalize" 
                 :disabled="pedidos.length == 0 ? true:false"
             >

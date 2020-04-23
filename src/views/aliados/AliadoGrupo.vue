@@ -10,7 +10,7 @@
             <v-row justify="center" align="center" v-if="conceptos.length==20" class="mt-5">
                 <v-hover v-slot:default="{hover}">
                     <v-btn 
-                        color="#005598" 
+                        color="#232323" 
                         :elevation="hover ? 3:0"
                         class="text-capitalize font-weigth-bold body-1"
                         dark

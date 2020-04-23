@@ -35,7 +35,7 @@
                     <div class="title font-weight-black my-4">Ordenar Por</div>
 
                     <v-hover v-slot:default="{hover}">
-                        <v-btn :color="activo == 1 ? '#005598':'#fff'" block rounded @click="menorPrecio"
+                        <v-btn :color="activo == 1 ? '#232323':'#fff'" block rounded @click="menorPrecio"
                             :elevation="hover ? 2:0" class="mb-4 text-capitalize overline font-weight-bold"
                             :dark="activo == 1 ? true:false"
                         >
@@ -44,7 +44,7 @@
                     </v-hover>
 
                     <v-hover v-slot:default="{hover}">
-                        <v-btn :color="activo == 2 ? '#005598':'#fff'" block rounded @click="mayorPrecio"
+                        <v-btn :color="activo == 2 ? '#232323':'#fff'" block rounded @click="mayorPrecio"
                             :elevation="hover ? 2:0" class="mb-4 text-capitalize overline font-weight-bold"
                             :dark="activo == 2 ? true:false"
                         >
@@ -53,7 +53,7 @@
                     </v-hover>
 
                     <v-hover v-slot:default="{hover}">
-                        <v-btn :color="activo == 3 ? '#005598':'#ffff'" block rounded @click="alfabeticamente"
+                        <v-btn :color="activo == 3 ? '#232323':'#ffff'" block rounded @click="alfabeticamente"
                             :elevation="hover ? 2:0" class="text-capitalize overline font-weight-bold"
                             :dark="activo == 3 ? true:false"
                         >

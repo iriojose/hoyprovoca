@@ -1,5 +1,5 @@
 <template>
-    <v-toolbar color="#005598" width="100%">
+    <v-toolbar color="#232323" width="100%">
         <v-toolbar-items>
             <v-hover v-slot:default="{hover}">
                 <v-btn class="white--text text-capitalize" elevation="0" to="/" text>
@@ -13,7 +13,7 @@
         <v-spacer></v-spacer>
         <v-toolbar-items>
             <v-hover v-slot:default="{hover}">
-                <v-btn width="200" color="#005598" elevation="0" :to="path">
+                <v-btn width="200" elevation="0" :to="path" text>
                     <span class="white--text text-capitalize">{{name}}</span>
                     <v-slide-x-transition>
                         <v-icon color="#fff" x-large v-show="hover">keyboard_arrow_right</v-icon>

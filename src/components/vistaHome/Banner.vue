@@ -4,7 +4,7 @@
         continuous
         progress-color="#005598"
         progress
-        height="300"
+        :height="$vuetify.breakpoint.smAndDown ? 150:500"
         :show-arrows="false"
         mandatory
         :style="$vuetify.breakpoint.smAndDown ? 'margin-top:103px':'margin-top:64px'"
@@ -22,9 +22,9 @@
         data () {
             return {
                 images:[
-                    {id:1,img:'comida.jpg'},
-                    {id:2,img:'farmacia.jpg'},
-                    {id:3,img:'deporte.jpg'},
+                    {id:1,img:'1.png'},
+                    {id:2,img:'2.png'},
+                    //{id:3,img:'deporte.jpg'},
                 ],
             }
         },

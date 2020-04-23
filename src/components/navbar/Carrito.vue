@@ -1,15 +1,14 @@
 <template>
     <div>
         <v-btn
-            fab :class="$vuetify.breakpoint.smAndDown ? 'mx-1':'mx-3'" 
+            fab class="mx-3" 
             small @click="change" v-if="user.loggedIn"
         >
-            <v-badge color="#232323" bottom overlap>
+            <v-badge dot overlap color="#D32F2F" v-if="pedidos.length > 0">
                 <v-icon dark>shopping_cart</v-icon>
-                <template v-slot:badge>
-                    {{pedidos.length}}
-                </template>
             </v-badge>
+
+            <v-icon dark v-else>shopping_cart</v-icon>
         </v-btn>
 
         <PanelCarrito />
