@@ -21,6 +21,7 @@ export default new Vuex.Store({
         modalsesion:false,
         modalcarrito:false,
         bandera:false,
+        modalUbicacion:false,
         //arrays
         pedidos:[],//guarda los pedidos
         agregados:[],//guarda ids de los conceptos agregados a pedidos
@@ -40,6 +41,9 @@ export default new Vuex.Store({
         },
         SET_MODAL_SESION(state,val){
             val ? state.modalsesion = true:state.modalsesion = false;
+        },
+        SET_MODAL_UBICACION(state,val){
+            val ? state.modalUbicacion = true:state.modalUbicacion = false;
         },
         SET_MODAL_CARRITO(state,val){
             val ? state.modalcarrito = true:state.modalcarrito = false;
@@ -67,6 +71,7 @@ export default new Vuex.Store({
             window.localStorage.setItem('token',val.token);
         },
         LOGOUT(state){//cierra la sesion
+            state.snackbar = false;
             state.user.token=null;
             state.user.data={};
             state.user.loggedIn=false;
@@ -147,6 +152,9 @@ export default new Vuex.Store({
         },
         setModalSesion({commit},val){
             commit('SET_MODAL_SESION',val);
+        },
+        setModalUbicacion({commit},val){
+            commit('SET_MODAL_UBICACION',val);
         },
         setSnackbar({commit},val){
             commit('SET_SNACKBAR',val);

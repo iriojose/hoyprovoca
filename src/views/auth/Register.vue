@@ -17,7 +17,8 @@
                     height="500" elevation="5" class="py-5"
                 >
                     <div class="text-center my-5 font-weight-black subtitle-1">Registrate en Hoyprovoca</div>
-                     <v-card-text>
+                    
+                    <v-card-text>
                         <FormRegister />
                     </v-card-text>
 
@@ -98,7 +99,7 @@ import router from '@/router';
             height: 1px;
             bottom: 0;
             left: 0;
-            background-color: #005598;
+            background-color: #232323;
             visibility: hidden;
             -webkit-transform: scaleX(0);
             transform: scaleX(0);

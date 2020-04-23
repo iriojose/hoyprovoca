@@ -1,6 +1,7 @@
 <template>
     <div>
         <BarraLateral />
+        <ModalUbicacion />
 
         <v-app-bar color="#232323" app
             :elevation="$vuetify.breakpoint.smAndDown ? 0:null" 
@@ -47,6 +48,7 @@
                 fab class="mx-3" 
                 small 
                 v-if="user.loggedIn"
+                @click="abrirModal"
             >
                 <v-icon dark>
                     gps_fixed
@@ -98,6 +100,7 @@
 <script>
 import {mapState,mapActions} from 'vuex';
 import BarraLateral from '@/components/navbar/BarraLateral';
+import ModalUbicacion from '@/components/dialogs/ModalUbicacion';
 import Perfil from './Perfil';
 import Carrito from './Carrito';
 import router from '@/router';
@@ -106,7 +109,8 @@ import router from '@/router';
         components:{
             BarraLateral,
             Carrito,
-            Perfil
+            Perfil,
+            ModalUbicacion
         },
         computed: {
             ...mapState(['drawer','user','search','bandera']),
@@ -117,10 +121,13 @@ import router from '@/router';
             },
         },
         methods: {
-            ...mapActions(['setDrawer','setBuscar','setBandera']),
+            ...mapActions(['setDrawer','setBuscar','setBandera','setModalUbicacion']),
             
             change(){
                 this.drawer ? this.setDrawer(false):this.setDrawer(true);
+            },
+            abrirModal(){
+                this.setModalUbicacion(true);
             },
             push(){ 
                 if(this.bandera){

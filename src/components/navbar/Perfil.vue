@@ -31,7 +31,7 @@
                     <v-hover v-slot:default="{hover}">
                         <v-list-item to="/account/profile">   
                             <v-list-item-icon>
-                                <v-icon :color="hover ? '#005598':null">settings</v-icon>
+                                <v-icon :color="hover ? '#232323':null">settings</v-icon>
                             </v-list-item-icon>
                             <v-list-item-title>
                                 Ajustes
@@ -41,7 +41,7 @@
                     <v-hover v-slot:default="{hover}">
                         <v-list-item @click="logOut()">   
                             <v-list-item-icon>
-                                <v-icon :color="hover ? '#005598':null">exit_to_app</v-icon>
+                                <v-icon :color="hover ? '#232323':null">exit_to_app</v-icon>
                             </v-list-item-icon>
                             <v-list-item-title>
                                 Cerrar sesíon

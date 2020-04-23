@@ -21,7 +21,7 @@
                         :height="$vuetify.breakpoint.smAndDown ? 200:250" 
                         :width="$vuetify.breakpoint.smAndDown ? 100:150"
                     >
-                        <v-row justify="center" align="center" class="fill-height" v-if="arrays.length==10">
+                        <v-row justify="center" align="center" class="fill-height">
                             <div>
                                 <div class="text-capitalize grey--text caption">
                                     Ver todos los productos de

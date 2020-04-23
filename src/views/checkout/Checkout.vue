@@ -4,9 +4,9 @@
             <v-toolbar-title>
                 <v-img 
                     contain 
-                    height="100"
-                    width="150"  
-                    src="@/assets/logoaftim.png"
+                    height="60"
+                    width="100"  
+                    src="@/assets/logo 4.png"
                 />
             </v-toolbar-title>
 
@@ -212,7 +212,7 @@ import router from '@/router';
                 this.total = accounting.formatMoney(+this.totalPedidos[index],{symbol:"Bs ",thousand:'.',decimal:','});
             },
             getPedidosUsuario(){
-                Usuario().get(`/${this.user.data.id}/pedidos`).then((response) => {
+                Usuario().get(`/${this.user.data.id}/pedidos/?rest_estatus_id=1`).then((response) => {
                     if(response.data !== 'This entity is empty'){
                         this.setPedidos(response.data.data);
                         this.pedido = this.pedidos[0];
@@ -229,7 +229,7 @@ import router from '@/router';
 
                 Movimiento_banco().post("/",{data:this.movimiento}).then((response) => {
                     this.postImagen(response.data.response.data.id);
-                    //this.updatePedido(response.data.response.data.id);
+                    this.updatePedido();
                 }).catch(e => {
                     console.log(e);
                     this.mensajeSnackbar('#D32F2F','error','Ooops, ocurrio un error.');
@@ -241,8 +241,6 @@ import router from '@/router';
 
                 Images().post(`/main/movimiento_banco/${id}`,formdata).then((response) => {
                     this.mensajeSnackbar('#388E3C','done','Pago enviado exitosamente.');
-                    this.deletePedidoStore(this.index);
-                    setTimeout(() => { router.push("/") },1000);
                 }).catch(e =>  {
                     console.log(e);
                     this.mensajeSnackbar('#D32F2F','error','Ooops, ocurrio un error.');
@@ -251,8 +249,8 @@ import router from '@/router';
             updatePedido(){
                 Pedidos().post(`/${this.pedido.id}`,{data:{rest_estatus_id:2}}).then((response) => {
                     this.mensajeSnackbar('#388E3C','done','Pago enviado exitosamente.');
+                    //this.deletePedidoStore(this.index);
                     setTimeout(() => { router.push("/") },1000);
-                    this.deletePedidoStore(this.index);
                 }).catch(e => {
                     console.log(e);
                     this.mensajeSnackbar('#D32F2F','error','Ooops, ocurrio un error.');
