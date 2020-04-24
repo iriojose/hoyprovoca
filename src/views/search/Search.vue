@@ -160,7 +160,8 @@ import ModalSesion from '@/components/dialogs/ModalSesion';
                 this.getConceptos();
             },
             agregados(){
-                this.bandera2 ?  this.revision():this.bandera2=true;
+                //this.bandera2 ?  this.revision():this.bandera2=true;
+                this.revision();
             }
         },
         methods:{

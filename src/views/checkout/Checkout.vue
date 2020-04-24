@@ -228,6 +228,7 @@ import router from '@/router';
                 this.movimiento.documento = this.pedido.id;
 
                 Movimiento_banco().post("/",{data:this.movimiento}).then((response) => {
+                    console.log(response);
                     this.postImagen(response.data.response.data.id);
                     this.updatePedido();
                 }).catch(e => {
@@ -239,17 +240,17 @@ import router from '@/router';
                 let formdata = new FormData();
                 formdata.append('image',this.imagen);
 
-                Images().post(`/main/movimiento_banco/${id}`,formdata).then((response) => {
-                    this.mensajeSnackbar('#388E3C','done','Pago enviado exitosamente.');
+                Images().post(`/main/movimientos_bancos/${id}`,formdata).then((response) => {
+                    //this.mensajeSnackbar('#388E3C','done','Pago enviado exitosamente.');
                 }).catch(e =>  {
                     console.log(e);
-                    this.mensajeSnackbar('#D32F2F','error','Ooops, ocurrio un error.');
+                    //this.mensajeSnackbar('#D32F2F','error','Ooops, ocurrio un error.');
                 });
             },  
             updatePedido(){
                 Pedidos().post(`/${this.pedido.id}`,{data:{rest_estatus_id:2}}).then((response) => {
                     this.mensajeSnackbar('#388E3C','done','Pago enviado exitosamente.');
-                    //this.deletePedidoStore(this.index);
+                    this.deletePedidoStore(this.index);
                     setTimeout(() => { router.push("/") },1000);
                 }).catch(e => {
                     console.log(e);

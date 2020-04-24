@@ -80,7 +80,8 @@ import ModalSesion from '@/components/dialogs/ModalSesion';
         },
         watch: {
             agregados(){
-                this.bandera ?  this.revision():this.bandera=true;
+                //this.bandera ?  this.revision():this.bandera=true;
+                this.revision();
             },
         },
         mounted() {

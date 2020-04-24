@@ -29,7 +29,7 @@
             <div class="text-truncate font-weight-medium text-capitalize">{{concepto.nombre}}</div>
             <div class="text-truncate body-2 grey--text text-capitalize">{{concepto.descripcion}}</div>
 
-            <v-snackbar v-model="snackbar" :color="color" right :timeout="2000">
+            <v-snackbar v-model="snackbar" :color="color" right :timeout="2000" absolute>
                 <div>
                     <v-icon color="#fff" class="mx-2">{{icon}}</v-icon>{{mensaje}}
                 </div>

@@ -9,11 +9,13 @@
         color="#f5f5f5"
     >
         <v-toolbar width="100%" elevation="1" v-if="user.loggedIn">
-            <v-toolbar-title>HoyProvoca</v-toolbar-title>
+            <v-toolbar-title>
+                <v-img contain width="150" height="80" :src="require('@/assets/logo2.png')"></v-img>
+            </v-toolbar-title>
             <v-spacer></v-spacer>
             <v-hover v-slot:default="{hover}">
                 <v-btn icon fab depressed @click="change" :elevation="hover ? 5:0">
-                    <v-icon small color="#005598">close</v-icon>
+                    <v-icon color="#232323">close</v-icon>
                 </v-btn>
             </v-hover>
         </v-toolbar>

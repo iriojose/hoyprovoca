@@ -86,6 +86,7 @@
             </v-col>
             <v-col cols="12" md="12" sm="12">
                 <v-card-actions>
+                    <v-spacer></v-spacer>
                     <v-hover v-slot:default="{hover}">
                         <v-btn 
                             color="#005598" dark :elevation="hover ? 2:0" 
@@ -95,7 +96,6 @@
                             Atualizar datos
                         </v-btn>
                     </v-hover>
-                    <v-spacer></v-spacer>
                 </v-card-actions>
             </v-col>
         </v-row>

@@ -53,9 +53,7 @@ import {mapState} from 'vuex';
                 loading:true,
                 error:false,
                 bandera:false,
-                conceptos:[
-                    {id:1,id:2,id:3,id:4,id:5,id:6,id:7,id:8,id:9,id:10}
-                ],
+                conceptos:[],
                 grupos:[],
                 empresa:{}
             }
@@ -70,7 +68,8 @@ import {mapState} from 'vuex';
         },
         watch: {
             agregados(){
-                this.bandera ?  this.revision():this.bandera=true;
+                //this.bandera ?  this.revision():this.bandera=true;
+                this.revision();
             },
             '$route'(val){
                if(val.params.text){
@@ -104,7 +103,11 @@ import {mapState} from 'vuex';
                 Empresa().get(`/${id}/grupos`).then((response) => {
                     this.grupos = response.data.data;
                     if(!this.$route.params.text2){
-                        this.grupos.filter((a,i) => i > 9 ? null:this.getConceptos(a.id,i));
+                        for (let i = 0; i < this.grupos.length; i++) {
+                            if(i <= 9){
+                                this.getConceptos(this.grupos[i].id,i);
+                            }
+                        }
                     }else{
                         this.loading = false;
                     }
@@ -113,11 +116,11 @@ import {mapState} from 'vuex';
                 });
             },
             getConceptos(id,i){
-                Grupos().get(`/${id}/conceptos/?limit=10`).then((response) => {
+                Grupos().get(`/${id}/conceptos/?limit=10&adm_empresa_id=${this.empresa.id}`).then((response) => {
                     response.data.data.filter(a => a.agregado=false);
                     response.data.data.filter(a => this.agregados.filter(b => a.id == b ? a.agregado=true:null));
-                    this.conceptos[i] = response.data.data;
-                    i <= 9 ? this.loading = false:null;
+                    this.conceptos.push(response.data.data);
+                    this.loading = false;
                 }).catch(e => {
                     console.log(e);
                 });
