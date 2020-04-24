@@ -2,18 +2,17 @@
     <div>
         <div class="font-weight-black subtitle-1">¿En qué te podemos ayudar?</div>
 
-        <!--v-card class="fixHeight" style="margin-top:64px;padding: 25px 45px 0 45px;background:#fdfdfd;"  min-height="570px">
+        <v-card class="fixHeight" style="padding: 25px 45px 0 45px;background:#fdfdfd;"  min-height="570px">
             <div class="font-weight-black title" style="padding-top:10px;">Centro de Soporte al Cliente</div>
             <v-row justify="center" align="center" class="mt-3" style="padding-top:15px;">
                 <div id="talkjs-container" style="width: 100%;; height: 450px"><i><v-spacer></v-spacer><loader style="padding-top:20%" /> <v-spacer></v-spacer></i></div>
             </v-row>
-        </v-card-->
+        </v-card>
     </div>
 </template>
 
 <script>
 import {mapState,mapActions} from 'vuex';
-//import transitions from '@/plugins/transitions'
 import Talk from 'talkjs';
 import variables from '@/services/variables_globales';
 
@@ -40,7 +39,7 @@ import variables from '@/services/variables_globales';
             ...mapActions(['setSnackbar','setFoto','setFotoChanged']),
             
         },
-        /*mounted() {
+        mounted() {
             let inbox;
             Talk.ready.then(async () => {
                 this.me = new Talk.User({
@@ -85,7 +84,7 @@ import variables from '@/services/variables_globales';
                 }
                 inbox.mount(document.getElementById("talkjs-container"));
             });
-        }*/
+        }
     }
 </script>
 

@@ -58,7 +58,7 @@ import variables from '@/services/variables_globales';
                     {icon:'settings',path:'/account/profile',text:'Ajustes de cuenta'},
                     {icon:'history',path:'/account/notificaciones',text:'Centro de notificaciones'},
                     {icon:'error',path:'/account/ordenes',text:'últimas ordenes'},
-                    {icon:'error_outline',path:'/account/ayuda',text:'Centro de ayuda'},
+                    //{icon:'error_outline',path:'/account/ayuda',text:'Centro de ayuda'},
                 ]
             }
         },

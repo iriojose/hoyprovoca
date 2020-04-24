@@ -2,7 +2,12 @@
     <div>
         <div class="font-weight-black subtitle-1">Centro de notificaciones</div>
 
-        <div class="px-10 font-weight-bold body-2">No hay notificaciones nuevas...</div>
+        <div class="px-5 font-weight-bold body-2">
+            <v-row justify="center" align="center">
+                <div class="text-center title">No hay notificaciones nuevas...</div>
+                <v-img contain width="100%" height="300" :src="require('@/assets/notifications.svg')" />
+            </v-row>
+        </div>
         <!--v-responsive class="overflow-y-auto my-5" max-height="400">
             <v-row justify="center" align="center" class="px-5">
                 <v-alert

@@ -2,7 +2,7 @@
     <div>
         <div class="font-weight-black subtitle-1">Mis últimos pedidos</div>
 
-        <div v-if="pedidos == []" class="px-10 font-weight-bold body-2">
+        <div v-if="pedidos == undefined" class="px-10 font-weight-bold body-2">
             <v-row justify="center" align="center">
                 <div class="text-center title"> No tiene pedidos pendientes...</div>
                 <v-img contain width="100%" height="300" :src="require('@/assets/empty.svg')" />

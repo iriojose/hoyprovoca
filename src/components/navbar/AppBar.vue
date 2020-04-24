@@ -44,7 +44,7 @@
 
             <v-divider vertical dark class="mx-2"></v-divider>
             
-            <v-btn 
+            <!--v-btn 
                 fab class="mx-3" 
                 small 
                 v-if="user.loggedIn"
@@ -53,7 +53,7 @@
                 <v-icon dark>
                     gps_fixed
                 </v-icon>
-            </v-btn>
+            </v-btn-->
 
             <v-btn 
                 fab class="mx-3" 

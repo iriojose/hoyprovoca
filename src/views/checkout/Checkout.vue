@@ -240,7 +240,7 @@ import router from '@/router';
                 let formdata = new FormData();
                 formdata.append('image',this.imagen);
 
-                Images().post(`/main/movimientos_bancos/${id}`,formdata).then((response) => {
+                Images().post(`/main/movimiento_bancos/${id}`,formdata).then((response) => {
                     //this.mensajeSnackbar('#388E3C','done','Pago enviado exitosamente.');
                 }).catch(e =>  {
                     console.log(e);
