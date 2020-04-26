@@ -149,7 +149,7 @@ import {mapActions} from 'vuex';
             }
         },
         methods:{
-            ...mapActions(['setSnackbar']),
+            ...mapActions(['setSnackbar','logged']),
 
             mensajeSnackbar(color,icon,mensaje){
                 this.color = color;
@@ -161,8 +161,9 @@ import {mapActions} from 'vuex';
             signup(){
                 this.loading = true;
                 Auth().post("/signup",{data:this.data}).then((response) => {
-                    this.mensajeSnackbar('#388E3C','done','Se registro exitosamente '+this.data.nombre);
                     router.push('/');
+                    this.logged(response.data);
+                    this.mensajeSnackbar('#388E3C','done','Se registro exitosamente '+this.data.nombre);
                 }).catch(e =>{
                     console.log(e);
                     this.mensajeSnackbar('#D32F2F','error','Oops error al registrarse.');
