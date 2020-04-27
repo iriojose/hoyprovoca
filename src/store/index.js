@@ -10,6 +10,7 @@ export default new Vuex.Store({
             data:{},
             loggedIn:false
         },
+        bloqueado:false,
         search:'',
         foto: '',
         fotoChanged:false,
@@ -41,6 +42,9 @@ export default new Vuex.Store({
         },
         SET_MODAL_SESION(state,val){
             val ? state.modalsesion = true:state.modalsesion = false;
+        },
+        SET_MODAL_BLOQUEADO(state,val){
+            val ? state.bloqueado = true:state.bloqueado = false;
         },
         SET_MODAL_UBICACION(state,val){
             val ? state.modalUbicacion = true:state.modalUbicacion = false;
@@ -149,6 +153,9 @@ export default new Vuex.Store({
         },
         setModalCarrito({commit},val){
             commit('SET_MODAL_CARRITO',val);
+        },
+        setModalBloqueado({commit},val){
+            commit('SET_MODAL_BLOQUEADO',val);
         },
         setModalSesion({commit},val){
             commit('SET_MODAL_SESION',val);

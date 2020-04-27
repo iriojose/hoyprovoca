@@ -101,9 +101,9 @@ import router from '@/router';
             login(){
                 this.loading = true;
                 Auth().post("/login",{data:this.data}).then((response) =>{
-                    if(response.data.perfil_id == 4){
+                    if(response.data.data.perfil_id == 4){
                         this.mensajeSnackbar("error","Usuario Bloqueado","#D32F2F");
-                    }else if(response.data.perfil_id == 3){
+                    }else if(response.data.data.perfil_id == 3){
                         this.logged(response.data);
                         this.success(response.data.data.nombre,response.data.data.apellido);
                     }else{
