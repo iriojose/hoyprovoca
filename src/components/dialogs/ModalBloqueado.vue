@@ -2,7 +2,14 @@
     <v-dialog v-model="block" close-delay width="500" transition="dialog-bottom-transition">
         <v-card height="500" class="pa-5">
             <v-card-text>
-                usuario baneado
+                <div class="text-center title font-weight-black">Usuario bloqueado</div>
+                <div class="text-center subtitle-2 grey--text font-weight-black my-5">
+                    Este usuario se encuentra bloqueado. Vuelva a intentarlo más tarde,
+                    Restringimos determinado contenido y ciertas acciones para proteger 
+                    a nuestra comunidad. Avisanos al correo de somossistemas@gmail.com 
+                    si hemos cometido un error.
+                </div>
+                <v-img contain width="100%" height="250" :src="require('@/assets/block.svg')"></v-img>
             </v-card-text>
         </v-card>
     </v-dialog>

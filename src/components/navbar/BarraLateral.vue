@@ -11,12 +11,12 @@
                 <v-divider></v-divider>
                 <div v-for="item in grupos" :key="item.id" class="mx-2">
                     <v-hover v-slot:default="{hover}">
-                        <v-list-item @click="push(item)" :class="hover ? 'shadow move':null">
+                        <v-list-item @click="push(item)" :class="hover ? 'sombra':null">
                             <v-list-item-avatar>
                                 <v-img :src="image+item.imagen"></v-img>
                             </v-list-item-avatar>
                             <v-list-item-content>
-                                <v-list-item-title class="text-lowercase font-weight-bold">{{ item.nombre }}</v-list-item-title>
+                                <v-list-item-title class="text-capitalize font-weight-bold">{{ item.nombre }}</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
                     </v-hover>
@@ -80,8 +80,10 @@ import variables from '@/services/variables_globales';
 </script>
 
 <style lang="css" scope>
-    .shadow{
-        box-shadow: 0px 0px 7px 0px rgba(153,153,153,1);
+    .sombra{
+        -webkit-box-shadow: 0px 5px 6px -5px rgba(0,0,0,0.75);
+        -moz-box-shadow: 0px 5px 6px -5px rgba(0,0,0,0.75);
+        box-shadow: 0px 5px 6px -5px rgba(0,0,0,0.75);
     }
     .move{
         position: absolute;

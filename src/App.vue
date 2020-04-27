@@ -3,17 +3,21 @@
         <AppBar v-if="ruta() "/>
         <transition name="fade">
             <router-view/>
-        </transition>  
+        </transition> 
+
+        <ModalBloqueado /> 
     </v-app>
 </template>
 
 <script>
 import AppBar from '@/components/navbar/AppBar';
+import ModalBloqueado from '@/components/dialogs/ModalBloqueado';
 
     export default {
         name: 'App',
         components:{
-            AppBar
+            AppBar,
+            ModalBloqueado
         },
         methods:{
             ruta(){

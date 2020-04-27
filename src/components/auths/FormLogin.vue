@@ -76,7 +76,7 @@ import router from '@/router';
             }
         },
         methods: {
-            ...mapActions(['setSnackbar','logged','setModalSesion']),
+            ...mapActions(['setSnackbar','logged','setModalSesion','setModalBloqueado']),
 
             success(nombre,apellido){
                 this.color="#388E3C"
@@ -102,7 +102,8 @@ import router from '@/router';
                 this.loading = true;
                 Auth().post("/login",{data:this.data}).then((response) =>{
                     if(response.data.data.perfil_id == 4){
-                        this.mensajeSnackbar("error","Usuario Bloqueado","#D32F2F");
+                        this.setModalBloqueado(true);
+                        this.loading = false;
                     }else if(response.data.data.perfil_id == 3){
                         this.logged(response.data);
                         this.success(response.data.data.nombre,response.data.data.apellido);
