@@ -78,13 +78,6 @@ import router from '@/router';
         methods: {
             ...mapActions(['setSnackbar','logged','setModalSesion']),
 
-            error(){
-                this.color="#D32F2F"
-                this.icon = "error";
-                this.mensaje = "Usuario y/o contraseña incorrecta."
-                this.setSnackbar(true);
-                this.loading = false;
-            },
             success(nombre,apellido){
                 this.color="#388E3C"
                 this.icon = "done";
@@ -98,14 +91,27 @@ import router from '@/router';
                     this.setModalSesion(false);
                 },1000);
             },
+            mensajeSnackbar(icon,mensaje,color){
+                this.color = color;
+                this.icon = icon;
+                this.mensaje = mensaje;
+                this.setSnackbar(true);
+                this.loading = false;
+            },
             login(){
                 this.loading = true;
                 Auth().post("/login",{data:this.data}).then((response) =>{
-                    this.logged(response.data);
-                    this.success(response.data.data.nombre,response.data.data.apellido);
+                    if(response.data.perfil_id == 4){
+                        this.mensajeSnackbar("error","Usuario Bloqueado","#D32F2F");
+                    }else if(response.data.perfil_id == 3){
+                        this.logged(response.data);
+                        this.success(response.data.data.nombre,response.data.data.apellido);
+                    }else{
+                        this.mensajeSnackbar("error","Usuario no permitido.","#D32F2F");
+                    }
                 }).catch(e => {
                     console.log(e);
-                    this.error();
+                    this.mensajeSnackbar("error","Error al intentar ingresar al sistema.","#D32F2F");
                 });
             }
         },

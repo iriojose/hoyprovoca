@@ -67,8 +67,8 @@ import accounting from 'accounting';
                     usuario_id:0,
                     adm_empresa_id:0,
                     imagen:'',
-                    fecha_at:new Date().toLocaleDateString(),
-                    fecha_in:new Date().toLocaleDateString()
+                    fecha_at:new Date().toISOString().substr(0,10),
+                    fecha_in:new Date().toISOString().substr(0,10)
                 },
                 data1:[
                     {
@@ -76,8 +76,8 @@ import accounting from 'accounting';
                         cantidad:1,
                         precio:0,
                         imagen:'',
-                        fecha_at:new Date().toLocaleDateString(),
-                        fecha_in:new Date().toLocaleDateString()
+                        fecha_at:new Date().toISOString().substr(0,10),
+                        fecha_in:new Date().toISOString().substr(0,10)
                     }
                 ]
             }

@@ -35,7 +35,7 @@ Vue.use(Router);
 
 const router = new Router({
     mode: "history",
-    base:'/hoyprovoca',
+    base:'/',
     routes: [
         {
             path: "/",
