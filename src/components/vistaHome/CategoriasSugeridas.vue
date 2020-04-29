@@ -71,10 +71,10 @@ import router from '@/router';
             }
         },
         methods:{
-            push(grupo){
-                var re = / /gi; 
-                const nombre = grupo.nombre.replace(re,'-');//remplaza los espacios por guiones
-                router.push({name:'grupoDetalle', params:{text:nombre,id:grupo.id}});
+            push(item){
+                window.localStorage.setItem('grupo',item.id);
+                let nombre = item.nombre.toLowerCase(); 
+                router.push({name:'grupoDetalle', params:{text:nombre}});
             }
         }
     }

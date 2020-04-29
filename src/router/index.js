@@ -31,6 +31,11 @@ import Ordenes from '@/views/account/Ordenes';
 //checkout
 import Checkout from '@/views/checkout/Checkout';
 
+//terminos y condiciones
+import TerminosCondiciones from '@/views/terminos/TerminosCondiciones';
+import Privacidad from '@/views/terminos/Privacidad';
+import ComoPagar from '@/views/terminos/ComoPagar';
+
 Vue.use(Router);
 
 const router = new Router({
@@ -78,7 +83,7 @@ const router = new Router({
             }
         },
         {
-            path: "/grupo/:text/:id",
+            path: "/grupo/:text",
             name:"grupoDetalle",
             component:GrupoDetalle,
             meta:{
@@ -168,6 +173,21 @@ const router = new Router({
             ]
         },
         {
+            path: "/terminos-y-condiciones-de-pago-hoyprovoca",
+            name: "comopagar",
+            component: ComoPagar
+        },
+        {
+            path: "/terminos-y-condiciones-hoyprovoca",
+            name: "terminosycondiciones",
+            component: TerminosCondiciones
+        },
+        {
+            path: "/politicas-de-privacidad-hoyprovoca",
+            name: "privacidad",
+            component: Privacidad
+        },
+        {
             path: "*",
             name: "notfound",
             component: Error404
@@ -223,40 +243,4 @@ router.beforeEach((to,from,next) => {
     }
 });
   
-/*router.beforeEach((to, from, next) => {
-  let user=store.state.user.loggedIn;
-
-    if (to.meta.auth){
-        if(user){
-            if(to.meta.mediador){
-                next({name: 'notfound'});
-            }else{
-                next();
-            }   
-        } else {
-            if(to.meta.mediador){
-                next({name: 'notfound'});
-            }else{
-                next({name: 'noautorizado403'});
-            }
-        }
-    }else{
-        if(to.meta.mediador){
-            next({name: 'notfound'});
-        }else{
-            if(to.name == 'login' && user){
-                next({name:'home'});
-            }else if(to.name == 'cliente' && user){
-                next({name:'home'});
-            }else if(to.name == 'empresa' && user){
-                next({name:'home'});
-            }else if(to.name == 'forgot' && user){
-                next({name:'home'});
-            }else{
-                next();
-            }
-        }
-    }
-});*/
-
 export default router;

@@ -84,7 +84,7 @@ import {mapState} from 'vuex';
         head:{
             title(){
                 return {
-                    inner:'HoyProvoca',
+                    inner:'Hoyprovoca',
                     separator:'|',
                     complement: 'Aliados'
                 }

@@ -30,7 +30,7 @@ import SubFooter from "@/components/footer/SubFooter";
         head:{
             title(){
                 return {
-                    inner:'HoyProvoca',
+                    inner:'Hoyprovoca',
                     separator:'|',
                     complement: '404'
                 }

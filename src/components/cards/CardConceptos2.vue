@@ -25,7 +25,8 @@
                     </v-row>
                 </v-fade-transition>
             </v-img>
-            <div class="text-truncate font-weight-black text-capitalize caption">{{sale}}</div>
+            <div class="text-truncate font-weight-black text-capitalize caption">{{precioDolar}}</div>
+            <div class="text-truncate font-weight-black text-capitalize caption">{{precio}}</div>
             <div class="text-truncate font-weight-medium text-capitalize">{{concepto.nombre}}</div>
             <div class="text-truncate body-2 grey--text text-capitalize">{{concepto.descripcion}}</div>
 
@@ -57,7 +58,8 @@ import accounting from 'accounting';
             return {
                 ...variables,
                 encontradoPedido:0,
-                sale:'',
+                precio:'',
+                precioDolar:'',
                 loading:false,
                 snackbar:false,
                 mensaje:'',
@@ -83,7 +85,8 @@ import accounting from 'accounting';
             }
         },
         mounted() {
-            this.sale = accounting.formatMoney(+this.concepto.precio_a,{symbol:"Bs ",thousand:'.',decimal:','});
+            this.precioDolar = accounting.formatMoney(+this.concepto.precio_dolar,{symbol:"$ ",thousand:',',decimal:'.'});
+            this.precio = accounting.formatMoney(+this.concepto.precio_a,{symbol:"Bs ",thousand:'.',decimal:','});
         },
         computed:{
             ...mapState(['user','pedidos'])

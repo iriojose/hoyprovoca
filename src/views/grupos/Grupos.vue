@@ -70,7 +70,7 @@ import router from '@/router';
         head:{
             title(){
                 return {
-                    inner:'HoyProvoca',
+                    inner:'Hoyprovoca',
                     separator:'|',
                     complement: 'Categorías'
                 }
@@ -78,9 +78,9 @@ import router from '@/router';
         },
         methods:{
             push(item){
-                var re = / /gi; 
-                const nombre = item.nombre.replace(re,'-');//remplaza los espacios por guiones
-                router.push({name:'grupoDetalle', params:{text:nombre,id:item.id}});
+                window.localStorage.setItem('grupo',item.id);
+                let nombre = item.nombretoLowerCase(); 
+                router.push({name:'grupoDetalle', params:{text:nombre}});
             },
             getGrupos(){
                 Grupos().get(`/?limit=20&offset=${this.after}`).then((response) => {

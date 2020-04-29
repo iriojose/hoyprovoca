@@ -28,7 +28,10 @@ import ModalBloqueado from '@/components/dialogs/ModalBloqueado';
                     this.$route.name == 'notauthorized' ||
                     this.$route.name == 'notfound' ||
                     this.$route.name == 'checkout' ||
-                    this.$route.name == 'prueba'
+                    this.$route.name == 'prueba' ||
+                    this.$route.name == 'comopagar' || 
+                    this.$route.name == 'terminosycondiciones' ||
+                    this.$route.name == 'privacidad'
                 ){
                     return false;
                 }else{

@@ -58,7 +58,7 @@ import ModalSesion from '@/components/dialogs/ModalSesion';
         head:{
             title(){
                 return {
-                    inner:'HoyProvoca',
+                    inner:'Hoyprovoca',
                     separator:'|',
                     complement: 'Inicio'
                 }

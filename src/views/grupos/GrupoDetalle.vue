@@ -55,8 +55,10 @@ import ModalSesion from '@/components/dialogs/ModalSesion';
             ...mapState(['agregados'])
         },
         mounted() {
-            if(this.$route.params.id){
-                this.getGruposSubGrupos(this.$route.params.id);
+            let id = window.localStorage.getItem('grupo');
+
+            if(id){
+                this.getGruposSubGrupos(id);
             }else{
                 this.loading = false;
                 this.error=true;
@@ -67,10 +69,12 @@ import ModalSesion from '@/components/dialogs/ModalSesion';
                 //this.bandera ?  this.revision():this.bandera=true;
                 this.revision();
             },
-            '$route'(val){
-               if(val.params.id){
+            '$route'(){
+                let id = window.localStorage.getItem('grupo');
+               
+               if(id){
                     this.loading = true;
-                    this.getGruposSubGrupos(val.params.id); 
+                    this.getGruposSubGrupos(id); 
                     this.error=false;
                 }else{
                     this.error=true;
@@ -87,13 +91,17 @@ import ModalSesion from '@/components/dialogs/ModalSesion';
             }
         },
         methods: {
-            async getGruposSubGrupos(id){
+            getGruposSubGrupos(id){
                 this.subgrupos = [];
                 this.conceptos = [];
-                await Grupos().get(`/${id}/subgrupos`).then((response) => {
+                Grupos().get(`/${id}/subgrupos`).then((response) => {
                     if(response.data.data !== undefined){
-                        this.subgrupos = response.data.data;
-                        this.subgrupos.filter((a,i)=> this.getSubgruposConceptos(a.id,i));
+                        this.subgrupos = response.data.data.sort(function (a, b) {
+                            if (a.nombre > b.nombre) {return 1;}
+                            if (a.nombre < b.nombre) {return -1;}
+                            return 0;
+                        });
+                        this.subgrupos.filter((a,i)=> this.getSubgruposConceptos(a.id,this.subgrupos.length,i));
                         this.loading = false;
                     }else{
                         this.error = true;
@@ -102,19 +110,22 @@ import ModalSesion from '@/components/dialogs/ModalSesion';
                 }).catch(e => { 
                     console.log(e);
                     this.error = true;
+                    this.loading = false;
                 });
             },
-            async getSubgruposConceptos(id,i){
-                await SubGrupos().get(`/${id}/conceptos/?limit=10`).then((response) => {
-                    if(!response.data == ""){
+            getSubgruposConceptos(id,leng,i){
+                SubGrupos().get(`/${id}/conceptos/?limit=10`).then((response) => {
+                    if(response.data.data !== undefined){
                         response.data.data.filter(a => a.agregado=false);
                         response.data.data.filter(a => this.agregados.filter(b => a.id == b ? a.agregado=true:null));
                         this.conceptos.push(response.data.data);
-                    }else{
-                        this.conceptos.push([]);
+                    }
+                    if(leng-1 == i){
+                        this.loading = false;
                     }
                 }).catch(e => {
                     this.error=true;
+                    this.loading = false;
                     console.log(e);
                 });
             },

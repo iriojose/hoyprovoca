@@ -31,7 +31,6 @@
             <v-text-field
                 v-model="busquedas"
                 label="Buscar producto..."
-                append-icon="search"
                 hide-details
                 dense 
                 v-on:keyup.enter="push"
@@ -39,7 +38,13 @@
                 class="ml-10 hidden-sm-and-down"
                 single-line
                 color="#232323"
-            />
+            >
+                <v-divider slot="append" vertical></v-divider>
+                <v-btn slot="append" tile @click="push" text small>
+                    <v-icon color="#D32F2F">search</v-icon>
+                </v-btn>
+            </v-text-field>
+
             <v-spacer></v-spacer>
 
             <v-divider vertical dark class="mx-2"></v-divider>
@@ -85,14 +90,18 @@
             <v-text-field
                 v-model="busquedas"
                 label="Buscar producto..."
-                append-icon="search"
                 hide-details
                 dense 
                 v-on:keyup.enter="push"
                 solo
                 single-line
                 color="#232323"
-            />
+            >
+                <v-divider slot="append" vertical></v-divider>
+                <v-btn slot="append" tile @click="push" text small>
+                    <v-icon color="#D32F2F">search</v-icon>
+                </v-btn>
+            </v-text-field>
         </v-toolbar>
     </div>
 </template>

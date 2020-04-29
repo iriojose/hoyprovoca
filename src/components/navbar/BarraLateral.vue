@@ -63,9 +63,9 @@ import variables from '@/services/variables_globales';
             ...mapActions(['setDrawer']),
 
             push(item){
-                var re = / /gi; 
-                const nombre = item.nombre.replace(re,'-');//remplaza los espacios por guiones
-                router.push({name:'grupoDetalle', params:{text:nombre,id:item.id}});
+                window.localStorage.setItem('grupo',item.id);
+                let nombre = item.nombre.toLowerCase(); 
+                router.push({name:'grupoDetalle', params:{text:nombre}});
             },
             getGrupos(){
                 Grupos().get("/mostsold").then((response) => {
@@ -84,12 +84,5 @@ import variables from '@/services/variables_globales';
         -webkit-box-shadow: 0px 5px 6px -5px rgba(0,0,0,0.75);
         -moz-box-shadow: 0px 5px 6px -5px rgba(0,0,0,0.75);
         box-shadow: 0px 5px 6px -5px rgba(0,0,0,0.75);
-    }
-    .move{
-        position: absolute;
-        padding-left: 10px;
-        transition-property:left;
-        transition-duration: 1s;
-        transition-delay: 0.4s;
     }
 </style>

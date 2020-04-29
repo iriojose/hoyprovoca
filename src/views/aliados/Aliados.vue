@@ -63,7 +63,7 @@ import router from '@/router';
         head:{
             title(){
                 return {
-                    inner:'HoyProvoca',
+                    inner:'Hoyprovoca',
                     separator:'|',
                     complement: 'Aliados'
                 }

@@ -1,5 +1,5 @@
 <template>
-    <v-sheet>
+    <v-sheet class="mt">
         <PreFooter />
         <v-divider />
 
@@ -93,3 +93,9 @@ import PreFooter from './PreFooter';
         },
     }
 </script>
+
+<style lang="scss" scope>
+    .mt{
+        margin-top:200px;
+    }
+</style>
