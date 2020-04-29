@@ -3,7 +3,7 @@
         <v-card 
             :width="$vuetify.breakpoint.smAndDown ? 150:200" 
             :height="$vuetify.breakpoint.smAndDown ? 200:250" 
-            class="ma-2 pa-3" elevation="2"
+            class="pa-3" elevation="2"
         >
             <v-img 
                 contain 

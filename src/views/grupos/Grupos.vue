@@ -79,7 +79,7 @@ import router from '@/router';
         methods:{
             push(item){
                 window.localStorage.setItem('grupo',item.id);
-                let nombre = item.nombretoLowerCase(); 
+                let nombre = item.nombre.toLowerCase(); 
                 router.push({name:'grupoDetalle', params:{text:nombre}});
             },
             getGrupos(){

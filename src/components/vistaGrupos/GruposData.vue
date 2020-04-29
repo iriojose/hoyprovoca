@@ -1,20 +1,21 @@
 <template>
-    <div class="mt-12">
-        <div v-for="(subgrupo,i) in subgrupos" :key="i" class="mt-4">
-            <v-card 
-                width="100%" 
-                :height="$vuetify.breakpoint.smAndDown ? 300:350" 
-                elevation="0" class="shadow"
-            >
+    <div>
+        <div v-for="(subgrupo,i) in subgrupos" :key="i" class="mt-8 sombra">
+            <v-card width="100%" elevation="0">
                 <v-card-title class="font-weight-black">
+                    <v-avatar size="50" class="elevation-0 mx-2">
+                        <v-img :src="image+subgrupo.imagen"></v-img>
+                    </v-avatar>
                     {{subgrupo.nombre}}
                 </v-card-title>
                 <v-card-text>
-                    <v-slide-group show-arrows class="my-2">
-                        <v-slide-item v-for="(concepto,e) in conceptos[i]" :key="e">
-                            <CardConceptos :concepto="concepto" />
-                        </v-slide-item>
-                    </v-slide-group>
+                    <v-hover v-slot:default="{hover}">
+                        <v-slide-group class="my-2" :show-arrows="hover">
+                            <v-slide-item v-for="(concepto,e) in conceptos[i]" :key="e">
+                                <CardConceptos :concepto="concepto" />
+                            </v-slide-item>
+                        </v-slide-group>
+                    </v-hover>
                 </v-card-text>
             </v-card>
         </div>
@@ -23,6 +24,7 @@
 
 <script>
 import CardConceptos from '@/components/cards/CardConceptos2';
+import variables from '@/services/variables_globales';
 
     export default {
         components:{
@@ -38,13 +40,24 @@ import CardConceptos from '@/components/cards/CardConceptos2';
                 default: () => []
             }
         },
+        data(){
+            return {
+                ...variables
+            }
+        }
     }
 </script>
 
 <style lang="css" scoped>
-    .shadow{
-        -webkit-box-shadow: 1px 1px 11px 0px rgba(0,0,0,0.75);
-        -moz-box-shadow: 1px 1px 11px 0px rgba(0,0,0,0.75);
-        box-shadow: 1px 1px 11px 0px rgba(0,0,0,0.75);
+    .margen-top{
+        margin-top:75px;
+    }
+    .margen-movil{
+        margin-top:120px;
+    }
+    .sombra{
+        -webkit-box-shadow: 0px 5px 6px -5px rgba(0,0,0,0.75);
+        -moz-box-shadow: 0px 5px 6px -5px rgba(0,0,0,0.75);
+        box-shadow: 0px 5px 6px -5px rgba(0,0,0,0.75);
     }
 </style>

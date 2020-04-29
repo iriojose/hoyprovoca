@@ -1,58 +1,68 @@
 <template>
     <div>
-        <v-card v-if="loading" elevation="0" color="#f7f7f7" width="100%" height="500">
+        <v-card v-if="loading" elevation="0" color="#eee" width="100%" height="500">
             <LoaderRect />
         </v-card>
 
-        <div class="text-center font-weight-bold headline" v-if="error || subgrupos.length == 0" :class="$vuetify.breakpoint.smAndDown ? 'margen-movil':'margen-top'">
+        <div class="text-center font-weight-bold headline" v-if="error || conceptos.length == 0" :class="$vuetify.breakpoint.smAndDown ? 'margen-movil':'margen-top'">
             No se encontraron resultados
         </div>
-        <v-row justify="center" v-if="error || subgrupos.length == 0">
+        <v-row justify="center" v-if="error || conceptos.length == 0">
             <v-img src="@/assets/nodata.svg" contain width="500" height="500" />
         </v-row>
 
         <v-card width="100%" elevation="0" color="#f7f7f7" :class="$vuetify.breakpoint.smAndDown ? 'margen-movil':'margen-top'">
             <v-slide-x-transition>
-                <v-row justify="center" :class="$vuetify.breakpoint.smAndDown ? null:'mx-10'" v-show="!loading">
+                <v-row justify="center" :class="$vuetify.breakpoint.smAndDown ? null:'mx-10'" v-show="!loading && !error && conceptos.length !== 0">
                     <v-col cols="12" md="12" sm="12">
                         <GruposData :subgrupos="subgrupos" :conceptos="conceptos" />
                     </v-col>
                 </v-row>
             </v-slide-x-transition>
         </v-card>
-
-        <Footer />
+        
         <ModalSesion />
+        <Footer />
     </div>
 </template>
 
 <script>
 import Footer from "@/components/footer/Footer";
-import GruposData from '@/components/vistaGrupos/GruposData';
-import ModalSesion from '@/components/dialogs/ModalSesion';
-import LoaderRect from '@/components/loaders/LoaderRect';
-import {mapState} from 'vuex';
 import Grupos from '@/services/Grupos';
 import SubGrupos from '@/services/SubGrupos';
+import {mapState} from 'vuex';
+import LoaderRect from '@/components/loaders/LoaderRect';
+import GruposData from '@/components/vistaGrupos/GruposData';
+import ModalSesion from '@/components/dialogs/ModalSesion';
 
     export default {
         components:{
             Footer,
+            LoaderRect,
             ModalSesion,
-            GruposData,
-            LoaderRect
+            GruposData
         },
-        data(){
+        data() {
             return {
                 subgrupos:[],
                 conceptos:[],
                 loading:true,
                 error:false,
-                //bandera:false,
+                bandera:false,
             }
         },
         computed: {
             ...mapState(['agregados'])
+        },
+        mounted() {
+            let id = window.localStorage.getItem('grupo');
+
+            if(id){
+                this.getGruposSubGrupos(id);
+            }else{
+                this.loading = false;
+                this.error=true;
+            }
         },
         watch: {
             agregados(){
@@ -64,11 +74,10 @@ import SubGrupos from '@/services/SubGrupos';
                
                if(id){
                     this.loading = true;
-                    this.error=false;
                     this.getGruposSubGrupos(id); 
+                    this.error=false;
                 }else{
                     this.error=true;
-                    this.loading = false;
                 }
             },
         },
@@ -81,16 +90,7 @@ import SubGrupos from '@/services/SubGrupos';
                 }
             }
         },
-        mounted(){
-            let id = window.localStorage.getItem('grupo');
-            if(id){
-                this.getGruposSubGrupos(id);
-            }else{
-                this.loading = false;
-                this.error=true;
-            }
-        },
-        methods:{
+        methods: {
             getGruposSubGrupos(id){
                 this.subgrupos = [];
                 this.conceptos = [];
@@ -101,33 +101,32 @@ import SubGrupos from '@/services/SubGrupos';
                             if (a.nombre < b.nombre) {return -1;}
                             return 0;
                         });
-                        console.log(this.subgrupos);
                         this.subgrupos.filter((a,i)=> this.getSubgruposConceptos(a.id,this.subgrupos.length,i));
                     }else{
                         this.error = true;
                         this.loading = false;
                     }
-                }).catch(e => {
+                }).catch(e => { 
                     console.log(e);
-                    this.loading = false;
                     this.error = true;
+                    this.loading = false;
                 });
             },
             getSubgruposConceptos(id,leng,i){
                 SubGrupos().get(`/${id}/conceptos/?limit=10`).then((response) => {
                     if(response.data.data !== undefined){
+                        console.log(response);
                         response.data.data.filter(a => a.agregado=false);
                         response.data.data.filter(a => this.agregados.filter(b => a.id == b ? a.agregado=true:null));
                         this.subgrupos.filter(a => a.id == response.data.data[0].adm_subgrupos_id ? a.conceptos=response.data.data:null);
                     }
                     if(leng-1 == i){
-                        for (let i = 0; i < this.subgrupos.length; i++) {
-                            if(this.subgrupos[i].conceptos == undefined){
-                                this.subgrupos.splice(i,1);
-                            }
-                        }
-                        this.subgrupos.filter(a => this.conceptos.push(a.conceptos));
+                        let ids = [];
+                        this.subgrupos.filter((a,i) => a.conceptos ? this.conceptos.push(a.conceptos):ids.push(i));
+                        ids.filter(a => this.subgrupos.splice(a,1));
                         this.loading = false;
+                        console.log(this.subgrupos);
+                        console.log(this.conceptos);
                     }
                 }).catch(e => {
                     this.error=true;
@@ -139,15 +138,21 @@ import SubGrupos from '@/services/SubGrupos';
                 this.conceptos.filter(a => a.filter(b => b.agregado=false));
                 this.conceptos.filter(a => a.filter(b => this.agregados.filter(c => b.id == c ? b.agregado=true:null)));
             }
-        }
+        },
     }
 </script>
 
 <style lang="scss" scoped>
+    .margen{
+        margin-top:200px;
+    }
     .margen-top{
         margin-top:75px;
     }
     .margen-movil{
-        margin-top:100px;
+        margin-top:120px;
+    }
+    .shadow{
+        box-shadow: 0px 6px 5px -4px rgba(35,35,35,0.4);
     }
 </style>
