@@ -22,14 +22,12 @@
         </v-card>
 
         <Footer />
-        <ModalSesion />
     </div>
 </template>
 
 <script>
 import Footer from "@/components/footer/Footer";
 import GruposData from '@/components/vistaGrupos/GruposData';
-import ModalSesion from '@/components/dialogs/ModalSesion';
 import LoaderRect from '@/components/loaders/LoaderRect';
 import {mapState} from 'vuex';
 import Grupos from '@/services/Grupos';
@@ -38,7 +36,6 @@ import SubGrupos from '@/services/SubGrupos';
     export default {
         components:{
             Footer,
-            ModalSesion,
             GruposData,
             LoaderRect
         },

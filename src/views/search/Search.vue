@@ -99,7 +99,6 @@
             </v-col>
         </v-row>
 
-        <ModalSesion />
         <Footer class="margen" />
     </div>
 </template>
@@ -113,14 +112,12 @@ import Conceptos from '@/services/Conceptos';
 import CardConceptos from '@/components/cards/CardConceptos2';
 import variables from '@/services/variables_globales';
 import router from '@/router';
-import ModalSesion from '@/components/dialogs/ModalSesion';
 
     export default {
         components:{
             Footer,
             LoaderRect,
             CardConceptos,
-            ModalSesion
         },
         data() {
             return {

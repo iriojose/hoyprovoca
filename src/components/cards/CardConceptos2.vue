@@ -4,6 +4,7 @@
             :width="$vuetify.breakpoint.smAndDown ? 150:200" 
             :height="$vuetify.breakpoint.smAndDown ? 200:250" 
             class="pa-3" elevation="0"
+            @click="modalDetalle"
         >
             <v-img 
                 contain 
@@ -16,7 +17,7 @@
                         <v-btn 
                             :disabled="concepto.agregado"
                             :loading="loading" 
-                            @click="modal(concepto)" 
+                            @click.stop.prevent="modal(concepto)" 
                             block color="#D32F2F" 
                             class="white--text text-capitalize"
                         >
@@ -92,7 +93,7 @@ import accounting from 'accounting';
             ...mapState(['user','pedidos'])
         },
         methods: {
-            ...mapActions(['addPedidos','addDetalle','setModalSesion']),
+            ...mapActions(['addPedidos','addDetalle','setModalSesion','setModalProducto','setProducto']),
 
             mensajeSnackbar(color,texto,icon){
                 this.mensaje = texto;
@@ -107,6 +108,10 @@ import accounting from 'accounting';
                 }else{
                     this.setModalSesion(true);
                 }
+            },
+            modalDetalle(){
+                this.setProducto(this.concepto);
+                this.setModalProducto(true);
             },
             getExistencia(item){
                 this.loading = true;

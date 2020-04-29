@@ -6,18 +6,24 @@
         </transition> 
 
         <ModalBloqueado /> 
+        <ModalProducto />
+        <ModalSesion />
     </v-app>
 </template>
 
 <script>
 import AppBar from '@/components/navbar/AppBar';
 import ModalBloqueado from '@/components/dialogs/ModalBloqueado';
+import ModalProducto from '@/components/dialogs/ModalProducto';
+import ModalSesion from '@/components/dialogs/ModalSesion';
 
     export default {
         name: 'App',
         components:{
             AppBar,
-            ModalBloqueado
+            ModalBloqueado,
+            ModalProducto,
+            ModalSesion
         },
         methods:{
             ruta(){

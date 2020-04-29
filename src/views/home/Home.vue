@@ -25,7 +25,6 @@
         </v-scroll-x-transition>
         <SkeletonCard v-if="loadingE" :width="300" :height="200" title="Visita nuestras tiendas" />
 
-        <ModalSesion />
         <Footer />
     </div>
 </template>
@@ -42,7 +41,6 @@ import MasVendidos from '@/components/vistaHome/MasVendidos';
 import EmpresasSugeridas from '@/components/vistaHome/EmpresasSugeridas';
 import CategoriasSugeridas from '@/components/vistaHome/CategoriasSugeridas';
 import {mapState} from 'vuex';
-import ModalSesion from '@/components/dialogs/ModalSesion';
 
     export default {
         components:{
@@ -53,7 +51,6 @@ import ModalSesion from '@/components/dialogs/ModalSesion';
             EmpresasSugeridas,
             CategoriasSugeridas,
             SkeletonCard,
-            ModalSesion
         },
         head:{
             title(){

@@ -23,6 +23,7 @@ export default new Vuex.Store({
         modalcarrito:false,
         bandera:false,
         modalUbicacion:false,
+        modalProducto:false,
         //arrays
         pedidos:[],//guarda los pedidos
         agregados:[],//guarda ids de los conceptos agregados a pedidos
@@ -48,6 +49,9 @@ export default new Vuex.Store({
         },
         SET_MODAL_UBICACION(state,val){
             val ? state.modalUbicacion = true:state.modalUbicacion = false;
+        },
+        SET_MODAL_PRODUCTO(state,val){
+            val ? state.modalProducto = true:state.modalProducto = false;
         },
         SET_MODAL_CARRITO(state,val){
             val ? state.modalcarrito = true:state.modalcarrito = false;
@@ -157,6 +161,9 @@ export default new Vuex.Store({
         setModalBloqueado({commit},val){
             commit('SET_MODAL_BLOQUEADO',val);
         },
+        setModalProducto({commit},val){
+            commit('SET_MODAL_PRODUCTO',val);
+        },
         setModalSesion({commit},val){
             commit('SET_MODAL_SESION',val);
         },
@@ -169,8 +176,8 @@ export default new Vuex.Store({
         setBuscar({commit},val){
             commit('SET_BUSCAR',val);
         },
-        setProdcuto({commit},val){
-            commit('SET_PRODCUTO',val);
+        setProducto({commit},val){
+            commit('SET_PRODUCTO',val);
         },
         logged({commit},val){
             commit('SET_LOGGED',val);

@@ -1,71 +1,71 @@
 <template>
-    <v-hover v-slot:default="{hover}">
-        <v-card 
-            :width="$vuetify.breakpoint.smAndDown ? 150:200" 
-            :height="$vuetify.breakpoint.smAndDown ? 200:250" 
-            class="pa-3" elevation="2"
-            @click="modalDetalle"
-        >
-            <v-img 
-                contain 
-                :width="$vuetify.breakpoint.smAndDown ? 150:200" 
-                :height="$vuetify.breakpoint.smAndDown ? 100:150" 
-                :src="image+concepto.imagen" class="pb-3"
-            >
-                <v-fade-transition>
-                    <v-row justify="center" align="end" class="fill-height" v-show="hover">
-                        <v-btn 
-                            :disabled="concepto.agregado"
-                            :loading="loading" 
-                            @click.stop.prevent="modal(concepto)" 
-                            block color="#D32F2F" 
-                            class="white--text text-capitalize"
-                        >
-                            Agregar
-                        </v-btn>
-                    </v-row>
-                </v-fade-transition>
-            </v-img>
-            <div class="text-truncate caption font-weight-black text-capitalize">{{precioDolar}}</div>
-            <div class="text-truncate caption font-weight-black text-capitalize">{{precio}}</div>
-            <div class="text-truncate font-weight-medium text-capitalize">{{concepto.nombre}}</div>
-            <div class="text-truncate body-2 grey--text text-capitalize">{{concepto.descripcion}}</div>
-
-            <v-snackbar v-model="snackbar" :color="color" right :timeout="2000" absolute>
-                <div>
-                    <v-icon color="#fff" class="mx-2">{{icon}}</v-icon>{{mensaje}}
-                </div>
-            </v-snackbar>
+    <v-dialog v-model="productos" close-delay width="500" transition="dialog-bottom-transition">
+        <v-card height="500" class="px-2">
+            <v-card-title>
+                <v-spacer></v-spacer>
+                <v-hover v-slot:default="{hover}">
+                    <v-btn fab text :elevation="hover ? 0:0" @click="close" small>
+                        <v-icon :color="hover ? '#D32F2F':'#232323'">close</v-icon>
+                    </v-btn>
+                </v-hover>
+            </v-card-title>
+            <v-card-text>
+                <v-img contain height="250" width="100%" :src="image+producto.imagen"></v-img>
+                <div class="text-truncate text-center body-1 font-weight-black text-capitalize">{{precioDolar}}</div>
+                <div class="text-truncate text-center body-1 font-weight-black text-capitalize">{{precioBolivar}}</div>
+                <div class="text-truncate text-center font-weight-medium text-capitalize">{{producto.nombre}}</div>
+                <div class="text-truncate body-2 text-center grey--text text-capitalize">{{producto.descripcion}}</div>
+            </v-card-text>
+            <v-card-actions class="mx-10">
+                <v-btn 
+                    :disabled="producto.agregado"
+                    :loading="loading"
+                    block 
+                    @click="modal(producto)"
+                    color="#D32F2F" 
+                    class="white--text text-capitalize" 
+                >
+                    Agregar
+                </v-btn>
+            </v-card-actions>
         </v-card>
-    </v-hover>
+
+        <v-snackbar v-model="snackbar" :color="color" right :timeout="2000" absolute>
+            <div>
+                <v-icon color="#fff" class="mx-2">{{icon}}</v-icon>{{mensaje}}
+            </div>
+        </v-snackbar>
+    </v-dialog>
 </template>
 
 <script>
-import variables from '@/services/variables_globales';
 import {mapState,mapActions} from 'vuex';
+import variables from '@/services/variables_globales';
+import accounting from 'accounting';
 import Conceptos from '@/services/Conceptos';
 import Pedidos from '@/services/Pedidos';
 import Empresa from '@/services/Empresa';
-import accounting from 'accounting';
 
-    export default {
-        props:{
-            concepto:{
-                type:Object,
-                default:() => ({})
+    export default {    
+        computed:{
+            ...mapState(['modalProducto','producto','user','pedidos']),
+
+            productos:{
+                get(){ return this.modalProducto},
+                set(val){ this.setModalProducto(val)},
             }
         },
         data(){
             return {
                 ...variables,
-                encontradoPedido:0,
-                precio:'',
-                precioDolar:'',
+                precioDolar:null,
+                precioBolivar:null,
                 loading:false,
                 snackbar:false,
                 mensaje:'',
                 icon:'',
                 color:'',
+                encontradoPedido:0,
                 data:{
                     usuario_id:0,
                     adm_empresa_id:0,
@@ -85,16 +85,18 @@ import accounting from 'accounting';
                 ]
             }
         },
-        mounted() {
-            this.precioDolar = accounting.formatMoney(+this.concepto.precio_dolar,{symbol:"$ ",thousand:',',decimal:'.'});
-            this.precio = accounting.formatMoney(+this.concepto.precio_a,{symbol:"Bs ",thousand:'.',decimal:','});
-        },
-        computed:{
-            ...mapState(['user','pedidos'])
+        watch:{
+            producto(){
+                this.precioDolar = accounting.formatMoney(+this.producto.precio_dolar,{symbol:"$ ",thousand:',',decimal:'.'});
+                this.precioBolivar = accounting.formatMoney(+this.producto.precio_a,{symbol:"Bs ",thousand:'.',decimal:','});
+            }
         },
         methods: {
-            ...mapActions(['addPedidos','addDetalle','setModalSesion','setModalProducto','setProducto']),
+            ...mapActions(['setModalProducto','addPedidos','addDetalle','setModalSesion']),
 
+            close(){
+                this.setModalProducto(false);
+            },
             mensajeSnackbar(color,texto,icon){
                 this.mensaje = texto;
                 this.color=color;
@@ -106,12 +108,9 @@ import accounting from 'accounting';
                 if(this.user.loggedIn){
                     this.getExistencia(concepto);
                 }else{
+                    this.setModalProducto(false);
                     this.setModalSesion(true);
                 }
-            },
-            modalDetalle(){
-                this.setProducto(this.concepto);
-                this.setModalProducto(true);
             },
             getExistencia(item){
                 this.loading = true;

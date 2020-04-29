@@ -20,8 +20,7 @@
                 <router-view/>
             </v-col>
         </v-row>
-        
-        <ModalSesion />
+
         <Footer class="margen" />
     </div>
 </template>
@@ -33,14 +32,12 @@ import Grupos from '@/services/Grupos';
 import LoaderRect from '@/components/loaders/LoaderRect';
 import PanelCategorias from '@/components/vistaAliados/PanelCategorias';
 import DataAliados from '@/components/vistaAliados/DataAliados';
-import ModalSesion from '@/components/dialogs/ModalSesion';
 import {mapState} from 'vuex';
 
     export default {
         components:{
             Footer,
             LoaderRect,
-            ModalSesion,
             PanelCategorias,
             DataAliados
         },
