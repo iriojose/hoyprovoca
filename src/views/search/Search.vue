@@ -82,7 +82,7 @@
                         <v-card-title >
                             <v-btn fab @click="push(empresa)" elevation="0">
                                 <v-avatar size="50" class="elevation-5">
-                                    <v-img :src="image+empresa.logo"></v-img>
+                                    <v-img :src="image+empresa.imagen"></v-img>
                                 </v-avatar> 
                             </v-btn> 
                             <div style="cursor: pointer" @click="push(empresa)" class="mx-2 font-weight-black subtitle-2 underline">{{empresa.nombre_comercial}}</div>
@@ -163,7 +163,9 @@ import router from '@/router';
         },
         methods:{
             push(item){
-                router.push({name:'aliadoDetalle', params:{text:item.nombre_comercial}});
+                window.localStorage.setItem('aliado',item.id);
+                let nombre = item.nombre_comercial.toLowerCase(); 
+                router.push({name:'aliadoDetalle', params:{text:nombre}});
             },
             getConceptos(){
                 console.log(this.search);

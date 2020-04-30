@@ -5,7 +5,7 @@
                 <v-btn class="white--text text-capitalize" elevation="0" to="/" text>
                     Inicio
                     <v-slide-y-transition>
-                        <v-icon large color="#fff" v-show="hover">home</v-icon>
+                        <v-icon large color="#fff" v-show="hover">mdi-home</v-icon>
                     </v-slide-y-transition>
                 </v-btn>
             </v-hover>
@@ -16,7 +16,7 @@
                 <v-btn width="200" elevation="0" :to="path" text>
                     <span class="white--text text-capitalize">{{name}}</span>
                     <v-slide-x-transition>
-                        <v-icon color="#fff" x-large v-show="hover">keyboard_arrow_right</v-icon>
+                        <v-icon color="#fff" x-large v-show="hover">mdi-chevron-right</v-icon>
                     </v-slide-x-transition>
                 </v-btn>
             </v-hover>

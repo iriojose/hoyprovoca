@@ -1,5 +1,5 @@
 <template>
-    <div v-if="user.loggedIn">
+    <div v-if="user.loggedIn && !$vuetify.breakpoint.smAndDown">
         <v-menu
             :transition="transition()"
             bottom
@@ -9,7 +9,7 @@
             <template v-slot:activator="{ on }">
                 <v-btn v-on="on" fab class="mx-3" small>
                     <v-icon dark>
-                        person
+                        mdi-account-circle
                     </v-icon>
                 </v-btn>
             </template>
@@ -18,7 +18,7 @@
                 <v-list width="250" elevation="0">
                     <v-list-item class="border">
                         <v-list-item-avatar>
-                            <v-img :src="image+user.data.fotografia"></v-img>
+                            <v-img :src="image+user.data.imagen"></v-img>
                         </v-list-item-avatar>
                         <v-list-item-content>
                             <v-list-item-title v-text="user.data.nombre+' '+user.data.apellido"></v-list-item-title>
@@ -31,7 +31,7 @@
                     <v-hover v-slot:default="{hover}">
                         <v-list-item to="/account/profile">   
                             <v-list-item-icon>
-                                <v-icon :color="hover ? '#232323':null">settings</v-icon>
+                                <v-icon :color="hover ? '#232323':null">mdi-cogs</v-icon>
                             </v-list-item-icon>
                             <v-list-item-title>
                                 Ajustes
@@ -41,7 +41,7 @@
                     <v-hover v-slot:default="{hover}">
                         <v-list-item @click="logOut()">   
                             <v-list-item-icon>
-                                <v-icon :color="hover ? '#232323':null">exit_to_app</v-icon>
+                                <v-icon :color="hover ? '#232323':null">mdi-exit-to-app</v-icon>
                             </v-list-item-icon>
                             <v-list-item-title>
                                 Cerrar sesíon

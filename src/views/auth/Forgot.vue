@@ -24,7 +24,7 @@
                                 label="Correo electronico"
                                 single-line
                                 solo
-                                append-icon="email"
+                                append-icon="mdi-email"
                                 dense
                                 color="#005598"
                                 v-model="email"
@@ -37,7 +37,7 @@
                                 label="Codigo"
                                 single-line
                                 solo
-                                append-icon="lock"
+                                append-icon="mdi-lock"
                                 dense
                                 color="#005598"
                                 :disabled="loading"
@@ -85,8 +85,8 @@
                                 :type="showPassword ? 'text' : 'password'"
                                 :rules="[required('Contraseña'), minLength('Contraseña',8)]"
                                 @click:append="showPassword = !showPassword"
-                                :append-icon="showPassword ?  'visibility' : 'visibility_off'"
-                                :prepend-inner-icon="showPassword ?  'lock_open' : 'lock'"
+                                :append-icon="showPassword ?  'mdi-eye' : 'mdi-eye-off-outline'"
+                                :prepend-inner-icon="showPassword ?  'mdi-lock-open' : 'mdi-lock'"
                                 solo
                                 color="#005598"
                                 dense
@@ -98,7 +98,7 @@
                                 single-line
                                 type="password"
                                 :rules="[required('Contraseña'),passwordConfirmationRule()]"
-                                prepend-inner-icon="lock"
+                                prepend-inner-icon="mdi-lock"
                                 solo
                                 color="#005598"
                                 dense

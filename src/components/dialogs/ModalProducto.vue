@@ -5,7 +5,7 @@
                 <v-spacer></v-spacer>
                 <v-hover v-slot:default="{hover}">
                     <v-btn fab text :elevation="hover ? 0:0" @click="close" small>
-                        <v-icon :color="hover ? '#D32F2F':'#232323'">close</v-icon>
+                        <v-icon :color="hover ? '#D32F2F':'#232323'">mdi-close</v-icon>
                     </v-btn>
                 </v-hover>
             </v-card-title>

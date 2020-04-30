@@ -1,6 +1,7 @@
 <template>
     <v-app style="background-color:#f7f7f7;">
         <AppBar v-if="ruta() "/>
+        
         <transition name="fade">
             <router-view/>
         </transition> 

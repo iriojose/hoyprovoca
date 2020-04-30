@@ -7,6 +7,7 @@
         v-model="carritos" 
         width="500"
         color="#f5f5f5"
+        class="index"
     >
         <v-toolbar width="100%" elevation="1" v-if="user.loggedIn">
             <v-toolbar-title>
@@ -105,3 +106,9 @@ import Usuario from '@/services/Usuario';
         },
     }
 </script>
+
+<style lang="scss" scope>
+    .index{
+        z-index:100;
+    }
+</style>

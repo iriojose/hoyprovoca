@@ -90,7 +90,7 @@ import router from '@/router';
                     this.total = response.data.totalCount;
                 }).catch(e => {
                     console.log(e);
-                })
+                });
             }
         }
     }

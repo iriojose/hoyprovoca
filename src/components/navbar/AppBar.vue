@@ -1,11 +1,9 @@
 <template>
     <div>
-        <BarraLateral />
-        <ModalUbicacion />
-
         <v-app-bar color="#232323" app
             :elevation="$vuetify.breakpoint.smAndDown ? 0:null" 
             :elevate-on-scroll="$vuetify.breakpoint.smAndDown ? false:true" 
+            :extended="$vuetify.breakpoint.smAndDown ? true:false"
         >
             <v-app-bar-nav-icon 
                 dark
@@ -15,16 +13,27 @@
 
             <v-btn fab v-else  @click="change" icon depressed>
                 <v-icon color="#fff">
-                    close
+                    mdi-close
                 </v-icon>
             </v-btn>
 
-            <v-toolbar-title @click="push2" class="cursor">
+            <v-spacer v-if="$vuetify.breakpoint.smAndDown"></v-spacer>
+
+            <v-toolbar-title @click="push2" class="cursor" v-if="!$vuetify.breakpoint.smAndDown">
                 <v-img 
                     contain 
                     height="60"
                     width="100"  
                     src="@/assets/logo 4.png"
+                />
+            </v-toolbar-title>
+
+            <v-toolbar-title @click="push2" class="cursor" v-else>
+                <v-img 
+                    contain 
+                    height="60"
+                    width="100"  
+                    src="@/assets/logo 5.png"
                 />
             </v-toolbar-title>
 
@@ -41,13 +50,11 @@
             >
                 <v-divider slot="append" vertical></v-divider>
                 <v-btn slot="append" tile @click="push" text small>
-                    <v-icon color="#D32F2F">search</v-icon>
+                    <v-icon color="#D32F2F">mdi-magnify</v-icon>
                 </v-btn>
             </v-text-field>
 
             <v-spacer></v-spacer>
-
-            <v-divider vertical dark class="mx-2"></v-divider>
             
             <!--v-btn 
                 fab class="mx-3" 
@@ -63,16 +70,17 @@
             <v-btn 
                 fab class="mx-3" 
                 small to="/account/notificaciones"
-                v-if="user.loggedIn"
+                v-if="user.loggedIn && !$vuetify.breakpoint.smAndDown"
             >
                 <v-icon dark>
-                    notifications
+                    mdi-bell
                 </v-icon>
             </v-btn>
 
             <Carrito /> 
             <Perfil />
-
+            <MovilOpciones />
+            
             <div v-if="!user.loggedIn">
                 <v-btn text to="/login" class="mx-1 font-weight-bold white--text text-capitalize">
                     Iniciar sesión
@@ -84,10 +92,11 @@
                     </v-btn>
                 </v-hover>
             </div>
-        </v-app-bar>
 
-        <v-toolbar dense color="#232323" width="100%" class="px-5 fix" v-if="$vuetify.breakpoint.smAndDown">
-            <v-text-field
+            <v-text-field 
+                v-if="$vuetify.breakpoint.smAndDown"
+                class="mx-5 index"
+                slot="extension"
                 v-model="busquedas"
                 label="Buscar producto..."
                 hide-details
@@ -99,10 +108,13 @@
             >
                 <v-divider slot="append" vertical></v-divider>
                 <v-btn slot="append" tile @click="push" text small>
-                    <v-icon color="#D32F2F">search</v-icon>
+                    <v-icon color="#D32F2F">mdi-magnify</v-icon>
                 </v-btn>
             </v-text-field>
-        </v-toolbar>
+        </v-app-bar>
+
+        <BarraLateral />
+        <ModalUbicacion />
     </div>
 </template>
 
@@ -112,6 +124,7 @@ import BarraLateral from '@/components/navbar/BarraLateral';
 import ModalUbicacion from '@/components/dialogs/ModalUbicacion';
 import Perfil from './Perfil';
 import Carrito from './Carrito';
+import MovilOpciones from './MovilOpciones';
 import router from '@/router';
 
     export default {
@@ -119,7 +132,8 @@ import router from '@/router';
             BarraLateral,
             Carrito,
             Perfil,
-            ModalUbicacion
+            ModalUbicacion,
+            MovilOpciones
         },
         computed: {
             ...mapState(['drawer','user','search','bandera']),
@@ -152,13 +166,11 @@ import router from '@/router';
     }
 </script>
 
-<style scoped>
-    .fix{
-        position:fixed;
-        z-index:3;
-        top: 56px;
-    }
+<style scoped lang="scss">
     .cursor{
         cursor:pointer;
+    }
+    .index{
+        z-index:0;
     }
 </style>

@@ -1,21 +1,21 @@
 <template>
-    <div>
+    <div >
         <v-card v-if="loading" elevation="0" color="#f7f7f7" width="100%" height="500">
             <LoaderRect />
         </v-card>
 
-        <div class="text-center font-weight-bold headline" v-if="error || subgrupos.length == 0" :class="$vuetify.breakpoint.smAndDown ? 'margen-movil':'margen-top'">
-            No se encontraron resultados
-        </div>
-        <v-row justify="center" v-if="error || subgrupos.length == 0">
+        <v-row justify="center" v-if="error || conceptos.length == 0" :class="$vuetify.breakpoint.smAndDown ? 'margen-movil':'margen-top'">
             <v-img src="@/assets/nodata.svg" contain width="500" height="500" />
         </v-row>
+         <div class="text-center font-weight-bold headline" v-if="error || conceptos.length == 0">
+            No se encontraron resultados
+        </div>
 
         <v-card width="100%" elevation="0" color="#f7f7f7" :class="$vuetify.breakpoint.smAndDown ? 'margen-movil':'margen-top'">
             <v-slide-x-transition>
-                <v-row justify="center" :class="$vuetify.breakpoint.smAndDown ? null:'mx-10'" v-show="!loading">
+                <v-row justify="center" :class="$vuetify.breakpoint.smAndDown ? null:'mx-10'" v-show="!loading && subgrupos">
                     <v-col cols="12" md="12" sm="12">
-                        <GruposData :subgrupos="subgrupos" :conceptos="conceptos" />
+                        <GruposData :subgrupos="aux" :conceptos="conceptos" />
                     </v-col>
                 </v-row>
             </v-slide-x-transition>
@@ -26,48 +26,27 @@
 </template>
 
 <script>
-import Footer from "@/components/footer/Footer";
-import GruposData from '@/components/vistaGrupos/GruposData';
-import LoaderRect from '@/components/loaders/LoaderRect';
-import {mapState} from 'vuex';
 import Grupos from '@/services/Grupos';
 import SubGrupos from '@/services/SubGrupos';
+import {mapState} from 'vuex';
+import LoaderRect from '@/components/loaders/LoaderRect';
+import GruposData from '@/components/vistaGrupos/GruposData';
+import Footer from "@/components/footer/Footer";
 
     export default {
         components:{
-            Footer,
+            LoaderRect,
             GruposData,
-            LoaderRect
+            Footer,
         },
         data(){
             return {
+                aux:[],
                 subgrupos:[],
                 conceptos:[],
-                loading:true,
+                loading:false,
                 error:false,
-                //bandera:false,
             }
-        },
-        computed: {
-            ...mapState(['agregados'])
-        },
-        watch: {
-            agregados(){
-                //this.bandera ?  this.revision():this.bandera=true;
-                this.revision();
-            },
-            '$route'(){
-                let id = window.localStorage.getItem('grupo');
-               
-               if(id){
-                    this.loading = true;
-                    this.error=false;
-                    this.getGruposSubGrupos(id); 
-                }else{
-                    this.error=true;
-                    this.loading = false;
-                }
-            },
         },
         head:{
             title(){
@@ -78,58 +57,83 @@ import SubGrupos from '@/services/SubGrupos';
                 }
             }
         },
+        computed: {
+            ...mapState(['agregados'])
+        },
         mounted(){
             let id = window.localStorage.getItem('grupo');
+
             if(id){
-                this.getGruposSubGrupos(id);
+                this.getSubgrupos(id);
             }else{
+                this.error = true;
                 this.loading = false;
-                this.error=true;
             }
         },
-        methods:{
-            getGruposSubGrupos(id){
+        watch: {
+            agregados(){
+                this.revision();
+            },
+            '$route'(){
+                let id = window.localStorage.getItem('grupo');
                 this.subgrupos = [];
                 this.conceptos = [];
-                Grupos().get(`/${id}/subgrupos`).then((response) => {
-                    if(response.data.data !== undefined){
+                this.aux = [];
+
+                if(id){
+                    this.error=false;
+                    this.getSubgrupos(id); 
+                }else{
+                    this.error = true;
+                    this.loading = false;
+                }
+            },
+        },
+        methods:{
+            async getSubgrupos(id){
+                this.loading = true;
+                await Grupos().get(`/${id}/subgrupos`).then((response) => {
+                    if(response.data.data){
                         this.subgrupos = response.data.data.sort(function (a, b) {
                             if (a.nombre > b.nombre) {return 1;}
                             if (a.nombre < b.nombre) {return -1;}
                             return 0;
                         });
-                        console.log(this.subgrupos);
-                        this.subgrupos.filter((a,i)=> this.getSubgruposConceptos(a.id,this.subgrupos.length,i));
-                    }else{
-                        this.error = true;
-                        this.loading = false;
+                        this.subgrupos.filter((a,i) => this.getConceptos(a.id,i));
+                    }else{ 
+                        this.error = true; 
+                        this.loading = false
                     }
                 }).catch(e => {
                     console.log(e);
-                    this.loading = false;
                     this.error = true;
+                    this.loading = false;
                 });
             },
-            getSubgruposConceptos(id,leng,i){
-                SubGrupos().get(`/${id}/conceptos/?limit=10`).then((response) => {
-                    if(response.data.data !== undefined){
+            async getConceptos(id,i){
+                await SubGrupos().get(`/${id}/conceptos/?limit=10`).then((response) =>{
+                    if(response.data.data){
                         response.data.data.filter(a => a.agregado=false);
                         response.data.data.filter(a => this.agregados.filter(b => a.id == b ? a.agregado=true:null));
-                        this.subgrupos.filter(a => a.id == response.data.data[0].adm_subgrupos_id ? a.conceptos=response.data.data:null);
+                        this.subgrupos.filter(a => a.id == response.data.data[0].adm_subgrupos_id ? a.conceptos = response.data.data:null);
                     }
-                    if(leng-1 == i){
+
+                    if(this.subgrupos.length - 1 == i){
                         for (let i = 0; i < this.subgrupos.length; i++) {
-                            if(this.subgrupos[i].conceptos == undefined){
-                                this.subgrupos.splice(i,1);
+                            if(this.subgrupos[i].conceptos){
+                                this.aux.push(this.subgrupos[i]);
                             }
                         }
-                        this.subgrupos.filter(a => this.conceptos.push(a.conceptos));
+                        for (let i = 0; i < this.aux.length; i++) {
+                            this.conceptos.push(this.aux[i].conceptos);
+                        }
+                        console.log(this.aux);
                         this.loading = false;
                     }
                 }).catch(e => {
-                    this.error=true;
-                    this.loading = false;
                     console.log(e);
+                    this.error = true;
+                    this.loading = false;
                 });
             },
             revision(){
@@ -145,6 +149,11 @@ import SubGrupos from '@/services/SubGrupos';
         margin-top:75px;
     }
     .margen-movil{
-        margin-top:100px;
+        margin-top:80px;
+    }
+    .sombra{
+        -webkit-box-shadow: 0px 5px 6px -5px rgba(0,0,0,0.75);
+        -moz-box-shadow: 0px 5px 6px -5px rgba(0,0,0,0.75);
+        box-shadow: 0px 5px 6px -5px rgba(0,0,0,0.75);
     }
 </style>

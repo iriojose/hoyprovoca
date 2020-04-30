@@ -74,7 +74,9 @@ import router from '@/router';
         },
         methods:{
             push(empresa){
-                router.push({name:'aliadoDetalle', params:{text:empresa.nombre_comercial}});
+                window.localStorage.setItem('aliado',empresa.id);
+                let nombre = empresa.nombre_comercial.toLowerCase(); 
+                router.push({name:'aliadoDetalle', params:{text:nombre}});
             },
             getEmpresas(){
                 Empresa().get(`/?limit=20&offset=${this.after}`).then((response) => {

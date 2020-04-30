@@ -4,7 +4,7 @@
             <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn elevation="2" icon @click="close">
-                    <v-icon small color="#005598">close</v-icon>
+                    <v-icon small color="#005598">mdi-close</v-icon>
                 </v-btn>
             </v-card-actions>
             <v-row justify="center" align="center" class="pa-2">

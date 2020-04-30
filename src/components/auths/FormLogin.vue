@@ -6,7 +6,7 @@
                 v-model="data.user"
                 type="email"
                 outlined
-                prepend-inner-icon="email"
+                prepend-inner-icon="mdi-email"
                 color="#005598"
                 dense
                 :disabled="loading"
@@ -20,8 +20,8 @@
                 :type="showPassword ? 'text' : 'password'"
                 :rules="[required('Contraseña'), minLength('Contraseña',8)]"
                 @click:append="showPassword = !showPassword"
-                :append-icon="showPassword ?  'visibility' : 'visibility_off'"
-                :prepend-inner-icon="showPassword ?  'lock_open' : 'lock'"
+                :append-icon="showPassword ?  'mdi-eye' : 'mdi-eye-off-outline'"
+                :prepend-inner-icon="showPassword ?  'mdi-lock-open' : 'mdi-lock'"
                 outlined
                 color="#005598"
                 :disabled="loading"

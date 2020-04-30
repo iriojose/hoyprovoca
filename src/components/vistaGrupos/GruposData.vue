@@ -9,13 +9,11 @@
                     {{subgrupo.nombre}}
                 </v-card-title>
                 <v-card-text>
-                    <v-hover v-slot:default="{hover}">
-                        <v-slide-group class="my-2" :show-arrows="hover">
-                            <v-slide-item v-for="(concepto,e) in conceptos[i]" :key="e">
-                                <CardConceptos :concepto="concepto" />
-                            </v-slide-item>
-                        </v-slide-group>
-                    </v-hover>
+                    <v-slide-group class="my-2" show-arrows>
+                        <v-slide-item v-for="(concepto,e) in conceptos[i]" :key="e">
+                            <CardConceptos :concepto="concepto" />
+                        </v-slide-item>
+                    </v-slide-group>
                 </v-card-text>
             </v-card>
         </div>

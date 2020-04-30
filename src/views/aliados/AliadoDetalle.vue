@@ -1,123 +1,203 @@
 <template>
     <div>
-        <v-row :class="$vuetify.breakpoint.smAndDown ? 'margen-movil mx-3':'margen-top mx-10'">
-            <v-col cols="12" sm="12" md="3" >
+        <v-card v-if="loading" elevation="0" color="#f7f7f7" width="100%" height="500">
+            <LoaderRect />
+        </v-card>
+
+        <v-row v-if="!loading" justify="center" :class="$vuetify.breakpoint.smAndDown ? 'margen-movil':'margen-top'">
+            <v-col cols="12" md="4" sm="12" :class="$vuetify.breakpoint.smAndDown ? 'px-5':'px-10'">
                 <PanelCategorias :grupos="grupos" :empresa="empresa" />
             </v-col>
-            
-            <v-col sm="12" md="9" cols="12" v-if="$route.name=='aliadoDetalle' && loading">
-                <LoaderRect />
-            </v-col>
-        
-            <v-col v-if="$route.name=='aliadoDetalle' && !loading" sm="12" md="9" cols="12">
-                <DataAliados :grupos="grupos" :conceptos="conceptos" />
+
+            <v-col cols="12" md="8" sm="12" v-if="!this.$route.params.text2">
+                <div :class="$vuetify.breakpoint.smAndDown ? 'sombra mb-5':'sombra mb-5 mr-2'" v-for="(grupo,i) in grupos" :key="i">
+                    <DataAliados :grupo="grupo" :conceptos="conceptos[i]" />
+                </div>
             </v-col>
 
-            <v-col 
-                v-if="$route.name=='aliadoGrupo'" 
-                cols="12" sm="12" md="9" 
-            >
-                <router-view/>
+            <v-col cols="12" md="8" sm="12" v-if="this.$route.params.text2">
+                <v-card v-if="loading2 && empresa" elevation="0" color="#f7f7f7" width="100%" height="500">
+                    <LoaderRect />
+                </v-card>
+
+                <transition name="slide-fade" v-else>
+                    <v-card width="100%" elevation="0" color="#f7f7f7" v-show="!loading">
+                        <v-row justify="center">
+                            <CardConceptos :concepto="concepto" v-for="(concepto,i) in conceptos" :key="i"/>
+                        </v-row>
+                        <v-toolbar elevation="0" class="mx-10" color="#f7f7f7">
+                            <v-btn 
+                                color="#232323" 
+                                elevation="0"
+                                class="text-capitalize font-weigth-bold body-1"
+                                dark
+                                :disabled="after == 0 ? true:false"
+                                @click="getConceptosGruposMenos(conceptos[0].adm_grupos_id)"
+                            >
+                                Ver menos
+                            </v-btn>
+                            <v-spacer></v-spacer>
+                            <v-btn 
+                                color="#232323" 
+                                elevation="0"
+                                class="text-capitalize font-weigth-bold body-1"
+                                dark
+                                :disabled="conceptos.length == 12 ? false:true"
+                                @click="getConceptosGrupos(conceptos[0].adm_grupos_id)"
+                            >
+                                Ver más
+                            </v-btn>
+                        </v-toolbar>
+                    </v-card>
+                </transition>
             </v-col>
         </v-row>
 
-        <Footer class="margen" />
+        <Footer />
     </div>
 </template>
 
 <script>
-import Footer from "@/components/footer/Footer";
 import Empresa from '@/services/Empresa';
 import Grupos from '@/services/Grupos';
+import variables from '@/services/variables_globales';
 import LoaderRect from '@/components/loaders/LoaderRect';
 import PanelCategorias from '@/components/vistaAliados/PanelCategorias';
+import CardConceptos from '@/components/cards/CardConceptos2';
 import DataAliados from '@/components/vistaAliados/DataAliados';
+import Footer from '@/components/footer/Footer';
 import {mapState} from 'vuex';
 
     export default {
         components:{
-            Footer,
             LoaderRect,
             PanelCategorias,
-            DataAliados
+            CardConceptos,
+            Footer,
+            DataAliados,
+        },
+        data(){
+            return {
+                ...variables,
+                empresa:{},
+                grupos:[],
+                conceptos:[],
+                grupo:{},
+                loading:true,
+                loading2:false,
+                after:0,
+            }
+        },
+        mounted() {
+            let id = window.localStorage.getItem('aliado');
+
+            if(id){
+                this.after=0;
+                this.loading = true;
+                this.getEmpresa(id);
+            }else{
+                this.loading = false;
+            }
         },
         computed: {
             ...mapState(['agregados'])
         },
-        data() {
-            return {
-                intersect:false,
-                loading:true,
-                error:false,
-                bandera:false,
-                conceptos:[],
-                grupos:[],
-                empresa:{}
-            }
-        },
-        mounted() {
-            if(this.$route.params.text){
-                this.getEmpresa(this.$route.params.text);
-            }else{
-                this.loading = false;
-                this.error=true;
-            }
-        },
         watch: {
             agregados(){
-                //this.bandera ?  this.revision():this.bandera=true;
                 this.revision();
             },
             '$route'(val){
-               if(val.params.text){
+                let id = window.localStorage.getItem('aliado');
+
+                if(id){
+                    this.after=0;
                     this.loading = true;
-                    this.getEmpresa(val.params.text); 
-                    this.error=false;
+                    this.getEmpresa(id);
                 }else{
-                    this.error=true;
+                    this.loading = false;
                 }
             },
         },
         head:{
             title(){
                 return {
-                    inner:'Hoyprovoca',
+                    inner:'HoyProvoca',
                     separator:'|',
                     complement: 'Aliados'
                 }
             }
         },
-        methods: {
-            getEmpresa(text){
-                Empresa().get(`/?nombre_comercial=${text}`).then((response) => {
-                    this.empresa = response.data.data[0];
-                    this.getGrupos(this.empresa.id);
+        methods:{
+            async getEmpresa(id){
+                await Empresa().get(`/${id}`).then((response) => {
+                    this.empresa = response.data.data;
+                    this.getGrupos(id);
                 }).catch(e => {
                     console.log(e);
+                    this.loading = false;
                 });
             },
-            getGrupos(id){
-                Empresa().get(`/${id}/grupos`).then((response) => {
-                    this.grupos = response.data.data;
+            async getGrupos(id){
+                await Empresa().get(`/${id}/grupos`).then((response) => {
+                    this.grupos = response.data.data.sort(function (a, b) {
+                        if (a.nombre > b.nombre) {return 1;}
+                        if (a.nombre < b.nombre) {return -1;}
+                        return 0;
+                    });
+
                     if(!this.$route.params.text2){
-                        for (let i = 0; i < this.grupos.length; i++) {
-                            if(i <= 9){
-                                this.getConceptos(this.grupos[i].id,i);
-                            }
-                        }
+                        this.grupos.filter((a,i) => this.getConceptos(a.id,i));
                     }else{
+                        let id = window.localStorage.getItem('detalle');
+                        this.getGrupo(id);
+                    }
+                }).catch(e => {
+                    console.log(e);
+                    this.loading = false;
+                });
+            },
+            async getConceptos(id,i){
+                await Grupos().get(`/${id}/conceptos/?limit=10`).then((response) => {
+                    response.data.data.filter(a => a.agregado=false);
+                    response.data.data.filter(a => this.agregados.filter(b => a.id == b ? a.agregado=true:null));
+                    this.grupos.filter(a => a.id == response.data.data[0].adm_grupos_id ? a.conceptos = response.data.data:null);
+
+                    if(this.grupos.length - 1 == i){
+                        this.grupos.filter(a => this.conceptos.push(a.conceptos));
                         this.loading = false;
                     }
                 }).catch(e => {
                     console.log(e);
+                    this.loading = false;
                 });
             },
-            getConceptos(id,i){
-                Grupos().get(`/${id}/conceptos/?limit=10&adm_empresa_id=${this.empresa.id}`).then((response) => {
-                    response.data.data.filter(a => a.agregado=false);
-                    response.data.data.filter(a => this.agregados.filter(b => a.id == b ? a.agregado=true:null));
-                    this.conceptos.push(response.data.data);
+            async getGrupo(id){
+                await Grupos().get(`/${id}`).then((response) => {
+                    this.grupo = response.data.data;
+                    this.getConceptosGrupos(this.grupo.id);
+                }).catch(e => {
+                    console.log(e);
+                });
+            },
+            async getConceptosGrupos(id){
+                this.loading2 = true;
+                await Grupos().get(`/${id}/conceptos/?limit=12&offset=${this.after}`).then((response) => {
+                    this.conceptos = response.data.data;
+                    this.revision2();
                     this.loading = false;
+                    this.loading2 = false;
+                    this.after+=12;
+                }).catch(e => {
+                    console.log(e);
+                });
+            },
+            async getConceptosGruposMenos(id){
+                this.after-=12;
+                this.loading2 = true;
+                await Grupos().get(`/${id}/conceptos/?limit=12&offset=${this.after}`).then((response) => {
+                    this.conceptos = response.data.data;
+                    this.revision2();
+                    this.loading2 = false;
                 }).catch(e => {
                     console.log(e);
                 });
@@ -125,26 +205,36 @@ import {mapState} from 'vuex';
             revision(){
                 this.conceptos.filter(a => a.filter(b => b.agregado=false));
                 this.conceptos.filter(a => a.filter(b => this.agregados.filter(c => b.id == c ? b.agregado=true:null)));
+            },
+            revision2(){
+                this.conceptos.filter(a => a.agregado = false);
+                this.conceptos.filter(a => this.agregados.filter(b => a.id == b ? a.agregado=true:null));
             }
-        },
+        }
     }
 </script>
 
 <style lang="scss" scoped>
-    .margen{
-        margin-top:200px;
+    .sombra{
+        -webkit-box-shadow: 0px 5px 6px -5px rgba(0,0,0,0.75);
+        -moz-box-shadow: 0px 5px 6px -5px rgba(0,0,0,0.75);
+        box-shadow: 0px 5px 6px -5px rgba(0,0,0,0.75);
     }
     .margen-top{
         margin-top:75px;
     }
     .margen-movil{
-        margin-top:120px;
+        margin-top:100px;
     }
-    .shadow{
-        box-shadow: 0px 6px 5px -4px rgba(35,35,35,0.4);
+    .slide-fade-enter-active {
+        transition: all .3s ease;
     }
-    .fix{
-        position:fixed;
-        width: 20%;
+    .slide-fade-leave-active {
+        transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+    }
+    .slide-fade-enter, .slide-fade-leave-to
+        /* .slide-fade-leave-active for <2.1.8 */ {
+        transform: translateX(10px);
+        opacity: 0;
     }
 </style>

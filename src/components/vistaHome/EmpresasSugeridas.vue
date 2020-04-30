@@ -15,7 +15,7 @@
                         <v-img 
                             :height="$vuetify.breakpoint.smAndDown ? 160:160" 
                             :width="$vuetify.breakpoint.smAndDown ? 200:300"  
-                            contain :src="image+empresa.logo" 
+                            contain :src="image+empresa.imagen" 
                         />
                         <div class="mt-2 px-5">{{empresa.nombre_comercial}}</div>
                     </v-card>
@@ -72,9 +72,9 @@ import router from '@/router';
         },
         methods: {
             push(empresa){
-                //var re = / /gi; 
-                //const nombre = empresa.nombre_comercial.replace(re,'-');//remplaza los espacios por guiones
-                router.push({name:'aliadoDetalle', params:{text:empresa.nombre_comercial}});
+                window.localStorage.setItem('aliado',empresa.id);
+                let nombre = empresa.nombre_comercial.toLowerCase(); 
+                router.push({name:'aliadoDetalle', params:{text:nombre}});
             }
         },
     }

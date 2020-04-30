@@ -14,12 +14,12 @@
                                 outlined
                                 dense
                                 single-line
-                                append-icon="person"
+                                append-icon="mdi-account"
                                 :rules="[required('Nombre(s)'), minLength('Nombre(s)',3),maxLength('Nombre(s)',40)]"
                             />
                             <v-text-field
                                 type="text"
-                                append-icon="person"
+                                append-icon="mdi-account"
                                 v-model="data.apellido"
                                 label="Apellido(s)"
                                 single-line
@@ -50,7 +50,7 @@
                                 label="Correo"
                                 v-model="data.email"
                                 type="email"
-                                prepend-inner-icon="email"
+                                prepend-inner-icon="mdi-email"
                                 outlined
                                 color="#005598"
                                 dense
@@ -62,7 +62,7 @@
                                 label="Usuario"
                                 v-model="data.login"
                                 type="text"
-                                prepend-inner-icon="person"
+                                prepend-inner-icon="mdi-account"
                                 outlined
                                 color="#005598"
                                 dense
@@ -78,15 +78,15 @@
                                 :type="showPassword ? 'text' : 'password' "
                                 :rules="[required('Contraseña'), minLength('Contraseña',8)]"
                                 @click:append="showPassword = !showPassword"
-                                :append-icon="showPassword ?  'visibility' : 'visibility_off'"
-                                :prepend-inner-icon="showPassword ?  'lock_open' : 'lock'"
+                                :append-icon="showPassword ?  'mdi-eye' : 'mdi-eye-off-outline'"
+                                :prepend-inner-icon="showPassword ?  'mdi-lock-open' : 'mdi-lock'"
                                 outlined
                                 color="#005598"
                                 dense
                             />
                             <v-card-actions>
                                 <v-btn @click="e1=1" text icon>
-                                    <v-icon large>arrow_back</v-icon>
+                                    <v-icon large>mdi-chevron-left</v-icon>
                                 </v-btn>
                                 <v-spacer></v-spacer>
                                 <v-hover v-slot:default="{hover}" open-delay="200">
