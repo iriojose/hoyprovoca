@@ -26,8 +26,8 @@
                     </v-row>
                 </v-fade-transition>
             </v-img>
-            <div class="text-truncate font-weight-black text-capitalize caption">{{precioDolar}}</div>
-            <div class="text-truncate font-weight-black text-capitalize caption">{{precio}}</div>
+            <div class="text-truncate font-weight-black text-capitalize body-1">{{precioDolar}}</div>
+            <div class="text-truncate font-weight-black text-capitalize body-1">{{precio}}</div>
             <div class="text-truncate font-weight-medium text-capitalize">{{concepto.nombre}}</div>
             <div class="text-truncate body-2 grey--text text-capitalize">{{concepto.descripcion}}</div>
 

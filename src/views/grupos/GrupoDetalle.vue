@@ -1,4 +1,3 @@
-
 <template>
     <v-card elevation="0" color="#f7f7f7" width="100%">
         <v-card-text>
@@ -41,14 +40,11 @@
                     </div>
                 </v-col>
             </v-row>
-
-            <Footer />
         </v-card-text>
     </v-card>
 </template>
 
 <script>
-import Footer from '@/components/footer/Footer';
 import LoaderRect from '@/components/loaders/LoaderRect';
 import GruposData from '@/components/vistaGrupos/GruposData';
 import Grupos from '@/services/Grupos';
@@ -57,7 +53,6 @@ import {mapState} from 'vuex';
 
     export default {
         components:{
-            Footer,
             LoaderRect,
             GruposData,
         },

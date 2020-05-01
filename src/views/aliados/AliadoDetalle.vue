@@ -93,7 +93,6 @@
                 </v-col>
             </v-row>
 
-            <Footer />
         </v-card-text>
     </v-card>
 </template>
@@ -107,7 +106,6 @@ import PanelCategorias from '@/components/vistaAliados/PanelCategorias';
 import CardConceptos from '@/components/cards/CardConceptos2';
 import CardConceptos2 from '@/components/cards/CardConceptos3';
 import DataAliados from '@/components/vistaAliados/DataAliados';
-import Footer from '@/components/footer/Footer';
 import {mapState} from 'vuex';
 
     export default {
@@ -116,7 +114,6 @@ import {mapState} from 'vuex';
             PanelCategorias,
             CardConceptos,
             CardConceptos2,
-            Footer,
             DataAliados,
         },
         data(){

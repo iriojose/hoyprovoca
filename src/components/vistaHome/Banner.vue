@@ -44,7 +44,7 @@
     >
         <v-row justify="center" align="center" class="fill-height">
             <v-card :width="$vuetify.breakpoint.smAndDown ? 400:500" color="transparent" elevation="0">
-                <div class="display-2 text-center my-10 white--text">¿Que te provoca?</div>
+                <div class="display-2 text-center my-10 white--text font-weight-black">¿Que te provoca?</div>
                 <v-text-field 
                     label="Buscar producto..."
                     hide-details

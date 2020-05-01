@@ -38,8 +38,6 @@
                 </v-hover>
             </v-row>
         </div>  
-
-        <Footer class="margen" />
     </div>
 </template>
 
@@ -47,13 +45,11 @@
 import LoaderRect from '@/components/loaders/LoaderRect';
 import Grupos from '@/services/Grupos';
 import variables from '@/services/variables_globales';
-import Footer from '@/components/footer/Footer';
 import router from '@/router';
 
     export default {
         components:{
             LoaderRect,
-            Footer
         },
         data() {
             return {

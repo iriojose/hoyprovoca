@@ -24,14 +24,11 @@
                 <EmpresasSugeridas title="Visita nuestras tiendas" :empresas="empresas" v-show="!loadingE" />
             </v-scroll-x-transition>
             <SkeletonCard v-if="loadingE" :width="300" :height="200" title="Visita nuestras tiendas" />
-
-            <Footer />
         </v-card-text>
     </v-card>
 </template>
 
 <script>
-import Footer from '@/components/footer/Footer';
 import Conceptos from '@/services/Conceptos';
 import Empresa from '@/services/Empresa';
 import Grupos from '@/services/Grupos';
@@ -47,7 +44,6 @@ import {mapState} from 'vuex';
         components:{
             Banner,
             Banner2,
-            Footer,
             MasVendidos,
             EmpresasSugeridas,
             CategoriasSugeridas,

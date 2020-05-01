@@ -1,6 +1,5 @@
 <template>
     <div>
-        <v-divider />
         <v-sheet class="hidden-sm-and-down">
             <v-row>
                 <v-col cols="4" md="4" v-for="about in abouts" :key="about.text">

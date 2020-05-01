@@ -39,7 +39,6 @@
             </v-row>
         </div>  
 
-        <Footer class="margen" />
     </div>
 </template>
 
@@ -47,10 +46,12 @@
 import LoaderRect from '@/components/loaders/LoaderRect';
 import Empresa from '@/services/Empresa';
 import variables from '@/services/variables_globales';
-import Footer from '@/components/footer/Footer';
 import router from '@/router';
 
     export default {
+        components:{
+            LoaderRect
+        },
         data() {
             return {
                 empresas:[],

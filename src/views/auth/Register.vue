@@ -1,63 +1,54 @@
 <template>
-    <div>
-        <Toolbar />
+    <v-card elevation="0" color="#f7f7f7" width="100%">
+        <v-card-text>
+            <v-row justify="center" align="center" class="mt-12 mb-5">
+                <v-img contain width="100" height="50" :src="require('@/assets/logo2.png')"></v-img>
+            </v-row>
 
-        <v-row justify="center" align="center" class="mt-8 mb-5">
-            <v-img contain width="100" height="50" :src="require('@/assets/logo2.png')"></v-img>
-        </v-row>
+            <v-row justify="center">
+                <v-col cols="12" md="4" class="hidden-sm-and-down">
+                    <v-img contain width="100%" height="300" :src="require('@/assets/undrawregistro2.svg')"></v-img>
+                </v-col>
 
-        <v-row justify="center" align="center" :class="$vuetify.breakpoint.smAndDown ? 'mx-5':null">
-            <v-col cols="12" md="4" class="hidden-sm-and-down">
-                <v-img contain width="100%" height="300" :src="require('@/assets/undrawregistro2.svg')"></v-img>
-            </v-col>
+                <v-col cols="12" sm="10" md="6">
+                    <v-card 
+                        :width="$vuetify.breakpoint.smAndDown ? '100%':'80%'" 
+                        height="500" elevation="5" class="py-5"
+                    >
+                        <div class="text-center my-5 font-weight-black subtitle-1">Registrate en Hoyprovoca</div>
+                        
+                        <v-card-text>
+                            <FormRegister />
+                        </v-card-text>
 
-            <v-col cols="12" sm="10" md="6">
-                <v-card 
-                    :width="$vuetify.breakpoint.smAndDown ? '100%':'80%'" 
-                    height="500" elevation="5" class="py-5"
-                >
-                    <div class="text-center my-5 font-weight-black subtitle-1">Registrate en Hoyprovoca</div>
-                    
-                    <v-card-text>
-                        <FormRegister />
-                    </v-card-text>
+                        <div class="mx-10 my-5">
+                            <v-divider></v-divider>
+                        </div>
 
-                    <div class="mx-10 my-5">
-                        <v-divider></v-divider>
+                        <div @click="push()" class="text-center" >
+                            <a class="mx-2 subtitle-2 underline text-color">
+                                ¿ya tienes una cuenta? inicie sesión
+                            </a>
+                        </div>
+                    </v-card>
+
+                    <div class="text-center my-3">
+                        <span class="underline font-weight-medium mx-2 caption">
+                            Politicas de privacidad
+                        </span>
                     </div>
-
-                    <div @click="push()" class="text-center" >
-                        <a class="mx-2 subtitle-2 underline text-color">
-                            ¿ya tienes una cuenta? inicie sesión
-                        </a>
-                    </div>
-                </v-card>
-
-                <div class="text-center my-3">
-                    <span class="underline font-weight-medium mx-2 caption">
-                        Politicas de privacidad
-                    </span>
-                    ·
-                    <span class="underline font-weight-medium mx-2 caption">
-                        condiciones del servicio
-                    </span>
-                </div>
-            </v-col>
-        </v-row>
-        <SubFooter class="mt-5"/>
-    </div>
+                </v-col>
+            </v-row>
+        </v-card-text>
+    </v-card>
 </template>
 
 <script>
-import SubFooter from "@/components/footer/SubFooter";
-import Toolbar from "@/components/auths/Toolbar";
 import FormRegister from '@/components/auths/FormRegister';
 import router from '@/router';
 
     export default {
         components:{
-            SubFooter,
-            Toolbar,
             FormRegister
         },
         head: {

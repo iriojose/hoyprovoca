@@ -1,6 +1,7 @@
 <template>
     <v-app style="background-color:#f7f7f7;">
         <AppBar v-if="ruta() "/>
+        <Toolbar v-if="ruta2()" />
         
         <transition name="fade">
             <router-view/>
@@ -9,6 +10,11 @@
         <ModalBloqueado /> 
         <ModalProducto />
         <ModalSesion />
+
+        <v-footer v-if="ruta2()" fixed>
+            <SubFooter />
+        </v-footer>
+        <Footer v-if="ruta()" class="margen" />
     </v-app>
 </template>
 
@@ -17,6 +23,9 @@ import AppBar from '@/components/navbar/AppBar';
 import ModalBloqueado from '@/components/dialogs/ModalBloqueado';
 import ModalProducto from '@/components/dialogs/ModalProducto';
 import ModalSesion from '@/components/dialogs/ModalSesion';
+import Toolbar from "@/components/auths/Toolbar";
+import SubFooter from "@/components/footer/SubFooter";
+import Footer from '@/components/footer/Footer';
 
     export default {
         name: 'App',
@@ -24,7 +33,10 @@ import ModalSesion from '@/components/dialogs/ModalSesion';
             AppBar,
             ModalBloqueado,
             ModalProducto,
-            ModalSesion
+            ModalSesion,
+            Toolbar,
+            SubFooter,
+            Footer,
         },
         methods:{
             ruta(){
@@ -44,12 +56,26 @@ import ModalSesion from '@/components/dialogs/ModalSesion';
                 }else{
                     return true;
                 }
-            }
+            },
+            ruta2(){
+                if(
+                    this.$route.name == 'login' ||
+                    this.$route.name == 'register' ||
+                    this.$route.name == 'forgot'
+                ){
+                    return true;
+                }else{
+                    return false;
+                }
+            },
         }
     }
 </script>
 
 <style>
+    .margen{
+        margin-top:200px;
+    }
     .fade-enter-active, .fade-leave-active {
         transition: opacity .5s;
     }

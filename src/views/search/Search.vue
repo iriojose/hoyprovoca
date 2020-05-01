@@ -98,13 +98,10 @@
                 </div>
             </v-col>
         </v-row>
-
-        <Footer class="margen" />
     </div>
 </template>
 
 <script>
-import Footer from "@/components/footer/Footer";
 import LoaderRect from '@/components/loaders/LoaderRect';
 import {mapState} from 'vuex';
 import Empresa from '@/services/Empresa';
@@ -115,7 +112,6 @@ import router from '@/router';
 
     export default {
         components:{
-            Footer,
             LoaderRect,
             CardConceptos,
         },

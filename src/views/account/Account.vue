@@ -37,20 +37,14 @@
                 </div>
             </v-col>
         </v-row>
-
-        <Footer class="margen-footer" />
     </div>
 </template>
 
 <script>
-import Footer from "@/components/footer/Footer";
 import {mapState} from 'vuex';
 import variables from '@/services/variables_globales';
 
     export default {
-        components:{
-            Footer
-        },
         data() {
             return {
                 ...variables,
