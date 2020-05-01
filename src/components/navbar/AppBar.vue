@@ -2,7 +2,7 @@
     <v-app-bar color="#232323" app
         :elevation="$vuetify.breakpoint.smAndDown ? 0:null" 
         :elevate-on-scroll="$vuetify.breakpoint.smAndDown ? false:true" 
-        :extended="$vuetify.breakpoint.smAndDown ? true:false"
+        :extended="$vuetify.breakpoint.smAndDown && $route.name !== 'home' ? true:false"
     >
         <v-app-bar-nav-icon 
             dark
@@ -37,6 +37,7 @@
         </v-toolbar-title>
 
         <v-text-field
+            v-if="$route.name !== 'home'"
             v-model="busquedas"
             label="Buscar producto..."
             hide-details
@@ -93,7 +94,7 @@
         </div>
 
         <v-text-field 
-            v-if="$vuetify.breakpoint.smAndDown"
+            v-if="$vuetify.breakpoint.smAndDown && $route.name !=='home'"
             class="mx-5 index"
             slot="extension"
             v-model="busquedas"

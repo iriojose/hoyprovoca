@@ -1,32 +1,33 @@
 <template>
-    <div>
+    <v-card elevation="0" color="#f7f7f7" width="100%">
         <Banner />
-
-        <v-scroll-x-transition>
-            <MasVendidos :conceptos="conceptos" v-show="!loadingC" title="Productos más vendidos" />
-        </v-scroll-x-transition>
-        <SkeletonCard v-if="loadingC" :width="200" :height="200" title="Productos más vendidos" />
+        <v-card-text>
+            <v-scroll-x-transition>
+                <MasVendidos :conceptos="conceptos" v-show="!loadingC" title="Productos más vendidos" />
+            </v-scroll-x-transition>
+            <SkeletonCard v-if="loadingC" :width="200" :height="200" title="Productos más vendidos" />
         
-        <v-divider class="my-12"></v-divider>
+            <v-divider class="my-12"></v-divider>
 
-        <Banner2 />
+            <Banner2 />
 
-        <v-divider class="mt-12"></v-divider>
+            <v-divider class="mt-12"></v-divider>
 
-        <v-scroll-x-transition>
-            <CategoriasSugeridas title="Categorías más buscadas" :grupos="grupos" v-show="!loadingG"/>
-        </v-scroll-x-transition>
-        <SkeletonCard v-if="loadingG" :width="300" :height="200" title="Categorías más buscadas" />
+            <v-scroll-x-transition>
+                <CategoriasSugeridas title="Categorías más buscadas" :grupos="grupos" v-show="!loadingG"/>
+            </v-scroll-x-transition>
+            <SkeletonCard v-if="loadingG" :width="300" :height="200" title="Categorías más buscadas" />
 
-        <v-divider class="mt-12"></v-divider>
+            <v-divider class="mt-12"></v-divider>
 
-        <v-scroll-x-transition>
-            <EmpresasSugeridas title="Visita nuestras tiendas" :empresas="empresas" v-show="!loadingE" />
-        </v-scroll-x-transition>
-        <SkeletonCard v-if="loadingE" :width="300" :height="200" title="Visita nuestras tiendas" />
+            <v-scroll-x-transition>
+                <EmpresasSugeridas title="Visita nuestras tiendas" :empresas="empresas" v-show="!loadingE" />
+            </v-scroll-x-transition>
+            <SkeletonCard v-if="loadingE" :width="300" :height="200" title="Visita nuestras tiendas" />
 
-        <Footer />
-    </div>
+            <Footer />
+        </v-card-text>
+    </v-card>
 </template>
 
 <script>
