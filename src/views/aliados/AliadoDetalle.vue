@@ -13,10 +13,10 @@
                 <v-card-text>
                     <v-row justify="center">
                         <v-img src="@/assets/nodata.svg" contain width="500" height="500" />
-                        <div class="text-center font-weight-bold headline">
-                            No se encontraron resultados
-                        </div>
                     </v-row>
+                    <div class="text-center font-weight-bold headline">
+                        No se encontraron resultados
+                    </div>
                 </v-card-text>
             </v-card>
             
