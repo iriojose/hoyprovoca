@@ -1,60 +1,101 @@
 <template>
-    <div>
-        <v-card v-if="loading" elevation="0" color="#f7f7f7" width="100%" height="500">
-            <LoaderRect />
-        </v-card>
+    <v-card width="100%" elevation="0" color="#f7f7f7">
+        <v-card-text>
+            <v-card v-if="loading" elevation="0" color="#f7f7f7" width="100%" height="500">
+                <LoaderRect />
+            </v-card>
 
-        <v-row v-if="!loading" justify="center" :class="$vuetify.breakpoint.smAndDown ? 'margen-movil':'margen-top'">
-            <v-col cols="12" md="4" sm="12" :class="$vuetify.breakpoint.smAndDown ? 'px-5':'px-10'">
-                <PanelCategorias :grupos="grupos" :empresa="empresa" />
-            </v-col>
+            <v-card 
+                width="100%" elevation="0" color="#f7f7f7" 
+                v-if="!loading && grupos.length == 0" 
+                :class="$vuetify.breakpoint.smAndDown ? 'margen-movil':'margen-top'"
+            >
+                <v-card-text>
+                    <v-row justify="center">
+                        <v-img src="@/assets/nodata.svg" contain width="500" height="500" />
+                        <div class="text-center font-weight-bold headline">
+                            No se encontraron resultados
+                        </div>
+                    </v-row>
+                </v-card-text>
+            </v-card>
+            
+            <v-row v-if="!loading && grupos.length > 0" justify="center" :class="$vuetify.breakpoint.smAndDown ? 'margen-movil':'margen-top'">
+                <v-col cols="12" md="4" sm="12" :class="$vuetify.breakpoint.smAndDown ? 'px-5':'px-10'">
+                    <PanelCategorias :grupos="grupos" :empresa="empresa" />
+                </v-col>
 
-            <v-col cols="12" md="8" sm="12" v-if="!this.$route.params.text2">
-                <div :class="$vuetify.breakpoint.smAndDown ? 'sombra mb-5':'sombra mb-5 mr-2'" v-for="(grupo,i) in grupos" :key="i">
-                    <DataAliados :grupo="grupo" :conceptos="conceptos[i]" />
-                </div>
-            </v-col>
+                <v-col cols="12" md="8" sm="12" v-if="!this.$route.params.text2">
+                    <v-toolbar color="#f7f7f7" elevation="0" width="100%" class="mb-4 mx-5" v-if="$vuetify.breakpoint.smAndDown && !loading">
+                        <v-btn tile icon class="mx-2" outlined @click="tipo = true" :disabled="tipo">
+                            <v-icon dark>mdi-view-grid</v-icon>
+                        </v-btn>
+                        <v-btn tile icon class="mx-2" outlined @click="tipo = false" :disabled="!tipo">
+                            <v-icon dark>mdi-view-agenda</v-icon>
+                        </v-btn>
+                        <v-spacer></v-spacer>
+                    </v-toolbar>
 
-            <v-col cols="12" md="8" sm="12" v-if="this.$route.params.text2">
-                <v-card v-if="loading2 && empresa" elevation="0" color="#f7f7f7" width="100%" height="500">
-                    <LoaderRect />
-                </v-card>
+                    <div :class="$vuetify.breakpoint.smAndDown ? 'mb-5':'sombra mb-5'" v-for="(grupo,i) in grupos" :key="i">
+                        <DataAliados :grupo="grupo" :conceptos="conceptos[i]" :tipo="tipo"/>
+                    </div>
+                </v-col>
 
-                <transition name="slide-fade" v-else>
-                    <v-card width="100%" elevation="0" color="#f7f7f7" v-show="!loading">
-                        <v-row justify="center">
-                            <CardConceptos :concepto="concepto" v-for="(concepto,i) in conceptos" :key="i"/>
-                        </v-row>
-                        <v-toolbar elevation="0" class="mx-10" color="#f7f7f7">
-                            <v-btn 
-                                color="#232323" 
-                                elevation="0"
-                                class="text-capitalize font-weigth-bold body-1"
-                                dark
-                                :disabled="after == 0 ? true:false"
-                                @click="getConceptosGruposMenos(conceptos[0].adm_grupos_id)"
-                            >
-                                Ver menos
-                            </v-btn>
-                            <v-spacer></v-spacer>
-                            <v-btn 
-                                color="#232323" 
-                                elevation="0"
-                                class="text-capitalize font-weigth-bold body-1"
-                                dark
-                                :disabled="conceptos.length == 12 ? false:true"
-                                @click="getConceptosGrupos(conceptos[0].adm_grupos_id)"
-                            >
-                                Ver más
-                            </v-btn>
-                        </v-toolbar>
+                <v-col cols="12" md="8" sm="12" v-if="this.$route.params.text2">
+                    <v-card v-if="loading2 && empresa" elevation="0" color="#f7f7f7" width="100%" height="500">
+                        <LoaderRect />
                     </v-card>
-                </transition>
-            </v-col>
-        </v-row>
 
-        <Footer />
-    </div>
+                    <v-toolbar color="#f7f7f7" elevation="0" width="100%" class="mb-4 mx-5" v-if="$vuetify.breakpoint.smAndDown && !loading2">
+                        <v-btn tile icon class="mx-2" outlined @click="tipo = true" :disabled="tipo">
+                            <v-icon dark>mdi-view-grid</v-icon>
+                        </v-btn>
+                        <v-btn tile icon class="mx-2" outlined @click="tipo = false" :disabled="!tipo">
+                            <v-icon dark>mdi-view-agenda</v-icon>
+                        </v-btn>
+                        <v-spacer></v-spacer>
+                    </v-toolbar>
+
+                    <transition name="slide-fade" v-if="!loading2">
+                        <v-card width="100%" elevation="0" color="#f7f7f7" v-show="!loading">
+                            <v-row justify="center" v-if="tipo">
+                                <CardConceptos :concepto="concepto" v-for="(concepto,i) in conceptos" :key="i"/>
+                            </v-row>
+                            <v-row justify="center" v-else>
+                                <CardConceptos2 :concepto="concepto" v-for="(concepto,i) in conceptos" :key="i"/>
+                            </v-row>
+                            <v-toolbar elevation="0" class="mx-10" color="#f7f7f7">
+                                <!--v-btn 
+                                    color="#232323" 
+                                    elevation="0"
+                                    class="text-capitalize font-weigth-bold body-1"
+                                    dark
+                                    :disabled="after == 0 ? true:false"
+                                    @click="getConceptosGruposMenos(conceptos[0].adm_grupos_id)"
+                                >
+                                    Ver menos
+                                </v-btn-->
+                                <v-spacer></v-spacer>
+                                <v-btn 
+                                    color="#232323" 
+                                    elevation="0"
+                                    class="text-capitalize font-weigth-bold body-1"
+                                    dark
+                                    :disabled="conceptos.length == 12 ? false:true"
+                                    @click="getConceptosGrupos(conceptos[0].adm_grupos_id)"
+                                >
+                                    Ver más
+                                </v-btn>
+                                <v-spacer></v-spacer>
+                            </v-toolbar>
+                        </v-card>
+                    </transition>
+                </v-col>
+            </v-row>
+
+            <Footer />
+        </v-card-text>
+    </v-card>
 </template>
 
 <script>
@@ -64,6 +105,7 @@ import variables from '@/services/variables_globales';
 import LoaderRect from '@/components/loaders/LoaderRect';
 import PanelCategorias from '@/components/vistaAliados/PanelCategorias';
 import CardConceptos from '@/components/cards/CardConceptos2';
+import CardConceptos2 from '@/components/cards/CardConceptos3';
 import DataAliados from '@/components/vistaAliados/DataAliados';
 import Footer from '@/components/footer/Footer';
 import {mapState} from 'vuex';
@@ -73,15 +115,19 @@ import {mapState} from 'vuex';
             LoaderRect,
             PanelCategorias,
             CardConceptos,
+            CardConceptos2,
             Footer,
             DataAliados,
         },
         data(){
             return {
                 ...variables,
-                empresa:{},
+                empresa:{
+                    imagen:'default.png'
+                },
                 grupos:[],
                 conceptos:[],
+                tipo:true,
                 grupo:{},
                 loading:true,
                 loading2:false,
@@ -100,7 +146,7 @@ import {mapState} from 'vuex';
             }
         },
         computed: {
-            ...mapState(['agregados'])
+            ...mapState(['agregados']),
         },
         watch: {
             agregados(){
@@ -108,6 +154,7 @@ import {mapState} from 'vuex';
             },
             '$route'(val){
                 let id = window.localStorage.getItem('aliado');
+                this.conceptos = [];
 
                 if(id){
                     this.after=0;

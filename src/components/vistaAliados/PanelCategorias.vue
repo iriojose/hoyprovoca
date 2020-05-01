@@ -1,19 +1,25 @@
 <template>
     <div class="sombra">
-        <v-card elevation="0" width="100%" class="title font-weight-black px-10">    
-            <v-avatar size="80">
-                <v-img :src="image+empresa.imagen"></v-img>
-            </v-avatar>
-            {{empresa.nombre_comercial}}
+        <v-card elevation="0" width="100%" class="px-10">    
+            <v-card-title class="title font-weight-black" @click="push2(empresa)">
+                <v-row justify="center" align="center">
+                    <v-avatar size="80">
+                        <v-img :src="image+empresa.imagen"></v-img>
+                    </v-avatar>
+                    {{empresa.nombre_comercial}}
+                </v-row>
+            </v-card-title>
 
             <v-divider></v-divider>
 
-            <v-list dense v-if="!$vuetify.breakpoint.smAndDown" rounded>
+            <v-list dense v-if="!$vuetify.breakpoint.smAndDown">
                 <v-list-item 
-                    v-for="(grupo,i) in grupos" :key="i" @click="push(grupo)"
-                    active-class="color"
+                    v-for="(grupo,i) in grupos" :key="i" @click="push(grupo)" 
+                    :class="$route.params.text2 == grupo.nombre ? 'color white--text sombra':null"
                 >
-                    <v-list-item-title class="subtitle-2 font-weight-black">
+                    <v-list-item-title 
+                        :class="$route.params.text2 == grupo.nombre ? 'subtitle-2 white--text font-weight-black':'subtitle-2 font-weight-black'"
+                    >
                         {{grupo.nombre}}
                     </v-list-item-title>
                     <v-list-item-icon>
@@ -32,10 +38,12 @@
                     <v-expansion-panel-content>
                         <v-list dense>
                             <v-list-item 
-                                v-for="(grupo,i) in grupos" :key="i"  @click="push(grupo)"
-                                active-class="color"
+                                v-for="(grupo,i) in grupos" :key="i" @click="push(grupo)" 
+                                :class="$route.params.text2 == grupo.nombre ? 'color white--text sombra':null"
                             >
-                                <v-list-item-title class="subtitle-2 font-weight-black">
+                                <v-list-item-title 
+                                    :class="$route.params.text2 == grupo.nombre ? 'subtitle-2 white--text font-weight-black':'subtitle-2 font-weight-black'"
+                                >
                                     {{grupo.nombre}}
                                 </v-list-item-title>
                                 <v-list-item-icon>
@@ -75,9 +83,11 @@ import router from '@/router';
         methods: {
             push(item){
                 window.localStorage.setItem('detalle',item.id);
-                let nombre = item.nombre.toLowerCase(); 
-                let nombre2 = this.empresa.nombre_comercial.toLowerCase();
-                router.push('/aliados/'+nombre2+'/'+nombre);
+                router.push('/aliados/'+this.empresa.nombre_comercial+'/'+item.nombre);
+            },
+            push2(item){
+                window.localStorage.setItem('aliados',item.id);
+                router.push('/aliados/'+this.empresa.nombre_comercial);
             }
         },
     }

@@ -5,6 +5,7 @@
                 icon fab small 
                 v-on="on" 
                 color="#fff"
+                class="mx-2"
                 v-if="user.loggedIn && $vuetify.breakpoint.smAndDown"
             >
                 <v-icon>mdi-dots-vertical</v-icon>
