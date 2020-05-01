@@ -61,7 +61,9 @@ import Footer from '@/components/footer/Footer';
                 if(
                     this.$route.name == 'login' ||
                     this.$route.name == 'register' ||
-                    this.$route.name == 'forgot'
+                    this.$route.name == 'forgot'  ||
+                    this.$route.name == 'notfound' ||
+                    this.$route.name == 'notauthorized'
                 ){
                     return true;
                 }else{

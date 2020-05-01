@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="headline ml-12 mt-12 font-weight-black">{{title}}</div>
-        <v-slide-group show-arrows class="pa-5" v-model="model">
+        <v-slide-group class="pa-5" v-model="model">
             <v-slide-item v-for="n in 8" :key="n">
                 <v-card
                     elevation="4"

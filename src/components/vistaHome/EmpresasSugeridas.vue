@@ -1,50 +1,48 @@
 <template>
     <div>
-        <div 
-            :class="$vuetify.breakpoint.smAndDown ? 'font-weight-black text-center headline mt-12':'headline ml-12 mt-12 font-weight-black'"
-        >{{title}}</div>
+        <v-toolbar color="#f7f7f7" elevation="0" width="100%" class="mt-12">
+            <v-toolbar-title class="font-weight-black headline">
+                {{title}}
+            </v-toolbar-title>
+            <v-spacer></v-spacer>
+            <v-btn 
+                :fab="$vuetify.breakpoint.smAndDown"
+                :tile="!$vuetify.breakpoint.smAndDown" 
+                color="#232323" to="/aliados" 
+                class="text-capitalize" dark
+            >
+                <div v-if="!$vuetify.breakpoint.smAndDown">Ver todas</div>
+                <v-icon 
+                    :class="$vuetify.breakpoint.smAndDown ? null:'mx-2'" 
+                    dark
+                >
+                    mdi-chevron-right
+                </v-icon>
+            </v-btn>
+        </v-toolbar>
 
-        <v-slide-group show-arrows :class="$vuetify.breakpoint.smAndDown ? 'my-4':'my-4 mx-10'">
+        <v-slide-group :show-arrows="$vuetify.breakpoint.smAndDown ? false:true" :class="$vuetify.breakpoint.smAndDown ? 'my-4':'my-4 mx-10'">
             <v-slide-item v-for="empresa in  empresas" :key="empresa.id" class="mx-2 mb-8">
                 <v-hover v-slot:default="{hover}">
                     <v-card 
-                        :height="$vuetify.breakpoint.smAndDown ? 200:200" 
-                        :width="$vuetify.breakpoint.smAndDown ? 200:300" 
-                        :elevation="hover ? 0:4" @click="push(empresa)"
+                        :width="220"
+                        :height="220"  
+                        :elevation="hover ? 3:3" @click="push(empresa)"
+                        class="pa-5"
                     >
-                        <v-img 
-                            :height="$vuetify.breakpoint.smAndDown ? 160:160" 
-                            :width="$vuetify.breakpoint.smAndDown ? 200:300"  
-                            contain :src="image+empresa.imagen" 
-                        />
-                        <div class="mt-2 px-5">{{empresa.nombre_comercial}}</div>
+                        <v-card elevation="0" class="pa-5">
+                            <v-row justify="center">
+                                <v-img 
+                                    contain 
+                                    :width="100"
+                                    :height="100" 
+                                    :src="image+empresa.imagen" 
+                                /> 
+                            </v-row>
+                        </v-card>    
+                        <div class="mt-2 px-5 body-2 font-weight-black">{{empresa.nombre_comercial}}</div>
                     </v-card>
                 </v-hover>
-            </v-slide-item>
-
-            <v-slide-item>
-                <v-card 
-                    :height="$vuetify.breakpoint.smAndDown ? 150:200" 
-                    :width="$vuetify.breakpoint.smAndDown ? 200:300" 
-                    elevation="0" color="#f7f7f7"
-                    class="px-10"
-                >
-                    <v-row justify="center" align="center" class="fill-height px-5" v-if="empresas.length > 7">
-                        <v-hover v-slot:default="{hover}">
-                            <v-btn 
-                                color="#232323"
-                                depressed 
-                                block
-                                dark
-                                to="/aliados"
-                                class="caption text-capitalize"
-                                :elevation="hover ? 2:0"
-                            >
-                                Ver todas 
-                            </v-btn>
-                        </v-hover>
-                    </v-row>
-                </v-card>
             </v-slide-item>
         </v-slide-group>
     </div>

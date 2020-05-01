@@ -1,50 +1,48 @@
 <template>
     <div>
-        <div 
-            :class="$vuetify.breakpoint.smAndDown ? 'font-weight-black text-center headline mt-12':'headline ml-12 mt-12 font-weight-black'"
-        >{{title}}</div>
+        <v-toolbar color="#f7f7f7" elevation="0" width="100%" class="mt-12">
+            <v-toolbar-title class="font-weight-black headline">
+                {{title}}
+            </v-toolbar-title>
+            <v-spacer></v-spacer>
+            <v-btn 
+                :fab="$vuetify.breakpoint.smAndDown"
+                :tile="!$vuetify.breakpoint.smAndDown" 
+                color="#232323" to="/grupos" 
+                class="text-capitalize" dark
+            >
+                <div v-if="!$vuetify.breakpoint.smAndDown">Ver todas</div>
+                <v-icon 
+                    :class="$vuetify.breakpoint.smAndDown ? null:'mx-2'" 
+                    dark
+                >
+                    mdi-chevron-right
+                </v-icon>
+            </v-btn>
+        </v-toolbar>
 
-        <v-slide-group show-arrows :class="$vuetify.breakpoint.smAndDown ? 'my-4':'my-4 mx-10'">
+        <v-slide-group :show-arrows="$vuetify.breakpoint.smAndDown ? false:true" :class="$vuetify.breakpoint.smAndDown ? 'my-4':'my-4 mx-10'">
             <v-slide-item v-for="grupo in  grupos" :key="grupo.id" class="mx-2 mb-8">
                 <v-hover v-slot:default="{hover}">
                     <v-card 
-                        :height="$vuetify.breakpoint.smAndDown ? 150:200" 
-                        :width="$vuetify.breakpoint.smAndDown ? 200:300" 
-                        :elevation="hover ? 5:1" @click="push(grupo)">
-                        <v-img 
-                            contain 
-                            :width="$vuetify.breakpoint.smAndDown ? 200:300" 
-                            :height="$vuetify.breakpoint.smAndDown ? 150:200" 
-                            :src="image+grupo.imagen" 
-                        /> 
-                        <div class="mt-2 px-5">{{grupo.nombre}}</div>
+                        :width="200"
+                        :height="200"  
+                        :elevation="hover ? 3:3" @click="push(grupo)"
+                        class="pa-5"
+                    >
+                        <v-card elevation="0" class="pa-5">
+                            <v-row justify="center">
+                                <v-img 
+                                    contain 
+                                    :width="100"
+                                    :height="100" 
+                                    :src="image+grupo.imagen" 
+                                /> 
+                            </v-row>
+                        </v-card>    
+                        <div class="mt-2 px-5 subtitle-1 font-weight-black">{{grupo.nombre}}</div>
                     </v-card>
                 </v-hover>
-            </v-slide-item>
-
-            <v-slide-item>
-                <v-card 
-                    :height="$vuetify.breakpoint.smAndDown ? 150:200" 
-                    :width="$vuetify.breakpoint.smAndDown ? 200:300" 
-                    color="#f7f7f7" elevation="0"
-                    class="px-10"
-                >
-                    <v-row justify="center" align="center" class="fill-height px-5">
-                        <v-hover v-slot:default="{hover}">
-                            <v-btn 
-                                block
-                                to="/grupos"
-                                color="#232323"
-                                depressed 
-                                dark
-                                class="caption text-capitalize"
-                                :elevation="hover ? 2:0"
-                            >
-                                Ver todas 
-                            </v-btn>
-                        </v-hover>
-                    </v-row>
-                </v-card>
             </v-slide-item>
         </v-slide-group>
     </div>

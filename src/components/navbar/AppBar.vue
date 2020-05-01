@@ -18,16 +18,7 @@
 
         <v-spacer v-if="$vuetify.breakpoint.smAndDown"></v-spacer>
 
-        <v-toolbar-title @click="push2" class="cursor" v-if="!$vuetify.breakpoint.smAndDown">
-            <v-img 
-                contain 
-                height="60"
-                width="100"  
-                src="@/assets/logo 4.png"
-            />
-        </v-toolbar-title>
-
-        <v-toolbar-title @click="push2" class="cursor" v-else>
+        <v-toolbar-title @click="push2" class="cursor">
             <v-img 
                 contain 
                 height="60"
