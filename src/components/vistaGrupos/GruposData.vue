@@ -6,6 +6,16 @@
                     <v-img :src="image+subgrupo.imagen"></v-img>
                 </v-avatar>
                 <div class="text-center">{{subgrupo.nombre}}</div>
+                <v-spacer></v-spacer>
+
+                <v-btn 
+                    color="#232323" @click="push(subgrupo)"  
+                    class="text-capitalize" dark
+                    :disabled="conceptos.length < 9 ? true:false"
+                >
+                    Ver más
+                    <v-icon class="mx-2" dark>mdi-chevron-right</v-icon>
+                </v-btn>
             </v-card-title>
 
             <v-slide-group show-arrows class="my-2">
@@ -31,6 +41,16 @@
                         <v-row justify="center" v-else>
                             <CardConceptos2 :concepto="concepto" v-for="(concepto,i) in conceptos" :key="i"/>
                         </v-row>
+                        <v-row justify="center" class="my-5">
+                            <v-btn 
+                                color="#232323" @click="push(subgrupo)" 
+                                class="text-capitalize" dark
+                                :disabled="conceptos.length < 9 ? true:false"
+                            >
+                                Ver más
+                                <v-icon class="mx-2" dark>mdi-chevron-right</v-icon>
+                            </v-btn>
+                        </v-row>
                     </v-expansion-panel-content>
                 </v-expansion-panel>
             </v-expansion-panels>
@@ -42,6 +62,7 @@
 import CardConceptos from '@/components/cards/CardConceptos2';
 import CardConceptos2 from '@/components/cards/CardConceptos3';
 import variables from '@/services/variables_globales';
+import router from '@/router';
 
     export default {
         components:{
@@ -66,7 +87,14 @@ import variables from '@/services/variables_globales';
             return {
                 ...variables
             }
-        }
+        },
+        methods: {
+            push(item){
+                window.localStorage.setItem('subgrupo',item.id);
+                let nombre = item.nombre.toLowerCase(); 
+                router.push({name:'subgrupoDetalle', params:{text:nombre}});
+            }
+        },
     }
 </script>
 

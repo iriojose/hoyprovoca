@@ -20,6 +20,7 @@ import Grupos from '@/views/grupos/Grupos';
 import AliadoDetalle from '@/views/aliados/AliadoDetalle';
 import AliadoGrupo from '@/views/aliados/AliadoGrupo';
 import Aliados from '@/views/aliados/Aliados';
+import SubgrupoDetalle from '@/views/grupos/SubgrupoDetalle';
 
 //perfil
 import Account from '@/views/account/Account';
@@ -70,6 +71,14 @@ const router = new Router({
             path: "/forgot",
             name:"forgot",
             component:Forgot,
+            meta:{
+                auth:false
+            }
+        },
+        {
+            path: "/subgrupo/:text",
+            name:"subgrupoDetalle",
+            component:SubgrupoDetalle,
             meta:{
                 auth:false
             }

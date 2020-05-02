@@ -102,7 +102,7 @@ import {mapState} from 'vuex';
         },
         methods:{
             async getGrupos(id){
-                await Grupos().get(`/${id}/subgrupos/?limit=10`).then((response) => {
+                await Grupos().get(`/${id}/subgrupos`).then((response) => {
                     if(response.data.data){
                         this.subgrupos = response.data.data.sort(function (a, b) {
                             if (a.nombre > b.nombre) {return 1;}

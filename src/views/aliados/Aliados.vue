@@ -83,10 +83,11 @@
                         </v-card>
                     </v-row>
 
-                    <v-row justify="center">
+                    <v-row justify="center" class="my-5">
                         <v-btn 
                             color="#232323" tile 
                             dark
+                            :loading="loading2"
                             @click="getEmpresas()"
                             :disabled="total == empresas.length ? true:false"
                         >
@@ -113,6 +114,7 @@ import router from '@/router';
             return {
                 empresas:[],
                 loading:true,
+                loading2:false,
                 after:0,
                 total:0,
                 tipo:true,
@@ -138,12 +140,13 @@ import router from '@/router';
                 router.push({name:'aliadoDetalle', params:{text:nombre}});
             },
             getEmpresas(){
-                this.loading = true;
+                this.loading2 = true;
                 Empresa().get(`/?limit=20&offset=${this.after}`).then((response) => {
                     response.data.data.filter(a => this.empresas.push(a));
                     this.after +=20;
                     this.total = response.data.totalCount;
                     this.loading = false;
+                    this.loading2 = false;
                 }).catch(e => {
                     console.log(e);
                 })

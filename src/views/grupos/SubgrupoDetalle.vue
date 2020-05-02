@@ -7,7 +7,7 @@
 
             <v-card 
                 width="100%" elevation="0" color="#f7f7f7" 
-                v-if="!loading && grupos.length == 0" 
+                v-if="!loading && conceptos.length == 0" 
                 :class="$vuetify.breakpoint.smAndDown ? 'margen-movil':'margen-top'"
             >
                 <v-card-text>
@@ -21,11 +21,10 @@
             </v-card>
 
             <v-row 
-                v-if="!loading && grupos.length > 0" justify="center" 
+                v-if="!loading && conceptos.length > 0" justify="center" 
                 :class="$vuetify.breakpoint.smAndDown ? 'margen-movil':'margen-top'"
             >
-                <v-col cols="12" sm="12" md="9">
-                    <div class="display-1 font-weight-black text-center mb-5">Todas las Categorías</div>
+                <v-col cols="12" sm="12" md="10" class="mb-5">
 
                     <v-toolbar color="#f7f7f7" elevation="0" width="100%" class="mb-4 mx-5" v-if="$vuetify.breakpoint.smAndDown && !loading">
                         <v-btn tile icon class="mx-2" outlined @click="tipo = true" :disabled="tipo">
@@ -38,48 +37,15 @@
                     </v-toolbar>
 
                     <v-row justify="center" v-if="tipo">
-                        <v-card 
-                            :width="180"
-                            :height="220"  
-                            v-for="(grupo,i) in grupos" 
-                            :key="i"
-                            :elevation="0" @click="push(grupo)"
-                            class="pa-5"
-                        >
-                            <v-card elevation="0" class="pa-5">
-                                <v-row justify="center">
-                                    <v-img 
-                                        contain 
-                                        :width="100"
-                                        :height="100" 
-                                        :src="image+grupo.imagen" 
-                                    /> 
-                                </v-row>
-                            </v-card>    
-                            <div class="mt-2 px-5 caption font-weight-black">{{grupo.nombre}}</div>
-                        </v-card>
+                        <div v-for="(concepto,i) in conceptos" :key="i">
+                            <CardConceptos :concepto="concepto" />
+                        </div>
                     </v-row>
 
                     <v-row justify="center" v-else>
-                        <v-card 
-                            :width="300"
-                            :height="250"  
-                            v-for="(grupo,i) in grupos" :key="i"
-                            :elevation="0" @click="push(grupo)"
-                            class="pa-5"
-                        >
-                            <v-card elevation="0" class="pa-5">
-                                <v-row justify="center">
-                                    <v-img 
-                                        contain 
-                                        :width="hover ? 250:200"
-                                        :height="150" 
-                                        :src="image+grupo.imagen" 
-                                    /> 
-                                </v-row>
-                            </v-card>    
-                            <div class="mt-2 px-5 subtitle-1 font-weight-black">{{grupo.nombre}}</div>
-                        </v-card>
+                        <div v-for="(concepto,i) in conceptos" :key="i">
+                            <CardConceptos2 :concepto="concepto" />
+                        </div>
                     </v-row>
 
                     <v-row justify="center" class="my-5">
@@ -87,10 +53,11 @@
                             color="#232323" tile 
                             dark
                             :loading="loading2"
-                            @click="getGrupos()"
-                            :disabled="total == grupos.length ? true:false"
+                            @click="getConceptos()"
+                            :disabled="total == conceptos.length ? true:false"
                         >
                             Ver más
+                            <v-icon dark class="mx-2">mdi-chevrom-right</v-icon>
                         </v-btn>
                     </v-row>
                 </v-col>
@@ -101,47 +68,57 @@
 
 <script>
 import LoaderRect from '@/components/loaders/LoaderRect';
-import Grupos from '@/services/Grupos';
+import SubGrupos from '@/services/SubGrupos';
+import CardConceptos from '@/components/cards/CardConceptos2';
+import CardConceptos2 from '@/components/cards/CardConceptos3';
 import variables from '@/services/variables_globales';
-import router from '@/router';
+import {mapState} from 'vuex';
 
     export default {
         components:{
             LoaderRect,
+            CardConceptos,
+            CardConceptos2
         },
-        data() {
+        data(){
             return {
+                ...variables,
                 loading:true,
                 loading2:false,
+                conceptos:[],
                 after:0,
                 total:0,
                 tipo:true,
-                grupos:[],
-                ...variables
             }
         },
-        mounted() {
-            this.getGrupos();
+        mounted(){
+            this.getConceptos();
+        },
+        computed: {
+            ...mapState(['agregados']),
+        },
+        watch: {
+            agregados(){
+                this.revision();
+            },
         },
         head:{
             title(){
                 return {
                     inner:'Hoyprovoca',
                     separator:'|',
-                    complement: 'Categorías'
+                    complement: 'Sub Categoría'
                 }
             }
-        },
+        },  
         methods:{
-            push(item){
-                window.localStorage.setItem('grupo',item.id);
-                let nombre = item.nombre.toLowerCase(); 
-                router.push({name:'grupoDetalle', params:{text:nombre}});
-            },
-            getGrupos(){
+            async getConceptos(){
                 this.loading2 = true;
-                Grupos().get(`/?limit=20&offset=${this.after}`).then((response) => {
-                    response.data.data.filter(a => this.grupos.push(a));
+                let id = window.localStorage.getItem('subgrupo');
+                await SubGrupos().get(`/${id}/conceptos/?limit=20&offset=${this.after}`).then((response) => {
+                    response.data.data.filter(a => a.agregado=false);
+                    response.data.data.filter(a => this.agregados.filter(b => a.id == b ? a.agregado=true:null));
+                    response.data.data.filter(a => this.conceptos.push(a));
                     this.after +=20;
                     this.total = response.data.totalCount;
                     this.loading = false;
@@ -149,6 +126,10 @@ import router from '@/router';
                 }).catch(e => {
                     console.log(e);
                 });
+            },
+            revision(){
+                this.conceptos.filter(a => a.agregado = false);
+                this.conceptos.filter(a => this.agregados.filter(b => a.id == b ? a.agregado=true:null));
             }
         }
     }

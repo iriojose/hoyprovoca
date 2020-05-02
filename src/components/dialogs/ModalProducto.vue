@@ -29,12 +29,6 @@
                 </v-btn>
             </v-card-actions>
         </v-card>
-
-        <v-snackbar v-model="snackbar" :color="color" right :timeout="2000" absolute>
-            <div>
-                <v-icon color="#fff" class="mx-2">{{icon}}</v-icon>{{mensaje}}
-            </div>
-        </v-snackbar>
     </v-dialog>
 </template>
 
@@ -61,10 +55,6 @@ import Empresa from '@/services/Empresa';
                 precioDolar:null,
                 precioBolivar:null,
                 loading:false,
-                snackbar:false,
-                mensaje:'',
-                icon:'',
-                color:'',
                 encontradoPedido:0,
                 data:{
                     usuario_id:0,
@@ -97,11 +87,22 @@ import Empresa from '@/services/Empresa';
             close(){
                 this.setModalProducto(false);
             },
-            mensajeSnackbar(color,texto,icon){
-                this.mensaje = texto;
-                this.color=color;
-                this.icon=icon;
-                this.snackbar=true;
+            success(mensaje){
+                this.$toasted.success(mensaje, { 
+                    theme: "toasted-primary", 
+                    position: "top-right", 
+                    duration : 2000,
+                    icon : "done",
+                });
+                this.loading = false;
+            },
+            error(mensaje){
+                this.$toasted.error(mensaje, { 
+                    theme: "toasted-primary", 
+                    position: "top-right", 
+                    duration : 2000,
+                    icon : "error",
+                });
                 this.loading = false;
             },
             modal(concepto){
@@ -116,13 +117,13 @@ import Empresa from '@/services/Empresa';
                 this.loading = true;
                 Conceptos().get(`/${item.id}/depositos`).then((response) => {
                     if(Number.parseInt(response.data.data[0].existencia) < 1){
-                        this.mensajeSnackbar("#D32F2F",'Quedan '+response.data.data[0].existencia+' unidades en el stock.',"error");
+                        this.error('Quedan '+response.data.data[0].existencia+' unidades en el stock.');
                     }else{
                         this.getEmpresa(item);
                     }
                 }).catch(e =>{
                     console.log(e);
-                    this.mensajeSnackbar("#D32F2F","Ooops, Intente mas tarde.","error");
+                    this.error("Ooops, Intente mas tarde.");
                 });
             },
             getEmpresa(item){
@@ -132,7 +133,7 @@ import Empresa from '@/services/Empresa';
                     this.validacion(item);
                 }).catch(e => {
                     console.log(e);
-                    this.mensajeSnackbar("#D32F2F","Ooops, Intente mas tarde.","error");
+                    this.error("Ooops, Intente mas tarde.");
                 });
             },
             validacion(item){
@@ -151,10 +152,10 @@ import Empresa from '@/services/Empresa';
 
                 Pedidos().post("/",{data:this.data,data1:this.data1}).then((response) => {
                     this.addPedidos(response.data.data);
-                    this.mensajeSnackbar("#388E3C","Agregado exitosamente.","done");
+                    this.success("Agregado exitosamente.");
                 }).catch(e => {
                     console.log(e);
-                    this.mensajeSnackbar("#D32F2F","Ooops, Intente mas tarde.","error");
+                    this.error("Ooops, Intente mas tarde.");
                 });
             },
             postPedidosDetalle(item){
@@ -166,10 +167,10 @@ import Empresa from '@/services/Empresa';
                 Pedidos().post(`/${this.encontradoPedido}/detalles`,{data:data}).then((response) => {
                     this.encontradoPedido = 0;
                     this.addDetalle(response.data.data);
-                    this.mensajeSnackbar("#388E3C","Agregado exitosamente.","done");
+                    this.success("Agregado exitosamente.");
                 }).catch(e => {
                     console.log(e);
-                    this.mensajeSnackbar("#D32F2F","Ooops, Intente mas tarde.","error");
+                    this.error("Ooops, Intente mas tarde.");
                 });
             }
         },
