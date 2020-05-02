@@ -122,7 +122,6 @@
                     </v-card>
                 </v-col>
             </v-row>
-            <Snackbar :color="color" :mensaje="mensaje" :icon="icon" :time="1000" />
         </v-card-text>
     </v-card>
 </template>
@@ -132,20 +131,13 @@ import router from '@/router';
 import validations from '@/validations/validations';
 import Auth from '@/services/Auth';
 import {mapActions} from 'vuex';
-import Snackbar from '@/components/snackbars/Snackbar';
 
     export default {
-        components:{
-            Snackbar
-        },
         data() {
             return {
                 ...validations,
                 email:'',
                 codigo:'',
-                color:'',
-                mensaje:'',
-                icon:'',
                 contraseña:'',
                 contraseña2:'',
                 send:false,
@@ -166,45 +158,55 @@ import Snackbar from '@/components/snackbars/Snackbar';
 
             push(){ router.push('/login') },
             push2(){ router.push('/reset') },
-
-            mensajeSnackbar(color,mensaje,icon){
-                this.color = color;
-                this.mensaje = mensaje;
-                this.icon = icon;
-                this.setSnackbar(true);
+            
+            success(mensaje){
+                this.$toasted.success(mensaje, { 
+                    theme: "toasted-primary", 
+                    position: "top-right", 
+                    duration : 2000,
+                    icon : "done",
+                });
+                this.loading = false;
+            },
+            error(mensaje){
+                this.$toasted.error(mensaje, { 
+                    theme: "toasted-primary", 
+                    position: "top-right", 
+                    duration : 2000,
+                    icon : "error",
+                });
                 this.loading = false;
             },
             sendMail(){
                 this.loading = true;
-                Auth().post("/sendmail",{data:{user:this.email}}).then((response) => {
-                    this.mensajeSnackbar("#388E3C","Codigo enviado exitosamente.","done");
+                Auth().post("/sendmail",{data:{user:this.email}}).then(() => {
+                    this.success("Codigo enviado exitosamente.");
                     this.send = true;
-                }).catch(e => {
+                }).catch((e) => {
                     console.log(e);
-                    this.mensajeSnackbar("#D32F2F","Ooops, Error al intentar enviar el codigo.","error");
+                    this.error("Opss, Error al tratar de enviar el codigo");
                 });
             },
             validCode(){
                 this.loading = true;
-                Auth().post("/validcode",{data:{user:this.email,hash:this.codigo}}).then((response) => {
-                    console.log(response);
-                    this.mensajeSnackbar("#388E3C","Codigo validado exitosamente.","done");
+                Auth().post("/validcode",{data:{user:this.email,hash:this.codigo}}).then(() => {
+                    this.success("Codigo validado.");
                     this.validcode=true;
-                }).catch(e => {
+                }).catch((e) => {
                     console.log(e);
-                    this.mensajeSnackbar("#D32F2F","Ooops, Error al validar el codigo.","error");
+                    this.error("Codigo incorrecto.");
                 });
             },
             reset(){
                 this.loading = true;
                 Auth().post("/resetpassword",{data:{user:this.email,password:this.contraseña}}).then((response) => {
-                    this.mensajeSnackbar("#388E3C","Contraseña cambiada.","done");
+                    this.success("Contraseña cambiada exitosamente.");
                     setTimeout(() => {
                         this.push();
                     },1000);
                 }).catch(e => {
                     console.log(e);
-                    this.mensajeSnackbar("#D32F2F","Ooops, Error al resetear contraseña.","error");
+                    this.error("Error al intentar restablecer la contraseña");
                 });
             }
         },

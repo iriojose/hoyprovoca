@@ -24,6 +24,7 @@ export default new Vuex.Store({
         bandera:false,
         modalUbicacion:false,
         modalProducto:false,
+        modalImagen:false,
         //arrays
         pedidos:[],//guarda los pedidos
         agregados:[],//guarda ids de los conceptos agregados a pedidos
@@ -49,6 +50,9 @@ export default new Vuex.Store({
         },
         SET_MODAL_UBICACION(state,val){
             val ? state.modalUbicacion = true:state.modalUbicacion = false;
+        },
+        SET_MODAL_IMAGEN(state,val){
+            val ? state.modalImagen = true:state.modalImagen = false;
         },
         SET_MODAL_PRODUCTO(state,val){
             val ? state.modalProducto = true:state.modalProducto = false;
@@ -163,6 +167,9 @@ export default new Vuex.Store({
         },
         setModalProducto({commit},val){
             commit('SET_MODAL_PRODUCTO',val);
+        },
+        setModalImagen({commit},val){
+            commit('SET_MODAL_IMAGEN',val);
         },
         setModalSesion({commit},val){
             commit('SET_MODAL_SESION',val);

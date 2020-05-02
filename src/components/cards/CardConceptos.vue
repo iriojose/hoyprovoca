@@ -127,8 +127,8 @@ import accounting from 'accounting';
                 });
             },
             getEmpresa(item){
-                Empresa().get(`/${item.adm_empresa_id}/?fields=logo`).then((response) => {
-                    this.data.imagen =response.data.data.logo; 
+                Empresa().get(`/${item.adm_empresa_id}/?fields=imagen`).then((response) => {
+                    this.data.imagen =response.data.data.imagen; 
                     this.data.adm_empresa_id = item.adm_empresa_id;
                     this.validacion(item);
                 }).catch(e => {

@@ -3,16 +3,15 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import head from "./plugins/head";
-import croppa from "./plugins/croppa";
 import vuetify from './plugins/vuetify';
+import toasted from './plugins/toasted';
 import "@babel/polyfill";
 import "roboto-fontface/css/roboto/roboto-fontface.css";
 import "@mdi/font/css/materialdesignicons.css";
 import Auth from '@/services/Auth';
 
 Vue.config.productionTip = true;
-let token = null;
-token = window.localStorage.getItem('cliente_token');
+let token = window.localStorage.getItem('cliente_token');
 
 if(token){
     Auth().post("/sesion",{token:token}).then((response) => {
@@ -29,7 +28,7 @@ if(token){
             router,
             vuetify,
             head,
-            croppa,
+            toasted,
             render: h => h(App)
         }).$mount("#app");
     
@@ -39,7 +38,7 @@ if(token){
             router,
             vuetify,
             head,
-            croppa,
+            toasted,
             render: h => h(App)
         }).$mount("#app");
     });
@@ -49,7 +48,7 @@ if(token){
         router,
         vuetify,
         head,
-        croppa,
+        toasted,
         render: h => h(App)
     }).$mount("#app");
 }

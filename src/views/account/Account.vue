@@ -1,65 +1,75 @@
 <template>
-    <div>
-        <v-row justify="center" :class="$vuetify.breakpoint.smAndDown ? 'margen-movil mx-10':'margen mx-10'">
-            <v-col cols="12" sm="12" md="3">
-                <div class="shadow">
-                    <v-card width="100%" height="400" elevation="0">
-                        <v-row justify="center" align="center" class="mx-4 py-8">
-                            <v-avatar size="100" class="elevation-3">
-                                <v-img :src="image+user.data.fotografia"></v-img>
-                            </v-avatar>
-                            <div>
-                                <div class="caption font-weigth-black grey--text mx-4">Mi perfil</div>
-                                <div class="title font-weigth-black mx-4">{{user.data.nombre}}</div>
-                            </div>
-                        </v-row>
-                        
-                        <v-divider></v-divider>
+    <v-card color="#f7f7f7" elevation="0" width="100%">
+        <v-card-text>
+            <v-row justify="center" :class="$vuetify.breakpoint.smAndDown ? 'margen-movil':'margen'">
+                <v-col cols="12" md="3" sm="12">
+                    <v-card>
+                        <v-card-text>
 
-                        <v-list class="mt-5">
-                            <v-list-item v-for="(opcion,i) in opciones" :key="i" :to="opcion.path" active-class="color shadow2 white--text">
-                                <v-list-item-icon>
-                                    <v-icon :color="$route.path == opcion.path ? '#fff':'#232323'" small>{{opcion.icon}}</v-icon>
-                                </v-list-item-icon>
-                                <v-list-item-content>
-                                    {{opcion.text}}
-                                </v-list-item-content>
-                            </v-list-item>
-                        </v-list>
+                            <v-list dense nav>
+                                <v-list-item two-line>
+                                    <v-list-item-avatar size="100">
+                                        <v-img :src="image+user.data.imagen"></v-img>
+                                    </v-list-item-avatar>
+                                    <v-avatar @click="open" class="abs_center" size="40" style="z-index:2;" color="#F5F5F5">
+                                        <v-icon>mdi-camera</v-icon>
+                                    </v-avatar>
+
+                                    <v-list-item-content class="font-weight-bold">
+                                        <v-list-item-title>Mi perfil</v-list-item-title>
+                                        <v-list-item-subtitle class="font-weight-bold">{{user.data.nombre +' '+ user.data.apellido}}</v-list-item-subtitle>
+                                    </v-list-item-content>
+                                </v-list-item>
+                            </v-list>
+
+                            <v-divider class="mt-5"></v-divider>
+
+                            <v-list dense class="mt-5" flat>
+                                <v-list-item v-for="(opcion,i) in opciones" :key="i" :to="opcion.path" active-class="color shadow2 white--text">
+                                    <v-list-item-icon>
+                                        <v-icon :color="$route.path == opcion.path ? '#fff':'#232323'" small>{{opcion.icon}}</v-icon>
+                                    </v-list-item-icon>
+                                    <v-list-item-content>
+                                        {{opcion.text}}
+                                    </v-list-item-content>
+                                </v-list-item>
+                            </v-list>
+                        </v-card-text>
                     </v-card>
-                </div>
-            </v-col>
-            <v-col cols="12" sm="12" md="9">
-                <div class="shadow">
-                    <v-card elevation="0" width="100%" class="pa-5">
-                        <router-view></router-view>
+                </v-col>
+                <v-col cols="12" md="9" sm="12">
+                    <v-card>
+                        <v-card-text>
+                            <router-view></router-view>
+                        </v-card-text>
                     </v-card>
-                </div>
-            </v-col>
-        </v-row>
-    </div>
+                </v-col>
+            </v-row>
+        </v-card-text>
+    </v-card>
 </template>
 
 <script>
-import {mapState} from 'vuex';
 import variables from '@/services/variables_globales';
+import {mapState,mapActions} from 'vuex';
 
     export default {
         data() {
             return {
                 ...variables,
                 opciones:[
-                    {icon:'settings',path:'/account/profile',text:'Ajustes de cuenta'},
-                    {icon:'history',path:'/account/notificaciones',text:'Centro de notificaciones'},
-                    {icon:'error',path:'/account/ordenes',text:'últimas ordenes'},
+                    {icon:'mdi-cogs',path:'/account/profile',text:'Ajustes de cuenta'},
+                    {icon:'mdi-history',path:'/account/notificaciones',text:'Centro de notificaciones'},
+                    {icon:'mdi-alert-circle',path:'/account/ordenes',text:'últimas ordenes'},
                     //{icon:'error_outline',path:'/account/ayuda',text:'Centro de ayuda'},
+                    {icon:'mdi-lock-open',path:'/account/password',text:'Cambiar contraseña'},
                 ]
             }
         },
         head:{
             title(){
                 return {
-                    inner:'HoyProvoca',
+                    inner:'Hoyprovoca',
                     separator:'|',
                     complement: 'Perfil'
                 }
@@ -67,27 +77,36 @@ import variables from '@/services/variables_globales';
         },
         computed:{
             ...mapState(['user'])
-        }
+        },
+        methods: {
+            ...mapActions(['setModalImagen']),
+            open(){
+                this.setModalImagen(true);
+            }
+
+        },
     }
 </script>
 
-<style lang="css" scoped>
+<style lang="scss" scoped>
     .margen{
         margin-top:75px;
     }
     .margen-movil{
-        margin-top:120px;
+        margin-top:100px;
     }
-    .margen-footer{
-        margin-top:200px;
+    .sombra{
+        -webkit-box-shadow: 0px 5px 6px -5px rgba(0,0,0,0.75);
+        -moz-box-shadow: 0px 5px 6px -5px rgba(0,0,0,0.75);
+        box-shadow: 0px 5px 6px -5px rgba(0,0,0,0.75);
     }
-    .shadow{
-        box-shadow: 0px 6px 5px -4px rgba(35,35,35,0.4);
+    .abs_center{
+        position: absolute;
+        top: 80px;
+        left: 75px;
     }
-    .color{
-        background: #232323;
-    }
-    .shadow2{
-        box-shadow: 1px 1px 9px 1px rgba(153,153,153,0.5);
+    .abs_center:hover{
+        cursor: pointer;
+        background: #ededed !important;
     }
 </style>

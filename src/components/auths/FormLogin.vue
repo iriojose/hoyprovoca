@@ -42,8 +42,6 @@
                     Iniciar Sesión
                 </v-btn>
             </v-hover>
-
-            <Snackbar :icon="icon" :color="color" :mensaje="mensaje"/>
         </v-form>
     </div>
     
@@ -52,14 +50,10 @@
 <script>
 import Auth from '@/services/Auth';
 import validations from '@/validations/validations';
-import Snackbar from '@/components/snackbars/Snackbar';
 import {mapActions} from 'vuex';
 import router from '@/router';
 
     export default {
-        components:{
-            Snackbar
-        },
         data(){
             return {
                 data: {
@@ -69,20 +63,19 @@ import router from '@/router';
                 valid:false,
                 ...validations,
                 showPassword:false,
-                mensaje:"",
-                icon:"",
-                color:"",
                 loading:false,
             }
         },
         methods: {
-            ...mapActions(['setSnackbar','logged','setModalSesion','setModalBloqueado']),
+            ...mapActions(['logged','setModalSesion','setModalBloqueado']),
 
             success(nombre,apellido){
-                this.color="#388E3C"
-                this.icon = "done";
-                this.mensaje = "Bienvenido "+nombre+" "+apellido+".";
-                this.setSnackbar(true);
+                this.$toasted.success("Bienvenido "+nombre+" "+apellido+".", { 
+                    theme: "toasted-primary", 
+                    position: "top-right", 
+                    duration : 2000,
+                    icon : "done",
+                });
                 this.loading = false;
                 setTimeout(() =>{ 
                     if(this.$route.name=='login'){
@@ -91,11 +84,13 @@ import router from '@/router';
                     this.setModalSesion(false);
                 },1000);
             },
-            mensajeSnackbar(icon,mensaje,color){
-                this.color = color;
-                this.icon = icon;
-                this.mensaje = mensaje;
-                this.setSnackbar(true);
+            mensajeSnackbar(icon,mensaje){
+                this.$toasted.error(mensaje, { 
+                    theme: "toasted-primary", 
+                    position: "top-right", 
+                    duration : 2000,
+                    icon : icon,
+                });
                 this.loading = false;
             },
             login(){
@@ -108,11 +103,10 @@ import router from '@/router';
                         this.logged(response.data);
                         this.success(response.data.data.nombre,response.data.data.apellido);
                     }else{
-                        this.mensajeSnackbar("error","Usuario no permitido.","#D32F2F");
+                        this.mensajeSnackbar("error","Usuario no permitido.");
                     }
-                }).catch(e => {
-                    console.log(e);
-                    this.mensajeSnackbar("error","Error al intentar ingresar al sistema.","#D32F2F");
+                }).catch((e) => {
+                    this.mensajeSnackbar("error","Error al intentar ingresar al sistema.");
                 });
             }
         },

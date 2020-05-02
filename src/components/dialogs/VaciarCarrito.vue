@@ -87,7 +87,3 @@ import Pedidos from '@/services/Pedidos';
         },
     }
 </script>
-
-<style lang="scss" scoped>
-
-</style>

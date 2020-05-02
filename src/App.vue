@@ -10,6 +10,7 @@
         <ModalBloqueado /> 
         <ModalProducto />
         <ModalSesion />
+        <ModalImagen />
 
         <v-footer v-if="ruta2()" fixed>
             <SubFooter />
@@ -21,6 +22,7 @@
 <script>
 import AppBar from '@/components/navbar/AppBar';
 import ModalBloqueado from '@/components/dialogs/ModalBloqueado';
+import ModalImagen from '@/components/dialogs/ModalImagen';
 import ModalProducto from '@/components/dialogs/ModalProducto';
 import ModalSesion from '@/components/dialogs/ModalSesion';
 import Toolbar from "@/components/auths/Toolbar";
@@ -34,6 +36,7 @@ import Footer from '@/components/footer/Footer';
             ModalBloqueado,
             ModalProducto,
             ModalSesion,
+            ModalImagen,
             Toolbar,
             SubFooter,
             Footer,

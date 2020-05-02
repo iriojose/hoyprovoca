@@ -122,6 +122,7 @@ import {mapState} from 'vuex';
                 empresa:{
                     imagen:'default.png'
                 },
+                data:null,
                 grupos:[],
                 conceptos:[],
                 tipo:true,

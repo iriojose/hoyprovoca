@@ -38,6 +38,7 @@
     <v-img 
         :src="require('@/assets/banner.jpeg')" 
         width="100%" 
+        class="px-5"
         gradient="to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)"
         :height="$vuetify.breakpoint.smAndDown ? 500:500"
         :style="$vuetify.breakpoint.smAndDown ? 'margin-top:46px':'margin-top:46px'"
