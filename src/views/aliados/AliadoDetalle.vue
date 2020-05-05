@@ -148,7 +148,11 @@ import {mapState} from 'vuex';
         },
         watch: {
             agregados(){
-                this.revision();
+                if(this.$route.name == 'aliadoDetalle'){
+                    this.revision();
+                }else{
+                    this.revision2();
+                }
             },
             '$route'(val){
                 let id = window.localStorage.getItem('aliado');

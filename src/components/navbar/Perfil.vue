@@ -7,8 +7,8 @@
             offset-y
         >
             <template v-slot:activator="{ on }">
-                <v-btn v-on="on" fab class="mx-3" small>
-                    <v-icon dark>
+                <v-btn v-on="on" fab class="mx-3" small color="#232323">
+                    <v-icon color="#fff">
                         mdi-account-circle
                     </v-icon>
                 </v-btn>

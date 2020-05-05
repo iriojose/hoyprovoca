@@ -1,53 +1,17 @@
-<!--template>
-    <v-carousel
-        cycle
-        continuous
-        progress-color="#005598"
-        progress
-        :height="$vuetify.breakpoint.smAndDown ? 150:500"
-        :show-arrows="false"
-        mandatory
-        :style="$vuetify.breakpoint.smAndDown ? 'margin-top:103px':'margin-top:64px'"
-    >
-        <v-carousel-item 
-            v-for="img in images" 
-            :key="img.id" 
-            :src="require(`@/assets/`+img.img)"
-        >
-            <v-row justify="center" align="center" class="fill-height">
-                <v-card width="400" color="transparent">
-                    <v-text-field 
-                        label="Buscar producto..."
-                        hide-details
-                        solo
-                        color="#fff"
-                        single-line
-                    >
-                        <v-btn slot="append" color="#D32F2F" class="text-capitalize">
-                            Buscar
-                            <v-icon dark class="mx-2">mdi-magnify</v-icon>
-                        </v-btn>
-                    </v-text-field>
-                </v-card>
-            </v-row>
-        </v-carousel-item>
-    </v-carousel>
-</template-->
-
 <template>
+    <!--gradient="to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)"-->
     <v-img 
-        :src="require('@/assets/banner.jpeg')" 
+        :src="require('@/assets/index.jpeg')" 
         width="100%" 
         class="px-5"
-        gradient="to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)"
-        :height="$vuetify.breakpoint.smAndDown ? 500:500"
+        :height="$vuetify.breakpoint.smAndDown ? 400:500"
         :style="$vuetify.breakpoint.smAndDown ? 'margin-top:46px':'margin-top:46px'"
     >
-        <v-row justify="center" align="center" class="fill-height">
-            <v-card :width="$vuetify.breakpoint.smAndDown ? 400:500" color="transparent" elevation="0">
-                <div class="display-2 text-center my-10 white--text font-weight-black">¿Que te provoca?</div>
+        <v-row justify="center" :align="$vuetify.breakpoint.smAndDown ? 'top':'center'" class="fill-height">
+            <v-card :width="$vuetify.breakpoint.smAndDown ? 400:600" color="transparent" elevation="0">
+                <div class="display-2 text-center my-10 white--text font-weight-black">¿Pensando en algo rico?</div>
                 <v-text-field 
-                    label="Buscar producto..."
+                    label="¿Que te provoca?..."
                     hide-details
                     solo
                     v-model="busquedas"

@@ -2,13 +2,14 @@
     <div>
         <v-btn
             fab class="mx-3" 
+            color="#232323"
             small @click="change" v-if="user.loggedIn && !$vuetify.breakpoint.smAndDown"
         >
             <v-badge dot overlap color="#D32F2F" v-if="pedidos.length > 0">
-                <v-icon dark>mdi-basket</v-icon>
+                <v-icon color="#fff">mdi-basket</v-icon>
             </v-badge>
 
-            <v-icon dark v-else>mdi-basket</v-icon>
+            <v-icon color="#fff" v-else>mdi-basket</v-icon>
         </v-btn>
 
         <PanelCarrito />

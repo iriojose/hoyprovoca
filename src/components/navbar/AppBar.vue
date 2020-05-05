@@ -1,17 +1,16 @@
 <template>
-    <v-app-bar color="#232323" app
+    <v-app-bar color="#ffbd07" app
         :elevation="$vuetify.breakpoint.smAndDown ? 0:null" 
         :elevate-on-scroll="$vuetify.breakpoint.smAndDown ? false:true" 
         :extended="$vuetify.breakpoint.smAndDown && $route.name !== 'home' ? true:false"
     >
         <v-app-bar-nav-icon 
-            dark
             v-if="drawer==false"
             @click="change"
         />
 
         <v-btn fab v-else  @click="change" icon depressed>
-            <v-icon color="#fff">
+            <v-icon>
                 mdi-close
             </v-icon>
         </v-btn>
@@ -20,10 +19,10 @@
 
         <v-toolbar-title @click="push2" class="cursor">
             <v-img 
-                contain 
+                contain
+                width="100"
                 height="60"
-                width="100"  
-                src="@/assets/logo 5.png"
+                src="@/assets/logo 3.png"
             />
         </v-toolbar-title>
 
@@ -60,10 +59,11 @@
 
         <v-btn 
             fab class="mx-3" 
+            color="#232323"
             small to="/account/notificaciones"
             v-if="user.loggedIn && !$vuetify.breakpoint.smAndDown"
         >
-            <v-icon dark>
+            <v-icon color="#fff">
                 mdi-bell
             </v-icon>
         </v-btn>
@@ -72,13 +72,13 @@
         <Perfil />
         <MovilOpciones />
             
-        <div v-if="!user.loggedIn">
-            <v-btn text to="/login" class="mx-1 font-weight-bold white--text text-capitalize">
+        <div v-if="!user.loggedIn" class="hidden-sm-and-down">
+            <v-btn text to="/login" class="mx-1 font-weight-bold text-capitalize">
                 Iniciar sesión
             </v-btn>
                 
             <v-hover v-slot:default="{hover}">
-                <v-btn :elevation="hover ? 10:0" color="#fff" height="30" to="/register" class="mx-1 hidden-sm-and-down font-weight-bold color text-capitalize">
+                <v-btn :elevation="hover ? 10:0" color="#232323" height="30" to="/register" class="mx-1 font-weight-bold white--text text-capitalize">
                     Registrate
                 </v-btn>
             </v-hover>

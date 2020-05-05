@@ -35,12 +35,6 @@
             <v-spacer></v-spacer>
             <div class="font-weight-black">{{sales[i]}}</div>
         </v-toolbar>
-
-        <v-snackbar absolute v-model="snackbar" :color="color" bottom right :timeout="3000">
-            <div>
-                <v-icon color="#fff" class="mx-2">{{icon}}</v-icon>{{mensaje}}
-            </div>
-        </v-snackbar>
     </div>
 </template>
 
@@ -65,11 +59,7 @@ import accounting from 'accounting';
         data(){
             return {
                 ...variables,
-                snackbar:false,
                 loading:false,
-                icon:'',
-                mensaje:'',
-                color:'',
                 data:{
                     indexDetalle:-1,
                     indexPedido:-1,
@@ -89,12 +79,23 @@ import accounting from 'accounting';
         methods: {
             ...mapActions(['setSnackbar','updatePedidoStore','deleteDetalleStore','updateDetalleStore']),
 
-            alert(color,icon,mensaje){
-                this.color=color;
-                this.icon=icon;
-                this.mensaje=mensaje;
-                this.loading=false;
-                this.snackbar = true;
+            success(mensaje){
+                this.$toasted.success(mensaje, { 
+                    theme: "toasted-primary", 
+                    position: "top-right", 
+                    duration : 2000,
+                    icon : "done",
+                });
+                this.loading = false;
+            },
+            error(mensaje){
+                this.$toasted.error(mensaje, { 
+                    theme: "toasted-primary", 
+                    position: "top-right", 
+                    duration : 2000,
+                    icon : "error",
+                });
+                this.loading = false;
             },
             deleteDetalle(detalle,index){
                 this.loading = true;
@@ -103,10 +104,10 @@ import accounting from 'accounting';
 
                 Pedidos().delete(`/${detalle.rest_pedidos_id}/detalles/${detalle.id}`).then((response) => {
                     this.deleteDetalleStore(this.data);
-                    this.alert('#388E3C','done','detalle eliminado exitosamente.');
+                    this.success('detalle eliminado exitosamente.');
                 }).catch(e => {
                     console.log(e);
-                    this.alert('#D32F2F','error','Ooops, ocurrio un error.');
+                    this.error('Ooops, ocurrio un error.');
                 });
             },
             suma(detalle,i){
@@ -124,13 +125,13 @@ import accounting from 'accounting';
             getConceptoExistencia(detalle,cantidad,i){
                 Conceptos().get(`${detalle.adm_conceptos_id}/depositos`).then((response) => {
                     if(!Number.parseInt(detalle.cantidad) > cantidad || response.data.data[0].existencia < cantidad){
-                        this.alert('#D32F2F','error','Ooops, agotado '+response.data.data[0].existencia+'.');
+                        this.error('Ooops, agotado '+response.data.data[0].existencia+'.');
                     }else{
                         this.updateDetalle(detalle,cantidad,i);
                     }
                 }).catch(e => {
                     console.log(e);
-                    this.alert('#D32F2F','error','Ooops, ocurrio un error.');
+                    this.error('Ooops, ocurrio un error.');
                 });
             },
             updateDetalle(detalle,cantidad,index){
@@ -141,10 +142,10 @@ import accounting from 'accounting';
                 Pedidos().post(`/${detalle.rest_pedidos_id}/detalles/${detalle.id}`,
                 {data:{cantidad:this.data.cantidad}}).then((response) => {
                     this.updateDetalleStore(this.data);
-                    this.alert('#388E3C','done','detalle Actualizado exitosamente.');
+                    this.success('detalle Actualizado exitosamente.');
                 }).catch(e => {
                     console.log(e);
-                    this.alert('#D32F2F','error','Ooops, ocurrio un error.');
+                    this.error('Ooops, ocurrio un error.');
                 })
             }
         },

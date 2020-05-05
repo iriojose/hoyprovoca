@@ -5,20 +5,6 @@
                 {{title}}
             </v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-btn 
-                :fab="$vuetify.breakpoint.smAndDown"
-                :tile="!$vuetify.breakpoint.smAndDown" 
-                color="#232323" to="/aliados" 
-                class="text-capitalize" dark
-            >
-                <div v-if="!$vuetify.breakpoint.smAndDown">Ver todas</div>
-                <v-icon 
-                    :class="$vuetify.breakpoint.smAndDown ? null:'mx-2'" 
-                    dark
-                >
-                    mdi-chevron-right
-                </v-icon>
-            </v-btn>
         </v-toolbar>
 
         <v-slide-group :show-arrows="$vuetify.breakpoint.smAndDown ? false:true" :class="$vuetify.breakpoint.smAndDown ? 'my-4':'my-4 mx-10'">
@@ -43,6 +29,31 @@
                         <div class="mt-2 px-5 body-2 font-weight-black">{{empresa.nombre_comercial}}</div>
                     </v-card>
                 </v-hover>
+            </v-slide-item>
+            <v-slide-item>
+                <v-card 
+                    :width="220"
+                    :height="220"  
+                    :elevation="0"
+                    color="#f7f7f7"
+                    to="/aliados"
+                    class="pa-5"
+                >
+                    <v-row justify="center" align="center" class="fill-height">
+                        <v-btn 
+                            tile color="#232323" to="/aliados" 
+                            class="text-capitalize" dark
+                        >
+                            <div>Ver todas</div>
+                            <v-icon 
+                                class="mx-2" 
+                                dark
+                            >
+                                mdi-chevron-right
+                            </v-icon>
+                        </v-btn>
+                    </v-row>
+                </v-card>
             </v-slide-item>
         </v-slide-group>
     </div>

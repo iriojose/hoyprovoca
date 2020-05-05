@@ -4,43 +4,38 @@
             <v-btn  
                 :loading="loading" 
                 :disabled="loading"
-                @click="deletePedido(pedido.id)" 
+                @click.stop.prevent="deletePedido(pedido.id)" 
                 icon
-                text
-                :elevation="hover ? 5:0"
-            >
-                <v-icon>delete</v-icon>
-            </v-btn>
-        </v-hover>
-
-        <v-hover v-slot:default="{hover}">
-            <v-btn  
-                icon
-                text
-                :elevation="hover ? 5:0"
-                class="mx-4"
                 title="ir a pagar"
-                @click="push(pedido)"
+                text
+                :elevation="0"
             >
-                <v-icon>attach_money</v-icon>
+                <v-icon :color="hover ? '#232323':null">mdi-delete</v-icon>
             </v-btn>
         </v-hover>
 
         <v-spacer></v-spacer>
 
-        <v-avatar class="elevation-10" color="#eee" size="50">
+        <v-avatar class="elevation-2" color="#eee" size="50">
             <v-img :src="image+pedido.imagen"></v-img>
         </v-avatar>
 
         <v-spacer></v-spacer>
 
-        <div class="font-weight-black">{{sale}}</div>
+        <v-hover v-slot:default="{hover}">
+            <v-btn  
+                icon
+                text
+                :elevation="0"
+                class="mx-4"
+                title="ir a pagar"
+                @click.stop.prevent="push(pedido)"
+            >
+                <v-icon :color="hover ? '#232323':null">attach_money</v-icon>
+            </v-btn>
+        </v-hover>
 
-        <v-snackbar v-model="snackbar" :color="color" bottom right :timeout="3000">
-            <div>
-                <v-icon color="#fff" class="mx-2">{{icon}}</v-icon>{{mensaje}}
-            </div>
-        </v-snackbar>
+        <div class="font-weight-black">{{sale}}</div>
     </v-toolbar>
 </template>
 
@@ -69,11 +64,7 @@ import router from '@/router';
         data(){
             return {
                 ...variables,
-                mensaje:'',
-                color:'',
-                icon:'',
                 loading:false,
-                snackbar:false,
                 sale:'',
             }
         },
@@ -91,22 +82,31 @@ import router from '@/router';
             push(pedido){
                 router.push('/checkout');
             },
-            mensajeSnackbar(color,icon,mensaje){
-                this.color=color;
-                this.icon=icon;
-                this.mensaje=mensaje;
-                this.loading=false;
-                this.snackbar=true;
+            success(mensaje){
+                this.$toasted.success(mensaje, { 
+                    theme: "toasted-primary", 
+                    position: "top-right", 
+                    duration : 2000,
+                    icon : "done",
+                });
+                this.loading = false;
+            },
+            error(mensaje){
+                this.$toasted.error(mensaje, { 
+                    theme: "toasted-primary", 
+                    position: "top-right", 
+                    duration : 2000,
+                    icon : "error",
+                });
+                this.loading = false;
             },
             deletePedido(id){
                 this.loading=true;
                 Pedidos().delete(`/${id}`).then((response) => {
-                    console.log(response);
-                    this.mensajeSnackbar('#388E3C','done','Pedido eliminado exitosamente.');
+                    this.success('Pedido eliminado exitosamente.');
                     this.deletePedidoStore(this.index);
-                }).catch(e => {
-                    console.log(e);
-                    this.mensajeSnackbar('#D32F2F','error','Ooops, ocurrio un error.');
+                }).catch(() => {
+                    this.error('Ooops, ocurrio un error.');
                 });
             }
         }

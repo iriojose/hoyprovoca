@@ -4,15 +4,24 @@
             <v-btn 
                 icon fab small 
                 v-on="on" 
-                color="#fff"
-                v-if="user.loggedIn && $vuetify.breakpoint.smAndDown"
+                v-if="$vuetify.breakpoint.smAndDown"
             >
                 <v-icon>mdi-dots-vertical</v-icon>
             </v-btn>
         </template>
 
-        <v-list dense flat>
+        
+        <v-list dense flat v-if="user.loggedIn">
             <v-list-item v-for="(item,i) in items" :key="i" @click="item.to">
+                <v-list-item-icon>
+                    <v-icon>{{item.icon}}</v-icon>
+                </v-list-item-icon>
+                <v-list-item-title>{{item.text}}</v-list-item-title>
+            </v-list-item>
+        </v-list>
+
+        <v-list dense flat v-else>
+            <v-list-item v-for="(item,i) in items2" :key="i" :to="item.to">
                 <v-list-item-icon>
                     <v-icon>{{item.icon}}</v-icon>
                 </v-list-item-icon>
@@ -34,6 +43,10 @@ import router from '@/router';
                     {text:'Notificaciones',icon:'mdi-bell',to:() => this.notificaciones()},
                     {text:'Perfil',icon:'mdi-account-circle',to:() => this.perfil()},
                     {text:'Cerrar sesión',icon:'mdi-exit-to-app',to:() => this.cerrar()},
+                ],
+                items2:[
+                    {text:'Iniciar sesón',icon:'mdi-account-box',to:'/login'},
+                    {text:'Registrate',icon:'mdi-account-details',to:'/register'},
                 ]
             }
         },

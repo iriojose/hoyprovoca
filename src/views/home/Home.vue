@@ -2,10 +2,9 @@
     <v-card elevation="0" color="#f7f7f7" width="100%">
         <Banner />
         <v-card-text>
-            <v-scroll-x-transition>
-                <CategoriasSugeridas title="Categorías más buscadas" :grupos="grupos" v-show="!loadingG"/>
-            </v-scroll-x-transition>
-            <SkeletonCard v-if="loadingG" :width="300" :height="200" title="Categorías más buscadas" />
+            
+            <CategoriasSugeridas :grupos="grupos" v-if="!loadingG" />
+            <LoaderCategorias v-else />
 
             <v-divider class="mt-12"></v-divider>
 
@@ -24,9 +23,11 @@ import SkeletonCard from '@/components/loaders/SkeletonCard';
 import Banner from '@/components/vistaHome/Banner'
 import EmpresasSugeridas from '@/components/vistaHome/EmpresasSugeridas';
 import CategoriasSugeridas from '@/components/vistaHome/CategoriasSugeridas';
+import LoaderCategorias from '@/components/loaders/LoaderCategorias';
 
     export default {
         components:{
+            LoaderCategorias,
             Banner,
             EmpresasSugeridas,
             CategoriasSugeridas,
@@ -47,7 +48,7 @@ import CategoriasSugeridas from '@/components/vistaHome/CategoriasSugeridas';
                 grupos:[],
                 bandera:false,
                 loadingG:true,
-                loadingE:true
+                loadingE:true,
             }
         },
         mounted() {

@@ -15,8 +15,8 @@
             </v-toolbar-title>
             <v-spacer></v-spacer>
             <v-hover v-slot:default="{hover}">
-                <v-btn icon fab depressed @click="change" :elevation="hover ? 5:0">
-                    <v-icon color="#232323">close</v-icon>
+                <v-btn icon fab depressed @click="change" :elevation="0">
+                    <v-icon :color="hover ? '#232323':null">close</v-icon>
                 </v-btn>
             </v-hover>
         </v-toolbar>
