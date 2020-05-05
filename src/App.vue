@@ -78,6 +78,9 @@ import Footer from '@/components/footer/Footer';
 </script>
 
 <style>
+    html {
+        scroll-behavior: smooth;
+    }
     .margen{
         margin-top:200px;
     }

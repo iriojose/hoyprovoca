@@ -12,7 +12,17 @@
                 :height="$vuetify.breakpoint.smAndDown ? 100:150" 
                 :src="image+concepto.imagen" class="pb-3"
             >
-                <v-fade-transition>
+                <v-row class="mx-2" justify="end" align="top" v-if="concepto.existencias[0].existencia <= 0">
+                    <v-card width="120" height="30" class="white--text" color="#D32F2F">
+                        <v-row justify="center" align="center" class="fill-height">
+                            <div class="body-1">Agotado</div>
+                            <v-icon class="mx-2" color="#fff" small>
+                                mdi-alert
+                            </v-icon>
+                        </v-row>
+                    </v-card>
+                </v-row>
+                <v-fade-transition v-else>
                     <v-row justify="center" align="end" class="fill-height" v-show="hover">
                         <v-btn 
                             :disabled="concepto.agregado"

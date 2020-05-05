@@ -10,7 +10,18 @@
                 </v-hover>
             </v-card-title>
             <v-card-text>
-                <v-img contain height="250" width="100%" :src="image+producto.imagen"></v-img>
+                <v-img contain height="250" width="100%" :src="image+producto.imagen">
+                    <v-row class="mx-2" justify="end" align="top" v-if="producto.existencias[0].existencia <= 0">
+                        <v-card width="120" height="30" class="white--text" color="#D32F2F">
+                            <v-row justify="center" align="center" class="fill-height">
+                                <div class="body-1">Agotado</div>
+                                <v-icon class="mx-2" color="#fff" small>
+                                    mdi-alert
+                                </v-icon>
+                            </v-row>
+                        </v-card>
+                    </v-row>
+                </v-img>
                 <div class="text-truncate text-center body-1 font-weight-black text-capitalize">{{precioDolar}}</div>
                 <div class="text-truncate text-center body-1 font-weight-black text-capitalize">{{precioBolivar}}</div>
                 <div class="text-truncate text-center font-weight-medium text-capitalize">{{producto.nombre}}</div>
@@ -18,7 +29,7 @@
             </v-card-text>
             <v-card-actions class="mx-10">
                 <v-btn 
-                    :disabled="producto.agregado"
+                    :disabled="producto.agregado || producto.existencias[0].existencia <= 0 ? true:false"
                     :loading="loading"
                     block 
                     @click="modal(producto)"

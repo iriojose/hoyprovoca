@@ -29,7 +29,11 @@ export default new Vuex.Store({
         pedidos:[],//guarda los pedidos
         agregados:[],//guarda ids de los conceptos agregados a pedidos
         totalPedidos:[],//guarda el total de cada pedido
-        producto:{}//bandera para un producto seleccionado
+        producto:{
+            existencias:[
+                {existencia:0}
+            ]
+        }//bandera para un producto seleccionado
     },
     getters: {
         

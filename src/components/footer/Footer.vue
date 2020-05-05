@@ -99,6 +99,6 @@ import PreFooter from './PreFooter';
 
 <style lang="scss" scope>
     .mt{
-        margin-top:200px;
+        margin-top:50px;
     }
 </style>

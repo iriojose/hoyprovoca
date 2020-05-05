@@ -8,7 +8,18 @@
                         contain
                         width="100%"
                         height="150"
-                    ></v-img>
+                    >
+                        <v-row class="mx-2" justify="end" align="top" v-if="concepto.existencias[0].existencia <= 0">
+                            <v-card width="120" height="30" class="white--text" color="#D32F2F">
+                                <v-row justify="center" align="center" class="fill-height">
+                                    <div class="body-1">Agotado</div>
+                                    <v-icon class="mx-2" color="#fff" small>
+                                        mdi-alert
+                                    </v-icon>
+                                </v-row>
+                            </v-card>
+                        </v-row>
+                    </v-img>
                 </v-col>
                 <v-col cols="12" sm="6">
                     <div class="text-truncate body-1 font-weight-black">{{precioDolar}}</div>
