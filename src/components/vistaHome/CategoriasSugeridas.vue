@@ -2,7 +2,7 @@
     <v-row justify="center">
         <v-card 
             :elevation="$vuetify.breakpoint.smAndDown ? 0:2" 
-            :class="$vuetify.breakpoint.smAndDown ? 'border':'mx-2 mb-2 border'"
+            class="border mx-2 mb-2"
             :width="$vuetify.breakpoint.smAndDown ? 100:200" 
             :height="$vuetify.breakpoint.smAndDown ? 100:200" 
             v-for="(grupo,i) in grupos" :key="i"

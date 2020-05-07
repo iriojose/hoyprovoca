@@ -42,10 +42,6 @@
                 </v-col>
 
                 <v-col cols="12" md="8" sm="12" v-if="this.$route.params.text2">
-                    <v-card v-if="loading2 && empresa" elevation="0" color="#f7f7f7" width="100%" height="500">
-                        <LoaderRect />
-                    </v-card>
-
                     <v-toolbar color="#f7f7f7" elevation="0" width="100%" class="mb-4 mx-5" v-if="$vuetify.breakpoint.smAndDown && !loading2">
                         <v-btn tile icon class="mx-2" outlined @click="tipo = true" :disabled="tipo">
                             <v-icon dark>mdi-view-grid</v-icon>
@@ -56,7 +52,7 @@
                         <v-spacer></v-spacer>
                     </v-toolbar>
 
-                    <transition name="slide-fade" v-if="!loading2">
+                    <transition name="slide-fade">
                         <v-card width="100%" elevation="0" color="#f7f7f7" v-show="!loading">
                             <v-row justify="center" v-if="tipo">
                                 <CardConceptos :concepto="concepto" v-for="(concepto,i) in conceptos" :key="i"/>
@@ -65,23 +61,14 @@
                                 <CardConceptos2 :concepto="concepto" v-for="(concepto,i) in conceptos" :key="i"/>
                             </v-row>
                             <v-toolbar elevation="0" class="mx-10" color="#f7f7f7">
-                                <!--v-btn 
-                                    color="#232323" 
-                                    elevation="0"
-                                    class="text-capitalize font-weigth-bold body-1"
-                                    dark
-                                    :disabled="after == 0 ? true:false"
-                                    @click="getConceptosGruposMenos(conceptos[0].adm_grupos_id)"
-                                >
-                                    Ver menos
-                                </v-btn-->
                                 <v-spacer></v-spacer>
                                 <v-btn 
                                     color="#232323" 
                                     elevation="0"
+                                    :loading="loading2"
                                     class="text-capitalize font-weigth-bold body-1"
                                     dark
-                                    :disabled="conceptos.length == 12 ? false:true"
+                                    :disabled="total == conceptos.length ? true:false"
                                     @click="getConceptosGrupos(conceptos[0].adm_grupos_id)"
                                 >
                                     Ver más
@@ -127,6 +114,7 @@ import {mapState} from 'vuex';
                 conceptos:[],
                 tipo:true,
                 grupo:{},
+                total:null,
                 loading:true,
                 loading2:false,
                 after:0,
@@ -231,21 +219,12 @@ import {mapState} from 'vuex';
             async getConceptosGrupos(id){
                 this.loading2 = true;
                 await Grupos().get(`/${id}/conceptos/?limit=12&offset=${this.after}`).then((response) => {
-                    this.conceptos = response.data.data;
-                    this.revision2();
+                    response.data.data.filter(a => a.agregado=false);
+                    response.data.data.filter(a => this.agregados.filter(b => a.id == b ? a.agregado=true:null));
+                    response.data.data.filter(a => this.conceptos.push(a));
+                    this.after +=12;
+                    this.total = response.data.totalCount;
                     this.loading = false;
-                    this.loading2 = false;
-                    this.after+=12;
-                }).catch(e => {
-                    console.log(e);
-                });
-            },
-            async getConceptosGruposMenos(id){
-                this.after-=12;
-                this.loading2 = true;
-                await Grupos().get(`/${id}/conceptos/?limit=12&offset=${this.after}`).then((response) => {
-                    this.conceptos = response.data.data;
-                    this.revision2();
                     this.loading2 = false;
                 }).catch(e => {
                     console.log(e);

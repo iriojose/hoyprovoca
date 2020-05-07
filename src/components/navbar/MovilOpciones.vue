@@ -39,7 +39,8 @@ import router from '@/router';
         data() {
             return {
                 items:[
-                    {text:'Pedidos',icon:'mdi-basket',to:() => this.change()},
+                    {text:'Pedidos',icon:'mdi-basket',to:() => this.modalCarrtio()},
+                    {text:'Dirección',icon:'gps_fixed',to:() => this.modalDireccion()},
                     {text:'Notificaciones',icon:'mdi-bell',to:() => this.notificaciones()},
                     {text:'Perfil',icon:'mdi-account-circle',to:() => this.perfil()},
                     {text:'Cerrar sesión',icon:'mdi-exit-to-app',to:() => this.cerrar()},
@@ -51,13 +52,16 @@ import router from '@/router';
             }
         },
         computed:{
-            ...mapState(['user','carrito'])
+            ...mapState(['user','carrito','modalUbicacion'])
         },
         methods: {
-            ...mapActions(['setCarrito','logout']),
+            ...mapActions(['setCarrito','logout','setModalUbicacion']),
 
-            change(){
+            modalCarrtio(){
                 this.carrito ?  this.setCarrito(false):this.setCarrito(true);
+            },
+            modalDireccion(){
+                this.modalUbicacion ?  this.setModalUbicacion(false):this.setModalUbicacion(true);
             },
             notificaciones(){
                 router.push('/account/notificaciones');

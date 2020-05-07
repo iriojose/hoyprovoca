@@ -46,16 +46,17 @@
 
         <v-spacer></v-spacer>
             
-        <!--v-btn 
+        <v-btn 
             fab class="mx-3" 
             small 
-            v-if="user.loggedIn"
+            color="#232323"
+            v-if="user.loggedIn && !$vuetify.breakpoint.smAndDown"
             @click="abrirModal"
         >
-            <v-icon dark>
+            <v-icon color="#fff">
                 gps_fixed
             </v-icon>
-        </v-btn-->
+        </v-btn>
 
         <v-btn 
             fab class="mx-3" 
