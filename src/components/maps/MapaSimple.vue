@@ -1,20 +1,21 @@
 <template>
     <l-map 
         :zoom="zoom" 
-        :center="center" 
-        style="height: 500px" 
+        :center="dinamicLocation" 
+        style="height: 300px" 
         :options="{zoomControl: false}"
         :minZoom="11"
         :attribution="attribution"
-        @update:zoom="zoomUpdated"
+        :max-bounds="maxBounds"
         @update:center="centerUpdated"
-        @update:bounds="boundsUpdated"
     >
         <l-tile-layer :url="url"></l-tile-layer>
-
-        <l-marker :lat-lng="marker">
-            <l-icon :icon-anchor="staticAnchor">
-                <img src="@/assets/senales.png">
+        <l-marker :lat-lng="dinamicMarket">
+            <l-icon
+                :icon-size="dynamicSize"
+                :icon-anchor="dynamicAnchor"
+            >
+                <v-icon color="#005598">room</v-icon>
             </l-icon>
         </l-marker>
         <l-control-zoom position="bottomright"></l-control-zoom>
@@ -22,7 +23,7 @@
 </template>
 
 <script>
-import L from 'leaflet';
+import { latLng,latLngBounds } from "leaflet";
 import { LMap, LTileLayer, LMarker ,LPopup ,LControlZoom, LIcon} from 'vue2-leaflet';
 
     export default {
@@ -40,30 +41,47 @@ import { LMap, LTileLayer, LMarker ,LPopup ,LControlZoom, LIcon} from 'vue2-leaf
                 default:() => ({})
             }
         },
-        mounted(){
-            console.log(this.longitudes);
-        },
         data() {
             return {
-                zoom:12,
-                center:[11.028457999999999,-63.858148500000006],
+                zoom:14,
+                center:[11.03333,-63.8627815],
                 url:'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
                 attribution:'&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-                marker:[11.028457999999999,-63.858148500000006],
+                marker:[11.03333,-63.8627815],
                 staticAnchor:[64, 85],
-                bounds: null
+                iconSize: [32, 37],
+                iconAnchor: [16, 37],
+                maxBounds: latLngBounds([
+                    [11.143245, -64.585779],
+                    [10.855805, -63.597649]
+                ]),
+            }
+        },
+        computed: {
+            dynamicSize () {
+                return [this.iconSize, this.iconSize * 1.15];
+            },
+            dynamicAnchor () {
+                return [this.iconSize / 2, this.iconSize * 1.15];
+            },
+            dinamicLocation(){
+                return latLng(this.longitudes.latitud,this.longitudes.longitud);
+            },
+            dinamicMarket(){
+                return latLng(this.longitudes.latitud,this.longitudes.longitud);
+            }
+        },
+        watch: {
+            longitudes(){
+                this.center = latLng(this.longitudes.latitud,this.longitudes.longitud);
+                this.marker = latLng(this.longitudes.latitud,this.longitudes.longitud);
             }
         },
         methods: {
-            zoomUpdated (zoom) {
-                this.zoom = zoom;
-            },
             centerUpdated (center) {
-                this.center = center;
+                this.longitudes.latitud = center.lat;
+                this.longitudes.longitud = center.lng; 
             },
-            boundsUpdated (bounds) {
-                this.bounds = bounds;
-            }
         }
     }
 </script>
