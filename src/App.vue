@@ -68,9 +68,9 @@ import Footer from '@/components/footer/Footer';
                     this.$route.name == 'notfound' ||
                     this.$route.name == 'notauthorized'
                 ){
-                    return true;
+                    return true
                 }else{
-                    return false;
+                    return false
                 }
             },
         }
