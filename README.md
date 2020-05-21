@@ -56,3 +56,34 @@ ___
 ***(Español)*** En el caso de que el usuario haya olvidado su contraseña y piense que el sistema es inaccesible, entonces no tiene que preocuparse, se puede recuperar la contraseña, ya que la cuenta tiene un correo electronico enlazado para estos casos.
 
 ![3](capturas/forgot.png)
+
+### View for all categories / Vista para todas las categorías
+
+***(English)*** in this view all the categories that are registered in the platform are shown.
+
+___
+
+***(Español)*** En esta vista se muestran todas las categorias que se encuentran registradas en la plataforma.
+
+![4](capturas/grupos.png)
+
+### View for a company and categories / Vista para una empresa y categorías
+
+***(English)*** In this view all the products and services offered by the company, likewise the categories to which they belong are shown, also if a category is selected, all the products of that category belonging to that company will appear.
+
+___
+
+***(Español)*** En esta vista todos los productos y servicos que ofrece la empresa, asi mismo se muestran las categorías a las que pertenecen, ademas si se selecciona una categoría apareceran todos los productos de esa categoria perteneciente a esa empresa.
+
+![5](capturas/empresa.png)
+
+![5](capturas/empresa select.png)
+
+### view Search / Vista Buscar
+
+***(English)*** In this view all the products will appear according to the search entered by the users, in addition the companies to which those products belong will appear.
+___
+
+***(Español)*** En esta vista apareceran todos los productos segun la busqueda ingresada por los usuarios, ademas apareceran las empresas a las que pertenecen esos productos
+
+![6](capturas/search.png)
