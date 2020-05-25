@@ -1,128 +1,148 @@
 <template>
-    <v-card elevation="0" color="#f7f7f7" width="100%" class="mt-5">
+    <v-card width="100%" elevation="0" color="#ffbd07" height="1200">
         <v-card-text>
-            <v-row justify="center" align="center" class="mt-12 mb-5">
-                <v-img contain width="100" height="50" :src="require('@/assets/logo2.png')"></v-img>
-            </v-row>
+            <v-row justify="center" class="py-10">
+                <v-col cols="12" md="8" sm="12" :class="$vuetify.breakpoint.smAndDown ? 'mx-4':null">
+                    <v-card width="100%">
+                        <v-row justify="center">
+                            <v-col cols="12" md="6" class="hidden-sm-and-down">
+                                <v-img width="100%" height="400" contain :src="require('@/assets/forgot.svg')"></v-img>
+                            </v-col>
+                            <v-col cols="12" md="6" sm="12" class="pa-12">
+                                <div class="headline text-center mb-5">¿Olvido su contraseña?</div>
+                                
+                                <v-card elevation="0" height="50">
+                                    <v-fade-transition>
+                                        <v-alert dense :type="type" v-show="showMessage">
+                                            {{mensaje}}
+                                        </v-alert>
+                                    </v-fade-transition> 
+                                </v-card>
 
-            <v-row justify="center">
-                <v-col cols="12" md="4" lg="4" class="hidden-sm-and-down">
-                    <v-img contain width="100%" height="450" :src="require('@/assets/forgot.svg')"></v-img>
-                </v-col>
-                <v-col cols="12" md="6" sm="12">
-                    <v-card 
-                        :width="$vuetify.breakpoint.smAndDown ? '100%':'80%'" 
-                        height="400" elevation="5" class="pa-5"
-                    >
-                        <div class="text-center my-5 font-weight-black subtitle-1">¿No puede iniciar sesión?</div>
+                                <v-form v-model="valid" @submit.prevent="" v-if="!send">
+                                    <v-text-field
+                                        filled
+                                        rounded
+                                        :disabled="loading"
+                                        v-model="email"
+                                        single-line
+                                        color="#ffbd07"
+                                        :success-messages="success"
+                                        :error-messages="errors"
+                                        @input="getUser(email)"
+                                        label="Ingrese correo electrónico"
+                                    >
+                                        <template v-slot:append>
+                                            <v-fade-transition leave-absolute>
+                                                <v-progress-circular
+                                                    v-if="loading2"
+                                                    size="24"
+                                                    color="#ffbd07"
+                                                    indeterminate
+                                                ></v-progress-circular>
+                                                <img v-else width="24" height="24" :src="require('@/assets/logo 3.png')">
+                                            </v-fade-transition>
+                                        </template>
+                                    </v-text-field>
 
-                        <v-card-text>
-                            <v-form v-model="valid" @submit.prevent="" v-if="!validcode">
-                                <div class="font-weight-black body-2 mb-2" v-if="!send">
-                                    Le enviaremos un enlace de recuperación
-                                </div>
-                                <v-text-field
-                                    label="Correo electronico"
-                                    single-line
-                                    solo
-                                    append-icon="mdi-email"
-                                    dense
-                                    color="#005598"
-                                    v-model="email"
-                                    :disabled="loading"
-                                    type="email"
-                                    :rules="[required('Correo Electrónico'), emailFormat()]"
-                                />
-                                <v-text-field
-                                    v-if="send"
-                                    label="Codigo"
-                                    single-line
-                                    solo
-                                    append-icon="mdi-lock"
-                                    dense
-                                    color="#005598"
-                                    :disabled="loading"
-                                    v-model="codigo"
-                                    :rules="[required('Codigo')]"
-                                />
-                                <v-hover v-slot:default="{hover}">
-                                    <v-btn v-if="!send"
-                                        block 
-                                        class="text-capitalize mt-5"
-                                        :disabled="!valid || loading" 
-                                        color="#005598" 
-                                        :dark="valid && !loading"
+                                    <v-btn
+                                        rounded
+                                        color="#2950c3"
+                                        block
+                                        :disabled="success == '' ? true:false "
                                         :loading="loading"
-                                        :elevation="hover ? 5:0"
+                                        height="40"
                                         @click="sendMail"
+                                        class="text-capitalize caption white--text"
                                     >
-                                    <div>Enviar enlace</div>
+                                        Enviar email
                                     </v-btn>
+                                </v-form>
 
-                                    <v-btn v-else
-                                        block 
-                                        class="text-capitalize mt-5"
-                                        :disabled="!valid || loading" 
-                                        color="#005598" 
-                                        :dark="valid && !loading"
-                                        :loading="loading"
-                                        :elevation="hover ? 5:0"
-                                        @click="validCode"
-                                    >
-                                    Validar codigo
-                                    </v-btn>
-                                </v-hover>
-                            </v-form>
+                                <v-scroll-x-transition>
+                                    <v-form v-model="valid2" @submit.prevent="" v-show="send && !validCode">
+                                        <v-text-field
+                                            filled
+                                            rounded
+                                            :disabled="loading"
+                                            v-model="codigo"
+                                            single-line
+                                            color="#ffbd07"
+                                            :rules="[required('Codigo'),minLength('Codigo',6)]"
+                                            label="Codigo"
+                                        ></v-text-field>
 
-                            <v-form v-model="valid2" @submit.prevent="" v-if="validcode">
-                                <div class="font-weight-black body-2 mb-2">
-                                    Ingrese nueva contraseña
-                                </div>
+                                        <v-btn
+                                            rounded
+                                            color="#2950c3"
+                                            block
+                                            :disabled="!valid2"
+                                            :loading="loading"
+                                            height="40"
+                                            @click="validc"
+                                            class="text-capitalize caption white--text"
+                                        >
+                                            Validar codigo
+                                        </v-btn>
+                                    </v-form>
+                                </v-scroll-x-transition>
+                                    
+                                <v-scroll-x-transition>
+                                    <v-form v-model="valid3" @submit.prevent="" v-show="send && validCode">
+                                        <v-text-field
+                                            filled
+                                            rounded
+                                            :disabled="loading"
+                                            v-model="contraseña"
+                                            single-line
+                                            type="password"
+                                            color="#ffbd07"
+                                            :rules="[required('Contraseña'),minLength('Contraseña',6)]"
+                                            label="Nueva contraseña"
+                                        ></v-text-field>
 
-                                <v-text-field
-                                    v-model="contraseña"
-                                    label="Contraseña"
-                                    single-line
-                                    :type="showPassword ? 'text' : 'password'"
-                                    :rules="[required('Contraseña'), minLength('Contraseña',8)]"
-                                    @click:append="showPassword = !showPassword"
-                                    :append-icon="showPassword ?  'mdi-eye' : 'mdi-eye-off-outline'"
-                                    :prepend-inner-icon="showPassword ?  'mdi-lock-open' : 'mdi-lock'"
-                                    solo
-                                    color="#005598"
-                                    dense
-                                />  
+                                        <v-text-field
+                                            filled
+                                            rounded
+                                            :disabled="loading"
+                                            v-model="contraseña2"
+                                            single-line
+                                            type="password"
+                                            color="#ffbd07"
+                                            :rules="[required('Confirmar contraseña'),passwordConfirmationRule()]"
+                                            label="Confirmar contraseña"
+                                        ></v-text-field>
 
-                                <v-text-field
-                                    v-model="contraseña2"
-                                    label="Repetir Contraseña"
-                                    single-line
-                                    type="password"
-                                    :rules="[required('Contraseña'),passwordConfirmationRule()]"
-                                    prepend-inner-icon="mdi-lock"
-                                    solo
-                                    color="#005598"
-                                    dense
-                                />  
+                                        <v-btn
+                                            rounded
+                                            color="#2950c3"
+                                            block
+                                            :disabled="!valid3"
+                                            :loading="loading"
+                                            height="40"
+                                            @click="reset"
+                                            class="text-capitalize caption white--text"
+                                        >
+                                            Resetear contraseña
+                                        </v-btn>
+                                    </v-form>
+                                </v-scroll-x-transition>
 
-                                <v-btn
-                                    block 
-                                    class="text-capitalize mt-5"
-                                    :disabled="!valid2 || loading" 
-                                    color="#005598" 
-                                    :dark="valid2 && !loading"
-                                    :loading="loading"
-                                    elevation="0"
-                                    @click="reset"
-                                >
-                                    Nueva contraseña
-                                </v-btn>
-                            </v-form>
-                        </v-card-text>
+                                <v-divider class="my-10"></v-divider>
+
+                                <div class="subtitle-2 text-center color" @click="login">¿Ya tienes una cuenta? ¡Iniciar sesión!</div>
+                            </v-col>
+                        </v-row>
                     </v-card>
                 </v-col>
             </v-row>
         </v-card-text>
+
+        <v-footer fixed class="font-weight-medium" elevation="2">
+            <v-col class="text-center" cols="12">
+                {{ new Date().getFullYear() }} — <strong>Hoyprovoca</strong> 
+            </v-col>
+        </v-footer>
     </v-card>
 </template>
 
@@ -130,22 +150,28 @@
 import router from '@/router';
 import validations from '@/validations/validations';
 import Auth from '@/services/Auth';
-import {mapActions} from 'vuex';
+import Usuario from '@/services/Usuario';
 
     export default {
         data() {
             return {
                 ...validations,
+                valid:false,
+                valid2:false,
+                valid3:false,
                 email:'',
                 codigo:'',
                 contraseña:'',
                 contraseña2:'',
-                send:false,
-                valid:false,
-                valid2:false,
+                mensaje:'',
+                type:'error',
                 loading:false,
-                validcode:false,
-                showPassword:false,
+                loading2:false,
+                showMessage:false,
+                send:false,
+                success:'',
+                errors:[],
+                validCode:false,
             }
         },
         computed: {
@@ -153,71 +179,89 @@ import {mapActions} from 'vuex';
                 return () => (this.contraseña === this.contraseña2) || 'Las contraseñas no coinciden.';
             },
         },
-        methods: {
-            ...mapActions(['setSnackbar']),
-
-            push(){ router.push('/login') },
-            push2(){ router.push('/reset') },
-            
-            success(mensaje){
-                this.$toasted.success(mensaje, { 
-                    theme: "toasted-primary", 
-                    position: "top-right", 
-                    duration : 2000,
-                    icon : "done",
-                });
-                this.loading = false;
+        head:{
+            title(){
+                return {
+                    inner:'Forgot',
+                    separator:' ',
+                    complement: ' '
+                }
+            }
+        },
+        methods:{
+            login(){
+                router.push('/login');
             },
-            error(mensaje){
-                this.$toasted.error(mensaje, { 
-                    theme: "toasted-primary", 
-                    position: "top-right", 
-                    duration : 2000,
-                    icon : "error",
-                });
+            respuesta(mensaje,type){
+                this.mensaje = mensaje;
+                this.type = type
                 this.loading = false;
+                this.showMessage = true;
+                setTimeout(() => {this.showMessage = false}, 2000);
             },
-            sendMail(){
+            async sendMail(){
                 this.loading = true;
-                Auth().post("/sendmail",{data:{user:this.email}}).then(() => {
-                    this.success("Codigo enviado exitosamente.");
+                await Auth().post("/sendmail",{data:{user:this.email}}).then(() => {
+                    this.respuesta("Codigo enviado.","success");
                     this.send = true;
-                }).catch((e) => {
+                }).catch(e => {
                     console.log(e);
-                    this.error("Opss, Error al tratar de enviar el codigo");
+                    this.respuesta("Error el enviar el codigo","error");
                 });
             },
-            validCode(){
+            async validc(){
                 this.loading = true;
-                Auth().post("/validcode",{data:{user:this.email,hash:this.codigo}}).then(() => {
-                    this.success("Codigo validado.");
-                    this.validcode=true;
-                }).catch((e) => {
+                await Auth().post("/validcode",{data:{user:this.email,hash:this.codigo}}).then(() => {
+                    this.respuesta("Codigo valido","success");
+                    this.validCode=true;
+                }).catch(e => {
                     console.log(e);
-                    this.error("Codigo incorrecto.");
+                    this.respuesta("Error el enviar el codigo","error");
                 });
             },
-            reset(){
+            async reset(){
                 this.loading = true;
-                Auth().post("/resetpassword",{data:{user:this.email,password:this.contraseña}}).then((response) => {
-                    this.success("Contraseña cambiada exitosamente.");
+                await Auth().post("/resetpassword",{data:{user:this.email,password:this.contraseña}}).then(() => {
+                    this.respuesta("Contraseña cambiada.","success");
                     setTimeout(() => {
-                        this.push();
+                        this.login();
                     },1000);
                 }).catch(e => {
                     console.log(e);
-                    this.error("Error al intentar restablecer la contraseña");
+                    this.respuesta("Error al resetear la contraseña.","error");
                 });
-            }
-        },
-        head: {
-            title() {
-                return {
-                    inner: "Restablecer contraseña",
-                    separator: " ",
-                    complement: " "
-                };
+            },
+            async getUser(email){
+                this.errors = [];
+                this.success = '';
+                if(email.length <= 0) return this.errors.push('Debe ingresar un email');
+                // eslint-disable-next-line
+                let regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/ 
+                if (!regex.test(this.email)) return this.errors.push(`Debe ingresar un email válido`);
+                this.loading2 = true;
+                await Usuario().get(`/?email=${email}`).then((response) => {
+                    this.loading2 = false;
+                    if(!response.data.data) {
+                        return this.errors.push('Este email no esta registrado');
+                    }else{
+                        this.success='Email verificado';
+                    }
+                }).catch(e => {
+                    console.log(e);
+                });
             }
         }
     }
 </script>
+
+<style lang="scss" scoped>
+    .color{
+        color:#000;
+        background:#fff;
+    }
+    .color:hover{
+        cursor:pointer;
+        text-decoration:underline;
+        background:#fff;
+    }
+</style>
