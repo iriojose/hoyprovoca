@@ -1,7 +1,6 @@
 <template>
     <v-app style="background-color:#f7f7f7;">
         <AppBar v-if="ruta() "/>
-        <Toolbar v-if="ruta2()" />
         
         <transition name="fade">
             <router-view/>
@@ -12,9 +11,6 @@
         <ModalSesion />
         <ModalImagen />
 
-        <v-footer v-if="ruta2()" fixed>
-            <SubFooter />
-        </v-footer>
         <Footer v-if="ruta()" class="margen" />
     </v-app>
 </template>
@@ -25,8 +21,6 @@ import ModalBloqueado from '@/components/dialogs/ModalBloqueado';
 import ModalImagen from '@/components/dialogs/ModalImagen';
 import ModalProducto from '@/components/dialogs/ModalProducto';
 import ModalSesion from '@/components/dialogs/ModalSesion';
-import Toolbar from "@/components/auths/Toolbar";
-import SubFooter from "@/components/footer/SubFooter";
 import Footer from '@/components/footer/Footer';
 
     export default {
@@ -37,8 +31,6 @@ import Footer from '@/components/footer/Footer';
             ModalProducto,
             ModalSesion,
             ModalImagen,
-            Toolbar,
-            SubFooter,
             Footer,
         },
         methods:{
@@ -58,19 +50,6 @@ import Footer from '@/components/footer/Footer';
                     return false;
                 }else{
                     return true;
-                }
-            },
-            ruta2(){
-                if(
-                    this.$route.name == 'login' ||
-                    //this.$route.name == 'register' ||
-                    //this.$route.name == 'forgot'  ||
-                    this.$route.name == 'notfound' ||
-                    this.$route.name == 'notauthorized'
-                ){
-                    return true
-                }else{
-                    return false
                 }
             },
         }

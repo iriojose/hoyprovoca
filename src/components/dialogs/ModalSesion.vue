@@ -14,8 +14,8 @@
                     </v-card>
                 </v-col>
                 <v-col cols="12" sm="9" md="8">
-                    <div class="text-center my-5 font-weight-black subtitle-1">Iniciar sesión en Aftim</div>
-                    <FormLogin />
+                    <div class="text-center my-5 font-weight-black subtitle-1">Iniciar sesión en Hoyprovoca</div>
+                    
                 </v-col>
             </v-row>
         </v-card>
@@ -24,12 +24,8 @@
 
 <script>
 import {mapState,mapActions} from 'vuex';
-import FormLogin from '@/components/auths/FormLogin';
 
     export default {
-        components:{
-            FormLogin
-        },
         computed: {
             ...mapState(['modalsesion']),
 
