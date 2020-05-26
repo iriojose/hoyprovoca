@@ -18,7 +18,9 @@
                 <v-list width="250" elevation="0">
                     <v-list-item class="border">
                         <v-list-item-avatar>
-                            <v-img :src="image+user.data.imagen"></v-img>
+                            <v-img
+                                :src="user.data.fotografia === 'default.png' && !fotoChanged? fotoChanged ? foto  : require('@/assets/user.jpg') :  fotoChanged ? foto : image+user.data.fotografia"
+                            ></v-img>
                         </v-list-item-avatar>
                         <v-list-item-content>
                             <v-list-item-title v-text="user.data.nombre+' '+user.data.apellido"></v-list-item-title>
@@ -66,11 +68,10 @@ import router from '@/router';
             }
         },
         computed: {
-            ...mapState(['user'])
+            ...mapState(['user','fotoChanged','foto']),
         },
         methods: {
-            ...mapActions(['logout']),
-
+            ...mapActions(["logout","setFotoChanged","setFoto"]),
             transition(){
                 return "slide-y-transition"
             },

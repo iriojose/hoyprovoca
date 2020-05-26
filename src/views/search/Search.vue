@@ -92,8 +92,9 @@ import Empresa from '@/services/Empresa';
             this.getConceptos();
         },
         methods:{
-            getConceptos(){
-                Conceptos().get(`/?nombre=${this.search}&after=1`).then((response) => {
+            async getConceptos(){
+                let count = await Conceptos().get("?limit=1");
+                Conceptos().get(`/?limit=${count.data.totalCount}&nombre=${this.search}`).then((response) => {
                     if(response.data.data){
                         let array = [];
                         response.data.data.filter(a => a.agregado = false);
