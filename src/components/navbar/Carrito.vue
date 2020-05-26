@@ -2,7 +2,8 @@
     <div>
         <v-btn
             fab class="mx-3" 
-            color="#232323"
+            color="transparent"
+            elevation="0"
             small @click="change" v-if="user.loggedIn && !$vuetify.breakpoint.smAndDown"
         >
             <v-badge dot overlap color="#D32F2F" v-if="pedidos.length > 0">

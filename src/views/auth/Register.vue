@@ -1,5 +1,5 @@
 <template>
-    <v-card width="100%" elevation="0" color="#ffbd07" height="1200">
+    <v-card width="100%" elevation="0" color="#1f3b63" height="1200">
         <v-card-text>
             <v-row justify="center" class="py-2">
                 <v-col cols="12" md="9" sm="12" :class="$vuetify.breakpoint.smAndDown ? 'mx-4':null">
@@ -31,7 +31,7 @@
                                             :disabled="loading"
                                             v-model="data.nombre"
                                             single-line
-                                            color="#ffbd07"
+                                            color="#0f2441"
                                             :rules="[required('Nombre')]"
                                             label="Nombre"
                                         ></v-text-field>
@@ -43,7 +43,7 @@
                                             :disabled="loading"
                                             v-model="data.apellido"
                                             single-line
-                                            color="#ffbd07"
+                                            color="#0f2441"
                                             :rules="[required('Apellido')]"
                                             label="Apellido"
                                         ></v-text-field>
@@ -55,7 +55,7 @@
                                             :disabled="loading"
                                             v-model="data.login"
                                             single-line
-                                            color="#ffbd07"
+                                            color="#0f2441"
                                             :rules="[required('Usuario')]"
                                             label="Nombre de usuario"
                                         ></v-text-field>
@@ -81,7 +81,7 @@
                                             v-model="data.email"
                                             single-line
                                             dense
-                                            color="#ffbd07"
+                                            color="#0f2441"
                                             :success-messages="success"
                                             :error-messages="errors"
                                             @input="getUser(data.email)"
@@ -92,7 +92,7 @@
                                                     <v-progress-circular
                                                         v-if="loading2"
                                                         size="24"
-                                                        color="#ffbd07"
+                                                        color="#0f2441"
                                                         indeterminate
                                                     ></v-progress-circular>
                                                     <img v-else width="24" height="24" :src="require('@/assets/logo 3.png')">
@@ -108,7 +108,7 @@
                                             v-model="data.password"
                                             single-line
                                             type="password"
-                                            color="#ffbd07"
+                                            color="#0f2441"
                                             :rules="[required('Contraseña'),minLength('Contraseña',6)]"
                                             label="Nueva contraseña"
                                         ></v-text-field>
@@ -121,7 +121,7 @@
                                             v-model="password2"
                                             single-line
                                             type="password"
-                                            color="#ffbd07"
+                                            color="#0f2441"
                                             :rules="[required('Confirmar contraseña'),passwordConfirmationRule()]"
                                             label="Confirmar contraseña"
                                         ></v-text-field>

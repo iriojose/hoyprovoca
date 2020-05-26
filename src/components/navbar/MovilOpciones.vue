@@ -6,7 +6,7 @@
                 v-on="on" 
                 v-if="$vuetify.breakpoint.smAndDown"
             >
-                <v-icon>mdi-dots-vertical</v-icon>
+                <v-icon color="#fff">mdi-dots-vertical</v-icon>
             </v-btn>
         </template>
 

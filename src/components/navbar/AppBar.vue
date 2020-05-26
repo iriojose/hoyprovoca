@@ -1,5 +1,5 @@
 <template>
-    <v-app-bar color="#ffbd07" app
+    <v-app-bar color="#0f2441" app
         :elevation="$vuetify.breakpoint.smAndDown ? 0:null" 
         :elevate-on-scroll="$vuetify.breakpoint.smAndDown ? false:true" 
         :extended="$vuetify.breakpoint.smAndDown && $route.name !== 'home' ? true:false"
@@ -7,9 +7,10 @@
         <v-app-bar-nav-icon 
             v-if="drawer==false"
             @click="change"
+            dark
         />
 
-        <v-btn fab v-else  @click="change" icon depressed>
+        <v-btn fab v-else  @click="change" icon depressed dark>
             <v-icon>
                 mdi-close
             </v-icon>
@@ -22,7 +23,7 @@
                 contain
                 width="100"
                 height="60"
-                src="@/assets/logo 3.png"
+                src="@/assets/logo 4.png"
             />
         </v-toolbar-title>
 
@@ -49,7 +50,8 @@
         <v-btn 
             fab class="mx-3" 
             small 
-            color="#232323"
+            color="transparent"
+            elevation="0"
             v-if="user.loggedIn && !$vuetify.breakpoint.smAndDown"
             @click="abrirModal"
         >
@@ -60,7 +62,8 @@
 
         <v-btn 
             fab class="mx-3" 
-            color="#232323"
+            color="transparent"
+            elevation="0"
             small to="/account/notificaciones"
             v-if="user.loggedIn && !$vuetify.breakpoint.smAndDown"
         >
