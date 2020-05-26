@@ -62,7 +62,7 @@
                 </v-card>
             </v-col>
             <v-col cols=12 md="9">
-                <v-card style="margin-top:64px;padding: 25px 45px 0 45px;background:#fdfdfd;" min-height="570px">
+                <v-card :style="( !clickable ? 'margin-top:64px;padding: 25px 45px 0 45px;' : 'padding: 25px 15px')+'background:#fdfdfd;'" min-height="570px">
                     <router-view></router-view>
                 </v-card>
             </v-col>
