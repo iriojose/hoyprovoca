@@ -5,6 +5,7 @@ import store from "./store";
 import head from "./plugins/head";
 import vuetify from './plugins/vuetify';
 import toasted from './plugins/toasted';
+import croppa from "vue-croppa"
 import "@babel/polyfill";
 import "roboto-fontface/css/roboto/roboto-fontface.css";
 import "@mdi/font/css/materialdesignicons.css";
@@ -13,6 +14,8 @@ import Auth from '@/services/Auth';
 
 Vue.config.productionTip = true;
 let token = window.sessionStorage.getItem('token_client');
+
+Vue.use(croppa);
 
 if(token){
     Auth().post("/sesion",{token:token}).then((response) => {
@@ -53,6 +56,3 @@ if(token){
         render: h => h(App)
     }).$mount("#app");
 }
-
-
-

@@ -10,6 +10,9 @@ export default new Vuex.Store({
             data:{},
             loggedIn:false
         },
+        foto: '',
+        fotoChanged: false,
+        fotoFile: null,
         bloqueado:false,
         search:'',
         foto: '',
@@ -40,6 +43,15 @@ export default new Vuex.Store({
     },
     mutations: {
         //banderas
+        SET_FOTO(state, val) {
+            state.foto = val;
+        },
+        SET_FOTOFILE(state, val) {
+            state.fotoFile = val;
+        },
+        SET_CHANGEFOTO(state, val) {
+            state.fotoChanged = val;
+        },
         SET_BANDERA(state,val){
             state.bandera = val;
         },
@@ -142,16 +154,6 @@ export default new Vuex.Store({
         UPDATE_DETALLE(state,data){//actualiza la cantidad de un detalle
             state.pedidos[data.indexPedido].detalles[data.indexDetalle].cantidad = data.cantidad;
         },
-
-        SET_FOTO(state, val){
-            state.foto = val;
-        },
-        SET_FOTOFILE(state, val){
-            state.fotoFile = val;
-        },
-        SET_CHANGEFOTO(state, val){
-            state.fotoChanged = val;
-        },
     },
     actions: {
         setDrawer({commit},val){
@@ -223,14 +225,14 @@ export default new Vuex.Store({
         deleteCarrito({commit}){
             commit('DELETE_CARRITO');
         },
-        setFoto({commit},val){
-            commit('SET_FOTO',val);
+        setFoto({ commit }, val) {
+            commit('SET_FOTO', val);
         },
-        setFotoChanged({commit},val){
-            commit('SET_CHANGEFOTO',val);
+        setFotoChanged({ commit }, val) {
+            commit('SET_CHANGEFOTO', val);
         },
-        setFotoFile({commit},val){
-            commit('SET_FOTOFILE',val);
+        setFotoFile({ commit }, val) {
+            commit('SET_FOTOFILE', val);
         },
     }
 });
