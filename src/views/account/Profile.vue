@@ -1,165 +1,265 @@
 <template>
-    <div>
-        <div class="font-weight-black subtitle-1">Información de tu cuenta</div>
-
-        <v-row justify="center" align="center" class="mt-2">
-            <v-col cols="12" md="5" sm="12">
-                <div class="grey--text font-regular mb-2">Nombre(s)</div>
+    <v-card class="fixHeight"  style="background:transparent;border: none;padding:25px;" outlined>
+        <div class="font-weight-black title" style="padding-top:10px;text-align:center;">Información de tu cuenta</div>
+        <v-row justify="center" align="center" class="mt-3" style="padding-top:15px;">
+             <v-col cols="12" md="6" sm="12">
                 <v-text-field
-                    single-line
-                    solo
                     dense
-                    color="#005598"
+                    disabled=""
+                    label="Correo"
+                    placeholder="Ej: Admin@example.com"
+                    outlined
+                    v-model="user.data.email"
+                    type="text"
+                    prepend-icon="mail"
+                ></v-text-field>
+            </v-col>
+            <v-col cols="12" md="6" sm="12">
+                <v-text-field
+                    dense
+                    label="Usuario"
+                    disabled=""
+                    placeholder="Ej: Admin98"
+                    outlined
+                    v-model="user.data.login"
+                    type="text"
+                    prepend-icon="mdi-account-circle"
+                ></v-text-field>
+            </v-col>
+            <v-col cols="12" md="6" sm="12">
+                <v-text-field
+                    dense
                     label="Nombre(s)"
+                    placeholder="Ej: Admin"
+                    outlined
                     v-model="data.nombre"
                     type="text"
-                />
+                    prepend-icon="person"
+                ></v-text-field>
             </v-col>
-            <v-col cols="12" md="5" sm="12">
-                <div class="grey--text font-regular mb-2">Apellido(s)</div>
+            <v-col cols="12" md="6" sm="12">
                 <v-text-field
-                    solo
-                    single-line
                     dense
-                    color="#005598"
-                    label="Apellido(s)"
+                    label="Apellidos(s)"
+                    placeholder="Ej: Super"
+                    outlined
                     v-model="data.apellido"
                     type="text"
-                />
+                    prepend-icon="person"
+                ></v-text-field>
             </v-col>
-            <v-col cols="12" md="5" sm="12">
-                <div class="grey--text font-regular mb-2">Correo electrónico</div>
+            <v-col cols="12" md="6" sm="12">
                 <v-text-field
-                    solo
                     dense
-                    single-line
-                    color="#005598"
-                    append-icon="lock"
-                    disabled
-                    label="Correo electrónico"
-                    v-model="data.email"
-                    type="text"
-                />
+                    label="Nueva Contraseña"
+                    placeholder="********"
+                    outlined
+                    v-model="password"
+                    type="password"
+                    prepend-icon="lock"
+                ></v-text-field>
             </v-col>
-            <!--v-col cols="12" md="5" sm="12">
-                <div class="grey--text font-regular mb-2">Celular</div>
+            <v-col cols="12" md="6" sm="12">
                 <v-text-field
-                    solo
-                    single-line
                     dense
-                    color="#005598"
-                    append-icon="phone_iphone"
-                    label="Celular"
-                    prefix="0-"
+                    label="Confirmar Contraseña"
+                    placeholder="********"
+                    outlined
+                    v-model="passwordC"
+                    type="password"
+                    prepend-icon="lock"
+                ></v-text-field>
+            </v-col>
+            <v-col cols="12" md="6" sm="12">
+                <v-text-field
+                    dense
+                    label="Teléfono"
+                    placeholder="Ej: 414-0404040"
+                    outlined
+                    prefix="+58 "
                     v-model="telefono"
                     type="text"
-                />
-            </v-col-->
-            <v-col cols="12" md="5" sm="12">
-                <div class="grey--text font-regular mb-2">Fecha de nacimiento</div>
-                <v-menu
-                    :close-on-content-click="false"
-                    transition="scale-transition"
-                    offset-y
-                    max-width="290px"
-                    min-width="290px"
-                >
+                    prepend-icon="phone_iphone"
+                ></v-text-field>
+            </v-col>
+            <v-col cols="12" md="6" sm="12">
+                <v-menu :close-on-content-click="false" transition="scale-transition" max-width="100%" offset-overflow>
                     <template v-slot:activator="{ on }">
                         <v-text-field
+                            dense
                             v-model="date"
-                            label="Date"
-                            hint="YYYY/MM/DD format"
-                            persistent-hint
+                            label="Cumpleaños"
+                            placeholder="Formato YYYY/MM/DD."
                             color="#005598"
-                            append-icon="event"
-                            solo
-                            single-line
+                            prepend-icon="event"
+                            outlined
                             v-on="on"
                         ></v-text-field>
                     </template>
-                    <v-date-picker 
-                        v-model="date" no-title 
-                        header-color="#005598"
-                        color="#005598"
-                    />
+
+                    <v-date-picker v-model="date" landscape show-current  header-color="#005598" color="#005598"  locale="es"/>
                 </v-menu>
-            </v-col>
+            </v-col>    
             <v-col cols="12" md="12" sm="12">
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-hover v-slot:default="{hover}">
-                        <v-btn 
-                            color="#005598" dark :elevation="hover ? 2:0" 
-                            :loading="loading" @click="updateUsuario(user.data.id)"
-                            class="text-capitalize body-2" :disabled="change ? true:false"
-                        >
-                            Atualizar datos
+                <transition name="fade">
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="#005598" dark :loading="loading" @click="updateUsuario(user.data.id)" class="text-capitalize body-2 fixPos" :disabled="!change">
+                             Actualizar datos
                         </v-btn>
-                    </v-hover>
-                </v-card-actions>
+                        <v-spacer></v-spacer>
+                    </v-card-actions>
+                 </transition>
             </v-col>
         </v-row>
-
-        <Snackbar :mensaje="mensaje" :icon="icon" :color="color" />
-    </div>
+    </v-card>
 </template>
 
 <script>
 import {mapState,mapActions} from 'vuex';
 import Usuario from '@/services/Usuario';
-import Snackbar from '@/components/snackbars/Snackbar';
+import Auth from '@/services/Auth';
+import Images from '@/services/Images';
+import _ from 'lodash';
 
-    export default {
-        components:{
-            Snackbar
-        },
-        data() {
+export default {
+    components:{
+    },
+    data() {
+        return {
+            loading:false,
+            change:false,
+            passwordC:'',
+            data:{},
+            telefono:null,
+            password:'',
+            reader:null,
+            date: new Date().toISOString().substr(0, 10),
+        }
+    },
+    head: {
+        title() {
             return {
-                mensaje:'',
-                color:'',
-                icon:'',
-                change:false,
-                loading:false,
-                telefono:null,
-                data:{},
-                date: new Date().toISOString().substr(0, 10),
-            }
+                inner: "Hoyprovoca",
+                separator:'|',
+                complement:'Perfil'
+            };
+        }
+    },
+    computed:{
+        ...mapState(['user','fotoChanged','foto','fotoFile']),
+    },
+    watch: {
+        fotoChanged: function(){
+            this.change = this.fotoChanged;
         },
-        computed:{
-            ...mapState(['user'])
-        },
-        watch: {
-            data(){
-                this.change = false;
-            },
-        },
-        mounted() {
-            this.data = Object.assign({},this.user.data);
-            this.date = this.data.fecha_nac.substr(0,10);
-        },
-        methods:{
-            ...mapActions(['setSnackbar']),
-            
-            mensajeSnackbar(color,icon,mensaje){
-                this.color = color;
-                this.icon = icon;
-                this.mensaje = mensaje;
-                this.setSnackbar(true);
-                this.loading = false;
-            },
-            updateUsuario(id){
-                this.loading = true;
-                this.data.fecha_nac = this.date;
-
-                Usuario().post(`/${id}`,{data:this.data}).then((response) => {
-                    this.mensajeSnackbar('#388E3C','done','Actualizado extisamente.');
-                    this.user.data = this.data;
+        data:{
+            handler(){
+                if(!this.fotoChanged && this.data.nombre === this.user.data.nombre && this.data.apellido === this.user.data.apellido && this.data.email === this.user.data.email && this.data.login === this.user.data.login){
                     this.change = false;
-                }).catch(e => {
-                    console.log(e);
-                    this.mensajeSnackbar('#D32F2F','error','Opsss, Error al intentar actualizar.');
+                }else{
+                    this.change = true;
+                }
+            },
+            deep:true
+        },    
+    },
+    methods:{
+        ...mapActions(['setFoto','setFotoChanged','setFotoFile']),
+        async updateUsuario(id){
+            let newUserData = {};
+            this.loading = true;
+            typeof this.date !== 'undefined' && this.date !== '' ? newUserData.fecha_nac = this.date : NaN;
+            this.data.nombre !== this.user.data.nombre ? newUserData.nombre = this.data.nombre : NaN;
+            this.data.apellido !== this.user.data.apellido ? newUserData.apellido = this.data.apellido : NaN;
+            this.password === "" ? NaN 
+            : this.password === this. passwordC ?
+                Auth().post('/resetpassword',{data:{user:this.user.data.login,password: this.password}}) 
+                : this.$toasted.error("Las contraseñas no coinciden.", { 
+                        theme: "bubble", 
+                        position: "bottom-right", 
+                        duration : 2000,
+                        icon : 'error_outline'
+                });
+            if(this.fotoFile !== null){
+                let formdata = new FormData();
+                formdata.append('image',this.fotoFile);
+                let fotoLocal = await Images().post(`/usuario/${this.user.data.id}/`,formdata);
+                newUserData.fotografia = fotoLocal.data.filename;
+                this.data.fotografia =  fotoLocal.data.filename;
+                this.setFotoFile(null);
+                this.setFoto(this.user.data.fotografia);
+                this.setFotoChanged(false);
+                this.$toasted.info("Foto de perfil actualizada.", { 
+                    theme: "bubble", 
+                    position: "bottom-right", 
+                    duration : 2000,
+                    icon : 'done_all'
                 });
             }
+            if(!_.isEqual(this.data,this.user.data) || this.telefono !== "" || typeof this.date !== 'undefined'){
+                Usuario().post(`/${id}`,{data:newUserData}).then(async () => {
+                    let updatedUser = await Usuario().get('/'+id);
+                    this.user.data = {...updatedUser.data.data};
+                    this.change = false;
+                    this.$toasted.info("Información Actualizada", { 
+                        theme: "bubble", 
+                        position: "bottom-right", 
+                        duration : 2000,
+                        icon : 'done_all'
+                    });
+                    this.loading = false;
+                }).catch(e => {
+                    console.log(e);
+                    this.$toasted.error("Ha ocurrido un error inesperado.", { 
+                        theme: "bubble", 
+                        position: "bottom-right", 
+                        duration : 2000,
+                        icon : 'error_outline'
+                    });
+                    this.loading = false;
+                });
+            }
+        },
+    },
+    mounted() {
+        this.data = Object.assign({},this.user.data);
+        this.date = this.data.fecha_nac;            
+    },
+}
+</script>
+
+<style lang="scss">
+    .slide-left-enter-active,
+    .slide-left-leave-active,
+    .slide-right-enter-active,
+    .slide-right-leave-active {
+        transition-duration: .3s;
+        transition-property: all;
+        transition-timing-function: cubic-bezier(0.55, 0, 0.1, 1);
+        overflow: hidden;
+    }
+    
+    .slide-left-enter,
+    .slide-right-leave-active {
+        opacity: 0;
+        transform: translate(2em, 0);
+    }
+    
+    .slide-left-leave-active,
+    .slide-right-enter {
+        opacity: 0;
+        transform: translate(-2em, 0);
+    }
+    .fixHeight{
+        @media (max-width:958px){
+            margin-top:-25px!important;
+            max-height: 100%!important;
         }
     }
-</script>
+    .fixPos{
+         @media (max-width:958px){
+            transform: translateY(-25px);
+        }
+    }
+</style>
