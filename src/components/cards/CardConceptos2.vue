@@ -12,7 +12,7 @@
                 :height="$vuetify.breakpoint.smAndDown ? 100:150" 
                 :src="image+concepto.imagen" class="pb-3"
             >
-                <v-row class="mx-2" justify="end" align="top" v-if="concepto.existencias[0].existencia <= 0">
+                <v-row class="mx-2" justify="end" align="top" v-if="(Array.isArray(concepto.existencias) ? concepto.existencias.length > 0 ? concepto.existencias.map(a => Math.trunc(+a.existencia)).reduce((a, b) => a + b) : 0 : concepto.existencias) <= 0">
                     <v-card width="120" height="30" class="white--text" color="#D32F2F">
                         <v-row justify="center" align="center" class="fill-height">
                             <div class="body-1">Agotado</div>
