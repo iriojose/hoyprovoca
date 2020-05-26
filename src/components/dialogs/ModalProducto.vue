@@ -1,6 +1,6 @@
 <template>
     <v-dialog v-model="productos" close-delay width="500" transition="dialog-bottom-transition">
-        <v-card height="500" class="px-2">
+        <v-card height="500" class="px-2 border">
             <v-card-title>
                 <v-spacer></v-spacer>
                 <v-hover v-slot:default="{hover}">
@@ -17,9 +17,6 @@
                         <v-card width="120" height="30" class="white--text" color="#D32F2F">
                             <v-row justify="center" align="center" class="fill-height">
                                 <div class="body-1">Agotado</div>
-                                <v-icon class="mx-2" color="#fff" small>
-                                    mdi-alert
-                                </v-icon>
                             </v-row>
                         </v-card>
                     </v-row>
@@ -35,7 +32,7 @@
                     :loading="loading"
                     block 
                     @click="modal(producto)"
-                    color="#D32F2F" 
+                    color="#0f2441" 
                     class="white--text text-capitalize" 
                 >
                     Agregar
@@ -192,3 +189,9 @@ import Empresa from '@/services/Empresa';
         },
     }
 </script>
+
+<style lang="scss" scoped>
+    .border{
+        border-radius:30px;
+    }
+</style>
