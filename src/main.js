@@ -12,34 +12,9 @@ import 'leaflet/dist/leaflet.css';
 import Auth from '@/services/Auth';
 
 Vue.config.productionTip = true;
-let data = JSON.parse(window.sessionStorage.getItem('user'));
+let token = window.sessionStorage.getItem('token_client');
 
-if(!data){
-    new Vue({
-        store,
-        router,
-        vuetify,
-        head,
-        toasted,
-        render: h => h(App)
-    }).$mount("#app");
-}else{
-    store.state.user.data = data.data;
-    store.state.user.loggedIn = true;
-    store.state.user.token = data.token;
-
-    new Vue({
-        store,
-        router,
-        vuetify,
-        head,
-        toasted,
-        render: h => h(App)
-    }).$mount("#app");
-}
-
-//con localStorage
-/*if(token){
+if(token){
     Auth().post("/sesion",{token:token}).then((response) => {
         if(response.data.data.perfil_id == 4){
             store.state.bloqueado = true;
@@ -77,7 +52,7 @@ if(!data){
         toasted,
         render: h => h(App)
     }).$mount("#app");
-}*/
+}
 
 
 

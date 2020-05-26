@@ -1,29 +1,34 @@
 <template>
-    <v-row justify="center">
+    <v-row justify="center" v-if="grupos">
         <v-card 
-            :elevation="$vuetify.breakpoint.smAndDown ? 0:2" 
-            class="border mx-2 mb-2"
+            :elevation="0" 
+            class="border mx-2 mb-4"
             :width="$vuetify.breakpoint.smAndDown ? 100:200" 
             :height="$vuetify.breakpoint.smAndDown ? 100:200" 
             v-for="(grupo,i) in grupos" :key="i"
             @click="push(grupo)"
         >
-            <v-card 
-                elevation="0"
-                :color="colores[i].color" 
+            <v-img 
+                contain 
                 :width="$vuetify.breakpoint.smAndDown ? 100:200" 
-                :height="$vuetify.breakpoint.smAndDown ? 100:170"
-            >
-                <v-row justify="center" align="center" class="fill-height">
-                    <v-img 
-                        contain 
-                        :width="$vuetify.breakpoint.smAndDown ? 50:100" 
-                        :height="$vuetify.breakpoint.smAndDown ? 50:100"
-                        :src="image+grupo.imagen" 
-                    /> 
-                </v-row>
-            </v-card>
-            <div class="hidden-sm-and-down mt-2 px-5 subtitle-1 font-weight-black">{{grupo.nombre}}</div>
+                :height="$vuetify.breakpoint.smAndDown ? 80:180"
+                :src="image+grupo.imagen" 
+            /> 
+            <div class="mt-2 text-center subtitle-2 font-weight-black">{{grupo.nombre}}</div>
+        </v-card>
+    </v-row>
+    <v-row justify="center" v-else>
+        <v-card 
+            :elevation="0" 
+            class="border mx-2 mb-4"
+            :width="$vuetify.breakpoint.smAndDown ? 100:200" 
+            :height="$vuetify.breakpoint.smAndDown ? 100:200" 
+            v-for="(color,i) in colores" :key="i"
+            :color="colores.color"
+        >
+            <v-row justify="center">
+                <Puntos />
+            </v-row>
         </v-card>
     </v-row>
 </template>
@@ -74,8 +79,8 @@ import Puntos from '@/components/loaders/Puntos';
     }
 </script>
 
-<style lang="scss" scope>
+<style lang="scss" scoped>
     .border{
-        border-radius:0% !important;
+        border-radius:30px !important;
     }
 </style>
