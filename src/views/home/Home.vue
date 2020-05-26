@@ -8,10 +8,10 @@
 
             <v-divider class="mt-12"></v-divider>
 
-            <v-scroll-x-transition>
-                <EmpresasSugeridas title="Visita nuestras tiendas" :empresas="empresas" v-show="!loadingE" />
-            </v-scroll-x-transition>
-            <SkeletonCard v-if="loadingE" :width="300" :height="200" title="Visita nuestras tiendas" />
+           
+            <EmpresasSugeridas title="Nuestras tiendas" :empresas="empresas" v-if="!loadingE" />
+            <LoaderCategorias v-else />
+
         </v-card-text>
     </v-card>
 </template>
@@ -19,7 +19,6 @@
 <script>
 import Empresa from '@/services/Empresa';
 import Grupos from '@/services/Grupos';
-import SkeletonCard from '@/components/loaders/SkeletonCard';
 import Banner from '@/components/vistaHome/Banner'
 import EmpresasSugeridas from '@/components/vistaHome/EmpresasSugeridas';
 import CategoriasSugeridas from '@/components/vistaHome/CategoriasSugeridas';
@@ -31,7 +30,6 @@ import LoaderCategorias from '@/components/loaders/LoaderCategorias';
             Banner,
             EmpresasSugeridas,
             CategoriasSugeridas,
-            SkeletonCard,
         },
         head:{
             title(){
@@ -62,9 +60,9 @@ import LoaderCategorias from '@/components/loaders/LoaderCategorias';
             
         },
         methods:{
-            getEmpresas(){
+            async getEmpresas(){
                 this.loadingE = true;
-                Empresa().get('/?limit=8').then((response) => {
+                await Empresa().get('/?limit=8').then((response) => {
                     window.localStorage.setItem('empresasMasVendidas',JSON.stringify(response.data.data));
                     this.empresas = response.data.data;
                     this.loadingE = false;
@@ -72,9 +70,9 @@ import LoaderCategorias from '@/components/loaders/LoaderCategorias';
                     console.log(e);
                 });
             },
-            getGrupos(){
+            async getGrupos(){
                 this.loadingG = true;
-                Grupos().get('/mostsold/?limit=10').then((response) => {
+                await Grupos().get('/mostsold/?limit=10').then((response) => {
                     window.localStorage.setItem('gruposMasVendidos',JSON.stringify(response.data.data));
                     this.grupos = response.data.data;
                     this.loadingG = false;

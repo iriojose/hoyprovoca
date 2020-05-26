@@ -77,12 +77,12 @@
         <MovilOpciones />
             
         <div v-if="!user.loggedIn" class="hidden-sm-and-down">
-            <v-btn text to="/login" class="mx-1 font-weight-bold text-capitalize">
+            <v-btn text to="/login" class="mx-1 font-weight-bold text-capitalize white--text">
                 Iniciar sesión
             </v-btn>
                 
             <v-hover v-slot:default="{hover}">
-                <v-btn :elevation="hover ? 10:0" color="#232323" height="30" to="/register" class="mx-1 font-weight-bold white--text text-capitalize">
+                <v-btn :elevation="hover ? 10:0" color="#fff" height="30" to="/register" class="mx-1 font-weight-bold black--text text-capitalize">
                     Registrate
                 </v-btn>
             </v-hover>
