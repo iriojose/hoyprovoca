@@ -84,7 +84,11 @@ import Usuario from '@/services/Usuario';
         },
         mounted() {
             if(this.user.loggedIn){
-                this.getPedidosUsuario();
+                let pedidos = JSON.parse(window.localStorage.getItem('pedidos'));
+
+                if(!pedidos) this.getPedidosUsuario();
+                else this.setPedidos(pedidos);
+               
             }
         },
         methods: {
@@ -98,7 +102,10 @@ import Usuario from '@/services/Usuario';
             },
             getPedidosUsuario(){
                 Usuario().get(`/${this.user.data.id}/pedidos/?rest_estatus_id=1`).then((response) => {
-                    response.data !== 'This entity is empty' ? this.setPedidos(response.data.data):null;
+                    if(response.data.data){
+                        window.localStorage.setItem('pedidos',JSON.stringify(response.data.data));
+                        this.setPedidos(response.data.data);
+                    }
                 }).catch(e => {
                     console.log(e);
                 });

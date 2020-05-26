@@ -1,75 +1,72 @@
 <template>
-    <v-card elevation="0">
-        <v-card-text>
-            <PreFooter />
-
-            <v-sheet class="py-4 px-12">
-                <v-row align="baseline" justify="center" class="fill-height px-10"> 
-                    <v-col cols="12" md="2" sm="6">
-                        <v-list class="font-weight-black">
-                            <div class="text-center subtitle-2 grey--text">Categorías</div>
-                            <v-list-item dense v-for="(categoria,i) in categorias" :key="i">
-                                <v-list-item-title class="text-center">
-                                    {{categoria.text}}
-                                </v-list-item-title>
-                            </v-list-item>
-                        </v-list>
-        
-                    </v-col>
-                    <v-col cols="12" md="4" sm="6">
-                        <v-list dense>
-                            <div class="text-center subtitle-2 grey--text">Informaciòn de interes</div>
-                            <v-list-item dense v-for="(interes,i) in intereses" :key="i">
-                                <v-list-item-title class="text-center">
-                                    {{interes.text}}
-                                </v-list-item-title>
-                            </v-list-item>
-                        </v-list>
-                    </v-col>
-
-                    <v-col cols="12" md="2" sm="6">
-                        <v-list dense rounded>
-                            <div class="text-center subtitle-2 grey--text">Descarga la app</div>
-                            <v-list-item dense v-for="app in apps" :key="app.text">
-                                    <v-list-item-avatar size="25">
-                                        <v-img :src="require('@/assets/'+app.img)"/>
-                                    </v-list-item-avatar>
-                                    <v-list-item-title>{{app.text}}</v-list-item-title>
-                            </v-list-item>
-                        </v-list>
-                    </v-col>
-                </v-row>
-            </v-sheet>
-            
-            <v-row align="center" justify="center" class="fill-height pt-3 mb-2">
-                <v-btn width="40" height="40" elevation="0" fab class="mx-2" v-for="(red,i) in redes" :key="i">
-                    <a :href="red.to">
-                        <v-img contain width="40" height="40" :src="require('@/assets/'+red.img)"></v-img>
-                    </a>
-                </v-btn>
+    <div class="mt-12">
+        <v-sheet elevation="4">
+            <v-row justify="space-around" >
+                <v-col cols="12" md="4" sm="12" v-for="about in abouts" :key="about.text">
+                    <v-img contain width="100%" height="150" :src="require('@/assets/'+about.img)"></v-img>
+                    <div class="text-center title font-weight-bold my-4">
+                        {{about.text}}
+                    </div>
+                </v-col>
             </v-row>
+        </v-sheet>
 
-            <v-divider class="mt-4"></v-divider>
+        <v-sheet elevation="4">
+            <v-row justify="center">
+                <v-col cols="12" md="4" sm="12" v-for="(n,i) in 4" :key="i">
+                    <div v-if="i == 0">
+                        <div v-for="(categoria,e) in categorias" :key="e" class="underline my-5 text-center font-weight-bold">
+                            {{categoria.text}}
+                        </div>
+                    </div>
 
-            <SubFooter />
-        </v-card-text>
-    </v-card>
+                    <div v-if="i == 1">
+                        <div v-for="(interes,g) in intereses" :key="g" class="underline my-5 text-center font-weight-bold">
+                            {{interes.text}}
+                        </div>
+                    </div>
+
+                    <div v-if="i == 2">
+                        <div v-for="(red,f) in redes" :key="f" class="my-5 text-center font-weight-bold">
+                            <a :href="red.to" class="underline">
+                                <v-avatar size="40" class="mx-2">
+                                    <v-img :src="require('@/assets/'+red.img)"></v-img>
+                                </v-avatar>
+                                {{red.text}}
+                            </a>
+                        </div>
+                    </div>
+
+                    <!--div v-if="i == 3">
+                        <div v-for="(categoria,h) in categorias" :key="h" class="underline my-5 text-center font-weight-bold">
+                            {{categoria.text}}
+                        </div>
+                    </div-->
+                </v-col>
+            </v-row>
+        </v-sheet>
+
+        <v-footer class="font-weight-medium" elevation="4" color="#fff">
+            <v-col class="text-center" cols="12">
+                {{ new Date().getFullYear() }} — <strong>Hoyprovoca</strong>
+            </v-col>
+        </v-footer>
+    </div>
 </template>
 
 <script>
-import SubFooter from './SubFooter';
-import PreFooter from './PreFooter';
     export default {
-        components:{
-            SubFooter,
-            PreFooter,
-        },
         data() {
             return {
+                abouts:[
+                    {img:'pay.svg',text:'Pagos online'},
+                    {img:'negocio.svg',text:'Compre en su tienda preferida'},
+                    {img:'safe.svg',text:'Privacidad garantizada'},
+                ],
                 categorias:[
-                    {text:'Supermercados'},
-                    {text:'Tiendas'},
-                    {text:'Tecnologia'},
+                    {text:'Viveres'},
+                    {text:'Farmacia'},
+                    {text:'Comida'},
                     {text:'Restaurantes'}
                 ],
                 intereses:[
@@ -83,22 +80,24 @@ import PreFooter from './PreFooter';
                     {img:'svgyoutu.svg',text:'YouTube',to:'https://www.youtube.com/channel/UCRxWOVR7AVYep0AqNoN-zhA'},
                     {img:'instagramsvg.svg',text:'Instagram',to:'https://www.instagram.com/somossistemas/?hl=es-la'}
                 ],
-                apps:[
+                /*apps:[
                     {img:'app-store.png',text:'Iphone'},
                     {img:'playstore.png',text:'Android'}
-                ],
-            }
-        },
-        methods: {
-            method(){
-
+                ],*/
             }
         },
     }
 </script>
 
-<style lang="scss" scope>
-    .mt{
-        margin-top:50px;
+<style lang="scss" scoped>
+    .underline{
+        color:#000;
+        text-decoration:none;
+        background:#fff;
+    }
+    .underline:hover{
+        cursor:pointer;
+        text-decoration:underline;
+        background:#fff;
     }
 </style>

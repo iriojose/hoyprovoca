@@ -61,7 +61,7 @@ import Footer from '@/components/footer/Footer';
         scroll-behavior: smooth;
     }
     .margen{
-        margin-top:200px;
+        margin-top:150px;
     }
     .fade-enter-active, .fade-leave-active {
         transition: opacity .5s;
