@@ -10,17 +10,17 @@
                 contain 
                 :width="$vuetify.breakpoint.smAndDown ? 150:200" 
                 :height="$vuetify.breakpoint.smAndDown ? 100:150" 
-                :src="image+concepto.imagen" class="pb-3"
+                :src="typeof concepto.imagen === 'undefined'  || concepto.imagen === 'default.png' ? require('@/assets/box.svg') : image + concepto.imagen"
+                class="pb-3"
             >
-                <v-row class="mx-2" justify="end" align="top" v-if="(Array.isArray(concepto.existencias) ? concepto.existencias.length > 0 ? concepto.existencias.map(a => Math.trunc(+a.existencia)).reduce((a, b) => a + b) : 0 : concepto.existencias) <= 0">
-                    <v-card width="120" height="30" class="white--text" color="#D32F2F">
-                        <v-row justify="center" align="center" class="fill-height">
-                            <div class="body-1">Agotado</div>
-                            <v-icon class="mx-2" color="#fff" small>
-                                mdi-alert
-                            </v-icon>
-                        </v-row>
-                    </v-card>
+                <v-row class="mx-2" justify="end" v-if="parseExistencia(concepto) <= 0">
+                    <v-img 
+                        contain 
+                        :width="$vuetify.breakpoint.smAndDown ? 150:200" 
+                        :height="$vuetify.breakpoint.smAndDown ? 100:150" 
+                        :src="require('@/assets/agotado.png')"
+                        class="pb-3"
+                    />   
                 </v-row>
                 <v-fade-transition v-else>
                     <v-row justify="center" align="end" class="fill-height" v-show="hover">
@@ -127,8 +127,9 @@ import accounting from 'accounting';
             getExistencia(item){
                 this.loading = true;
                 Conceptos().get(`/${item.id}/depositos`).then((response) => {
-                    if(Number.parseInt(response.data.data[0].existencia) < 1){
-                        this.error('Quedan '+response.data.data[0].existencia+' unidades en el stock.');
+                    console.log(this.parseExistencia(reponse.data.data));
+                    if(this.parseExistencia(reponse.data.data) < 1){
+                        this.error('Quedan '+this.parseExistencia(reponse.data.data)+' unidades en el stock.');
                     }else{
                         this.getEmpresa(item);
                     }
@@ -138,7 +139,7 @@ import accounting from 'accounting';
                 });
             },
             getEmpresa(item){
-                Empresa().get(`/${item.adm_empresa_id}/?fields=imagen`).then((response) => {
+                Empresa().get(`/${item.adm_empresa_id}`).then((response) => {
                     this.data.imagen = response.data.data.imagen; 
                     this.data.adm_empresa_id = item.adm_empresa_id;
                     this.validacion(item);
@@ -183,6 +184,9 @@ import accounting from 'accounting';
                     console.log(e);
                     this.error("Ooops, Intente mas tarde.");
                 });
+            },
+            parseExistencia(concepto){
+                return (Array.isArray(concepto.existencias) ? concepto.existencias.length > 0 ? concepto.existencias.map(a => Math.trunc(+a.existencia)).reduce((a, b) => a + b) : 0 : concepto.existencias)
             }
         },
     }
