@@ -21,9 +21,9 @@ ___
 
 ![1](capturas/index.png) 
 
-![1](capturas/index2.png)
+![2](capturas/index2.png)
 
-![1](capturas/footer.png)
+![3](capturas/footer.png)
 
 ## Auth / Login / Register / Password Recover (Inicio de Sesion, Registrarse y Recuperar contraseña)
 
@@ -35,11 +35,15 @@ ___
 
 ***(Español)*** Since it is a system, it will always be necessary to log in, although in this type of system, it is not necessary to log in to navigate certain views of the platform.
 
-![2](capturas/login.png) ![2](capturas/login movil.png)
+![4](capturas/login.png) 
+
+![5](capturas/login movil.png)
 
 ### Login with dialog / Inicio de sesion con modal
 
-![2](capturas/modal sesion.png) ![2](capturas/modal sesion movil.png)
+![6](capturas/modal sesion.png) 
+
+![7](capturas/modal sesion movil.png)
 
 ### Register / Registrarse
 
@@ -49,7 +53,9 @@ ___
 
 ***(Español)*** En caso de querer iniciar sesión es requerido que se registre para obtener la informacion necesaria y asi poder acceder al servicio de hoyprovoca.
 
-![3](capturas/register.png) ![2](capturas/register movil.png)
+![8](capturas/register.png) 
+
+![9](capturas/register movil.png)
 
 ### Password Recover / Recuperar contraseña
 
@@ -59,7 +65,9 @@ ___
 
 ***(Español)*** En el caso de que el usuario haya olvidado su contraseña y piense que el sistema es inaccesible, entonces no tiene que preocuparse, se puede recuperar la contraseña, ya que la cuenta tiene un correo electronico enlazado para estos casos.
 
-![3](capturas/forgot.png) ![3](capturas/forgot movil.png)
+![10](capturas/forgot.png) 
+
+![11](capturas/forgot movil.png)
 
 ### View for all categories / Vista para todas las categorías
 
@@ -69,7 +77,7 @@ ___
 
 ***(Español)*** En esta vista se muestran todas las categorias que se encuentran registradas en la plataforma.
 
-![4](capturas/grupos.png)
+![12](capturas/grupos.png)
 
 ### View for a company and categories / Vista para una empresa y categorías
 
@@ -79,9 +87,9 @@ ___
 
 ***(Español)*** En esta vista todos los productos y servicos que ofrece la empresa, asi mismo se muestran las categorías a las que pertenecen, ademas si se selecciona una categoría apareceran todos los productos de esa categoria perteneciente a esa empresa.
 
-![5](capturas/empresa.png)
+![13](capturas/empresa.png)
 
-![5](capturas/empresa select.png)
+![14](capturas/empresa select.png)
 
 ### view Search / Vista Buscar
 
@@ -90,4 +98,4 @@ ___
 
 ***(Español)*** En esta vista apareceran todos los productos segun la busqueda ingresada por los usuarios, ademas apareceran las empresas a las que pertenecen esos productos
 
-![6](capturas/search.png)
+![15](capturas/search.png)
