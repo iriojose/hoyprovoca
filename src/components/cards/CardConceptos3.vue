@@ -9,13 +9,10 @@
                         width="100%"
                         height="150"
                     >
-                        <v-row class="mx-2" justify="end" align="top" v-if="concepto.existencias[0].existencia <= 0">
-                            <v-card width="120" height="30" class="white--text" color="#D32F2F">
+                        <v-row class="mx-2 fill-height" justify="center" align="center" v-if="concepto.existencias[0].existencia <= 0">
+                            <v-card width="120" height="30" class="white--text" color="#0f2441">
                                 <v-row justify="center" align="center" class="fill-height">
                                     <div class="body-1">Agotado</div>
-                                    <v-icon class="mx-2" color="#fff" small>
-                                        mdi-alert
-                                    </v-icon>
                                 </v-row>
                             </v-card>
                         </v-row>

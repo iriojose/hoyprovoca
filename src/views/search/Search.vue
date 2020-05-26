@@ -28,7 +28,7 @@
                     <PanelEmpresas :empresas="empresas" />
                 </v-col>
                 <v-col cols="12" md="12" sm="12">
-                    <div :class="$vuetify.breakpoint.smAndDown ? 'mb-5':'sombra mb-5'" v-for="(conceptos,i) in arrayConceptos" :key="i">
+                    <div :class="$vuetify.breakpoint.smAndDown ? 'mb-5':'mb-5'" v-for="(conceptos,i) in arrayConceptos" :key="i">
                         <DataSearch :conceptos="conceptos" :empresa="empresas[i]" />
                     </div>
                 </v-col>

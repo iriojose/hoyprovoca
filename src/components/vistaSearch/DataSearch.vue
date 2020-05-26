@@ -1,7 +1,7 @@
 <template>
-    <v-card elevation="0" width="100%">
+    <v-card elevation="0" width="100%" color="#f7f7f7">
         <v-card-title class="font-weight-black" @click="push(empresa)">
-            <v-avatar size="60" class="mx-2 cursor">
+            <v-avatar size="60" class="mx-2 cursor" tile>
                 <v-img :src="image+empresa.imagen"></v-img>
             </v-avatar>
             <div class="text-center underline font-weight-black cursor">{{empresa.nombre_comercial}}</div>
