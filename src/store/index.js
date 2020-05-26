@@ -84,7 +84,8 @@ export default new Vuex.Store({
             data.token = val.token;
             data.data = val.data;
             state.user = data;
-            window.localStorage.setItem('cliente_token',val.token);
+            window.sessionStorage.setItem('user',JSON.stringify(val));
+            //window.localStorage.setItem('cliente_token',val.token);
         },
         LOGOUT(state){//cierra la sesion
             state.snackbar = false;
@@ -92,7 +93,8 @@ export default new Vuex.Store({
             state.user.data={};
             state.user.loggedIn=false;
             state.pedidos = [];//se elimina los pedidos en local
-            window.localStorage.removeItem('cliente_token');//se elimina el token del storage
+            window.sessionStorage.removeItem('user');//se elimina el token del storage
+            window.localStorage.removeItem('gruposMasVendidos');//se elimina los grupos mas vendidos
         },
 
         //pedidos

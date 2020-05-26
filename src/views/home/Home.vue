@@ -47,17 +47,25 @@ import LoaderCategorias from '@/components/loaders/LoaderCategorias';
                 empresas:[],
                 grupos:[],
                 bandera:false,
-                loadingG:true,
-                loadingE:true,
+                loadingG:false,
+                loadingE:false,
             }
         },
         mounted() {
-            this.getGrupos();
-            this.getEmpresas();
+            let grupos = JSON.parse(window.localStorage.getItem('gruposMasVendidos'));
+            if(!grupos) this.getGrupos();
+            else this.grupos = grupos;
+
+            let empresas = JSON.parse(window.localStorage.getItem('empresasMasVendidas'));
+            if(!empresas) this.getEmpresas();
+            else this.empresas = empresas;
+            
         },
         methods:{
             getEmpresas(){
+                this.loadingE = true;
                 Empresa().get('/?limit=8').then((response) => {
+                    window.localStorage.setItem('empresasMasVendidas',JSON.stringify(response.data.data));
                     this.empresas = response.data.data;
                     this.loadingE = false;
                 }).catch(e => {
@@ -65,7 +73,9 @@ import LoaderCategorias from '@/components/loaders/LoaderCategorias';
                 });
             },
             getGrupos(){
+                this.loadingG = true;
                 Grupos().get('/mostsold/?limit=10').then((response) => {
+                    window.localStorage.setItem('gruposMasVendidos',JSON.stringify(response.data.data));
                     this.grupos = response.data.data;
                     this.loadingG = false;
                 }).catch(e => {

@@ -40,12 +40,14 @@ import variables from '@/services/variables_globales';
         data() {
             return {
                 grupos:[],
-                loading:true,
+                loading:false,
                 ...variables
             }
         },
         mounted() {
-            this.getGrupos();
+            let grupos = window.localStorage.getItem('gruposMasVendidos');
+            if(!grupos) this.getGrupos();
+            else this.grupos = JSON.parse(grupos);
         },
         computed:{
             ...mapState(['drawer']),
@@ -68,7 +70,9 @@ import variables from '@/services/variables_globales';
                 router.push({name:'grupoDetalle', params:{text:nombre}});
             },
             getGrupos(){
+                this.loading = true;
                 Grupos().get("/mostsold").then((response) => {
+                    window.localStorage.setItem("gruposMasVendidos",JSON.stringify(response.data.data));
                     this.grupos = response.data.data;
                     this.loading = false;
                 }).catch(e => {
