@@ -198,7 +198,7 @@ export default {
                 });
             }
             if(!_.isEqual(this.data,this.user.data) || this.telefono !== "" || typeof this.date !== 'undefined'){
-                Usuario().post(`/${id}`,{data:newUserData}).then(async () => {
+                Usuario().post(`/${id}`,{data:{...newUserData}}).then(async () => {
                     let updatedUser = await Usuario().get('/'+id);
                     this.user.data = {...updatedUser.data.data};
                     this.change = false;
@@ -224,7 +224,7 @@ export default {
     },
     mounted() {
         this.data = Object.assign({},this.user.data);
-        this.date = this.data.fecha_nac;            
+        this.date = this.data.fecha_nac.substr(0, 10);      
     },
 }
 </script>
