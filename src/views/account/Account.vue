@@ -60,9 +60,8 @@ import {mapState,mapActions} from 'vuex';
                 opciones:[
                     {icon:'mdi-cogs',path:'/account/profile',text:'Ajustes de cuenta'},
                     {icon:'mdi-history',path:'/account/notificaciones',text:'Centro de notificaciones'},
-                    {icon:'mdi-alert-circle',path:'/account/ordenes',text:'últimas ordenes'},
-                    //{icon:'error_outline',path:'/account/ayuda',text:'Centro de ayuda'},
-                    {icon:'mdi-lock-open',path:'/account/password',text:'Cambiar contraseña'},
+                    {icon:'mdi-alert-circle',path:'/account/ordenes',text:'Últimas ordenes'},
+                    {icon:'mdi-help-cicle',path:'/account/ayuda',text:'Centro de ayuda'},
                 ]
             }
         },
