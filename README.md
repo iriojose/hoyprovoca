@@ -19,7 +19,7 @@ ___
 
 ***(Español)*** Index principal de la plataforma en donde se muestran las categorías mas relevantes en el sistemas, ademas de las opciones de iniciar sesión y registrarse.
 
-![1](capturas/index.png)
+![1](capturas/index.png) 
 
 ![1](capturas/index2.png)
 
@@ -35,7 +35,11 @@ ___
 
 ***(Español)*** Since it is a system, it will always be necessary to log in, although in this type of system, it is not necessary to log in to navigate certain views of the platform.
 
-![2](capturas/login.png)
+![2](capturas/login.png) ![2](capturas/login movil.png)
+
+### Login with dialog / Inicio de sesion con modal
+
+![2](capturas/modal sesion.png) ![2](capturas/modal sesion movil.png)
 
 ### Register / Registrarse
 
@@ -45,7 +49,7 @@ ___
 
 ***(Español)*** En caso de querer iniciar sesión es requerido que se registre para obtener la informacion necesaria y asi poder acceder al servicio de hoyprovoca.
 
-![3](capturas/register.png)
+![3](capturas/register.png) ![2](capturas/register movil.png)
 
 ### Password Recover / Recuperar contraseña
 
@@ -55,7 +59,7 @@ ___
 
 ***(Español)*** En el caso de que el usuario haya olvidado su contraseña y piense que el sistema es inaccesible, entonces no tiene que preocuparse, se puede recuperar la contraseña, ya que la cuenta tiene un correo electronico enlazado para estos casos.
 
-![3](capturas/forgot.png)
+![3](capturas/forgot.png) ![3](capturas/forgot movil.png)
 
 ### View for all categories / Vista para todas las categorías
 

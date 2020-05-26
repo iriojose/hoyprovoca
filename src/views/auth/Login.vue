@@ -21,7 +21,7 @@
                                 <v-img width="100%" height="400" contain :src="require('@/assets/undrawlogin.svg')"></v-img>
                             </v-col>
                             <v-col cols="12" md="6" sm="12" class="pa-12">
-                                <div class="headline text-center mb-5">Registrate ahora!</div>
+                                <div class="headline text-center mb-5">Inicia sesión ahora!</div>
                                 
                                 <v-card elevation="0" height="50">
                                     <v-fade-transition>
@@ -184,11 +184,11 @@ import {mapActions} from 'vuex';
                         this.respuesta("Bienvenido.","success");
                         setTimeout(() => { this.home()},1000);
                     }else{
-                        this.respuesta("Usuario no permitido.","error");
+                        this.respuesta("Este usuario no es un cliente.","error");
                     }
                 }).catch((e) => {
                     console.log(e);
-                    this.respuesta("Error al ingresar, intente mas tarde.","error");
+                    this.respuesta("Contraseña incorrecta.","error");
                 });
             }
         },
