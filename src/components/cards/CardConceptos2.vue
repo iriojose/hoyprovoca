@@ -39,7 +39,7 @@
             <div class="text-truncate font-weight-black text-capitalize body-1">{{precioDolar}}</div>
             <div class="text-truncate font-weight-black text-capitalize body-1">{{precio}}</div>
             <div class="text-truncate font-weight-medium text-capitalize">{{concepto.nombre}}</div>
-            <div class="text-truncate body-2 grey--text text-capitalize">{{concepto.descripcion}}</div>
+            <div class="text-truncate body-2 text-capitalize" style="color:#e0e0e0">{{concepto.descripcion}}</div>
         </v-card>
     </v-hover>
 </template>
@@ -135,17 +135,17 @@ import accounting from 'accounting';
                     }
                 }).catch(e =>{
                     console.log(e);
-                    this.error("Ooops, Intente mas tarde.");
+                    this.error("Error al procesar existencia.");
                 });
             },
             getEmpresa(item){
-                Empresa().get(`/${item.adm_empresa_id}`).then((response) => {
+                Empresa().get(`/${item.adm_empresa_id}?fields=imagen`).then((response) => {
                     this.data.imagen = response.data.data.imagen; 
                     this.data.adm_empresa_id = item.adm_empresa_id;
                     this.validacion(item);
                 }).catch(e => {
                     console.log(e);
-                    this.error("Ooops, Intente mas tarde.");
+                    this.error("Error al obtener Empresa.");
                 });
             },
             validacion(item){
@@ -167,7 +167,7 @@ import accounting from 'accounting';
                     this.success("Agregado exitosamente.");
                 }).catch(e => {
                     console.log(e);
-                    this.error("Ooops, Intente mas tarde.");
+                    this.error("Error al procesar pedido.");
                 });
             },
             postPedidosDetalle(item){
@@ -182,7 +182,7 @@ import accounting from 'accounting';
                     this.success("Agregado exitosamente.");
                 }).catch(e => {
                     console.log(e);
-                    this.error("Ooops, Intente mas tarde.");
+                    this.error("Error al procesar detalles del pedido.");
                 });
             },
             parseExistencia(concepto){

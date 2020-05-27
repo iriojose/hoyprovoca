@@ -134,7 +134,7 @@ import accounting from 'accounting';
                     }
                 }).catch(e =>{
                     console.log(e);
-                    this.error("Ooops, Intente mas tarde.");
+                    this.error("Error al procesar existencia.");
                 });
             },
             getEmpresa(item){
@@ -144,7 +144,7 @@ import accounting from 'accounting';
                     this.validacion(item);
                 }).catch(e => {
                     console.log(e);
-                    this.error("Ooops, Intente mas tarde.");
+                    this.error("Error al obtener Empresa.");
                 });
             },
             validacion(item){
@@ -166,7 +166,7 @@ import accounting from 'accounting';
                     this.success("Agregado exitosamente.");
                 }).catch(e => {
                     console.log(e);
-                    this.error("Ooops, Intente mas tarde.");
+                    this.error("Error al crear pedido.");
                 });
             },
             postPedidosDetalle(item){
@@ -181,7 +181,7 @@ import accounting from 'accounting';
                     this.success("Agregado exitosamente.");
                 }).catch(e => {
                     console.log(e);
-                    this.error("Ooops, Intente mas tarde.");
+                    this.error("Error al crear detalles del pedido.");
                 });
             },
             parseExistencia(concepto){
