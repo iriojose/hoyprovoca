@@ -152,7 +152,8 @@ import router from '@/router';
                 }else{
                     this.setBandera(true);
                 }
-                router.push("/search") 
+                if (this.$route.name !== 'search')
+                    router.push("/search") 
             },
            
             push2(){ router.push('/')}
