@@ -10,9 +10,17 @@
                 </v-hover>
             </v-card-title>
             <v-card-text>
+<<<<<<< HEAD
+                <v-img contain height="250" width="100%"
+                :src="typeof producto.imagen === 'undefined'  || producto.imagen === 'default.png' ? require('@/assets/box.svg') : image + producto.imagen"
+                >
+                    <v-row class="mx-2" justify="end"  v-if="parseExistencia(producto) <= 0">
+                        <v-card width="120" height="30" class="white--text" color="#D32F2F">
+=======
                 <v-img contain height="250" width="100%" :src="image+producto.imagen">
                     <v-row class="mx-2 fill-height" justify="center" align="center" v-if="producto.existencias[0].existencia <= 0">
                         <v-card width="120" height="30" class="white--text" color="#0f2441">
+>>>>>>> 62535622dad52e2a7d1758e17db004e70797199e
                             <v-row justify="center" align="center" class="fill-height">
                                 <div class="body-1">Agotado</div>
                             </v-row>
@@ -26,7 +34,7 @@
             </v-card-text>
             <v-card-actions class="mx-10">
                 <v-btn 
-                    :disabled="producto.agregado || producto.existencias[0].existencia <= 0 ? true:false"
+                    :disabled="producto.agregado || parseExistencia(producto) <= 0 ? true:false"
                     :loading="loading"
                     block 
                     @click="modal(producto)"
@@ -124,24 +132,24 @@ import Empresa from '@/services/Empresa';
             getExistencia(item){
                 this.loading = true;
                 Conceptos().get(`/${item.id}/depositos`).then((response) => {
-                    if(Number.parseInt(response.data.data[0].existencia) < 1){
-                        this.error('Quedan '+response.data.data[0].existencia+' unidades en el stock.');
+                    if(this.parseExistencia(response.data.data) < 1){
+                        this.error('Quedan '+this.parseExistencia(response.data.data)+' unidades en el stock.');
                     }else{
                         this.getEmpresa(item);
                     }
                 }).catch(e =>{
                     console.log(e);
-                    this.error("Ooops, Intente mas tarde.");
+                    this.error("Error al obtener existencia.");
                 });
             },
             getEmpresa(item){
-                Empresa().get(`/${item.adm_empresa_id}/?fields=imagen`).then((response) => {
+                Empresa().get(`/${item.adm_empresa_id}`).then((response) => {
                     this.data.imagen =response.data.data.imagen; 
                     this.data.adm_empresa_id = item.adm_empresa_id;
                     this.validacion(item);
                 }).catch(e => {
                     console.log(e);
-                    this.error("Ooops, Intente mas tarde.");
+                    this.error("Error al obtener empresa.");
                 });
             },
             validacion(item){
@@ -158,12 +166,12 @@ import Empresa from '@/services/Empresa';
                 this.data1[0].precio = item.precio_a;
                 this.data1[0].imagen = item.imagen;
 
-                Pedidos().post("/",{data:this.data,data1:this.data1}).then((response) => {
+                Pedidos().post("/",{data: this.data , data1: this.data1 }).then((response) => {
                     this.addPedidos(response.data.data);
                     this.success("Agregado exitosamente.");
                 }).catch(e => {
                     console.log(e);
-                    this.error("Ooops, Intente mas tarde.");
+                    this.error("Error al crear pedido.");
                 });
             },
             postPedidosDetalle(item){
@@ -178,8 +186,11 @@ import Empresa from '@/services/Empresa';
                     this.success("Agregado exitosamente.");
                 }).catch(e => {
                     console.log(e);
-                    this.error("Ooops, Intente mas tarde.");
+                    this.error("Error al crear detalle de pedido..");
                 });
+            },
+            parseExistencia(concepto){
+                return (Array.isArray(concepto.existencias) ? concepto.existencias.length > 0 ? concepto.existencias.map(a => Math.trunc(+a.existencia)).reduce((a, b) => a + b) : 0 : concepto.existencias)
             }
         },
     }

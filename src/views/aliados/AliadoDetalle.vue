@@ -36,7 +36,7 @@
                         <v-spacer></v-spacer>
                     </v-toolbar>
 
-                    <div :class="$vuetify.breakpoint.smAndDown ? 'mb-5':'sombra mb-5'" v-for="(grupo,i) in grupos" :key="i">
+                    <div :class="$vuetify.breakpoint.smAndDown ? 'mb-5':'sombra mb-5'" v-for="(grupo,i) in grupos" :key="i" >
                         <DataAliados :grupo="grupo" :conceptos="conceptos[i]" :tipo="tipo"/>
                     </div>
                 </v-col>

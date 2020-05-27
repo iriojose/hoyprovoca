@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-card elevation="0" width="100%" v-if="!$vuetify.breakpoint.smAndDown">
+        <v-card elevation="0" width="100%" v-if="!$vuetify.breakpoint.smAndDown" style="padding-bottom: 25px;">
             <v-card-title class="font-weight-black">
                 <v-avatar size="60" class="mx-2">
                     <v-img :src="image+grupo.imagen"></v-img>
@@ -10,7 +10,7 @@
 
             <v-slide-group show-arrows class="my-2">
                 <v-slide-item v-for="(concepto,e) in conceptos" :key="e">
-                    <CardConceptos :concepto="concepto" />
+                    <CardConceptos style="margin:0 10px;" :concepto="concepto" />
                 </v-slide-item>
             </v-slide-group>
         </v-card>

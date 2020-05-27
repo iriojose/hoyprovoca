@@ -10,14 +10,17 @@
                 contain 
                 :width="$vuetify.breakpoint.smAndDown ? 150:200" 
                 :height="$vuetify.breakpoint.smAndDown ? 100:150" 
-                :src="image+concepto.imagen" class="pb-3"
+                :src="typeof concepto.imagen === 'undefined'  || concepto.imagen === 'default.png' ? require('@/assets/box.svg') : image + concepto.imagen"
+                class="pb-3"
             >
-                <v-row class="mx-2 fill-height" justify="center" align="center" v-if="(Array.isArray(concepto.existencias) ? concepto.existencias.length > 0 ? concepto.existencias.map(a => Math.trunc(+a.existencia)).reduce((a, b) => a + b) : 0 : concepto.existencias) <= 0">
-                    <v-card width="120" height="30" class="white--text" color="#D32F2F">
-                        <v-row justify="center" align="center" class="fill-height">
-                            <div class="body-1">Agotado</div>
-                        </v-row>
-                    </v-card>
+                <v-row class="mx-2" justify="end" v-if="parseExistencia(concepto) <= 0">
+                    <v-img 
+                        contain 
+                        :width="$vuetify.breakpoint.smAndDown ? 150:200" 
+                        :height="$vuetify.breakpoint.smAndDown ? 100:150" 
+                        :src="require('@/assets/agotado.png')"
+                        class="pb-3"
+                    />   
                 </v-row>
                 <v-fade-transition v-else>
                     <v-row justify="center" align="end" class="fill-height" v-show="hover">
@@ -36,7 +39,7 @@
             <div class="text-truncate font-weight-black text-capitalize body-1">{{precioDolar}}</div>
             <div class="text-truncate font-weight-black text-capitalize body-1">{{precio}}</div>
             <div class="text-truncate font-weight-medium text-capitalize">{{concepto.nombre}}</div>
-            <div class="text-truncate body-2 grey--text text-capitalize">{{concepto.descripcion}}</div>
+            <div class="text-truncate body-2 text-capitalize" style="color:#e0e0e0">{{concepto.descripcion}}</div>
         </v-card>
     </v-hover>
 </template>
@@ -124,24 +127,25 @@ import accounting from 'accounting';
             getExistencia(item){
                 this.loading = true;
                 Conceptos().get(`/${item.id}/depositos`).then((response) => {
-                    if(Number.parseInt(response.data.data[0].existencia) < 1){
-                        this.error('Quedan '+response.data.data[0].existencia+' unidades en el stock.');
+                    console.log(this.parseExistencia(reponse.data.data));
+                    if(this.parseExistencia(reponse.data.data) < 1){
+                        this.error('Quedan '+this.parseExistencia(reponse.data.data)+' unidades en el stock.');
                     }else{
                         this.getEmpresa(item);
                     }
                 }).catch(e =>{
                     console.log(e);
-                    this.error("Ooops, Intente mas tarde.");
+                    this.error("Error al procesar existencia.");
                 });
             },
             getEmpresa(item){
-                Empresa().get(`/${item.adm_empresa_id}/?fields=imagen`).then((response) => {
+                Empresa().get(`/${item.adm_empresa_id}?fields=imagen`).then((response) => {
                     this.data.imagen = response.data.data.imagen; 
                     this.data.adm_empresa_id = item.adm_empresa_id;
                     this.validacion(item);
                 }).catch(e => {
                     console.log(e);
-                    this.error("Ooops, Intente mas tarde.");
+                    this.error("Error al obtener Empresa.");
                 });
             },
             validacion(item){
@@ -163,7 +167,7 @@ import accounting from 'accounting';
                     this.success("Agregado exitosamente.");
                 }).catch(e => {
                     console.log(e);
-                    this.error("Ooops, Intente mas tarde.");
+                    this.error("Error al procesar pedido.");
                 });
             },
             postPedidosDetalle(item){
@@ -178,8 +182,11 @@ import accounting from 'accounting';
                     this.success("Agregado exitosamente.");
                 }).catch(e => {
                     console.log(e);
-                    this.error("Ooops, Intente mas tarde.");
+                    this.error("Error al procesar detalles del pedido.");
                 });
+            },
+            parseExistencia(concepto){
+                return (Array.isArray(concepto.existencias) ? concepto.existencias.length > 0 ? concepto.existencias.map(a => Math.trunc(+a.existencia)).reduce((a, b) => a + b) : 0 : concepto.existencias)
             }
         },
     }

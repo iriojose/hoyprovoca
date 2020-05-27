@@ -223,8 +223,12 @@ export default {
         },
     },
     mounted() {
-        this.data = Object.assign({},this.user.data);
-        this.date = this.data.fecha_nac.substr(0, 10);      
+        try{
+            this.data = Object.assign({},this.user.data);
+            this.date = this.data.fecha_nac.substr(0, 10);  
+        }catch(e){
+            NaN
+        }
     },
 }
 </script>
