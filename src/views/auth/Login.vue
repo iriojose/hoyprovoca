@@ -5,7 +5,7 @@
                 <v-icon color="#fff">mdi-home</v-icon>
             </v-btn>
             <v-spacer class="hidden-sm-and-down"></v-spacer>
-            <v-img class="hidden-sm-and-down" contain width="100" height="50" :src="require('@/assets/logo2.png')"></v-img>
+            <v-img class="hidden-sm-and-down" contain width="100" height="50" :src="require('@/assets/logo 6.png')"></v-img>
             <v-spacer></v-spacer>
             <v-btn rounded color="#2950c3" class="text-capitalize white--text caption" @click="forgot">
                 ¿Olvido su contraseña?
@@ -15,7 +15,7 @@
             <v-row justify="center" class="py-2">
                 <v-col cols="12" md="9" sm="12" :class="$vuetify.breakpoint.smAndDown ? 'mx-4':null">
                     <v-row justify="center" class="pb-4 hidden-sm-and-up">
-                        <v-img contain width="100" height="50" :src="require('@/assets/logo2.png')"></v-img>
+                        <v-img contain width="100" height="50" :src="require('@/assets/logo 6.png')"></v-img>
                     </v-row>
                     <v-card width="100%" elevation="0">
                         <v-row justify="center">

@@ -24,7 +24,6 @@
                     <div class="text-truncate body-1 font-weight-black">{{precioDolar}}</div>
                     <div class="text-truncate body-1 font-weight-black">{{precio}}</div>
                     <div class="text-truncate font-weight-medium text-capitalize">{{concepto.nombre}}</div>
-                    <div class="text-truncate body-2 grey--text text-capitalize">{{concepto.descripcion}}</div>
                 </v-col>
             </v-row>
         </v-card-text>

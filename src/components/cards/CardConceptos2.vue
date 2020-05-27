@@ -39,7 +39,6 @@
             <div class="text-truncate font-weight-black text-capitalize body-1">{{precioDolar}}</div>
             <div class="text-truncate font-weight-black text-capitalize body-1">{{precio}}</div>
             <div class="text-truncate font-weight-medium text-capitalize">{{concepto.nombre}}</div>
-            <div class="text-truncate body-2 text-capitalize" style="color:#e0e0e0">{{concepto.descripcion}}</div>
         </v-card>
     </v-hover>
 </template>
@@ -127,9 +126,8 @@ import accounting from 'accounting';
             getExistencia(item){
                 this.loading = true;
                 Conceptos().get(`/${item.id}/depositos`).then((response) => {
-                    console.log(this.parseExistencia(reponse.data.data));
-                    if(this.parseExistencia(reponse.data.data) < 1){
-                        this.error('Quedan '+this.parseExistencia(reponse.data.data)+' unidades en el stock.');
+                    if(this.parseExistencia(response.data.data) < 1){
+                        this.error('Quedan '+this.parseExistencia(response.data.data)+' unidades en el stock.');
                     }else{
                         this.getEmpresa(item);
                     }
@@ -185,6 +183,7 @@ import accounting from 'accounting';
                     this.error("Error al procesar detalles del pedido.");
                 });
             },
+            
             parseExistencia(concepto){
                 return (Array.isArray(concepto.existencias) ? concepto.existencias.length > 0 ? concepto.existencias.map(a => Math.trunc(+a.existencia)).reduce((a, b) => a + b) : 0 : concepto.existencias)
             }

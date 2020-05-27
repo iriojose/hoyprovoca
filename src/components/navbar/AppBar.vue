@@ -21,9 +21,9 @@
         <v-toolbar-title @click="push2" class="cursor">
             <v-img 
                 contain
-                width="100"
-                height="60"
-                src="@/assets/logo 4.png"
+                width="200"
+                height="100"
+                src="@/assets/logo 6.png"
             />
         </v-toolbar-title>
 
