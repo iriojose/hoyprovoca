@@ -7,11 +7,13 @@
             <div class="text-center underline font-weight-black cursor">{{empresa.nombre_comercial}}</div>
         </v-card-title>
 
-        <v-slide-group class="my-2">
-            <v-slide-item v-for="(concepto,e) in conceptos" :key="e">
-                <CardConceptos :concepto="concepto" />
-            </v-slide-item>
-        </v-slide-group>
+        <v-card width="100%" elevation="0">
+            <v-slide-group class="my-2">
+                <v-slide-item v-for="(concepto,e) in conceptos" :key="e">
+                    <CardConceptos style="margin: 0 10px;" :concepto="concepto" />
+                </v-slide-item>
+            </v-slide-group>
+        </v-card>
     </v-card>
 </template>
 

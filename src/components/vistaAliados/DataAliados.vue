@@ -26,7 +26,7 @@
                         </v-expansion-panel-header>
                         <v-expansion-panel-content>
                             <v-row justify="center" v-if="tipo">
-                                <CardConceptos :concepto="concepto" v-for="(concepto,i) in conceptos" :key="i"/>
+                                <CardConceptos style="margin:0 10px" :concepto="concepto" v-for="(concepto,i) in conceptos" :key="i"/>
                             </v-row>
                             <v-row justify="center" v-else>
                                 <CardConceptos2 :concepto="concepto" v-for="(concepto,i) in conceptos" :key="i"/>
