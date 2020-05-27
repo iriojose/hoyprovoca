@@ -10,17 +10,11 @@
                 </v-hover>
             </v-card-title>
             <v-card-text>
-<<<<<<< HEAD
                 <v-img contain height="250" width="100%"
                 :src="typeof producto.imagen === 'undefined'  || producto.imagen === 'default.png' ? require('@/assets/box.svg') : image + producto.imagen"
                 >
                     <v-row class="mx-2" justify="end"  v-if="parseExistencia(producto) <= 0">
                         <v-card width="120" height="30" class="white--text" color="#D32F2F">
-=======
-                <v-img contain height="250" width="100%" :src="image+producto.imagen">
-                    <v-row class="mx-2 fill-height" justify="center" align="center" v-if="producto.existencias[0].existencia <= 0">
-                        <v-card width="120" height="30" class="white--text" color="#0f2441">
->>>>>>> 62535622dad52e2a7d1758e17db004e70797199e
                             <v-row justify="center" align="center" class="fill-height">
                                 <div class="body-1">Agotado</div>
                             </v-row>
