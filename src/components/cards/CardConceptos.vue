@@ -13,6 +13,7 @@
                 :src="typeof concepto.imagen === 'undefined'  || concepto.imagen === 'default.png' ? require('@/assets/box.svg') : image + concepto.imagen"
                 class="pb-3"
             >   
+<<<<<<< HEAD
                 <v-row class="mx-2" justify="end" v-if="parseExistencia(concepto) <= 0">
                     <v-img 
                         contain 
@@ -21,6 +22,12 @@
                         :src="require('@/assets/agotado.png')"
                         class="pb-3"
                     />   
+=======
+                <v-row class="mx-2 fill-height" justify="center" align="center" v-if="concepto.existencias[0].existencia <= 0">
+                    <v-card width="120" height="30" class="white--text" color="#0f2441">
+                        <div class="body-1">Agotado</div>
+                    </v-card>
+>>>>>>> 62535622dad52e2a7d1758e17db004e70797199e
                 </v-row>
                 <v-fade-transition v-else>
                     <v-row justify="center" align="end" class="fill-height" v-show="hover">
