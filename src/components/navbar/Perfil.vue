@@ -19,7 +19,7 @@
                     <v-list-item class="border">
                         <v-list-item-avatar>
                             <v-img
-                                :src="user.data.fotografia === 'default.png' && !fotoChanged? fotoChanged ? foto  : require('@/assets/user.jpg') :  fotoChanged ? foto : image+user.data.fotografia"
+                                :src="user.data.imagen === 'default.png' && !fotoChanged? fotoChanged ? foto  : require('@/assets/user.jpg') :  fotoChanged ? foto : image+user.data.imagen"
                             ></v-img>
                         </v-list-item-avatar>
                         <v-list-item-content>

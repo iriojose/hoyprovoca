@@ -185,10 +185,10 @@ export default {
                 let formdata = new FormData();
                 formdata.append('image',this.fotoFile);
                 let fotoLocal = await Images().post(`/usuario/${this.user.data.id}/`,formdata);
-                newUserData.fotografia = fotoLocal.data.filename;
-                this.data.fotografia =  fotoLocal.data.filename;
+                newUserData.imagen = fotoLocal.data.filename;
+                this.data.imagen =  fotoLocal.data.filename;
                 this.setFotoFile(null);
-                this.setFoto(this.user.data.fotografia);
+                this.setFoto(this.user.data.imagen);
                 this.setFotoChanged(false);
                 this.$toasted.info("Foto de perfil actualizada.", { 
                     theme: "bubble", 
