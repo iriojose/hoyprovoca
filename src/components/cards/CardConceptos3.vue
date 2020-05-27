@@ -1,5 +1,5 @@
 <template>
-    <v-card width="350" height="300" elevation="0" @click="modalDetalle">
+    <v-card class="hover" width="350" elevation="0" @click="modalDetalle" active-class="active">
         <v-card-text>
             <v-row justify="center">
                 <v-col cols="12" sm="6"> 
@@ -9,13 +9,14 @@
                         width="100%"
                         height="150"
                     >
-                        <v-row class="mx-2" justify="end" v-if="parseExistencia(concepto) <= 0">
+                        <v-row class="mx-2" justify="end" v-if="parseExistencia(concepto) <= 0" style="height:100%">
                             <v-img 
                                 contain 
                                 :width="$vuetify.breakpoint.smAndDown ? 150:200" 
                                 :height="$vuetify.breakpoint.smAndDown ? 100:150" 
                                 :src="require('@/assets/agotado.png')"
                                 class="pb-3"
+                                style="position: absolute;top: 50%;left: 50%;transform: translate(-50%,-52%);"
                             />  
                         </v-row>
                     </v-img>
@@ -69,3 +70,9 @@ import {mapState,mapActions} from 'vuex';
         }   
     }
 </script>
+
+<style lang="scss">
+    .active, .hover:hover{
+        background: #ECEFF1 !important;
+    }
+</style>

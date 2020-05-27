@@ -38,13 +38,13 @@
 
                     <v-row justify="center" v-if="tipo">
                         <div v-for="(concepto,i) in conceptos" :key="i">
-                            <CardConceptos :concepto="concepto" />
+                            <CardConceptos style="margin:10px; padding: 0 10px;" :concepto="concepto" />
                         </div>
                     </v-row>
 
                     <v-row justify="center" v-else>
                         <div v-for="(concepto,i) in conceptos" :key="i">
-                            <CardConceptos2 :concepto="concepto" />
+                            <CardConceptos2 style="margin:10px;" :concepto="concepto" />
                         </div>
                     </v-row>
 

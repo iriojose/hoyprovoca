@@ -3,8 +3,9 @@
         <v-card 
             :width="$vuetify.breakpoint.smAndDown ? 150:200" 
             :height="$vuetify.breakpoint.smAndDown ? 200:250" 
-            class="pa-3" elevation="0"
+            class="pa-3 hover" elevation="0"
             @click="modalDetalle"
+            active-class="active"
         >
             <v-img 
                 contain 
@@ -16,7 +17,7 @@
                 <v-row class="mx-2" justify="end" v-if="parseExistencia(concepto) <= 0">
                     <v-img 
                         contain 
-                        :width="$vuetify.breakpoint.smAndDown ? 150:200" 
+                        :width="$vuetify.breakpoint.smAndDown ? 100:200" 
                         :height="$vuetify.breakpoint.smAndDown ? 100:150" 
                         :src="require('@/assets/agotado.png')"
                         class="pb-3"
@@ -190,3 +191,10 @@ import accounting from 'accounting';
         },
     }
 </script>
+
+<style lang="scss">
+    
+    .active,.hover:hover{
+        background: #ECEFF1 !important;
+    }
+</style>

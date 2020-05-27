@@ -13,12 +13,15 @@
                 <v-img contain height="250" width="100%"
                 :src="typeof producto.imagen === 'undefined'  || producto.imagen === 'default.png' ? require('@/assets/box.svg') : image + producto.imagen"
                 >
-                    <v-row class="mx-2" justify="end"  v-if="parseExistencia(producto) <= 0">
-                        <v-card width="120" height="30" class="white--text" color="#D32F2F">
-                            <v-row justify="center" align="center" class="fill-height">
-                                <div class="body-1">Agotado</div>
-                            </v-row>
-                        </v-card>
+                    <v-row class="mx-2" justify="end" v-if="parseExistencia(producto) <= 0" style="height:100%">
+                        <v-img 
+                            contain 
+                            :width="$vuetify.breakpoint.smAndDown ? 150:200" 
+                            :height="$vuetify.breakpoint.smAndDown ? 100:150" 
+                            :src="require('@/assets/agotado.png')"
+                            class="pb-3"
+                            style="position: absolute;top: 50%;left: 50%;transform: translate(-50%,-52%);width:17em;"
+                        />   
                     </v-row>
                 </v-img>
                 <div class="text-truncate text-center body-1 font-weight-black text-capitalize">{{precioDolar}}</div>
