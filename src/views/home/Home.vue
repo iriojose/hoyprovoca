@@ -1,19 +1,18 @@
 <template>
-    <v-card elevation="0" color="#f7f7f7" width="100%">
+    <div>
         <Banner />
-        <v-card-text>
-            
-            <CategoriasSugeridas :grupos="grupos" v-if="!loadingG" />
-            <LoaderCategorias v-else />
+        <v-card elevation="0" color="#f7f7f7" width="100%">
+            <v-card-text>
+                <CategoriasSugeridas :grupos="grupos" v-if="!loadingG" />
+                <LoaderCategorias v-else />
 
-            <v-divider class="mt-12"></v-divider>
+                <v-divider class="mt-12"></v-divider>
 
-           
-            <EmpresasSugeridas title="Nuestras tiendas" :empresas="empresas" v-if="!loadingE" />
-            <LoaderCategorias v-else />
-
-        </v-card-text>
-    </v-card>
+                <EmpresasSugeridas title="Nuestras tiendas" :empresas="empresas" v-if="!loadingE" />
+                <LoaderCategorias v-else />
+            </v-card-text>
+        </v-card>
+    </div>
 </template>
 
 <script>

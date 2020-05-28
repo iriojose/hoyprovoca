@@ -1,47 +1,80 @@
 <template>
-    <!--gradient="to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)"-->
-    <v-img 
-        :src="require('@/assets/index.jpeg')" 
-        width="100%" 
-        class="px-5"
-        :height="$vuetify.breakpoint.smAndDown ? 400:500"
-        :style="$vuetify.breakpoint.smAndDown ? 'margin-top:46px':'margin-top:46px'"
-    >
-        <v-row justify="center" :align="$vuetify.breakpoint.smAndDown ? 'top':'center'" class="fill-height">
-            <v-card :width="$vuetify.breakpoint.smAndDown ? 400:600" color="transparent" elevation="0">
-                <div class="display-2 text-center my-10 white--text font-weight-black">¿Pensando en algo rico?</div>
-                <v-text-field 
-                    label="¿Que te provoca?..."
-                    hide-details
-                    solo
-                    v-model="busquedas"
-                    v-on:keyup.enter="push"
-                    color="#fff"
-                    single-line
-                >
-                    <v-btn slot="append" @click="push" color="#D32F2F" class="text-capitalize white--text">
-                        Buscar
-                        <v-icon color="#fff" class="mx-2">mdi-magnify</v-icon>
-                    </v-btn>
-                </v-text-field>
-            </v-card>
-        </v-row>
-    </v-img>
+    <v-card :height="$vuetify.breakpoint.smAndDown ? 450:500" color="#FFB607" width="100%" style="margin-top:46px" :class="$vuetify.breakpoint.smAndDown ? 'mx-auto':null">
+        <v-card-text>
+            <v-row justify="center">
+                <v-col cols="12" md="4" class="hidden-sm-and-down">
+                    <v-img 
+                        class="transition-chica" 
+                        contain 
+                        height="500" 
+                        widht="100%" 
+                        :src="require('@/assets/chica.png')"
+                    ></v-img>
+                </v-col>
+                <v-col cols="12" md="4" sm="10">
+                    <div 
+                        :class="$vuetify.breakpoint.smAndDown ? 'black--text display-1 text-center my-5 font-weight-black':'display-1 text-center my-10 black--text font-weight-black'">
+                        ¿Pensando en comprarte algo?
+                    </div>
+
+                    <v-text-field 
+                        label="¿Que te provoca?..."
+                        hide-details
+                        solo
+                        v-model="busquedas"
+                        v-on:keyup.enter="push"
+                        color="#fff"
+                        single-line
+                    >
+                        <v-btn slot="append" @click="push" color="#0F2441" tile class="text-capitalize white--text">
+                            <v-icon color="#fff" class="mx-2">mdi-magnify</v-icon>
+                        </v-btn>
+                    </v-text-field>
+
+                    <div 
+                        :class="$vuetify.breakpoint.smAndDown ? 'headline text-center mt-5 font-weight-black black--text':'headline black--text text-center margen font-weight-black'">
+                        Mejor hazlo desde aqui...
+                    </div>
+                </v-col>
+                <v-col cols="12" md="4" class="hidden-sm-and-down">
+                    <v-img 
+                        class="transition-chico" 
+                        contain 
+                        height="500" 
+                        widht="100%" 
+                        :src="require('@/assets/chico.png')"
+                    ></v-img>
+                </v-col>
+
+                <v-col cols="6" sm="6" v-if="$vuetify.breakpoint.smAndDown">
+                    <v-img 
+                        class="transition-chica" 
+                        contain 
+                        height="200"
+                        widht="200" 
+                        :src="require('@/assets/chica.png')"
+                    ></v-img>
+                </v-col>
+                <v-col cols="6" sm="6" v-if="$vuetify.breakpoint.smAndDown">
+                    <v-img 
+                        class="transition-chico" 
+                        contain 
+                        height="200" 
+                        widht="200" 
+                        :src="require('@/assets/chico.png')"
+                    ></v-img>
+                </v-col>
+            </v-row>
+        </v-card-text>
+        
+    </v-card>
 </template>
+
 <script>
 import router from '@/router';
 import {mapState,mapActions} from 'vuex';
 
     export default {
-        data () {
-            return {
-                images:[
-                    {id:1,img:'1.png'},
-                    {id:2,img:'2.png'},
-                    //{id:3,img:'deporte.jpg'},
-                ],
-            }
-        },
         computed: {
             ...mapState(['search','bandera']),
 
@@ -64,3 +97,25 @@ import {mapState,mapActions} from 'vuex';
         }
     }
 </script>
+
+<style lang="scss" scoped>
+    .margen{
+        margin-top:150px;
+    }
+    .transition-chico{
+        animation: animat 1s 600ms ease 1;
+    }
+    @keyframes animat{
+        0% {
+            transform: translateX(400px);
+        }
+    }
+    .transition-chica{
+        animation:animat2 1s 600ms ease 1;
+    }
+    @keyframes animat2{
+        0% {
+            transform: translateX(-400px);
+        }
+    }
+</style>

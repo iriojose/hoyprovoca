@@ -3,7 +3,7 @@
         <v-card elevation="0" width="100%" class="px-10">    
             <v-card-title class="title font-weight-black" @click="push2(empresa)">
                 <v-row justify="center" align="center">
-                    <v-avatar size="80">
+                    <v-avatar size="80" tile>
                         <v-img :src="image+empresa.imagen"></v-img>
                     </v-avatar>
                     {{empresa.nombre_comercial}}

@@ -10,7 +10,7 @@
                 <div class="text-center font-weight-bold my-2">Categorías</div>
                 <v-divider></v-divider>
 
-                <v-list-item @click="push(item)" class="mx-2" v-for="item in grupos" :key="item.id">
+                <v-list-item @click="push(item)" class="mx-2 move" v-for="item in grupos" :key="item.id">
                     <v-list-item-avatar tile>
                         <v-img :src="image+item.imagen"></v-img>
                     </v-list-item-avatar>
@@ -79,3 +79,12 @@ import variables from '@/services/variables_globales';
         },
     }
 </script>
+
+<style lang="scss" scoped>
+    .move{
+        transition:all 0.3s;
+    }
+    .move:hover{
+        transform:translateX(20px);
+    }
+</style>

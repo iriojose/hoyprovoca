@@ -29,7 +29,7 @@
             <v-expansion-panels flat>
                 <v-expansion-panel>
                     <v-expansion-panel-header class="title font-weight-black">
-                        <v-avatar size="50" class="mx-2">
+                        <v-avatar size="60" tile class="mx-2">
                             <v-img :src="image+subgrupo.imagen"></v-img>
                         </v-avatar>
                         <div class="text-center">{{subgrupo.nombre}}</div>
