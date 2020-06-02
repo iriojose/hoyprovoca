@@ -42,11 +42,11 @@ export default {
         let inbox;
         Talk.ready.then(async () => {
         this.me = new Talk.User({
-                id: this.user.data.id !== 1 ? this.user.data.id : 1,
-                name: this.user.data.id !== 1 ? this.user.data.nombre + " " + this.user.data.apellido: "Soporte SOMOS SISTEMAS C.A",
-                email: this.user.data.id !== 1 ? this.user.data.email !== "" ? this.user.data.email : null : null, 
-                photoUrl: this.user.data.id !== 1 ? this.user.data.imagen === 'default.png' ? require('@/assets/user.jpg') : this.image+this.user.data.imagen : require('@/assets/AFTIM.png'),
-                welcomeMessage: this.user.data.id !== 1 ?  null : "En Somos Sistemas C.A, estamos encantados de ayudarte a solventar tus problemas. Déjanos un mensaje!",
+                id: this.user.data.id !== 2 ? this.user.data.id : 2,
+                name: this.user.data.id !== 2 ? this.user.data.nombre + " " + this.user.data.apellido: "Soporte SOMOS SISTEMAS C.A",
+                email: this.user.data.id !== 2 ? this.user.data.email !== "" ? this.user.data.email : null : null, 
+                photoUrl: this.user.data.id !== 2 ? this.user.data.imagen === 'default.png' ? require('@/assets/user.jpg') : this.image+this.user.data.imagen : require('@/assets/AFTIM.png'),
+                welcomeMessage: this.user.data.id !== 2 ?  null : "En Somos Sistemas C.A, estamos encantados de ayudarte a solventar tus problemas. Déjanos un mensaje!",
                 role: 'Customer',
                 locale: 'es-ES'
         });
@@ -56,7 +56,7 @@ export default {
             me: this.me
         });        
         
-        if(this.user.data.id !== 1){
+        if(this.user.data.id !== 2){
             this.other = new Talk.User({
                 id: "5",
                 name: "Soporte SOMOS SISTEMAS C.A",
