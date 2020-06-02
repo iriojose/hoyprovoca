@@ -58,7 +58,7 @@ export default {
         
         if(this.user.data.id !== 2){
             this.other = new Talk.User({
-                id: "5",
+                id: "2",
                 name: "Soporte SOMOS SISTEMAS C.A",
                 email: "teamlead@somossistemas.com",
                 photoUrl: require('@/assets/AFTIM.png'),
