@@ -3,7 +3,7 @@
         <v-card 
             :width="$vuetify.breakpoint.smAndDown ? 150:200" 
             :height="$vuetify.breakpoint.smAndDown ? 200:250" 
-            class="pa-3 hover" elevation="0"
+            class="hover" elevation="0"
             @click="modalDetalle"
             active-class="active"
         >
@@ -12,7 +12,6 @@
                 :width="$vuetify.breakpoint.smAndDown ? 150:200" 
                 :height="$vuetify.breakpoint.smAndDown ? 100:150" 
                 :src="typeof concepto.imagen === 'undefined'  || concepto.imagen === 'default.png' ? require('@/assets/box.svg') : image + concepto.imagen"
-                class="pb-3"
             >
                 <v-row class="mx-2" justify="end" v-if="parseExistencia(concepto) <= 0">
                     <v-img 
@@ -63,8 +62,6 @@ import accounting from 'accounting';
             return {
                 ...variables,
                 encontradoPedido:0,
-                precio:'',
-                precioDolar:'',
                 loading:false,
                 data:{
                     usuario_id:0,
@@ -85,12 +82,15 @@ import accounting from 'accounting';
                 ]
             }
         },
-        mounted() {
-            this.precioDolar = accounting.formatMoney(+this.concepto.precio_dolar,{symbol:"$ ",thousand:',',decimal:'.'});
-            this.precio = accounting.formatMoney(+this.concepto.precio_a,{symbol:"Bs ",thousand:'.',decimal:','});
-        },
         computed:{
-            ...mapState(['user','pedidos'])
+            ...mapState(['user','pedidos']),
+
+            precio(){
+                return accounting.formatMoney(+this.concepto.precio_a,{symbol:"Bs ",thousand:'.',decimal:','});
+            },
+            precioDolar(){
+                return accounting.formatMoney(+this.concepto.precio_dolar,{symbol:"$ ",thousand:',',decimal:'.'});
+            }
         },
         methods: {
             ...mapActions(['addPedidos','addDetalle','setModalSesion','setModalProducto','setProducto']),

@@ -46,16 +46,16 @@ import {mapState,mapActions} from 'vuex';
         data(){
             return {
                 ...variables,
-                precio:'',
-                precioDolar:'',
             }
         },
-        mounted(){
-            this.precioDolar = accounting.formatMoney(+this.concepto.precio_dolar,{symbol:"$ ",thousand:',',decimal:'.'});
-            this.precio = accounting.formatMoney(+this.concepto.precio_a,{symbol:"Bs ",thousand:'.',decimal:','});
-        },
         computed:{
-            ...mapState(['user'])
+            ...mapState(['user']),
+            precio(){
+                return accounting.formatMoney(+this.concepto.precio_a,{symbol:"Bs ",thousand:'.',decimal:','});
+            },
+            precioDolar(){
+                return accounting.formatMoney(+this.concepto.precio_dolar,{symbol:"$ ",thousand:',',decimal:'.'});
+            }
         },
         methods:{
             ...mapActions(['setModalSesion','setModalProducto','setProducto']),
