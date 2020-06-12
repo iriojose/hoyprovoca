@@ -47,16 +47,20 @@
                         </v-btn>
                     </v-toolbar>
 
-                    <v-row justify="center" v-if="tipo">
-                        <div v-for="(concepto,i) in conceptos" :key="i">
-                            <CardConceptos style="margin:10px; padding: 0 10px;" :concepto="concepto" />
-                        </div>
-                    </v-row>
+                    <!--v-row justify="center" v-if="tipo"-->
+                        <isotope v-if="tipo" :list="conceptos" @filter="filterOption=arguments[0]" @sort="sortOption=arguments[0]">
+                            <div v-for="(concepto,i) in conceptos" :key="i">
+                                <CardConceptos style="margin:10px; padding: 0 10px;" :concepto="concepto" />
+                            </div>
+                        </isotope>
+                    <!--/v-row-->
 
                     <v-row justify="center" v-else>
-                        <div v-for="(concepto,i) in conceptos" :key="i">
-                            <CardConceptos2 style="margin:10px;" :concepto="concepto" />
-                        </div>
+                        <!--isotope v-else :list="conceptos" @filter="filterOption=arguments[0]" @sort="sortOption=arguments[0]"-->
+                            <div v-for="(concepto,i) in conceptos" :key="i">
+                                <CardConceptos2 :concepto="concepto" />
+                            </div>
+                        <!--/isotope-->
                     </v-row>
                 </v-col>
             </v-row>
@@ -100,7 +104,9 @@
 </template>
 
 <script>
+import isotope from 'vueisotope';
 import Conceptos from '@/services/Conceptos';
+import Empresa from '@/services/Empresa';
 import LoaderRect from '@/components/loaders/LoaderRect';
 import CardConceptos from '@/components/cards/CardConceptos2';
 import CardConceptos2 from '@/components/cards/CardConceptos3';
@@ -108,6 +114,7 @@ import {mapState} from 'vuex';
 
     export default {
         components:{
+            isotope,
             LoaderRect,
             CardConceptos,
             CardConceptos2,
@@ -115,9 +122,11 @@ import {mapState} from 'vuex';
         data() {
             return {
                 conceptos:[],
+                empresas:[],
                 tipo:true,
                 loading:false,
                 drawer:true,
+                ids:[]
             }
         },
         head:{
@@ -137,6 +146,7 @@ import {mapState} from 'vuex';
                 this.revision();
             },
             bandera(){
+                this.empresas = [];
                 this.conceptos = [];
                 this.getConceptos();
             },
@@ -148,13 +158,26 @@ import {mapState} from 'vuex';
             getConceptos(){
                 this.loading = true;
                 Conceptos().get(`/?limit=150&nombre=${this.search}`).then((response) => {
-                    console.log(response.data.data);
                     if(response.data.data){
+                        let array = [];
                         response.data.data.filter(a => a.agregado = false);
                         response.data.data.filter(a => this.agregados.filter(b => a.id == b ? a.agregado=true:null));
+                        //response.data.data.filter(a => array.push(a.adm_empresa_id));
+                        //this.ids = [...new Set(array)];
                         this.conceptos = response.data.data;
+                        //this.ids.filter((a,i) => this.getEmpresas(a,i));
                     }
                     this.loading = false;
+                }).catch(e => {
+                    console.log(e);
+                });
+            },
+            getEmpresas(id,i){
+                Empresa().get(`/${id}`).then((response) => {
+                    this.empresas.push(response.data.data);
+                    if(this.ids.length - 1 == i){
+                        this.loading = false;
+                    }
                 }).catch(e => {
                     console.log(e);
                 });
