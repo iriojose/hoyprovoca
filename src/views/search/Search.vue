@@ -47,13 +47,13 @@
                         </v-btn>
                     </v-toolbar>
 
-                    <!--v-row justify="center" v-if="tipo"-->
-                        <isotope v-if="tipo" :list="conceptos" @filter="filterOption=arguments[0]" @sort="sortOption=arguments[0]">
+                    <v-row justify="center" v-if="tipo">
+                        <!--isotope v-if="tipo" :list="conceptos" @filter="filterOption=arguments[0]" @sort="sortOption=arguments[0]"-->
                             <div v-for="(concepto,i) in conceptos" :key="i">
                                 <CardConceptos style="margin:10px; padding: 0 10px;" :concepto="concepto" />
                             </div>
-                        </isotope>
-                    <!--/v-row-->
+                        <!--/isotope-->
+                    </v-row>
 
                     <v-row justify="center" v-else>
                         <!--isotope v-else :list="conceptos" @filter="filterOption=arguments[0]" @sort="sortOption=arguments[0]"-->
@@ -97,6 +97,19 @@
                             ></v-radio>
                         </v-radio-group>
                     </v-expansion-panel-content>
+
+                    <v-expansion-panel-header class="subtitle-2 font-weight-medium">Filtrar por:</v-expansion-panel-header>
+                    <v-expansion-panel-content>
+                        <v-select 
+                            dense filled single-line
+                            rounded label="Municipios"
+                            hint="Ubicación" persistent-hint
+                            color="#2950c3" return-object
+                            @change="filtroMunicipios($event)" :items="municipios"
+                            item-text="municipio" item-value="municipio"
+                        >
+                        </v-select>
+                    </v-expansion-panel-content>
                 </v-expansion-panel>
             </v-expansion-panels>
         </v-navigation-drawer>
@@ -104,9 +117,8 @@
 </template>
 
 <script>
-import isotope from 'vueisotope';
 import Conceptos from '@/services/Conceptos';
-import Empresa from '@/services/Empresa';
+import Direcciones from '@/services/Direcciones';
 import LoaderRect from '@/components/loaders/LoaderRect';
 import CardConceptos from '@/components/cards/CardConceptos2';
 import CardConceptos2 from '@/components/cards/CardConceptos3';
@@ -114,7 +126,6 @@ import {mapState} from 'vuex';
 
     export default {
         components:{
-            isotope,
             LoaderRect,
             CardConceptos,
             CardConceptos2,
@@ -122,11 +133,10 @@ import {mapState} from 'vuex';
         data() {
             return {
                 conceptos:[],
-                empresas:[],
+                municipios:[],
                 tipo:true,
                 loading:false,
                 drawer:true,
-                ids:[]
             }
         },
         head:{
@@ -146,41 +156,41 @@ import {mapState} from 'vuex';
                 this.revision();
             },
             bandera(){
-                this.empresas = [];
                 this.conceptos = [];
                 this.getConceptos();
             },
         },
         mounted() {
             this.getConceptos();
+            this.getUbicaciones();
         },
         methods:{
             getConceptos(){
                 this.loading = true;
                 Conceptos().get(`/?limit=150&nombre=${this.search}`).then((response) => {
                     if(response.data.data){
-                        let array = [];
                         response.data.data.filter(a => a.agregado = false);
                         response.data.data.filter(a => this.agregados.filter(b => a.id == b ? a.agregado=true:null));
-                        //response.data.data.filter(a => array.push(a.adm_empresa_id));
-                        //this.ids = [...new Set(array)];
                         this.conceptos = response.data.data;
-                        //this.ids.filter((a,i) => this.getEmpresas(a,i));
                     }
                     this.loading = false;
                 }).catch(e => {
                     console.log(e);
                 });
             },
-            getEmpresas(id,i){
-                Empresa().get(`/${id}`).then((response) => {
-                    this.empresas.push(response.data.data);
-                    if(this.ids.length - 1 == i){
-                        this.loading = false;
-                    }
+            getUbicaciones(){
+                Direcciones().get("/16").then((response) => {
+                    this.municipios = response.data.data.detalles;
                 }).catch(e => {
                     console.log(e);
                 });
+            },
+            filtroMunicipios(evt){
+                if(this.conceptos[1].direcciones){
+                    let aux = this.conceptos;
+                    this.conceptos = [];
+                    aux.filter(a => a.direcciones.municipio.id == evt.id ? this.conceptos.push(a):null);
+                }
             },
             revision(){
                 this.conceptos.filter(a => a.filter(b => b.agregado=false));

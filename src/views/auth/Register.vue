@@ -172,6 +172,7 @@ import router from '@/router';
 import validations from '@/validations/validations';
 import Auth from '@/services/Auth';
 import Usuario from '@/services/Usuario';
+import Clientes from '@/services/Clientes';
 import {mapActions} from 'vuex';
 
     export default {
@@ -253,11 +254,20 @@ import {mapActions} from 'vuex';
                     this.logged(response.data);
                     this.respuesta("Usuario registrado exitosamente.","success");
                     setTimeout(() => { this.login()},1000);
+                    this.postCliente(response.data);
                 }).catch(e => {
                     console.log(e);
                     this.respuesta("Error al registrar, intente mas tarde.","error");
                 });
             },
+            postCliente(usuario){
+                let cliente = {
+                    nombre:usuario.nombre + " " + usuario.apellido,
+                    fecha_nac:new Date().toISOString().substr(0,10),
+                    usuario_id:usuario.id
+                };
+                Clientes().post("/",{data:cliente});
+            }
         },
     }
 </script>
