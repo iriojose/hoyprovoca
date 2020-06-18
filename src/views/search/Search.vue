@@ -81,16 +81,19 @@
                     <v-expansion-panel-content>
                         <v-radio-group>
                             <v-radio
+                                v-model="selectMayor"
                                 color="#0f2441"
                                 label="Mayor precio"
                                 @change="mayorPrecio()"
                             ></v-radio>
                             <v-radio
+                                v-model="selectMenor"
                                 color="#0f2441"
                                 label="Menor precio"
                                 @change="menorPrecio()"
                             ></v-radio>
                             <v-radio
+                                v-model="selectAlfa"
                                 color="#0f2441"
                                 label="Alfabeticamente"
                                 @change="alfabeticamente()"
@@ -107,6 +110,7 @@
                             color="#2950c3" return-object
                             @change="filtroMunicipios($event)" :items="municipios"
                             item-text="municipio" item-value="municipio"
+                            v-model="municipio"
                         >
                         </v-select>
                     </v-expansion-panel-content>
@@ -132,6 +136,10 @@ import {mapState} from 'vuex';
         },
         data() {
             return {
+                selectMayor:0,
+                selectMenor:0,
+                selectAlfa:0,
+                municipio:null,
                 conceptos:[],
                 municipios:[],
                 tipo:true,
@@ -167,13 +175,23 @@ import {mapState} from 'vuex';
         methods:{
             getConceptos(){
                 this.loading = true;
-                Conceptos().get(`/?limit=150&nombre=${this.search}`).then((response) => {
+                Conceptos().get(`/?limit=150&nombre=${this.search}&fields=direcciones,existencias`).then((response) => {
                     if(response.data.data){
                         response.data.data.filter(a => a.agregado = false);
                         response.data.data.filter(a => this.agregados.filter(b => a.id == b ? a.agregado=true:null));
                         this.conceptos = response.data.data;
                     }
                     this.loading = false;
+                    if(this.selectMayor == 1){
+                        this.mayorPrecio();
+                    }else if(this.selectMenor == 2){
+                        this.menorPrecio();
+                    }else if(this.selectAlfa == 3){
+                        this.alfabeticamente();
+                    }
+                    if(this.municipio){
+                        this.filtroMunicipios(this.municipio);
+                    }
                 }).catch(e => {
                     console.log(e);
                 });
@@ -189,7 +207,7 @@ import {mapState} from 'vuex';
                 if(this.conceptos[1].direcciones){
                     let aux = this.conceptos;
                     this.conceptos = [];
-                    aux.filter(a => a.direcciones.municipio.id == evt.id ? this.conceptos.push(a):null);
+                    aux.filter(a => a.direcciones.municipio ? a.direcciones.municipio == evt.municipio ? this.conceptos.push(a):null:null);
                 }
             },
             revision(){
@@ -197,12 +215,15 @@ import {mapState} from 'vuex';
                 this.conceptos.filter(a => a.filter(b => this.agregados.filter(c => b.id == c ? b.agregado=true:null)));
             },
             mayorPrecio(){
-               this.conceptos.sort((a, b) => b.precio_a - a.precio_a);
+                this.selectMayor = 1;
+                this.conceptos.sort((a, b) => b.precio_a - a.precio_a);
             },
             menorPrecio(){
+                this.selectMenor = 2;
                 this.conceptos.sort((a, b) => a.precio_a - b.precio_a);
             },
             alfabeticamente(){
+                this.selectAlfa = 3;
                 this.conceptos.sort((a, b) => a.nombre.localeCompare(b.nombre));
             }
         }
