@@ -91,11 +91,12 @@ export default new Vuex.Store({
 
         //autenticacion
         SET_LOGGED(state,val){//logea al usuario
+            console.log(val);
+            window.localStorage.clear();//se elimina el cache guardado
             state.user.loggedIn = true;
             state.user.token = val.token;
-            state.user.data = val.data;
+            state.user.data = val.response.data;
             window.sessionStorage.setItem('token_client',val.token);
-            //window.localStorage.setItem('cliente_token',val.token);
         },
         LOGOUT(state){//cierra la sesion
             state.snackbar = false;
