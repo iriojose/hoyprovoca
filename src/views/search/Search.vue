@@ -109,8 +109,7 @@
                             hint="Ubicación" persistent-hint
                             color="#2950c3" return-object
                             @change="filtroMunicipios($event)" :items="municipios"
-                            item-text="municipio" item-value="municipio"
-                            v-model="municipio"
+                            item-text="municipio"
                         >
                         </v-select>
                     </v-expansion-panel-content>
@@ -139,9 +138,9 @@ import {mapState} from 'vuex';
                 selectMayor:0,
                 selectMenor:0,
                 selectAlfa:0,
-                municipio:null,
                 conceptos:[],
                 municipios:[],
+                aux:[],
                 tipo:true,
                 loading:false,
                 drawer:true,
@@ -180,6 +179,7 @@ import {mapState} from 'vuex';
                         response.data.data.filter(a => a.agregado = false);
                         response.data.data.filter(a => this.agregados.filter(b => a.id == b ? a.agregado=true:null));
                         this.conceptos = response.data.data;
+                        this.aux = response.data.data;
                     }
                     this.loading = false;
                     if(this.selectMayor == 1){
@@ -188,9 +188,6 @@ import {mapState} from 'vuex';
                         this.menorPrecio();
                     }else if(this.selectAlfa == 3){
                         this.alfabeticamente();
-                    }
-                    if(this.municipio){
-                        this.filtroMunicipios(this.municipio);
                     }
                 }).catch(e => {
                     console.log(e);
@@ -204,11 +201,8 @@ import {mapState} from 'vuex';
                 });
             },
             filtroMunicipios(evt){
-                if(this.conceptos[1].direcciones){
-                    let aux = this.conceptos;
-                    this.conceptos = [];
-                    aux.filter(a => a.direcciones.municipio ? a.direcciones.municipio == evt.municipio ? this.conceptos.push(a):null:null);
-                }
+                this.conceptos = [];
+                this.aux.filter(a => a.direcciones !== undefined ? a.direcciones.municipio == evt.municipio ? this.conceptos.push(a):null:null);
             },
             revision(){
                 this.conceptos.filter(a => a.filter(b => b.agregado=false));
@@ -230,3 +224,12 @@ import {mapState} from 'vuex';
 
     }
 </script>
+
+<style lang="scss" scoped>
+    .margen-top{
+        margin-top:75px;
+    }
+    .margen-movil{
+        margin-top:100px;
+    }
+</style>

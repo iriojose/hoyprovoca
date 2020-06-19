@@ -7,15 +7,15 @@
         :minZoom="11"
         :attribution="attribution"
         :max-bounds="maxBounds"
-        @update:center="centerUpdated"
+        
     >
         <l-tile-layer :url="url"></l-tile-layer>
-        <l-marker :lat-lng="dinamicMarket">
+        <l-marker :lat-lng="dinamicMarket" :draggable="true">
             <l-icon
                 :icon-size="dynamicSize"
                 :icon-anchor="dynamicAnchor"
             >
-                <v-icon color="#005598">room</v-icon>
+                <v-icon color="red">room</v-icon>
             </l-icon>
         </l-marker>
         <l-control-zoom position="bottomright"></l-control-zoom>
@@ -74,7 +74,7 @@ import { LMap, LTileLayer, LMarker ,LPopup ,LControlZoom, LIcon} from 'vue2-leaf
         watch: {
             longitudes(){
                 this.center = latLng(this.longitudes.latitud,this.longitudes.longitud);
-                this.marker = latLng(this.longitudes.latitud,this.longitudes.longitud);
+                this.marker = latLng(this.longitudes.latitud,this.longitudes.longitud,{draggable:'true'});
             }
         },
         methods: {
