@@ -98,11 +98,13 @@
                                         v-model="data.codigo_referencia" filled
                                         dense color="#0f2441" hint="Referencia del pago"
                                         persistent-hint rounded single-line label="Codigo de referencia"
-                                        :rules="[require('Codigo de referencia')]"
+                                        :rules="[required('Codigo de referencia')]"
                                     ></v-text-field>
                                 </v-form>
 
-                                <v-btn block
+                                <v-btn block color="#0f2441"
+                                    class="text-capitalize subtitle-2 my-5 white--text font-weight-bold"
+                                    @click="postPago()"
                                 >Enviar pago</v-btn>
                             </v-col>
                             <v-col cols="12" md="4" sm="12" class="pa-5">
@@ -111,6 +113,10 @@
                                     label-idle="Drop image here..."
                                     labelFileAdded = "Archivo Añadido"
                                 />
+
+                                <v-btn fab small @click="view = 1">
+                                    <v-icon>mdi-chevron-left</v-icon>
+                                </v-btn>
                             </v-col>
                         </v-row>
                     </v-scroll-x-transition>
