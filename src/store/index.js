@@ -29,9 +29,77 @@ export default new Vuex.Store({
         modalProducto:false,
         modalImagen:false,
         //arrays
-        pedidos:[],//guarda los pedidos
+        pedidos:[
+            {
+                id:1,
+                usuario_id:7,
+                rest_mesas_id:0,
+                rest_estatus_id:1,
+                estado:"PRUEBA",
+                cant_personas:1,
+                imagen:"default.png",
+                adm_empresa_id:2,
+                detalles:[
+                    {
+                        id:1,
+                        rest_pedidos_id:1,
+                        adm_conceptos_id:2,
+                        cantidad:"1",
+                        precio:"200000",
+                        imagen:"default.png",
+                        rest_estatus_id:1,
+                        estado:"PRUEBA"
+                    },
+                    {
+                        id:2,
+                        rest_pedidos_id:1,
+                        adm_conceptos_id:3,
+                        cantidad:"1",
+                        precio:"220000",
+                        imagen:"default.png",
+                        rest_estatus_id:1,
+                        estado:"PRUEBA"
+                    }
+                ]
+            },
+            {
+                id:2,
+                usuario_id:7,
+                rest_mesas_id:0,
+                rest_estatus_id:1,
+                estado:"PRUEBA",
+                cant_personas:1,
+                imagen:"default.png",
+                adm_empresa_id:1,
+                detalles:[
+                    {
+                        id:3,
+                        rest_pedidos_id:2,
+                        adm_conceptos_id:4,
+                        cantidad:"1",
+                        precio:"240000",
+                        imagen:"default.png",
+                        rest_estatus_id:1,
+                        estado:"PRUEBA"
+                    },
+                    {
+                        id:4,
+                        rest_pedidos_id:2,
+                        adm_conceptos_id:5,
+                        cantidad:"1",
+                        precio:"230000",
+                        imagen:"default.png",
+                        rest_estatus_id:1,
+                        estado:"PRUEBA"
+                    }
+                ]
+            }
+        ],//guarda los pedidos
         agregados:[],//guarda ids de los conceptos agregados a pedidos
-        totalPedidos:[],//guarda el total de cada pedido
+        totalPedidos:[
+            4500000,
+            49000000
+        ],//guarda el total de cada pedido
         producto:{
             existencias:[
                 {existencia:0}

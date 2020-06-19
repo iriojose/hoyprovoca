@@ -1,12 +1,12 @@
 <template>
-    <div>
-        <v-toolbar elevation="2" dark>
+    <v-card elevation="0" color="#f7f7f7">
+        <v-toolbar elevation="2" color="#0f2441">
             <v-toolbar-title>
                 <v-img 
                     contain 
-                    height="60"
-                    width="100"  
-                    src="@/assets/logo 4.png"
+                    height="100"
+                    width="150"  
+                    src="@/assets/logo 6.png"
                 />
             </v-toolbar-title>
 
@@ -20,158 +20,166 @@
                 </v-btn>
             </v-hover>
         </v-toolbar>
-        <v-divider></v-divider>
 
-        <div class="text-center my-5 display-1 font-weight-bold">Checkout</div>
+        <v-card-text>
+            <div class="text-center my-5 display-1 font-weight-bold">Checkout</div>
 
-        <v-row justify="center" :class="$vuetify.breakpoint.smAndDown ? 'mx-2':'mx-10'">
-            <v-col cols="12" sm="12" md="7">
-                <v-card elevation="2" width="100%" height="300" class="py-3">
-                    <v-list>
-                        <v-list-item>
-                            <v-list-item-content>
-                                <v-list-item-title>Tus pedidos</v-list-item-title>
-                                <v-list-item-subtitle>{{pedidos.length +' '}} pedidos</v-list-item-subtitle>
-                            </v-list-item-content>
-                            <v-list-item-content></v-list-item-content>
-                        </v-list-item>
-                    </v-list>
-                    <v-slide-group show-arrows class="mx-5">
-                        <v-slide-item v-for="(pedido,i) in pedidos" :key="i" class="mx-2 my-2">
-                            <v-avatar size="50" class="elevation-2" @click="changePedido(i)">
-                                <v-img :src="image+pedido.imagen"></v-img>
-                            </v-avatar>
-                        </v-slide-item>
-                    </v-slide-group>
+            <v-slide-group multiple show-arrows :class="$vuetify.breakpoint.smAndDown? null:'mx-10'">
+                <v-slide-item v-for="(pedi,i) in pedidos" :key="i">
+                    <v-btn :disabled="pedido.id == pedi.id" class="mx-2" depressed rounded height="50" @click="selectPedido(pedi,i)">
+                        <v-avatar size="40">
+                            <v-img :src="image+pedi.imagen"></v-img>
+                        </v-avatar>
+                    </v-btn>
+                </v-slide-item>
+            </v-slide-group>
 
-                    <v-list>
-                        <v-list-item>
-                            <v-list-item-content>
-                                <v-list-item-title>Tus productos</v-list-item-title>
-                                <v-list-item-subtitle>{{pedido.detalles.length +' '}} item</v-list-item-subtitle>
-                            </v-list-item-content>
-                            <v-list-item-content></v-list-item-content>
-                        </v-list-item>
-                    </v-list>
+            <v-card 
+                :class="$vuetify.breakpoint.smAndDown ? 'my-5 mx-2':'mx-10 my-5'" 
+            >
+                <v-card-text>
+                    <v-scroll-x-transition>
+                        <v-row justify="center" v-show="view == 1">
+                            <v-col cols="12" md="6" sm="12" class="pa-5">
 
-                    <v-slide-group show-arrows class="mx-5">
-                        <v-slide-item v-for="(detalle,i) in pedido.detalles" :key="i" class="mx-2 my-2">
-                            <v-avatar size="50" class="elevation-2">
-                                <v-img :src="image+detalle.imagen"></v-img>
-                            </v-avatar>
-                        </v-slide-item>
-                    </v-slide-group>
-                </v-card>
-            </v-col>
+                                <div class="font-weight-bold title">Tus productos</div>
+                                <div class="font-weight-bold subtitle-1">{{pedido.detalles.length +' '}} item</div>
 
-            <v-col cols="12" sm="12" md="4">
-                <v-card elevation="2" width="100%" height="250">
-                    <v-list dense>
-                        <v-list-item>
-                            <v-list-item-content class="grey--text subtitle-1">Subtotal:</v-list-item-content>
-                            <v-list-item-content>{{total}}</v-list-item-content>
-                        </v-list-item>
-                        <v-list-item>
-                            <v-list-item-content class="grey--text subtitle-1">Propina:</v-list-item-content>
-                            <v-list-item-content>Bs 00,00</v-list-item-content>
-                        </v-list-item>
-                        <v-list-item>
-                            <v-list-item-content class="grey--text subtitle-1">Domicilio:</v-list-item-content>
-                            <v-list-item-content>Bs 00,00</v-list-item-content>
-                        </v-list-item>
+                                <v-list>
+                                    <v-list-item v-for="(detalle,i) in pedido.detalles" :key="i">
+                                        <v-list-item-avatar>
+                                            <v-img :src="image+detalle.imagen"></v-img>
+                                        </v-list-item-avatar>
+                                        <v-list-item-title>
+                                            {{detalle.precio}}
+                                        </v-list-item-title>
+                                        <v-list-item-title>
+                                            {{detalle.cantidad}}
+                                        </v-list-item-title>
+                                    </v-list-item>
+                                </v-list>
+                            </v-col>
+                            <v-col cols="12" md="4" sm="12">
+                                <div class="font-weight-bold title">Subtotal a pagar</div>
+                                <div class="font-weight-bold subtitle-1">{{total}}</div>
 
-                        <v-divider class="mx-5 my-5"></v-divider>
+                                <v-select
+                                    :items="tiposDePago" dense color="#0f2441" filled
+                                    rounded item-value="nombre" return-object item-text="nombre"
+                                    persistent-hint hint="Metodo De Pago" label="Seleccione su metodo de pago"
+                                    single-line v-model="pago" class="my-5"
+                                ></v-select>
 
-                        <v-list-item>
-                            <v-list-item-content class="font-weight-black title">
-                                Total:
-                            </v-list-item-content>
-                            <v-list-item-content>
-                                {{total}}
-                            </v-list-item-content>
-                        </v-list-item>
-                    </v-list>
-                </v-card>
-            </v-col>
+                                <v-btn 
+                                    block color="#0f2441" :disabled="pago ? false:true"
+                                    class="text-capitalize subtitle-2 my-5 white--text font-weight-bold"
+                                    @click="view = 2"
+                                >Pagar</v-btn>
+                            </v-col>
+                        </v-row>
+                    </v-scroll-x-transition>
 
-            <v-col cols="12" md="8" sm="12">
-                <v-card elevation="2" width="100%" height="500">
-                    <v-row justify="center" align="center">
-                        <v-col cols="12" md="8" sm="12">
-                            <v-file-input
-                                label="Abjuntar Pago"
-                                counter
-                                prepend-icon="mdi-camera"
-                                accept="image/png, image/jpeg"
-                                @change="change($event)"
-                                dense
-                                color="#005598"
-                                outlined
-                            />
-                        </v-col>
-                        <v-col cols="12" md="12" sm="12">
-                            <v-img :width="$vuetify.breakpoint.smAndDown ? '100%':'100%'" height="350" contain v-if="bauche" :src="bauche" />
-                        </v-col>
-                        <v-col cols="12" md="12" sm="12" v-if="bauche">
-                            <v-btn 
-                                block color="#005598" 
-                                class="text-capitalize white--text" 
-                                rounded @click="pagar"
-                                :loading="loading"
-                            >
-                                Enviar pago
-                            </v-btn>
-                        </v-col>
-                    </v-row>
-                </v-card>
-            </v-col>
-        </v-row>
+                    <v-scroll-x-transition>
+                        <v-row v-show="view == 2" justify="center">
+                            <v-col cols="12" md="6" sm="12" class="pa-5">
+                                <div class="font-weight-bold title">Subtotal a pagar</div>
+                                <div class="font-weight-bold subtitle-1">{{total}}</div>
 
-        <v-snackbar v-model="snackbar" :color="color" bottom right :timeout="1000">
-            <div>
-                <v-icon color="#fff" class="mx-2">{{icon}}</v-icon>{{mensaje}}
-            </div>
-        </v-snackbar>
-    </div>
+                                <div class="text-center font-weight-bold title my-5">
+                                    Datos de la cuenta
+                                </div>
+                                <div>Nombre:Jesus Bellorin</div>
+                                <div>cedula:212121212</div>
+                                <div>cuenta:212121212121212</div>
+                                <div>banco:zelle</div>
+
+                                <v-form v-model="valid" class="my-5">
+                                    <v-text-field
+                                        v-model="data.codigo_referencia" filled
+                                        dense color="#0f2441" hint="Referencia del pago"
+                                        persistent-hint rounded single-line label="Codigo de referencia"
+                                        :rules="[require('Codigo de referencia')]"
+                                    ></v-text-field>
+                                </v-form>
+
+                                <v-btn block
+                                >Enviar pago</v-btn>
+                            </v-col>
+                            <v-col cols="12" md="4" sm="12" class="pa-5">
+                                <FilePond  
+                                    ref="pond"
+                                    label-idle="Drop image here..."
+                                    labelFileAdded = "Archivo Añadido"
+                                />
+                            </v-col>
+                        </v-row>
+                    </v-scroll-x-transition>
+                </v-card-text>
+            </v-card>
+        </v-card-text>
+    </v-card>
 </template>
 
 <script>
-import accounting from 'accounting';
-import {mapState,mapActions} from 'vuex';
 import variables from '@/services/variables_globales';
-import Usuario from '@/services/Usuario';
+//import Pagos from '@/services/Pagos';
 import Pedidos from '@/services/Pedidos';
-import Images from '@/services/Images';
-import Movimiento_banco from '@/services/Movimiento_banco';
-import router from '@/router';
+import accounting from 'accounting';
+import Usuario from '@/services/Usuario';
+import {mapState,mapActions} from 'vuex';
+import validations from '@/validations/validations';
+
+import vueFilePond from 'vue-filepond';
+import FilePondPluginImagePreview from 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.esm.js';
+import 'filepond/dist/filepond.min.css';
+import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css';
+const FilePond = vueFilePond(FilePondPluginImagePreview);
+
 
     export default {
+        components:{
+            FilePond
+        },
         data() {
             return {
+                ...validations,
                 ...variables,
+                model: null,
+                valid:false,
+                view:1,
+                total:0,
                 pedido:{},
-                empresa:{},
-                total:'',
-                sales:[],
-                bauche:null,
-                imagen:null,
-                mensaje:'',
-                color:'',
-                icon:'',
-                loading:false,
-                snackbar:false,
-                index:0,
-                movimiento:{
-                    adm_banco_id: 1,
-                    adm_tipo_pago_id: 3,
-                    credito: 0,
-                    origen: "PEDIDO",
-                    documento: "0",
+                conceptos:[],
+                pago:null,
+                tiposDePago:[
+                    {
+                        id:1,
+                        nombre:"Banesco Panama"
+                    },
+                    {
+                        id:2,
+                        nombre:"Zelle"
+                    },
+                    {
+                        id:3,
+                        nombre:"Banco nacional"
+                    },
+                ],
+                data:{
+                    emisor:"",
+                    receptor:"Jesus Bellorin",
+                    adm_pedidos_id:"",
+                    adm_tipo_pago_id:"",
+                    adm_status_id: "",
+                    monto: "",
+                    codigo_referencia:"",
+                    imagen:"",
+                    usuario_id:""
                 }
             }
         },
         mounted() {
-            this.getPedidosUsuario();
+            this.getPedidos();
         },
         head:{
             title(){
@@ -182,93 +190,80 @@ import router from '@/router';
                 }
             }
         },
+        watch: {
+            view(){
+                if(this.view == 2){
+                    this.data.emisor = this.user.data.nombre+" "+this.user.data.apellido;
+                    this.data.usuario_id = this.user.data.id;
+                    this.data.monto = this.total;
+                    this.data.adm_tipo_pago_id = this.pago.id;
+                    this.dataadm_status_id = 1;
+                    this.data.adm_pedidos_id = this.pedido.id;
+                }
+            }
+        },
         computed: {
             ...mapState(['user','pedidos','totalPedidos'])
         },
         methods:{
             ...mapActions(['setPedidos','deletePedidoStore']),
-            
-            change(evt){
-                this.bauche=null;
-                if(evt){
-                    var reader = new FileReader();
-                    reader.onload = (e) => {
-                        this.bauche = e.target.result;
-                        this.imagen = evt;
-                    }
-                    reader.readAsDataURL(evt);
-                }
-            },
-            mensajeSnackbar(color,icon,mensaje){
-                this.color=color;
-                this.icon=icon;
-                this.mensaje=mensaje;
-                this.loading=false;
-                this.snackbar=true;
-            },
-            changePedido(index){
-                this.index = index;
-                this.pedido = this.pedidos[index];
-                this.total = accounting.formatMoney(+this.totalPedidos[index],{symbol:"Bs ",thousand:'.',decimal:','});
-            },
-            getPedidosUsuario(){
+
+            getPedidos(){
                 Usuario().get(`/${this.user.data.id}/pedidos/?rest_estatus_id=1`).then((response) => {
-                    if(response.data !== 'This entity is empty'){
+                    if(response.data.data){
                         this.setPedidos(response.data.data);
                         this.pedido = this.pedidos[0];
                         this.total = accounting.formatMoney(+this.totalPedidos[0],{symbol:"Bs ",thousand:'.',decimal:','});
+                    }else {
+                        this.pedido = this.pedidos[0];
+                        this.pedido.detalles.filter(a => a.precio =  accounting.formatMoney(+a.precio,{symbol:"Bs ",thousand:'.',decimal:','}));
+                        this.total = accounting.formatMoney(+this.totalPedidos[0],{symbol:"Bs ",thousand:'.',decimal:','});
                     }
-                }).catch(e => {
+                }).cathc(e => { 
                     console.log(e);
                 });
             },
-            pagar(){
-                this.loading=true;
-                this.movimiento.credito = this.total;
-                this.movimiento.documento = this.pedido.id;
-
-                Movimiento_banco().post("/",{data:this.movimiento}).then((response) => {
+            selectPedido(pedido,i){
+                this.view = 1;
+                this.pedido = pedido;
+                this.pedido.detalles.filter(a => a.precio =  accounting.formatMoney(+a.precio,{symbol:"Bs ",thousand:'.',decimal:','}));
+                this.total = accounting.formatMoney(+this.totalPedidos[i],{symbol:"Bs ",thousand:'.',decimal:','});
+            },
+            getConceptos(id){
+                Pedidos().get(`/${id}/conceptos`).then((response) => {
+                    this.conceptos = response.data.data;
                     console.log(response);
-                    this.postImagen(response.data.response.data.id);
-                    this.updatePedido();
                 }).catch(e => {
                     console.log(e);
-                    this.mensajeSnackbar('#D32F2F','error','Ooops, ocurrio un error.');
                 });
             },
-            postImagen(id){
+            postPago(){
+                Pagos().post("/",{data:this.data}).then((response) => {
+                    this.process();
+                }).catch(e => {
+                    console.log(e);
+                })
+            },
+            process(fieldName, file, metadata, load, error,abort) {
                 let formdata = new FormData();
-                formdata.append('image',this.imagen);
-
-                Images().post(`/main/movimiento_bancos/${id}`,formdata).then((response) => {
-                    //this.mensajeSnackbar('#388E3C','done','Pago enviado exitosamente.');
+                formdata.append('image',file);
+                abort();
+                
+                Images().post(`/main/pagos/${this.pedido.id}`,formdata).then((response) => {
+                    load("Imagen añadida");
                 }).catch(e =>  {
                     console.log(e);
-                    //this.mensajeSnackbar('#D32F2F','error','Ooops, ocurrio un error.');
-                });
-            },  
-            updatePedido(){
-                Pedidos().post(`/${this.pedido.id}`,{data:{rest_estatus_id:2}}).then((response) => {
-                    this.mensajeSnackbar('#388E3C','done','Pago enviado exitosamente.');
-                    this.deletePedidoStore(this.index);
-                    setTimeout(() => { router.push("/") },1000);
-                }).catch(e => {
-                    console.log(e);
-                    this.mensajeSnackbar('#D32F2F','error','Ooops, ocurrio un error.');
-                });
-            }
+                    error("Erro al subir la imagen");
+                }); 
+            },
         }
     }
+
+//adm_tipo_pago_id = 1 (Banesco panama)
+//adm_tipo_pago_id = 2 (Zelle)
+//adm_tipo_pago_id = 3 (Bancos nacionales)
 </script>
 
-<style lang="css" scope>
-    .margen-top{
-        margin-top:75px;
-    }
-    .margen-movil{
-        margin-top:120px;
-    }
-    .shadow{
-        box-shadow: 0px 5px 9px -1px rgba(135,127,135,1);
-    }
+<style lang="scss" scoped>
+
 </style>
