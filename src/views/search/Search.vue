@@ -79,21 +79,18 @@
                 <v-expansion-panel>
                     <v-expansion-panel-header class="subtitle-2 font-weight-medium">Ordenar por:</v-expansion-panel-header>
                     <v-expansion-panel-content>
-                        <v-radio-group>
+                        <v-radio-group v-model="radioGroup">
                             <v-radio
-                                v-model="selectMayor"
                                 color="#0f2441"
                                 label="Mayor precio"
                                 @change="mayorPrecio()"
                             ></v-radio>
                             <v-radio
-                                v-model="selectMenor"
                                 color="#0f2441"
                                 label="Menor precio"
                                 @change="menorPrecio()"
                             ></v-radio>
                             <v-radio
-                                v-model="selectAlfa"
                                 color="#0f2441"
                                 label="Alfabeticamente"
                                 @change="alfabeticamente()"
@@ -109,12 +106,20 @@
                             hint="Ubicación" persistent-hint
                             color="#2950c3" return-object
                             @change="filtroMunicipios($event)" :items="municipios"
-                            item-text="municipio"
+                            item-text="municipio" v-model="municipio"
                         >
                         </v-select>
                     </v-expansion-panel-content>
                 </v-expansion-panel>
             </v-expansion-panels>
+
+            <v-row justify="center">
+                <v-btn 
+                    color="#0f2441" tile @click="resetFilter()"
+                    class="text-capitalize font-weight-bold white--text">
+                    Borrar fliltros
+                </v-btn>
+            </v-row>
         </v-navigation-drawer>
      </v-card>
 </template>
@@ -135,11 +140,11 @@ import {mapState} from 'vuex';
         },
         data() {
             return {
-                selectMayor:0,
-                selectMenor:0,
-                selectAlfa:0,
+                radioGroup:-1,
+                radio:null,
                 conceptos:[],
                 municipios:[],
+                municipio:null,
                 aux:[],
                 tipo:true,
                 loading:false,
@@ -182,12 +187,15 @@ import {mapState} from 'vuex';
                         this.aux = response.data.data;
                     }
                     this.loading = false;
-                    if(this.selectMayor == 1){
+                    if(this.radioGroup == 2){
                         this.mayorPrecio();
-                    }else if(this.selectMenor == 2){
+                    }else if(this.radioGroup == 1){
                         this.menorPrecio();
-                    }else if(this.selectAlfa == 3){
+                    }else if(this.radioGroup == 0){
                         this.alfabeticamente();
+                    }
+                    if(this.municipio){
+                        this.filtroMunicipios(this.municipio);
                     }
                 }).catch(e => {
                     console.log(e);
@@ -209,16 +217,18 @@ import {mapState} from 'vuex';
                 this.conceptos.filter(a => a.filter(b => this.agregados.filter(c => b.id == c ? b.agregado=true:null)));
             },
             mayorPrecio(){
-                this.selectMayor = 1;
                 this.conceptos.sort((a, b) => b.precio_a - a.precio_a);
             },
             menorPrecio(){
-                this.selectMenor = 2;
                 this.conceptos.sort((a, b) => a.precio_a - b.precio_a);
             },
             alfabeticamente(){
-                this.selectAlfa = 3;
                 this.conceptos.sort((a, b) => a.nombre.localeCompare(b.nombre));
+            },
+            resetFilter(){
+                this.municipio = null;
+                this.radioGroup = -1;
+                this.conceptos = this.aux;
             }
         }
 
