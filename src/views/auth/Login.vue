@@ -178,8 +178,7 @@ import {mapActions} from 'vuex';
             login(){
                 this.loading = true;
                 Auth().post("/login",{data:this.data}).then((response) =>{
-                    console.log(response);
-                    if(response.data.response.data.perfil_id == 4){
+                    if(response.data.response.data.bloqueado == 1){
                         this.setModalBloqueado(true);
                         this.loading = false;
                     }else if(response.data.response.data.perfil_id == 3){
