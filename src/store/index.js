@@ -37,6 +37,7 @@ export default new Vuex.Store({
                 rest_estatus_id:1,
                 estado:"PRUEBA",
                 cant_personas:1,
+                nom_empresa:'SomosSistemas',
                 imagen:"default.png",
                 adm_empresa_id:2,
                 detalles:[
@@ -48,6 +49,7 @@ export default new Vuex.Store({
                         precio:"200000",
                         imagen:"default.png",
                         rest_estatus_id:1,
+                        stock:0,
                         estado:"PRUEBA"
                     },
                     {
@@ -56,9 +58,10 @@ export default new Vuex.Store({
                         adm_conceptos_id:3,
                         cantidad:"1",
                         precio:"220000",
+                        stock:0,
                         imagen:"default.png",
                         rest_estatus_id:1,
-                        estado:"PRUEBA"
+                        estado:"ACTIVO"
                     }
                 ]
             },
@@ -69,6 +72,7 @@ export default new Vuex.Store({
                 rest_estatus_id:1,
                 estado:"PRUEBA",
                 cant_personas:1,
+                nom_empresa:'SomosSistemas',
                 imagen:"default.png",
                 adm_empresa_id:1,
                 detalles:[
@@ -79,8 +83,9 @@ export default new Vuex.Store({
                         cantidad:"1",
                         precio:"240000",
                         imagen:"default.png",
+                        stock:0,
                         rest_estatus_id:1,
-                        estado:"PRUEBA"
+                        estado:"ACTIVO"
                     },
                     {
                         id:4,
@@ -89,9 +94,40 @@ export default new Vuex.Store({
                         cantidad:"1",
                         precio:"230000",
                         imagen:"default.png",
+                        stock:0,
                         rest_estatus_id:1,
-                        estado:"PRUEBA"
-                    }
+                        estado:"INACTIVO"
+                    }, {
+                        id:5,
+                        rest_pedidos_id:2,
+                        adm_conceptos_id:4,
+                        cantidad:"1",
+                        precio:"240000",
+                        imagen:"default.png",
+                        stock:0,
+                        rest_estatus_id:1,
+                        estado:"ACTIVO"
+                    }, {
+                        id:6,
+                        rest_pedidos_id:2,
+                        adm_conceptos_id:4,
+                        cantidad:"1",
+                        precio:"240000",
+                        imagen:"default.png",
+                        rest_estatus_id:1,
+                        stock:0,
+                        estado:"ACTIVO"
+                    }, {
+                        id:37,
+                        rest_pedidos_id:2,
+                        adm_conceptos_id:4,
+                        cantidad:"1",
+                        precio:"240000",
+                        imagen:"default.png",
+                        stock:0,
+                        rest_estatus_id:1,
+                        estado:"ACTIVO"
+                    },
                 ]
             }
         ],//guarda los pedidos
