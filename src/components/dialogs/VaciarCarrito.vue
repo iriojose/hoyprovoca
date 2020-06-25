@@ -62,7 +62,7 @@ import Pedidos from '@/services/Pedidos';
             },
             deletePedidos(id,i){
                 Pedidos().delete(`/${id}`).then(() => {
-                    if(i == this.pedidos.lenght -1){
+                    if(this.pedidos.length -1 == i){
                         this.deleteCarrito();
                         this.loading = false;
                         this.close();
