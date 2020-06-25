@@ -18,366 +18,192 @@
                     color="#fff"
                     class="text-capitalize body-2 font-weight-bold black--text"
                     to="/"
+                    >Seguir comprando</v-btn
                 >
-                    Seguir comprando
-                </v-btn>
             </v-hover>
         </v-toolbar>
-
-        <v-card-text>
-            <div class="text-center my-5 display-1 font-weight-bold">
-                Checkout
-            </div>
-
-            <v-slide-group
-                multiple
-                show-arrows
-                :class="$vuetify.breakpoint.smAndDown ? null : 'mx-10'"
-            >
-                <v-slide-item v-for="(pedi, i) in pedidos" :key="i">
-                    <v-btn
-                        :disabled="pedido.id == pedi.id"
-                        class="mx-2"
-                        depressed
-                        rounded
-                        height="50"
-                        @click="selectPedido(pedi, i)"
-                    >
-                        <v-avatar size="40">
-                            <v-img :src="image + pedi.imagen"></v-img>
-                        </v-avatar>
-                    </v-btn>
-                </v-slide-item>
-            </v-slide-group>
-
-            <v-card
-                :class="
-                    $vuetify.breakpoint.smAndDown ? 'my-5 mx-2' : 'mx-10 my-5'
-                "
-            >
+        <v-scroll-x-transition>
+            <v-card elevation="0" color="#f7f7f7" v-show="view == 1">
                 <v-card-text>
-                    <v-scroll-x-transition>
-                        <v-row
-                            class="align"
-                            justify="center"
-                            v-show="view == 1"
-                        >
-                            <v-col
-                                cols="12"
-                                md="6"
-                                sm="12"
-                                class="pa-5 products-list"
+                    <div class="text-center my-5 display-1 font-weight-bold">
+                        Checkout
+                    </div>
+
+                    <v-slide-group
+                        multiple
+                        show-arrows
+                        :class="$vuetify.breakpoint.smAndDown ? null : 'mx-10'"
+                    >
+                        <v-slide-item v-for="(pedi, i) in pedidos" :key="i">
+                            <v-btn
+                                :disabled="pedido.id == pedi.id"
+                                class="mx-2"
+                                depressed
+                                rounded
+                                height="50"
+                                @click="selectPedido(pedi, i)"
                             >
-                                <div class="font-weight-bold title">
-                                    Tus productos
-                                </div>
-                                <div class="font-weight-bold subtitle-1">
-                                    {{ pedido.detalles.length + " " }} item
-                                </div>
+                                <v-avatar size="40">
+                                    <v-img :src="image + pedi.imagen"></v-img>
+                                </v-avatar>
+                            </v-btn>
+                        </v-slide-item>
+                    </v-slide-group>
 
-                                <v-list>
-                                    <v-list-item class="products-row">
-                                        <v-list-item-title class="imag">
-                                            <p>Imagen</p>
-                                        </v-list-item-title>
-                                        <v-list-item-title>
-                                            <p>Precio</p>
-                                        </v-list-item-title>
-                                        <v-list-item-title>
-                                            <p>Cantidad</p>
-                                        </v-list-item-title>
-                                        <v-list-item-title>
-                                            <p>Estado</p>
-                                        </v-list-item-title>
-                                    </v-list-item>
-                                    <v-list-item
-                                        class="products-row"
-                                        v-for="(detalle, i) in pedido.detalles"
-                                        :key="i"
-                                    >
-                                        <v-list-item-title>
-                                            <v-list-item-avatar>
-                                                <v-img
-                                                    :src="
-                                                        image + detalle.imagen
-                                                    "
-                                                ></v-img>
-                                            </v-list-item-avatar>
-                                        </v-list-item-title>
-                                        <v-list-item-title class="product-text">
-                                            {{ detalle.precio }}
-                                        </v-list-item-title>
-                                        <v-list-item-title class="product-text">
-                                            <p style="padding-left:10px">
-                                                {{ detalle.cantidad }}
-                                            </p>
-                                        </v-list-item-title>
-                                        <v-list-item-title class="product-text">
-                                            
-                                                <v-chip
-                                                    class="ma-2"
-                                                    v-bind:color="detalle.estado == 'ACTIVO' ? 'green' : 'red'"
-                                                    text-color="white"
-                                                    >{{
-                                                        detalle.estado
-                                                    }}</v-chip
-                                                >
-                        
-                            
-                                        </v-list-item-title>
-                                    </v-list-item>
-                                </v-list>
-                            </v-col>
-                            <v-col cols="6" md="4" sm="12">
-                                <v-row>
-                                    <v-col cols="12" md="6" sm="12">
-                                        <div class="font-weight-bold title">
-                                            Empresa
-                                        </div>
-                                        <div
-                                            class="font-weight-bold subtitle-1"
-                                        >
-                                            {{ pedido.nom_empresa }}
-                                        </div>
-                                    </v-col>
-                                    <v-col cols="12" md="6" sm="12">
-                                        <div class="font-weight-bold title">
-                                            Subtotal a pagar
-                                        </div>
-                                        <div
-                                            class="font-weight-bold subtitle-1"
-                                        >
-                                            {{ total }}
-                                        </div>
-                                    </v-col>
-                                </v-row>
-
-                                <div class="font-weight-bold subtitle-2">
-                                    Cantidad de Personas :
-                                    {{ pedido.cant_personas }}
-                                </div>
-                                <v-btn
-                                    block
-                                    color="#0f2441"
-                                    class="text-capitalize subtitle-2 my-5 white--text font-weight-bold"
-                                    @click="view = 2"
-                                    >Pagar</v-btn
-                                >
-                            </v-col>
-                        </v-row>
-                    </v-scroll-x-transition>
-                    <v-scroll-x-transition>
-                        <v-row
-                            class="align"
-                            justify="center"
-                            v-show="view == 2"
-                        >
-                            <v-col
-                                cols="12"
-                                md="6"
-                                sm="12"
-                                class="pa-5 products-list"
-                            >
-                                <div class="font-weight-bold title">
-                                    Tus productos
-                                </div>
-                                <div class="font-weight-bold subtitle-1">
-                                    {{ pedido.detalles.length + " " }} item
-                                </div>
-
-                                <v-list>
-                                    <v-list-item class="products-row">
-                                        <v-list-item-title class="imag">
-                                            <p>Imagen</p>
-                                        </v-list-item-title>
-                                        <v-list-item-title>
-                                            <p>Precio</p>
-                                        </v-list-item-title>
-                                        <v-list-item-title>
-                                            <p>solicitada</p>
-                                        </v-list-item-title>
-                                        <v-list-item-title>
-                                            <p>en Stock</p>
-                                        </v-list-item-title>
-                                    </v-list-item>
-                                    <v-list-item
-                                        class="products-row"
-                                        v-for="(detalle, i) in pedido.detalles"
-                                        :key="i"
-                                    >
-                                        <v-list-item-title>
-                                            <v-list-item-avatar>
-                                                <v-img
-                                                    :src="
-                                                        image + detalle.imagen
-                                                    "
-                                                ></v-img>
-                                            </v-list-item-avatar>
-                                        </v-list-item-title>
-                                        <v-list-item-title class="product-text">
-                                            {{ detalle.precio }}
-                                        </v-list-item-title>
-                                        <v-list-item-title class="product-text">
-                                            <p style="padding-left:10px">
-                                                {{ detalle.cantidad }}
-                                            </p>
-                                        </v-list-item-title>
-                                        <v-list-item-title class="product-text">
-                                            {{ detalle.stock }}
-                                        </v-list-item-title>
-                                    </v-list-item>
-                                </v-list>
-                            </v-col>
-                            <v-col cols="6" md="4" sm="12">
-                                <div class="font-weight-bold title">
-                                    Subtotal a pagar
-                                </div>
-                                <div class="font-weight-bold subtitle-1">
-                                    {{ total }}
-                                </div>
-                                <v-btn
-                                    block
-                                    color="#0f2441"
-                                    class="text-capitalize subtitle-2 my-5 white--text font-weight-bold"
-                                    @click="view = 3"
-                                    >Continuar</v-btn
-                                > <div  class="font-weight-bold subtitle-3">
-                                    <span v-if="stock ==null" style="color:green">{{ stock_message }}</span>
-                                     <span v-else style="color:red">{{ stock_message }}</span>
-                                </div>
-                               <v-btn fab small @click="view = 1">
-                                    <v-icon>mdi-chevron-left</v-icon>
-                                </v-btn>
-                            </v-col>
-                        </v-row>
-                    </v-scroll-x-transition>
-                    <v-scroll-x-transition>
-                        <v-row
-                            class="align"
-                            justify="center"
-                            v-show="view == 3"
-                        >
-                            <v-col cols="12" md="4" sm="12">
-                                <div class="font-weight-bold title">
-                                    Tus productos
-                                </div>
-                                <div class="font-weight-bold subtitle-1">
-                                    {{ pedido.detalles.length + " " }} item
-                                </div>
-                                <div class="font-weight-bold title">
-                                    Subtotal a pagar
-                                </div>
-                                <div class="font-weight-bold subtitle-1">
-                                    {{ total }}
-                                </div>
-
-                                <v-select
-                                    :items="tiposDePago"
-                                    dense
-                                    color="#0f2441"
-                                    filled
-                                    rounded
-                                    item-value="nombre"
-                                    return-object
-                                    item-text="nombre"
-                                    persistent-hint
-                                    hint="Metodo De Pago"
-                                    label="Seleccione su metodo de pago"
-                                    single-line
-                                    v-model="pago"
-                                    class="my-5"
-                                ></v-select>
-                                <v-select
-                                    :items="numeroDePagos"
-                                    dense
-                                    color="#0f2441"
-                                    filled
-                                    rounded
-                                    item-value="value"
-                                    return-object
-                                    item-text="value"
-                                    persistent-hint
-                                    hint="Diferentes metodos de pago"
-                                    label="tipos de pago diferentes?"
-                                    single-line
-                                    v-model="pago"
-                                    class="my-5"
-                                ></v-select>
-                                <v-btn
-                                    block
-                                    color="#0f2441"
-                                    :disabled="pago ? false : true"
-                                    class="text-capitalize subtitle-2 my-5 white--text font-weight-bold"
-                                    @click="view = 4"
-                                    >Pagar</v-btn
-                                >
-                                <v-btn fab small @click="view = 2">
-                                    <v-icon>mdi-chevron-left</v-icon>
-                                </v-btn>
-                            </v-col>
-                        </v-row>
-                    </v-scroll-x-transition>
-                    <v-scroll-x-transition>
-                        <v-row v-show="view == 4" justify="center">
-                            <v-col cols="12" md="6" sm="12" class="pa-5">
-                                <div class="font-weight-bold title">
-                                    Subtotal a pagar
-                                </div>
-                                <div class="font-weight-bold subtitle-1">
-                                    {{ total }}
-                                </div>
-
-                                <div
-                                    class="text-center font-weight-bold title my-5"
-                                >
-                                    Datos de la cuenta
-                                </div>
-                                <div>Nombre:Jesus Bellorin</div>
-                                <div>cedula:212121212</div>
-                                <div>cuenta:212121212121212</div>
-                                <div>banco:zelle</div>
-
-                                <v-form v-model="valid" class="my-5">
-                                    <v-text-field
-                                        v-model="data.codigo_referencia"
-                                        filled
-                                        dense
-                                        color="#0f2441"
-                                        hint="Referencia del pago"
-                                        persistent-hint
-                                        rounded
-                                        single-line
-                                        label="Codigo de referencia"
-                                        :rules="[
-                                            required('Codigo de referencia'),
-                                        ]"
-                                    ></v-text-field>
-                                </v-form>
-
-                                <v-btn
-                                    block
-                                    color="#0f2441"
-                                    class="text-capitalize subtitle-2 my-5 white--text font-weight-bold"
-                                    @click="postPago()"
-                                    >Enviar pago</v-btn
-                                >
-                            </v-col>
-                            <v-col cols="12" md="4" sm="12" class="pa-5">
-                                <FilePond
-                                    ref="pond"
-                                    label-idle="Drop image here..."
-                                    labelFileAdded="Archivo Añadido"
-                                />
-
-                                <v-btn fab small @click="view = 3">
-                                    <v-icon>mdi-chevron-left</v-icon>
-                                </v-btn>
-                            </v-col>
-                        </v-row>
-                    </v-scroll-x-transition>
+                    <v-card
+                        :class="
+                            $vuetify.breakpoint.smAndDown
+                                ? 'my-5 mx-2'
+                                : 'mx-10 my-5'
+                        "
+                    >
+                        <v-card-text>
+                            <Details
+                                :setView="setView"
+                                :total="total"
+                                :view="view"
+                                :pedido="pedido"
+                            ></Details>
+                        </v-card-text>
+                    </v-card>
                 </v-card-text>
             </v-card>
-        </v-card-text>
+        </v-scroll-x-transition>
+        <v-scroll-x-transition>
+            <div class="center" v-show="view == 2">
+            <v-stepper v-model="stepper" >
+                <v-stepper-header>
+                    <v-stepper-step
+                        color="#0f2441"
+                        :complete="stepper > 1"
+                        step="1"
+                        >Check Stock</v-stepper-step
+                    >
+
+                    <v-divider></v-divider>
+
+                    <v-stepper-step
+                        color="#0f2441"
+                        :complete="stepper > 2"
+                        step="2"
+                        >tipos de pago</v-stepper-step
+                    >
+
+                    <v-divider></v-divider>
+
+                    <v-stepper-step step="3" color="#0f2441"
+                        >Pagar</v-stepper-step
+                    >
+                </v-stepper-header>
+
+                <v-stepper-items>
+                    <v-stepper-content step="1">
+                        <v-card
+                            :class="
+                                $vuetify.breakpoint.smAndDown
+                                    ? 'my-5 mx-2'
+                                    : 'mx-10 my-5'
+                            "
+                        >
+                            <Stock
+                                :setView="setView"
+                                :stock="stock"
+                                :stock_message="stock_message"
+                                :total="total"
+                                :view="view"
+                                :pedido="pedido"
+                            />
+                        </v-card>
+
+                        <v-btn color="#0f2441" @click="stepper = 2">
+                            <span style="color:white">Continue</span>
+                        </v-btn>
+
+                        <v-btn text @click="view = 1">Cancel</v-btn>
+                    </v-stepper-content>
+
+                    <v-stepper-content step="2">
+                        
+                            <PaymentType
+                                :metodo="metodo"
+                                :setNumeroPago="setNumeroPago"
+                                :setTipoPago="setTipoPago"
+                                :pago="pago"
+                                :numeroDePagos="numeroDePagos"
+                                :tiposDePago="tiposDePago"
+                                :setView="setView"
+                                :total="total"
+                                :view="view"
+                                :pedido="pedido"
+                            />
+                       
+
+                        <v-btn color="#0f2441"  :disabled="pago ? false : true"  @click="stepper = 3">
+                            <span style="color:white">Continue</span>
+                        </v-btn>
+
+                        <v-btn text @click="stepper = 1">Atras</v-btn>
+                    </v-stepper-content>
+
+                    <v-stepper-content step="3">
+                            <v-row justify="center">
+                                <v-col cols="12" md="12" sm="12" class="pa-5">
+                                    <div class="font-weight-bold title">
+                                        Subtotal a pagar
+                                    </div>
+                                    <div class="font-weight-bold subtitle-1">
+                                        {{ total }}
+                                    </div>
+
+                                    <div
+                                        class="text-center font-weight-bold title my-5"
+                                    >
+                                        Datos de la cuenta
+                                    </div>
+                                    <div>Nombre:Jesus Bellorin</div>
+                                    <div>cedula:212121212</div>
+                                    <div>cuenta:212121212121212</div>
+                                    <div>banco:zelle</div>
+
+                                    <v-form v-model="valid" class="my-5">
+                                        <v-text-field
+                                            v-model="data.codigo_referencia"
+                                            filled
+                                            dense
+                                            color="#0f2441"
+                                            hint="Referencia del pago"
+                                            persistent-hint
+                                            rounded
+                                            single-line
+                                            label="Codigo de referencia"
+                                            :rules="[
+                                                required(
+                                                    'Codigo de referencia'
+                                                ),
+                                            ]"
+                                        ></v-text-field>
+                                    </v-form>
+                                </v-col>
+                                <v-col cols="12" md="4" sm="12" class="pa-5">
+                                    <FilePond 
+                                    class="file"
+                                        ref="pond"
+                                        label-idle="Drop image here..."
+                                        labelFileAdded="Archivo Añadido"
+                                    />
+                                </v-col>
+                            </v-row>
+
+                        <v-btn color="#0f2441" @click="stepper = 1">
+                            <span style="color:white">Enviar</span>
+                        </v-btn>
+
+                        <v-btn text @click="stepper = 2">Atras</v-btn>
+                    </v-stepper-content>
+                </v-stepper-items>
+            </v-stepper>
+            </div>
+        </v-scroll-x-transition>
     </v-card>
 </template>
 
@@ -392,6 +218,9 @@ import validations from "@/validations/validations";
 
 import vueFilePond from "vue-filepond";
 import FilePondPluginImagePreview from "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.esm.js";
+import Details from "./details";
+import Stock from "./stock";
+import PaymentType from "./paymentType";
 import "filepond/dist/filepond.min.css";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css";
 const FilePond = vueFilePond(FilePondPluginImagePreview);
@@ -403,6 +232,9 @@ const checking = "Checkeando existencias...";
 export default {
     components: {
         FilePond,
+        Details,
+        Stock,
+        PaymentType,
     },
     data() {
         return {
@@ -412,13 +244,17 @@ export default {
             valid: false,
             view: 1,
             total: 0,
+            metodo: 1,
+            stepper: 1,
             stock: null,
             stock_message: avaible,
             pedido: {},
             conceptos: [],
             pago: null,
-            numeroDePagos:[{ id: 1,
-                    value: "2",},{id:2,value: "3"}],
+            numeroDePagos: [
+                { id: 1, value: 1 },
+                { id: 2, value: 2 },
+            ],
             tiposDePago: [
                 {
                     id: 1,
@@ -476,7 +312,15 @@ export default {
     },
     methods: {
         ...mapActions(["setPedidos", "deletePedidoStore"]),
-
+        setTipoPago(value) {
+            this.pago = value;
+        },
+        setNumeroPago(value) {
+            this.metodo = value;
+        },
+        setView(step) {
+            this.view = step;
+        },
         getPedidos() {
             Usuario()
                 .get(`/${this.user.data.id}/pedidos/?rest_estatus_id=1`)
@@ -486,7 +330,11 @@ export default {
                         this.pedido = this.pedidos[0];
                         this.total = accounting.formatMoney(
                             +this.totalPedidos[0],
-                            { symbol: "Bs ", thousand: ".", decimal: "," }
+                            {
+                                symbol: "Bs ",
+                                thousand: ".",
+                                decimal: ",",
+                            }
                         );
                     } else {
                         this.pedido = this.pedidos[0];
@@ -500,7 +348,11 @@ export default {
                         );
                         this.total = accounting.formatMoney(
                             +this.totalPedidos[0],
-                            { symbol: "Bs ", thousand: ".", decimal: "," }
+                            {
+                                symbol: "Bs ",
+                                thousand: ".",
+                                decimal: ",",
+                            }
                         );
                     }
                 })
@@ -572,6 +424,16 @@ export default {
 <style lang="scss" scoped>
 .align {
     align-items: baseline;
+}
+.center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.file{
+    &:hover{
+        opacity:0.8,
+    }
 }
 .products {
     &-row {
