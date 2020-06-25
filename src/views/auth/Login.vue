@@ -178,10 +178,10 @@ import {mapActions} from 'vuex';
             login(){
                 this.loading = true;
                 Auth().post("/login",{data:this.data}).then((response) =>{
-                    if(response.data.response.data.bloqueado == 1){
+                    if(response.data.data.bloqueado == 1){
                         this.setModalBloqueado(true);
                         this.loading = false;
-                    }else if(response.data.response.data.perfil_id == 3){
+                    }else if(response.data.data.perfil_id == 3){
                         this.logged(response.data);
                         this.respuesta("Bienvenido.","success");
                         setTimeout(() => { this.home()},1000);
