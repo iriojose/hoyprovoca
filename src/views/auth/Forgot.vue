@@ -13,10 +13,10 @@
                             </v-col>
                             <v-col cols="12" md="6" sm="12" class="pa-12">
                                 <div class="headline text-center mb-5">¿Olvido su contraseña?</div>
-                                
+
                                 <v-card elevation="0" height="50">
                                     <v-fade-transition>
-                                        <v-alert dense :type="type" v-show="showMessage">
+                                        <v-alert border="left" colored-border elevation="2"  dense :type="type" v-show="showMessage">
                                             {{mensaje}}
                                         </v-alert>
                                     </v-fade-transition> 
@@ -119,11 +119,11 @@ import Usuario from '@/services/Usuario';
                 this.type = type
                 this.loading = false;
                 this.showMessage = true;
-                setTimeout(() => {this.showMessage = false}, 2000);
             },
-            async sendMail(){
+            sendMail(){
+                this.showMessage = false;
                 this.loading = true;
-                await Auth().post("/sendmail",{data:{user:this.email}}).then(() => {
+                Auth().post("/sendmail",{data:{user:this.email}}).then(() => {
                     this.respuesta("Email enviado","success");
                 }).catch(e => {
                     console.log(e);

@@ -16,7 +16,7 @@
                                 
                                 <v-card elevation="0" height="50">
                                     <v-fade-transition>
-                                        <v-alert dense :type="type" v-show="showMessage">
+                                        <v-alert border="left" colored-border elevation="2"  dense :type="type" v-show="showMessage">
                                             {{mensaje}}
                                         </v-alert>
                                     </v-fade-transition> 

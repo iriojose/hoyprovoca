@@ -16,37 +16,37 @@
                                 
                                 <v-card elevation="0" height="50">
                                     <v-fade-transition>
-                                        <v-alert dense :type="type" v-show="showMessage">
+                                        <v-alert border="left" colored-border elevation="2"  dense :type="type" v-show="showMessage">
                                             {{mensaje}}
                                         </v-alert>
                                     </v-fade-transition> 
-
-                                    <v-form v-model="valid" @submit.prevent="">
-                                        <v-text-field
-                                            filled rounded :disabled="loading" dense
-                                            v-model="contraseña" single-line type="password"
-                                            color="#0f2441" :rules="[required('Contraseña'),minLength('Contraseña',8)]"
-                                            label="Nueva contraseña"
-                                        ></v-text-field>
-
-                                        <v-text-field
-                                            filled rounded :disabled="loading"
-                                            v-model="contraseña2" single-line
-                                            type="password" color="#0f2441"
-                                            :rules="[required('Confirmar contraseña'),passwordConfirmationRule()]"
-                                            label="Confirmar contraseña" dense
-                                        ></v-text-field>
-
-                                        <v-btn
-                                            rounded color="#2950c3" block
-                                            :disabled="!valid" :loading="loading"
-                                            height="40" @click="reset"
-                                            class="text-capitalize caption white--text"
-                                        >
-                                            Resetear contraseña
-                                        </v-btn>
-                                    </v-form>
                                 </v-card>
+
+                                <v-form v-model="valid" @submit.prevent="">
+                                    <v-text-field
+                                        filled rounded :disabled="loading" dense
+                                        v-model="contraseña" single-line type="password"
+                                        color="#0f2441" :rules="[required('Contraseña'),minLength('Contraseña',8)]"
+                                        label="Nueva contraseña"
+                                    ></v-text-field>
+
+                                    <v-text-field
+                                        filled rounded :disabled="loading"
+                                        v-model="contraseña2" single-line
+                                        type="password" color="#0f2441"
+                                        :rules="[required('Confirmar contraseña'),passwordConfirmationRule()]"
+                                        label="Confirmar contraseña" dense
+                                    ></v-text-field>
+
+                                    <v-btn
+                                        rounded color="#2950c3" block
+                                        :disabled="!valid" :loading="loading"
+                                        height="40" @click="reset"
+                                        class="text-capitalize caption white--text"
+                                    >
+                                        Resetear contraseña
+                                    </v-btn>
+                                </v-form>
                             </v-col>
                         </v-row>
                     </v-card>
