@@ -1,6 +1,6 @@
 <template>
     <v-row class="align" justify="center" v-show="view == 1">
-        <v-col cols="12" md="6" sm="12" class="pa-5 products-list">
+        <v-col cols="12" md="8" sm="12" class="pa-5 products-list">
             <div class="font-weight-bold title">
                 Tus productos
             </div>
@@ -12,6 +12,9 @@
                     <v-list-item-title class="imag">
                         <p>Imagen</p>
                     </v-list-item-title>
+                       <v-list-item-title>
+                        <p>Nombre</p>
+                    </v-list-item-title>
                     <v-list-item-title>
                         <p>Precio</p>
                     </v-list-item-title>
@@ -19,7 +22,7 @@
                         <p>Cantidad</p>
                     </v-list-item-title>
                     <v-list-item-title>
-                        <p>Estado</p>
+                        <p style="padding-left:10px">Estado</p>
                     </v-list-item-title>
                 </v-list-item>
                 <v-list-item
@@ -31,6 +34,11 @@
                         <v-list-item-avatar>
                             <v-img :src="image + detalle.imagen"></v-img>
                         </v-list-item-avatar>
+                    </v-list-item-title>
+                     <v-list-item-title class="product-text">
+                        <p>
+                            {{ detalle.nombre }}
+                        </p>
                     </v-list-item-title>
                     <v-list-item-title class="product-text">
                         {{ detalle.precio }}
