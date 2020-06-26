@@ -140,16 +140,16 @@ import Usuario from '@/services/Usuario';
             login(){
                 this.loading = true;
                 Auth().post("/login",{data:this.data}).then((response) =>{
-                    if(response.data.data.perfil_id == 4){
+                    if(response.data.response.data.bloqueado == 1){
+                        this.loading = false;
                         this.close();
                         this.setModalBloqueado(true);
-                        this.loading = false;
-                    }else if(response.data.data.perfil_id == 3){
+                    }else if(response.data.response.data.perfil_id == 3){
                         this.logged(response.data);
                         this.respuesta("Bienvenido.","success");
-                        setTimeout(() => {this.close()} ,500);
+                        setTimeout(() => { this.home()},500);
                     }else{
-                        this.respuesta("Usuario no permitido.","error");
+                        this.respuesta("Este usuario no es un cliente.","error");
                     }
                 }).catch((e) => {
                     console.log(e);

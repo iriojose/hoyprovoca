@@ -139,10 +139,7 @@ export default new Vuex.Store({
             }
         ],//guarda los pedidos
         agregados:[],//guarda ids de los conceptos agregados a pedidos
-        totalPedidos:[
-            4500000,
-            49000000
-        ],//guarda el total de cada pedido
+        totalPedidos:[],//guarda el total de cada pedido
         producto:{
             existencias:[
                 {existencia:0}

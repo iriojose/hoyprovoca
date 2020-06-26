@@ -12,181 +12,161 @@
 
             <v-spacer></v-spacer>
 
-            <v-hover v-slot:default="{ hover }">
-                <v-btn
-                    :elevation="hover ? 2 : 0"
-                    color="#fff"
-                    class="text-capitalize body-2 font-weight-bold black--text"
-                    to="/"
-                    >Seguir comprando</v-btn
-                >
-            </v-hover>
+            <v-btn
+                elevation="2"
+                color="#fff"
+                to="/"
+                class="text-capitalize body-2 font-weight-bold black--text"
+            >
+                Seguir comprando
+            </v-btn>
         </v-toolbar>
         <v-scroll-x-transition>
-            <v-card elevation="0" color="#f7f7f7" v-show="view == 1">
-                <v-card-text>
-                    <div class="text-center my-5 display-1 font-weight-bold">
-                        Checkout
-                    </div>
+            <div v-show="view == 1">
+                <v-slide-group
+                    multiple
+                    show-arrows
+                    :class="$vuetify.breakpoint.smAndDown ? null : 'mx-10'"
+                >
+                    <v-slide-item v-for="(pedi, i) in pedidos" :key="i">
+                        <v-btn
+                            :disabled="pedido.id == pedi.id"
+                            class="mx-2"
+                            depressed
+                            rounded
+                            height="50"
+                            @click="seleccionarPedido(pedi, i)"
+                        >
+                            <v-avatar size="40">
+                                <v-img :src="image + pedi.imagen"></v-img>
+                            </v-avatar>
+                        </v-btn>
+                    </v-slide-item>
+                </v-slide-group>
 
-                    <v-slide-group
-                        multiple
-                        show-arrows
-                        :class="$vuetify.breakpoint.smAndDown ? null : 'mx-10'"
-                    >
-                        <v-slide-item v-for="(pedi, i) in pedidos" :key="i">
-                            <v-btn
-                                :disabled="pedido.id == pedi.id"
-                                class="mx-2"
-                                depressed
-                                rounded
-                                height="50"
-                                @click="selectPedido(pedi, i)"
+                <v-card
+                    :class="
+                        $vuetify.breakpoint.smAndDown
+                            ? 'my-5 mx-2'
+                            : 'mx-10 my-5'
+                    "
+                >
+                    <v-card-text>
+                        <v-row class="align" justify="center">
+                            <v-col
+                                cols="12"
+                                md="8"
+                                sm="12"
+                                class="pa-5 products-list"
                             >
-                                <v-avatar size="40">
-                                    <v-img :src="image + pedi.imagen"></v-img>
-                                </v-avatar>
-                            </v-btn>
-                        </v-slide-item>
-                    </v-slide-group>
-
-                    <v-card
-                        :class="
-                            $vuetify.breakpoint.smAndDown
-                                ? 'my-5 mx-2'
-                                : 'mx-10 my-5'
-                        "
-                    >
-                        <v-card-text>
-                            <v-row class="align" justify="center">
-                                <v-col
-                                    cols="12"
-                                    md="8"
-                                    sm="12"
-                                    class="pa-5 products-list"
-                                >
-                                    <div class="font-weight-bold title">
-                                        Tus productos
-                                    </div>
-                                    <div class="font-weight-bold subtitle-1">
-                                        {{ pedido.detalles.length + " " }} item
-                                    </div>
-                                    <v-list>
-                                        <v-list-item class="products-row">
-                                            <v-list-item-title class="imag">
-                                                <p>Imagen</p>
-                                            </v-list-item-title>
-                                            <v-list-item-title>
-                                                <p>Nombre</p>
-                                            </v-list-item-title>
-                                            <v-list-item-title>
-                                                <p>Precio</p>
-                                            </v-list-item-title>
-                                            <v-list-item-title>
-                                                <p>Cantidad</p>
-                                            </v-list-item-title>
-                                            <v-list-item-title>
-                                                <p style="padding-left:10px">
-                                                    Estado
-                                                </p>
-                                            </v-list-item-title>
-                                        </v-list-item>
-                                        <v-list-item
-                                            class="products-row"
-                                            v-for="(detalle,
-                                            i) in pedido.detalles"
-                                            :key="i"
-                                        >
-                                            <v-list-item-title>
-                                                <v-list-item-avatar>
-                                                    <v-img
-                                                        :src="
-                                                            image +
-                                                                detalle.imagen
-                                                        "
-                                                    ></v-img>
-                                                </v-list-item-avatar>
-                                            </v-list-item-title>
-                                            <v-list-item-title
-                                                class="product-text"
-                                            >
-                                                <p>
-                                                    {{ detalle.nombre }}
-                                                </p>
-                                            </v-list-item-title>
-                                            <v-list-item-title
-                                                class="product-text"
-                                            >
-                                                {{ detalle.precio }}
-                                            </v-list-item-title>
-                                            <v-list-item-title
-                                                class="product-text"
-                                            >
-                                                <p style="padding-left:10px">
-                                                    {{ detalle.cantidad }}
-                                                </p>
-                                            </v-list-item-title>
-                                            <v-list-item-title
-                                                class="product-text"
-                                            >
-                                                <v-chip
-                                                    class="ma-2"
-                                                    v-bind:color="
-                                                        detalle.estado ==
-                                                        'ACTIVO'
-                                                            ? 'green'
-                                                            : 'red'
-                                                    "
-                                                    text-color="white"
-                                                    >{{
-                                                        detalle.estado
-                                                    }}</v-chip
-                                                >
-                                            </v-list-item-title>
-                                        </v-list-item>
-                                    </v-list>
-                                </v-col>
-                                <v-col cols="6" md="4" sm="12">
-                                    <v-row>
-                                        <v-col cols="12" md="6" sm="12">
-                                            <div class="font-weight-bold title">
-                                                Empresa
-                                            </div>
-                                            <div
-                                                class="font-weight-bold subtitle-1"
-                                            >
-                                                {{ pedido.nombre_comercial }}
-                                            </div>
-                                        </v-col>
-                                        <v-col cols="12" md="6" sm="12">
-                                            <div class="font-weight-bold title">
-                                                Subtotal a pagar
-                                            </div>
-                                            <div
-                                                class="font-weight-bold subtitle-1"
-                                            >
-                                                {{ total }}
-                                            </div>
-                                        </v-col>
-                                    </v-row>
-
-                                    <div class="font-weight-bold subtitle-2">
-                                        Cantidad de Personas :
-                                        {{ pedido.cant_personas }}
-                                    </div>
-                                    <v-btn
-                                        block
-                                        color="#0f2441"
-                                        class="text-capitalize subtitle-2 my-5 white--text font-weight-bold"
-                                        @click="startStepper()"
-                                        >Pagar</v-btn
+                                <div class="font-weight-bold title">
+                                    Tus productos
+                                </div>
+                                <div class="font-weight-bold subtitle-1">
+                                    {{ pedido.detalles.length + " " }} item
+                                </div>
+                                <v-list>
+                                    <v-list-item class="products-row">
+                                        <v-list-item-title class="imag">
+                                            <p>Imagen</p>
+                                        </v-list-item-title>
+                                        <v-list-item-title>
+                                            <p>Nombre</p>
+                                        </v-list-item-title>
+                                        <v-list-item-title>
+                                            <p>Precio</p>
+                                        </v-list-item-title>
+                                        <v-list-item-title>
+                                            <p>Cantidad</p>
+                                        </v-list-item-title>
+                                        <v-list-item-title>
+                                            <p style="padding-left:10px">
+                                                Estado
+                                            </p>
+                                        </v-list-item-title>
+                                    </v-list-item>
+                                    <v-list-item
+                                        class="products-row"
+                                        v-for="(detalle, i) in pedido.detalles"
+                                        :key="i"
                                     >
-                                </v-col>
-                            </v-row>
-                        </v-card-text>
-                    </v-card>
-                </v-card-text>
-            </v-card>
+                                        <v-list-item-title>
+                                            <v-list-item-avatar>
+                                                <v-img
+                                                    :src="
+                                                        image + detalle.imagen
+                                                    "
+                                                ></v-img>
+                                            </v-list-item-avatar>
+                                        </v-list-item-title>
+                                        <v-list-item-title class="product-text">
+                                            <p>
+                                                {{ detalle.nombre }}
+                                            </p>
+                                        </v-list-item-title>
+                                        <v-list-item-title class="product-text">
+                                            {{ detalle.precio }}
+                                        </v-list-item-title>
+                                        <v-list-item-title class="product-text">
+                                            <p style="padding-left:10px">
+                                                {{ detalle.cantidad }}
+                                            </p>
+                                        </v-list-item-title>
+                                        <v-list-item-title class="product-text">
+                                            <v-chip
+                                                class="ma-2"
+                                                v-bind:color="
+                                                    detalle.estado == 'ACTIVO'
+                                                        ? 'green'
+                                                        : 'red'
+                                                "
+                                                text-color="white"
+                                                >{{ detalle.estado }}</v-chip
+                                            >
+                                        </v-list-item-title>
+                                    </v-list-item>
+                                </v-list>
+                            </v-col>
+                            <v-col cols="6" md="4" sm="12">
+                                <v-row>
+                                    <v-col cols="12" md="6" sm="12">
+                                        <div class="font-weight-bold title">
+                                            Empresa
+                                        </div>
+                                        <div
+                                            class="font-weight-bold subtitle-1"
+                                        >
+                                            {{ pedido.nombre_comercial }}
+                                        </div>
+                                    </v-col>
+                                    <v-col cols="12" md="6" sm="12">
+                                        <div class="font-weight-bold title">
+                                            Subtotal a pagar
+                                        </div>
+                                        <div
+                                            class="font-weight-bold subtitle-1"
+                                        >
+                                            {{ total }}
+                                        </div>
+                                    </v-col>
+                                </v-row>
+
+                                <div class="font-weight-bold subtitle-2">
+                                    Cantidad de Personas :
+                                    {{ pedido.cant_personas }}
+                                </div>
+                                <v-btn
+                                    block
+                                    color="#0f2441"
+                                    class="text-capitalize subtitle-2 my-5 white--text font-weight-bold"
+                                    @click="startStepper()"
+                                    >Pagar</v-btn
+                                >
+                            </v-col>
+                        </v-row>
+                    </v-card-text>
+                </v-card>
+            </div>
         </v-scroll-x-transition>
         <v-scroll-x-transition>
             <v-card
@@ -298,7 +278,6 @@
                                                     class="ma-2 bloked white--text"
                                                     :loading="loading"
                                                     :disabled="loading"
-                                                    
                                                     :color="
                                                         stock_notifier.color
                                                     "
@@ -336,7 +315,10 @@
                             <v-btn
                                 :disabled="this.bloqueo"
                                 color="#0f2441"
-                                @click="stepper = 2 ; bloqueo=true"
+                                @click="
+                                    stepper = 2;
+                                    bloqueo = true;
+                                "
                             >
                                 <span style="color:white">Continue</span>
                             </v-btn>
@@ -345,65 +327,78 @@
                         </v-stepper-content>
 
                         <v-stepper-content step="2">
-                            <v-row  justify="center">
-                            <v-col cols="12" md="6" sm="12">
-                                <div class="font-weight-bold title">
-                                    Tus productos
-                                </div>
-                                <div class="font-weight-bold subtitle-1">
-                                    {{ pedido.detalles.length + " " }} item
-                                </div>
-                                <div class="font-weight-bold title">
-                                    Subtotal a pagar
-                                </div>
-                                <div class="font-weight-bold subtitle-1">
-                                    {{ total }}
-                                </div>
-                                        <v-checkbox
-                                            @click="resetPago($event)"
-                                            label="diferentes tipos de pago?"
-                                            color="#0f2441"
-                                            hide-details
-                                        ></v-checkbox>
-                                        <v-select
-                                            :items="tiposDePago"
-                                            dense
-                                            color="#0f2441"
-                                            filled
-                                            item-value="nombre"
-                                            return-object
-                                            item-text="nombre"
-                                            v-if="diferentes"
-                                            multiple
-                                            chips
-                                            persistent-hint
-                                            hint="Metodo De Pago"
-                                            label="Seleccione su metodo de pago"
-                                            single-line
-                                            v-model="pago"
-                                            @input="addTipo($event)"
-                                            class="my-5"
-                                        ></v-select>
-                                        <v-select
-                                            :items="tiposDePago"
-                                            dense
-                                            color="#0f2441"
-                                            filled
-                                            item-value="nombre"
-                                            return-object
-                                            item-text="nombre"
-                                            v-else
-                                            chips
-                                            persistent-hint
-                                            hint="Metodo De Pago"
-                                            label="Seleccione su metodo de pago"
-                                            single-line
-                                            v-model="pago"
-                                            class="my-5"
-                                        ></v-select>
-                                    </v-col>
-                                </v-row>
-                            </v-col>
+                            <v-row justify="center">
+                                <v-col cols="12" md="6" sm="12">
+                                    <div class="font-weight-bold title">
+                                        Tus productos
+                                    </div>
+                                    <div class="font-weight-bold subtitle-1">
+                                        {{ pedido.detalles.length + " " }} item
+                                    </div>
+                                    <div class="font-weight-bold title">
+                                        Subtotal a pagar
+                                    </div>
+                                    <div class="font-weight-bold subtitle-1">
+                                        {{ total }}
+                                    </div>
+                                    <v-checkbox
+                                        @click="resetPago($event)"
+                                        label="diferentes tipos de pago?"
+                                        color="#0f2441"
+                                        hide-details
+                                    ></v-checkbox>
+                                    <v-select
+                                        :items="tiposDePago"
+                                        dense
+                                        color="#0f2441"
+                                        filled
+                                        item-value="nombre"
+                                        return-object
+                                        item-text="nombre"
+                                        v-if="diferentes"
+                                        multiple
+                                        chips
+                                        persistent-hint
+                                        hint="Metodo De Pago"
+                                        label="Seleccione su metodo de pago"
+                                        single-line
+                                        v-model="pago"
+                                        @input="addTipo($event)"
+                                        class="my-5"
+                                    ></v-select>
+                                    <v-select
+                                        :items="tiposDePago"
+                                        dense
+                                        color="#0f2441"
+                                        filled
+                                        item-value="nombre"
+                                        return-object
+                                        item-text="nombre"
+                                        v-else
+                                        chips
+                                        persistent-hint
+                                        hint="Metodo De Pago"
+                                        label="Seleccione su metodo de pago"
+                                        single-line
+                                        v-model="pago"
+                                        class="my-5"
+                                    ></v-select>
+                                </v-col>
+                                <v-snackbar class="text--pink" v-model="alert">
+                                    Solo puede escojer dos metodos de Pago
+
+                                    <template v-slot:action="{ attrs }">
+                                        <v-btn
+                                            color="pink"
+                                            text
+                                            v-bind="attrs"
+                                            @click="alert = false"
+                                        >
+                                            Close
+                                        </v-btn>
+                                    </template>
+                                </v-snackbar>
+                            </v-row>
                             <v-btn
                                 color="#0f2441"
                                 :disabled="this.bloqueo"
@@ -454,22 +449,21 @@
                                         ></v-text-field>
                                     </v-form>
                                 </v-col>
-                                <v-col cols="12" md="4" sm="12" class="pa-5">
-                                    <FilePond
-                                        class="file"
-                                        ref="pond"
-                                        v-model="file"
-                                        label-idle="Drop image here..."
-                                        labelFileAdded="Archivo Añadido"
-                                    />
-                                </v-col>
+                                <v-dialog>
+                                        
+                                </v-dialog>
+                              
                             </v-row>
 
-                            <v-btn :disabled="data.codigo_referencia===''" color="#0f2441" @click="checkPago">
-                                <span  style="color:white">Enviar</span>
+                            <v-btn
+                                :disabled="data.codigo_referencia === ''"
+                                color="#0f2441"
+                                @click="checkPago"
+                            >
+                                <span style="color:white">Enviar</span>
                             </v-btn>
 
-                            <v-btn text   @click="stepper = 2">Atras</v-btn>
+                            <v-btn text @click="stepper = 2">Atras</v-btn>
                         </v-stepper-content>
                     </v-stepper-items>
                 </v-stepper>
@@ -490,6 +484,7 @@ import Conceptos from "@/services/Conceptos";
 import { mapState, mapActions } from "vuex";
 import validations from "@/validations/validations";
 import vueFilePond from "vue-filepond";
+import ModalPago from "@components/dialogs/ModalPago";
 import FilePondPluginImagePreview from "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.esm.js";
 import "filepond/dist/filepond.min.css";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css";
@@ -508,6 +503,7 @@ const checking = { message: "Checkeando existencias...", color: "gray" };
 export default {
     components: {
         FilePond,
+        ModalPago
     },
     data() {
         return {
@@ -518,6 +514,7 @@ export default {
             view: 1,
             disponibilidad: 0,
             bloqueo: true,
+            alert:false,
             total: 0,
             metodo: 1,
             stepper: 1,
@@ -528,7 +525,7 @@ export default {
             pedido: {},
             conceptos: [],
             pago: [],
-            file:{},
+            file: {},
             tiposDePago: [
                 {
                     id: 1,
@@ -581,23 +578,40 @@ export default {
             }
         },
         pago(value) {
-            if(!value) {this.bloqueo = true; return;}
-            if (!this.diferentes) {this.bloqueo = false; return;}
-            if(value.length === 0){this.bloqueo = true;return} 
-            if (value.length > 2) alert("sólo se permiten 2 tipos de pago"); //cambia este alert por un $toasted de Vue, investigalo
-            if (value.length <= 2){this.bloqueo = false; return;} 
+            if (!value) {
+                this.bloqueo = true;
+                return;
+            }
+            if (!this.diferentes && value === []) {
+                this.bloqueo = true;
+                return;
+            }
+            if (!this.diferentes) {
+                this.bloqueo = false;
+                return;
+            }
+            if (value.length === 0) {
+                this.bloqueo = true;
+                return;
+            }
+            if (value.length > 2) this.alert = true //cambia este alert por un $toasted de Vue, investigalo
+            if (value.length <= 2) {
+                this.bloqueo = false;
+                return;
+            }
             this.pago = this.pago.slice(0, 2);
-            this.bloqueo = false
+            this.bloqueo = false;
         },
-        file(value){
-            console.log(value)
-        }
+        file(value) {
+            console.log(value);
+        },
     },
     computed: {
         ...mapState(["user", "pedidos", "totalPedidos"]),
     },
     methods: {
         ...mapActions(["setPedidos", "deletePedidoStore"]),
+
         resetPago(value) {
             this.pago = [];
             this.bloqueo = true;
@@ -732,23 +746,7 @@ export default {
                     console.log(e);
                 });
         },
-        selectPedido(pedido, i) {
-            this.view = 1;
-            this.pedido = pedido;
-            this.pedido.detalles.filter(
-                (a) =>
-                    (a.precio = accounting.formatMoney(+a.precio, {
-                        symbol: "Bs ",
-                        thousand: ".",
-                        decimal: ",",
-                    }))
-            );
-            this.total = accounting.formatMoney(+this.totalPedidos[i], {
-                symbol: "Bs ",
-                thousand: ".",
-                decimal: ",",
-            });
-        },
+
         getConceptos(id) {
             Pedidos()
                 .get(`/${id}/conceptos`)
@@ -760,16 +758,22 @@ export default {
                 });
         },
 
-        checkPago(){
-           this.data.adm_status_id = 2;
-           this.data.adm_tipo_pago_id = this.pago.id;
-           const money = parseFloat(this.data.monto.split(" ")[1].split('.').join('').replace(',','.'));
-           console.log(money);
-           this.postPago(money)
+        checkPago() {
+            this.data.adm_status_id = 2;
+            this.data.adm_tipo_pago_id = this.pago.id;
+            const money = parseFloat(
+                this.data.monto
+                    .split(" ")[1]
+                    .split(".")
+                    .join("")
+                    .replace(",", ".")
+            );
+            console.log(money);
+            this.postPago(money);
         },
         postPago(money) {
             Pagos()
-                .post("/", { data:{...this.data , monto:money}  })
+                .post("/", { data: { ...this.data, monto: money } })
                 .then((response) => {
                     this.process();
                 })
@@ -788,19 +792,27 @@ export default {
                 })
                 .catch((e) => {
                     console.log(e);
-                    error("Erro al subir la imagen");
                 });
+        },
+        calcularTotal(detalles) {
+            let suma = 0;
+            detalles.filter((a) => (suma += +a.precio * a.cantidad));
+            this.total = accounting.formatMoney(+suma, {
+                symbol: "Bs ",
+                thousand: ".",
+                decimal: ",",
+            });
+        },
+        seleccionarPedido(evt) {
+            this.pedidoSelect = evt;
+            this.calcularTotal(evt.detalles);
         },
     },
 };
-
-//adm_tipo_pago_id = 1 (Banesco panama)
-//adm_tipo_pago_id = 2 (Zelle)
-//adm_tipo_pago_id = 3 (Bancos nacionales)
 </script>
 
 <style lang="scss" scoped>
-.bloked{
+.bloked {
     pointer-events: none;
 }
 .align {
@@ -829,17 +841,8 @@ export default {
     &-text {
         text-align: center;
     }
-    &-list {
-        position: relative;
-        &:after {
-            content: "";
-            position: absolute;
-            right: 0;
-            top: 30%;
-            width: 1px;
-            height: 40%;
-            background-color: rgba(0, 0, 0, 0.123);
-        }
-    }
+}
+.margen-movil {
+    margin-top: 100px;
 }
 </style>

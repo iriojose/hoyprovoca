@@ -84,11 +84,7 @@ import Usuario from '@/services/Usuario';
         },
         mounted() {
             if(this.user.loggedIn){
-                let pedidos = JSON.parse(window.localStorage.getItem('pedidos'));
-
-                if(!pedidos) this.getPedidosUsuario();
-                else this.setPedidos(pedidos);
-               
+                this.getPedidosUsuario();
             }
         },
         methods: {
@@ -103,7 +99,6 @@ import Usuario from '@/services/Usuario';
             getPedidosUsuario(){
                 Usuario().get(`/${this.user.data.id}/pedidos/?rest_estatus_id=1`).then((response) => {
                     if(response.data.data){
-                        window.localStorage.setItem('pedidos',JSON.stringify(response.data.data));
                         this.setPedidos(response.data.data);
                     }
                 }).catch(e => {
