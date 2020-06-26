@@ -763,11 +763,13 @@ export default {
         checkPago(){
            this.data.adm_status_id = 2;
            this.data.adm_tipo_pago_id = this.pago.id;
-           this.postPago()
+           const money = parseFloat(this.data.monto.split(" ")[1].split('.').join('').replace(',','.'));
+           console.log(money);
+           this.postPago(money)
         },
-        postPago() {
+        postPago(money) {
             Pagos()
-                .post("/", { data: this.data })
+                .post("/", { data:{...this.data , monto:money}  })
                 .then((response) => {
                     this.process();
                 })
