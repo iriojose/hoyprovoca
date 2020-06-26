@@ -294,15 +294,18 @@
                                             <v-list-item-title
                                                 class="product-text"
                                             >
-                                                <v-chip
-                                                    class="ma-2"
-                                                    text-color="white"
+                                                <v-btn
+                                                    class="ma-2 bloked white--text"
+                                                    :loading="loading"
+                                                    :disabled="loading"
+                                                    
                                                     :color="
                                                         stock_notifier.color
                                                     "
+                                                    @click="loader = 'loading'"
                                                 >
                                                     {{ detalle.stock }}
-                                                </v-chip>
+                                                </v-btn>
                                             </v-list-item-title>
                                         </v-list-item>
                                     </v-list>
@@ -333,7 +336,7 @@
                             <v-btn
                                 :disabled="this.bloqueo"
                                 color="#0f2441"
-                                @click="stepper = 2"
+                                @click="stepper = 2 ; bloqueo=true"
                             >
                                 <span style="color:white">Continue</span>
                             </v-btn>
@@ -342,7 +345,8 @@
                         </v-stepper-content>
 
                         <v-stepper-content step="2">
-                            <v-col cols="12" md="12" sm="12">
+                            <v-row  justify="center">
+                            <v-col cols="12" md="6" sm="12">
                                 <div class="font-weight-bold title">
                                     Tus productos
                                 </div>
@@ -355,13 +359,10 @@
                                 <div class="font-weight-bold subtitle-1">
                                     {{ total }}
                                 </div>
-                                <v-row>
-                                    <v-col cols="12" md="12" sm="12">
                                         <v-checkbox
                                             @click="resetPago($event)"
                                             label="diferentes tipos de pago?"
                                             color="#0f2441"
-                                            value="multiple"
                                             hide-details
                                         ></v-checkbox>
                                         <v-select
@@ -403,7 +404,6 @@
                                     </v-col>
                                 </v-row>
                             </v-col>
-
                             <v-btn
                                 color="#0f2441"
                                 :disabled="this.bloqueo"
@@ -417,7 +417,7 @@
 
                         <v-stepper-content step="3">
                             <v-row justify="center">
-                                <v-col cols="12" md="12" sm="12" class="pa-5">
+                                <v-col cols="12" md="6" sm="12" class="pa-5">
                                     <div class="font-weight-bold title">
                                         Subtotal a pagar
                                     </div>
@@ -458,17 +458,18 @@
                                     <FilePond
                                         class="file"
                                         ref="pond"
+                                        v-model="file"
                                         label-idle="Drop image here..."
                                         labelFileAdded="Archivo Añadido"
                                     />
                                 </v-col>
                             </v-row>
 
-                            <v-btn color="#0f2441" @click="stepper = 1">
-                                <span style="color:white">Enviar</span>
+                            <v-btn :disabled="data.codigo_referencia===''" color="#0f2441" @click="checkPago">
+                                <span  style="color:white">Enviar</span>
                             </v-btn>
 
-                            <v-btn text @click="stepper = 2">Atras</v-btn>
+                            <v-btn text   @click="stepper = 2">Atras</v-btn>
                         </v-stepper-content>
                     </v-stepper-items>
                 </v-stepper>
@@ -484,10 +485,10 @@ import Pedidos from "@/services/Pedidos";
 import accounting from "accounting";
 import Usuario from "@/services/Usuario";
 import Empresa from "@/services/Empresa";
+import Pagos from "@/services/Pagos";
 import Conceptos from "@/services/Conceptos";
 import { mapState, mapActions } from "vuex";
 import validations from "@/validations/validations";
-
 import vueFilePond from "vue-filepond";
 import FilePondPluginImagePreview from "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.esm.js";
 import "filepond/dist/filepond.min.css";
@@ -527,10 +528,7 @@ export default {
             pedido: {},
             conceptos: [],
             pago: [],
-            numeroDePagos: [
-                { id: 1, value: 1 },
-                { id: 2, value: 2 },
-            ],
+            file:{},
             tiposDePago: [
                 {
                     id: 1,
@@ -583,12 +581,17 @@ export default {
             }
         },
         pago(value) {
-            console.log(value.length, this.pago);
-            if (!this.diferentes) return;
+            if(!value) {this.bloqueo = true; return;}
+            if (!this.diferentes) {this.bloqueo = false; return;}
+            if(value.length === 0){this.bloqueo = true;return} 
             if (value.length > 2) alert("sólo se permiten 2 tipos de pago"); //cambia este alert por un $toasted de Vue, investigalo
-            if (value.length <= 2) return;
+            if (value.length <= 2){this.bloqueo = false; return;} 
             this.pago = this.pago.slice(0, 2);
+            this.bloqueo = false
         },
+        file(value){
+            console.log(value)
+        }
     },
     computed: {
         ...mapState(["user", "pedidos", "totalPedidos"]),
@@ -597,6 +600,7 @@ export default {
         ...mapActions(["setPedidos", "deletePedidoStore"]),
         resetPago(value) {
             this.pago = [];
+            this.bloqueo = true;
             this.diferentes = !this.diferentes;
         },
         addTipo(value) {
@@ -605,6 +609,7 @@ export default {
         },
         getCheck() {
             return Promise.all(
+                //devuelve las promesas que se realizan al solicitar la existencia de cada producto
                 this.pedido.detalles.map(async (product, key) => {
                     const stock = await this.getExistencia(
                         product.adm_conceptos_id
@@ -614,6 +619,7 @@ export default {
                         this.disponibilidad += 1;
                         //checkea si la cantidad solicitada esta disponible en su totalidad
                         //si lo esta mantiene la cantidad solicitada
+                        //si no modifica la cantidad solicitada con la disponible en stock
                         return product.cantidad > stock
                             ? product
                             : Object.assign({}, product, {
@@ -625,20 +631,27 @@ export default {
             );
         },
         async checkExistence() {
+            this.loading = true;
+            this.disponibilidad = 0;
             this.stock_notifier = checking;
             let newPriceList = [];
+            //empieza a cargar las existencias una vez temina la funcion  se modifica el total si faltan productos a la existencia
             this.getCheck().then((checked) => {
-                console.log("checked", checked);
+                this.loading = false;
                 if (this.disponibilidad === this.pedido.detalles.length) {
                     this.stock_notifier = avaible;
                     this.bloqueo = false;
-                }else if (this.disponibilidad > 0 && this.disponibilidad < this.pedido.detalles.length ) {
-                    
+                } else if (
+                    this.disponibilidad > 0 &&
+                    this.disponibilidad < this.pedido.detalles.length
+                ) {
+                    //en este caso no todos los productos estan disponibles asi que se procede a modificar el total con los disponibles
                     this.stock_notifier = avaible;
                     this.total = accounting.formatMoney(
-                        +(checked.reduce(
-                            (acumulator, current) => acumulator + (+current.precio)
-                        )),
+                        +checked.reduce(
+                            (acumulator, current) =>
+                                acumulator + +current.precio
+                        ),
                         {
                             symbol: "Bs ",
                             thousand: ".",
@@ -647,7 +660,6 @@ export default {
                     );
                     this.bloqueo = false;
                 } else {
-                    console.log("holi")
                     this.stock_notifier = isOut;
                 }
             });
@@ -685,7 +697,6 @@ export default {
             Usuario()
                 .get(`/${this.user.data.id}/pedidos/?rest_estatus_id=1`)
                 .then((response) => {
-                    console.log(response);
                     if (response.data.data) {
                         this.setPedidos(response.data.data);
                         this.pedido = this.pedidos[0];
@@ -743,11 +754,16 @@ export default {
                 .get(`/${id}/conceptos`)
                 .then((response) => {
                     this.conceptos = response.data.data;
-                    console.log(response);
                 })
                 .catch((e) => {
                     console.log(e);
                 });
+        },
+
+        checkPago(){
+           this.data.adm_status_id = 2;
+           this.data.adm_tipo_pago_id = this.pago.id;
+           this.postPago()
         },
         postPago() {
             Pagos()
@@ -763,7 +779,6 @@ export default {
             let formdata = new FormData();
             formdata.append("image", file);
             abort();
-
             Images()
                 .post(`/main/pagos/${this.pedido.id}`, formdata)
                 .then((response) => {
@@ -783,6 +798,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.bloked{
+    pointer-events: none;
+}
 .align {
     align-items: baseline;
 }
