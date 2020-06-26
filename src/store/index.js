@@ -37,7 +37,7 @@ export default new Vuex.Store({
                 rest_estatus_id:1,
                 estado:"PRUEBA",
                 cant_personas:1,
-                nom_empresa:'SomosSistemas',
+                nombre_comercial:'SomosSistemas',
                 imagen:"default.png",
                 adm_empresa_id:2,
                 detalles:[
@@ -50,7 +50,7 @@ export default new Vuex.Store({
                         precio:"200000",
                         imagen:"default.png",
                         rest_estatus_id:1,
-                        stock:0,
+                        stock:3,
                         estado:"PRUEBA"
                     },
                     {
@@ -60,7 +60,7 @@ export default new Vuex.Store({
                         nombre:"papel",
                         cantidad:"1",
                         precio:"220000",
-                        stock:0,
+                        stock:3,
                         imagen:"default.png",
                         rest_estatus_id:1,
                         estado:"ACTIVO"
@@ -74,7 +74,7 @@ export default new Vuex.Store({
                 rest_estatus_id:1,
                 estado:"PRUEBA",
                 cant_personas:1,
-                nom_empresa:'SomosSistemas',
+                nombre_comercial:'SomosSistemas',
                 imagen:"default.png",
                 adm_empresa_id:1,
                 detalles:[
@@ -121,7 +121,7 @@ export default new Vuex.Store({
                         precio:"240000",
                         imagen:"default.png",
                         rest_estatus_id:1,
-                        stock:0,
+                        stock:3,
                         estado:"ACTIVO"
                     }, {
                         id:37,
@@ -131,7 +131,7 @@ export default new Vuex.Store({
                         nombre:"prueba",
                         precio:"240000",
                         imagen:"default.png",
-                        stock:0,
+                        stock:3,
                         rest_estatus_id:1,
                         estado:"ACTIVO"
                     },

@@ -58,11 +58,7 @@
                         "
                     >
                         <v-card-text>
-                            <v-row
-                                class="align"
-                                justify="center"
-                                v-show="view == 1"
-                            >
+                            <v-row class="align" justify="center">
                                 <v-col
                                     cols="12"
                                     md="8"
@@ -159,7 +155,7 @@
                                             <div
                                                 class="font-weight-bold subtitle-1"
                                             >
-                                                {{ pedido.nom_empresa }}
+                                                {{ pedido.nombre_comercial }}
                                             </div>
                                         </v-col>
                                         <v-col cols="12" md="6" sm="12">
@@ -182,7 +178,7 @@
                                         block
                                         color="#0f2441"
                                         class="text-capitalize subtitle-2 my-5 white--text font-weight-bold"
-                                        @click="view = 2"
+                                        @click="startStepper()"
                                         >Pagar</v-btn
                                     >
                                 </v-col>
@@ -193,7 +189,13 @@
             </v-card>
         </v-scroll-x-transition>
         <v-scroll-x-transition>
-            <div class="center" v-show="view == 2">
+            <v-card
+                :class="
+                    $vuetify.breakpoint.smAndDown ? 'my-5 mx-2' : 'mx-10 my-5'
+                "
+                class="center"
+                v-show="view == 2"
+            >
                 <v-stepper v-model="stepper">
                     <v-stepper-header>
                         <v-stepper-step
@@ -221,109 +223,118 @@
 
                     <v-stepper-items>
                         <v-stepper-content step="1">
-                            <v-card
-                                :class="
-                                    $vuetify.breakpoint.smAndDown
-                                        ? 'my-5 mx-2'
-                                        : 'mx-10 my-5'
-                                "
-                            >
-                                <v-row class="align" justify="center">
-                                    <v-col
-                                        cols="12"
-                                        md="6"
-                                        sm="12"
-                                        class="pa-5 products-list"
-                                    >
-                                        <div class="font-weight-bold title">
-                                            Tus productos
-                                        </div>
-                                        <div
-                                            class="font-weight-bold subtitle-1"
-                                        >
-                                            {{ pedido.detalles.length + " " }}
-                                            item
-                                        </div>
+                            <v-row class="align" justify="center">
+                                <v-col
+                                    cols="12"
+                                    md="8"
+                                    sm="12"
+                                    class="pa-5 products-list"
+                                >
+                                    <div class="font-weight-bold title">
+                                        Tus productos
+                                    </div>
+                                    <div class="font-weight-bold subtitle-1">
+                                        {{ pedido.detalles.length + " " }}
+                                        item
+                                    </div>
 
-                                        <v-list>
-                                            <v-list-item class="products-row">
-                                                <v-list-item-title class="imag">
-                                                    <p>Imagen</p>
-                                                </v-list-item-title>
-                                                <v-list-item-title>
-                                                    <p>Precio</p>
-                                                </v-list-item-title>
-                                                <v-list-item-title>
-                                                    <p>solicitada</p>
-                                                </v-list-item-title>
-                                                <v-list-item-title>
-                                                    <p>en Stock</p>
-                                                </v-list-item-title>
-                                            </v-list-item>
-                                            <v-list-item
-                                                class="products-row"
-                                                v-for="(detalle,
-                                                i) in pedido.detalles"
-                                                :key="i"
+                                    <v-list>
+                                        <v-list-item class="products-row">
+                                            <v-list-item-title class="imag">
+                                                <p>Imagen</p>
+                                            </v-list-item-title>
+                                            <v-list-item-title>
+                                                <p>Nombre</p>
+                                            </v-list-item-title>
+                                            <v-list-item-title>
+                                                <p>Precio</p>
+                                            </v-list-item-title>
+                                            <v-list-item-title>
+                                                <p>solicitada</p>
+                                            </v-list-item-title>
+                                            <v-list-item-title>
+                                                <p>en Stock</p>
+                                            </v-list-item-title>
+                                        </v-list-item>
+                                        <v-list-item
+                                            class="products-row"
+                                            v-for="(detalle,
+                                            i) in pedido.detalles"
+                                            :key="i"
+                                        >
+                                            <v-list-item-title>
+                                                <v-list-item-avatar>
+                                                    <v-img
+                                                        :src="
+                                                            image +
+                                                                detalle.imagen
+                                                        "
+                                                    ></v-img>
+                                                </v-list-item-avatar>
+                                            </v-list-item-title>
+                                            <v-list-item-title
+                                                class="product-text"
                                             >
-                                                <v-list-item-title>
-                                                    <v-list-item-avatar>
-                                                        <v-img
-                                                            :src="
-                                                                image +
-                                                                    detalle.imagen
-                                                            "
-                                                        ></v-img>
-                                                    </v-list-item-avatar>
-                                                </v-list-item-title>
-                                                <v-list-item-title
-                                                    class="product-text"
-                                                >
-                                                    {{ detalle.precio }}
-                                                </v-list-item-title>
-                                                <v-list-item-title
-                                                    class="product-text"
-                                                >
-                                                    <p
-                                                        style="padding-left:10px"
-                                                    >
-                                                        {{ detalle.cantidad }}
-                                                    </p>
-                                                </v-list-item-title>
-                                                <v-list-item-title
-                                                    class="product-text"
+                                                <p>
+                                                    {{ detalle.nombre }}
+                                                </p>
+                                            </v-list-item-title>
+                                            <v-list-item-title
+                                                class="product-text"
+                                            >
+                                                {{ detalle.precio }}
+                                            </v-list-item-title>
+                                            <v-list-item-title
+                                                class="product-text"
+                                            >
+                                                <p style="padding-left:10px">
+                                                    {{ detalle.cantidad }}
+                                                </p>
+                                            </v-list-item-title>
+                                            <v-list-item-title
+                                                class="product-text"
+                                            >
+                                                <v-chip
+                                                    class="ma-2"
+                                                    text-color="white"
+                                                    :color="
+                                                        stock_notifier.color
+                                                    "
                                                 >
                                                     {{ detalle.stock }}
-                                                </v-list-item-title>
-                                            </v-list-item>
-                                        </v-list>
-                                    </v-col>
-                                    <v-col cols="6" md="4" sm="12">
-                                        <div class="font-weight-bold title">
-                                            Subtotal a pagar
-                                        </div>
-                                        <div
-                                            class="font-weight-bold subtitle-1"
+                                                </v-chip>
+                                            </v-list-item-title>
+                                        </v-list-item>
+                                    </v-list>
+                                </v-col>
+                                <v-col cols="6" md="4" sm="12">
+                                    <div class="font-weight-bold title">
+                                        Subtotal a pagar
+                                    </div>
+                                    <div class="font-weight-bold subtitle-1">
+                                        {{ total }}
+                                    </div>
+                                    <div class="font-weight-bold subtitle-3">
+                                        <v-subheader v-if="stock == null"
+                                            ><span
+                                                :style="
+                                                    'color:' +
+                                                        stock_notifier.color
+                                                "
+                                                >{{
+                                                    stock_notifier.message
+                                                }}</span
+                                            ></v-subheader
                                         >
-                                            {{ total }}
-                                        </div>
-                                        <div
-                                            class="font-weight-bold subtitle-3"
-                                        >
-                                            <span
-                                                v-if="stock == null"
-                                                style="color:green"
-                                                >{{ stock_message }}</span
-                                            >
-                                            <span v-else style="color:red">{{
-                                                stock_message
-                                            }}</span>
-                                        </div>
-                                    </v-col>
-                                </v-row>
-                            </v-card>
+                                    </div>
+                                </v-col>
+                            </v-row>
 
-                            <v-btn color="#0f2441" @click="stepper = 2">
+                            <v-btn
+                                :disabled="this.bloqueo"
+                                color="#0f2441"
+                                @click="stepper = 2"
+                            >
                                 <span style="color:white">Continue</span>
                             </v-btn>
 
@@ -348,13 +359,12 @@
                                     <v-col cols="12" md="12" sm="12">
                                         <v-checkbox
                                             @click="resetPago($event)"
-                                            v-model="diferentes"
                                             label="diferentes tipos de pago?"
                                             color="#0f2441"
                                             value="multiple"
                                             hide-details
                                         ></v-checkbox>
-                                        <v-select 
+                                        <v-select
                                             :items="tiposDePago"
                                             dense
                                             color="#0f2441"
@@ -362,18 +372,18 @@
                                             item-value="nombre"
                                             return-object
                                             item-text="nombre"
-                                            v-if=" diferentes.length > 0"
+                                            v-if="diferentes"
                                             multiple
                                             chips
                                             persistent-hint
                                             hint="Metodo De Pago"
                                             label="Seleccione su metodo de pago"
                                             single-line
-                                             v-model="pago"
+                                            v-model="pago"
                                             @input="addTipo($event)"
                                             class="my-5"
                                         ></v-select>
-                                        <v-select 
+                                        <v-select
                                             :items="tiposDePago"
                                             dense
                                             color="#0f2441"
@@ -387,7 +397,7 @@
                                             hint="Metodo De Pago"
                                             label="Seleccione su metodo de pago"
                                             single-line
-                                           v-model="pago"
+                                            v-model="pago"
                                             class="my-5"
                                         ></v-select>
                                     </v-col>
@@ -396,7 +406,7 @@
 
                             <v-btn
                                 color="#0f2441"
-                                :disabled="pago ? false : true"
+                                :disabled="this.bloqueo"
                                 @click="stepper = 3"
                             >
                                 <span style="color:white">Continue</span>
@@ -462,7 +472,7 @@
                         </v-stepper-content>
                     </v-stepper-items>
                 </v-stepper>
-            </div>
+            </v-card>
         </v-scroll-x-transition>
     </v-card>
 </template>
@@ -473,6 +483,8 @@ import variables from "@/services/variables_globales";
 import Pedidos from "@/services/Pedidos";
 import accounting from "accounting";
 import Usuario from "@/services/Usuario";
+import Empresa from "@/services/Empresa";
+import Conceptos from "@/services/Conceptos";
 import { mapState, mapActions } from "vuex";
 import validations from "@/validations/validations";
 
@@ -482,11 +494,16 @@ import "filepond/dist/filepond.min.css";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css";
 const FilePond = vueFilePond(FilePondPluginImagePreview);
 
-const avaible = "Verificacion Exitosa, los productos se encuentran disponibles";
-const isOut =
-    "Lo sentimos, se acabo la existencia de algunos de sus Productos, Desea continuar con los disponibles?";
-const checking = "Checkeando existencias...";
-
+const avaible = {
+    message: "Verificacion Exitosa, los productos se encuentran disponibles",
+    color: "green",
+};
+const isOut = {
+    message:
+        "Lo sentimos, se acabo la existencia de algunos de sus Productos, Desea continuar con los disponibles?",
+    color: "red",
+};
+const checking = { message: "Checkeando existencias...", color: "gray" };
 export default {
     components: {
         FilePond,
@@ -498,12 +515,15 @@ export default {
             model: null,
             valid: false,
             view: 1,
+            disponibilidad: 0,
+            bloqueo: true,
             total: 0,
             metodo: 1,
             stepper: 1,
+            loading: false,
             stock: null,
-            stock_message: avaible,
-            diferentes: [],
+            stock_notifier: checking,
+            diferentes: false,
             pedido: {},
             conceptos: [],
             pago: [],
@@ -562,24 +582,110 @@ export default {
                 this.data.adm_pedidos_id = this.pedido.id;
             }
         },
+        pago(value) {
+            console.log(value.length, this.pago);
+            if (!this.diferentes) return;
+            if (value.length > 2) alert("sólo se permiten 2 tipos de pago"); //cambia este alert por un $toasted de Vue, investigalo
+            if (value.length <= 2) return;
+            this.pago = this.pago.slice(0, 2);
+        },
     },
     computed: {
         ...mapState(["user", "pedidos", "totalPedidos"]),
     },
     methods: {
         ...mapActions(["setPedidos", "deletePedidoStore"]),
-        resetPago(value){
-            this.pago = []
+        resetPago(value) {
+            this.pago = [];
+            this.diferentes = !this.diferentes;
         },
-       addTipo(value){
-           
-            if(this.pago.length > 2){
-           }
-       },
+        addTipo(value) {
+            if (this.pago.length > 2) {
+            }
+        },
+        getCheck() {
+            return Promise.all(
+                this.pedido.detalles.map(async (product, key) => {
+                    const stock = await this.getExistencia(
+                        product.adm_conceptos_id
+                    );
+                    product.stock = stock;
+                    if (stock > 0) {
+                        this.disponibilidad += 1;
+                        //checkea si la cantidad solicitada esta disponible en su totalidad
+                        //si lo esta mantiene la cantidad solicitada
+                        return product.cantidad > stock
+                            ? product
+                            : Object.assign({}, product, {
+                                  cantidad: stock,
+                              });
+                        //guarda el valor
+                    }
+                })
+            );
+        },
+        async checkExistence() {
+            this.stock_notifier = checking;
+            let newPriceList = [];
+            this.getCheck().then((checked) => {
+                console.log("checked", checked);
+                if (this.disponibilidad === this.pedido.detalles.length) {
+                    this.stock_notifier = avaible;
+                    this.bloqueo = false;
+                }else if (this.disponibilidad > 0 && this.disponibilidad < this.pedido.detalles.length ) {
+                    
+                    this.stock_notifier = avaible;
+                    this.total = accounting.formatMoney(
+                        +(checked.reduce(
+                            (acumulator, current) => acumulator + (+current.precio)
+                        )),
+                        {
+                            symbol: "Bs ",
+                            thousand: ".",
+                            decimal: ",",
+                        }
+                    );
+                    this.bloqueo = false;
+                } else {
+                    console.log("holi")
+                    this.stock_notifier = isOut;
+                }
+            });
+        },
+        async getExistencia(item) {
+            this.loading = true;
+            return await Conceptos()
+                .get(`/${item}/depositos`)
+                .then((response) => {
+                    const toParse = Object.assign({
+                        existencias: response.data.data,
+                    });
+                    const existence = this.parseExistencia(toParse);
+                    return existence;
+                })
+                .catch((e) => {
+                    console.log(e);
+                    this.error("Error al procesar existencia.");
+                });
+        },
+        parseExistencia(concepto) {
+            return Array.isArray(concepto.existencias)
+                ? concepto.existencias.length > 0
+                    ? concepto.existencias
+                          .map((a) => Math.trunc(+a.existencia))
+                          .reduce((a, b) => a + b)
+                    : 0
+                : concepto.existencias;
+        },
+        startStepper() {
+            this.view = 2;
+            this.checkExistence();
+        },
         getPedidos() {
             Usuario()
                 .get(`/${this.user.data.id}/pedidos/?rest_estatus_id=1`)
                 .then((response) => {
+                    console.log(response);
                     if (response.data.data) {
                         this.setPedidos(response.data.data);
                         this.pedido = this.pedidos[0];
@@ -680,11 +786,12 @@ export default {
 .align {
     align-items: baseline;
 }
+.notifier {
+    font: bold;
+    opacity: 0.7;
+}
 .center {
     margin-top: 10vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 .file {
     &:hover {
