@@ -27,7 +27,7 @@
                                 
                                 <v-card elevation="0" height="50">
                                     <v-fade-transition>
-                                        <v-alert dense :type="type" v-show="showMessage">
+                                        <v-alert border="left" colored-border elevation="2"  dense :type="type" v-show="showMessage">
                                             {{mensaje}}
                                         </v-alert>
                                     </v-fade-transition> 
@@ -178,10 +178,10 @@ import {mapActions} from 'vuex';
             login(){
                 this.loading = true;
                 Auth().post("/login",{data:this.data}).then((response) =>{
-                    if(response.data.response.data.bloqueado == 1){
+                    if(response.data.data.bloqueado == 1){
                         this.setModalBloqueado(true);
                         this.loading = false;
-                    }else if(response.data.response.data.perfil_id == 3){
+                    }else if(response.data.data.perfil_id == 3){
                         this.logged(response.data);
                         this.respuesta("Bienvenido.","success");
                         setTimeout(() => { this.home()},1000);
