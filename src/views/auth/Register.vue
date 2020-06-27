@@ -251,9 +251,6 @@ import {mapActions} from 'vuex';
             postUsuario(){
                 this.loading = true;
                 Auth().post("/signup",{data:this.data}).then((response) => {
-                    this.logged(response.data);
-                    this.respuesta("Usuario registrado exitosamente.","success");
-                    setTimeout(() => { this.login()},1000);
                     this.postCliente(response.data);
                 }).catch(e => {
                     console.log(e);
@@ -264,9 +261,16 @@ import {mapActions} from 'vuex';
                 let cliente = {
                     nombre:usuario.nombre + " " + usuario.apellido,
                     fecha_nac:new Date().toISOString().substr(0,10),
-                    usuario_id:usuario.id
+                    usuario_id:usuario.data.id
                 };
-                Clientes().post("/",{data:cliente});
+                Clientes().post("/",{data:cliente}).then((response) => {
+                    this.logged(usuario);
+                    this.respuesta("Usuario registrado exitosamente.","success");
+                    setTimeout(() => { this.login()},1000);
+                }).catch(e => {
+                    console.log(e);
+                    this.respuesta("Error al registrar, intente mas tarde.","error");
+                });
             }
         },
     }
