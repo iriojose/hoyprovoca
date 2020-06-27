@@ -22,21 +22,14 @@
             </v-btn>
         </v-toolbar>
         <v-scroll-x-transition>
-            <div v-show="view == 1">
-                <v-slide-group
-                    multiple
-                    show-arrows
-                    :class="$vuetify.breakpoint.smAndDown ? null : 'mx-10'"
-                >
+             <v-row justify="center"  v-show="view==1" v-if="loading">
+                      <v-progress-circular indeterminate size="100" class="margen-movil" color="#0f2441" :width="4">
+                      </v-progress-circular>
+                 </v-row>
+            <div v-else  v-show="view == 1 ">
+                <v-slide-group multiple show-arrows :class="$vuetify.breakpoint.smAndDown ? null : 'mx-10'">
                     <v-slide-item v-for="(pedi, i) in pedidos" :key="i">
-                        <v-btn
-                            :disabled="pedido.id == pedi.id"
-                            class="mx-2"
-                            depressed
-                            rounded
-                            height="50"
-                            @click="seleccionarPedido(pedi, i)"
-                        >
+                        <v-btn :disabled="pedidoSelect.id == pedi.id" class="mx-2" depressed rounded height="50" @click="seleccionarPedido(pedi, i)">
                             <v-avatar size="40">
                                 <v-img :src="image + pedi.imagen"></v-img>
                             </v-avatar>
@@ -44,26 +37,16 @@
                     </v-slide-item>
                 </v-slide-group>
 
-                <v-card
-                    :class="
-                        $vuetify.breakpoint.smAndDown
-                            ? 'my-5 mx-2'
-                            : 'mx-10 my-5'
-                    "
-                >
-                    <v-card-text>
+                <v-card :class="$vuetify.breakpoint.smAndDown ? 'my-5 mx-2': 'mx-10 my-5'">
+                
+                    <v-card-text >
                         <v-row class="align" justify="center">
-                            <v-col
-                                cols="12"
-                                md="8"
-                                sm="12"
-                                class="pa-5 products-list"
-                            >
+                            <v-col cols="12" md="6" sm="12" class="pa-5 products-list">
                                 <div class="font-weight-bold title">
                                     Tus productos
                                 </div>
                                 <div class="font-weight-bold subtitle-1">
-                                    {{ pedido.detalles.length + " " }} item
+                                    {{ pedidoSelect.detalles.length + " " }} item
                                 </div>
                                 <v-list>
                                     <v-list-item class="products-row">
@@ -87,7 +70,7 @@
                                     </v-list-item>
                                     <v-list-item
                                         class="products-row"
-                                        v-for="(detalle, i) in pedido.detalles"
+                                        v-for="(detalle, i) in pedidoSelect.detalles"
                                         :key="i"
                                     >
                                         <v-list-item-title>
@@ -113,16 +96,11 @@
                                             </p>
                                         </v-list-item-title>
                                         <v-list-item-title class="product-text">
-                                            <v-chip
-                                                class="ma-2"
-                                                v-bind:color="
-                                                    detalle.estado == 'ACTIVO'
-                                                        ? 'green'
-                                                        : 'red'
-                                                "
-                                                text-color="white"
-                                                >{{ detalle.estado }}</v-chip
-                                            >
+                                                 <v-chip v-bind:color="detalle.estado == 'ACTIVO' ? 'green' : 'red'" class="ma-2" text-color="white">
+                                                    <v-avatar small center>
+                                                        <v-icon>mdi-check</v-icon>
+                                                    </v-avatar>
+                                                    </v-chip>
                                         </v-list-item-title>
                                     </v-list-item>
                                 </v-list>
@@ -136,7 +114,7 @@
                                         <div
                                             class="font-weight-bold subtitle-1"
                                         >
-                                            {{ pedido.nombre_comercial }}
+                                            {{ pedidoSelect.empresa.nombre_comercial }}
                                         </div>
                                     </v-col>
                                     <v-col cols="12" md="6" sm="12">
@@ -153,7 +131,7 @@
 
                                 <div class="font-weight-bold subtitle-2">
                                     Cantidad de Personas :
-                                    {{ pedido.cant_personas }}
+                                    {{ pedidoSelect.cant_personas }}
                                 </div>
                                 <v-btn
                                     block
@@ -206,7 +184,7 @@
                             <v-row class="align" justify="center">
                                 <v-col
                                     cols="12"
-                                    md="8"
+                                    md="6"
                                     sm="12"
                                     class="pa-5 products-list"
                                 >
@@ -214,7 +192,7 @@
                                         Tus productos
                                     </div>
                                     <div class="font-weight-bold subtitle-1">
-                                        {{ pedido.detalles.length + " " }}
+                                        {{ pedidoSelect.detalles.length + " " }}
                                         item
                                     </div>
 
@@ -239,7 +217,7 @@
                                         <v-list-item
                                             class="products-row"
                                             v-for="(detalle,
-                                            i) in pedido.detalles"
+                                            i) in pedidoSelect.detalles"
                                             :key="i"
                                         >
                                             <v-list-item-title>
@@ -278,6 +256,7 @@
                                                     class="ma-2 bloked white--text"
                                                     :loading="loading"
                                                     :disabled="loading"
+                                                    small
                                                     :color="
                                                         stock_notifier.color
                                                     "
@@ -289,14 +268,14 @@
                                         </v-list-item>
                                     </v-list>
                                 </v-col>
-                                <v-col cols="6" md="4" sm="12">
+                                <v-col cols="10" md="4" sm="12">
                                     <div class="font-weight-bold title">
                                         Subtotal a pagar
                                     </div>
                                     <div class="font-weight-bold subtitle-1">
                                         {{ total }}
                                     </div>
-                                    <div class="font-weight-bold subtitle-3">
+                                    <v-col cols="6" md="4" sm="12" class="font-weight-bold subtitle-3">
                                         <v-subheader v-if="stock == null"
                                             ><span
                                                 :style="
@@ -308,7 +287,7 @@
                                                 }}</span
                                             ></v-subheader
                                         >
-                                    </div>
+                                    </v-col >
                                 </v-col>
                             </v-row>
 
@@ -333,7 +312,7 @@
                                         Tus productos
                                     </div>
                                     <div class="font-weight-bold subtitle-1">
-                                        {{ pedido.detalles.length + " " }} item
+                                        {{pedidoSelect.detalles.length + " " }} item
                                     </div>
                                     <div class="font-weight-bold title">
                                         Subtotal a pagar
@@ -385,7 +364,7 @@
                                     ></v-select>
                                 </v-col>
                                 <v-snackbar class="text--pink" v-model="alert">
-                                    Solo puede escojer dos metodos de Pago
+                                    {{ alert_notifier }}
 
                                     <template v-slot:action="{ attrs }">
                                         <v-btn
@@ -449,10 +428,29 @@
                                         ></v-text-field>
                                     </v-form>
                                 </v-col>
-                                <v-dialog>
-                                        
+                                <v-dialog
+                                    v-model="takeFile"
+                                    width="500"
+                                    justify="center"
+                                >
+                                    <v-col class="pa-5">
+                                        <v-card justify="center">
+                                            <v-card-title>
+                                                Ingrese Foto de Su pago
+                                            </v-card-title>
+                                            <v-card-text>
+                                                <FilePond
+                                                    class="file"
+                                                    ref="pond"
+                                                    v-model="file"
+                                                    label-idle="Arrastrar Aqui..."
+                                                    labelFileAdded="Archivo Añadido"
+                                                    :server="process"
+                                                />
+                                            </v-card-text>
+                                        </v-card>
+                                    </v-col>
                                 </v-dialog>
-                              
                             </v-row>
 
                             <v-btn
@@ -484,12 +482,11 @@ import Conceptos from "@/services/Conceptos";
 import { mapState, mapActions } from "vuex";
 import validations from "@/validations/validations";
 import vueFilePond from "vue-filepond";
-import ModalPago from "@components/dialogs/ModalPago";
 import FilePondPluginImagePreview from "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.esm.js";
 import "filepond/dist/filepond.min.css";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css";
 const FilePond = vueFilePond(FilePondPluginImagePreview);
-
+//for stock notifier
 const avaible = {
     message: "Verificacion Exitosa, los productos se encuentran disponibles",
     color: "green",
@@ -499,11 +496,14 @@ const isOut = {
         "Lo sentimos, se acabo la existencia de algunos de sus Productos, Desea continuar con los disponibles?",
     color: "red",
 };
+// for alerts snackbar
+
+const maxPago = "Solo puede escojer dos metodos de Pago";
+const empiezaPago = "ingrese el pago";
 const checking = { message: "Checkeando existencias...", color: "gray" };
 export default {
     components: {
         FilePond,
-        ModalPago
     },
     data() {
         return {
@@ -512,19 +512,44 @@ export default {
             model: null,
             valid: false,
             view: 1,
+            takeFile: false,
             disponibilidad: 0,
             bloqueo: true,
-            alert:false,
+            alert: false,
             total: 0,
             metodo: 1,
             stepper: 1,
-            loading: false,
+            loading: true,
             stock: null,
             stock_notifier: checking,
+            alert_notifier: maxPago,
             diferentes: false,
-            pedido: {},
+            pedidoSelect: {},
             conceptos: [],
             pago: [],
+            pedidos:[{
+                id:1,
+                usuario_id:7,
+                rest_mesas_id:0,
+                rest_estatus_id:1,
+                estado:"0",
+                cant_personas:1,
+                nombre_comercial:'',
+                imagen:"default.png",
+                adm_empresa_id:2,
+                detalles:[
+                    {
+                        id:1,
+                        rest_pedidos_id:1,
+                        adm_conceptos_id:2,
+                        cantidad:"1",
+                        nombre:"0",
+                        precio:"0",
+                        imagen:"default.png",
+                        rest_estatus_id:1,
+                        stock:3,
+                        estado:"0"
+                    },],}],
             file: {},
             tiposDePago: [
                 {
@@ -554,7 +579,7 @@ export default {
         };
     },
     mounted() {
-        this.getPedidos();
+        this.getPedidosUsuario();
     },
     head: {
         title() {
@@ -573,8 +598,8 @@ export default {
                 this.data.usuario_id = this.user.data.id;
                 this.data.monto = this.total;
                 this.data.adm_tipo_pago_id = this.pago.id;
-                this.dataadm_status_id = 1;
-                this.data.adm_pedidos_id = this.pedido.id;
+                this.data.adm_status_id = 1;
+                this.data.adm_pedidos_id = this.pedidoSelect.id;
             }
         },
         pago(value) {
@@ -594,7 +619,7 @@ export default {
                 this.bloqueo = true;
                 return;
             }
-            if (value.length > 2) this.alert = true //cambia este alert por un $toasted de Vue, investigalo
+            if (value.length > 2) this.alert = true; //cambia este alert por un $toasted de Vue, investigalo
             if (value.length <= 2) {
                 this.bloqueo = false;
                 return;
@@ -607,7 +632,7 @@ export default {
         },
     },
     computed: {
-        ...mapState(["user", "pedidos", "totalPedidos"]),
+         ...mapState(['user'])
     },
     methods: {
         ...mapActions(["setPedidos", "deletePedidoStore"]),
@@ -617,28 +642,18 @@ export default {
             this.bloqueo = true;
             this.diferentes = !this.diferentes;
         },
-        addTipo(value) {
-            if (this.pago.length > 2) {
-            }
-        },
         getCheck() {
             return Promise.all(
                 //devuelve las promesas que se realizan al solicitar la existencia de cada producto
-                this.pedido.detalles.map(async (product, key) => {
-                    const stock = await this.getExistencia(
-                        product.adm_conceptos_id
-                    );
+                this.pedidoSelect.detalles.map(async (product, key) => {
+                    const stock = await this.getExistencia(product.adm_conceptos_id);
                     product.stock = stock;
                     if (stock > 0) {
                         this.disponibilidad += 1;
                         //checkea si la cantidad solicitada esta disponible en su totalidad
                         //si lo esta mantiene la cantidad solicitada
                         //si no modifica la cantidad solicitada con la disponible en stock
-                        return product.cantidad > stock
-                            ? product
-                            : Object.assign({}, product, {
-                                  cantidad: stock,
-                              });
+                        return product.cantidad > stock ? product : Object.assign({}, product, {  cantidad: stock, });
                         //guarda el valor
                     }
                 })
@@ -652,26 +667,16 @@ export default {
             //empieza a cargar las existencias una vez temina la funcion  se modifica el total si faltan productos a la existencia
             this.getCheck().then((checked) => {
                 this.loading = false;
-                if (this.disponibilidad === this.pedido.detalles.length) {
+                if (this.disponibilidad === this.pedidoSelect.detalles.length) {
                     this.stock_notifier = avaible;
                     this.bloqueo = false;
                 } else if (
                     this.disponibilidad > 0 &&
-                    this.disponibilidad < this.pedido.detalles.length
+                    this.disponibilidad < this.pedidoSelect.detalles.length
                 ) {
                     //en este caso no todos los productos estan disponibles asi que se procede a modificar el total con los disponibles
                     this.stock_notifier = avaible;
-                    this.total = accounting.formatMoney(
-                        +checked.reduce(
-                            (acumulator, current) =>
-                                acumulator + +current.precio
-                        ),
-                        {
-                            symbol: "Bs ",
-                            thousand: ".",
-                            decimal: ",",
-                        }
-                    );
+                    this.total = accounting.formatMoney(+(checked.reduce((acumulator, current) => acumulator + +current.precio),{symbol: "Bs ",thousand: ".",decimal: ",",}));
                     this.bloqueo = false;
                 } else {
                     this.stock_notifier = isOut;
@@ -680,84 +685,45 @@ export default {
         },
         async getExistencia(item) {
             this.loading = true;
-            return await Conceptos()
-                .get(`/${item}/depositos`)
-                .then((response) => {
-                    const toParse = Object.assign({
-                        existencias: response.data.data,
-                    });
+            return await Conceptos().get(`/${item}/depositos`).then((response) => {
+                    const toParse = Object.assign({existencias: response.data.data,});
                     const existence = this.parseExistencia(toParse);
                     return existence;
-                })
-                .catch((e) => {
+                }).catch((e) => {
                     console.log(e);
                     this.error("Error al procesar existencia.");
                 });
         },
         parseExistencia(concepto) {
-            return Array.isArray(concepto.existencias)
-                ? concepto.existencias.length > 0
-                    ? concepto.existencias
-                          .map((a) => Math.trunc(+a.existencia))
-                          .reduce((a, b) => a + b)
-                    : 0
-                : concepto.existencias;
+            return Array.isArray(concepto.existencias) ? concepto.existencias.length > 0 ? concepto.existencias.map((a) => Math.trunc(+a.existencia)).reduce((a, b) => a + b) : 0 : concepto.existencias;
         },
         startStepper() {
             this.view = 2;
             this.checkExistence();
         },
-        getPedidos() {
-            Usuario()
-                .get(`/${this.user.data.id}/pedidos/?rest_estatus_id=1`)
-                .then((response) => {
-                    if (response.data.data) {
-                        this.setPedidos(response.data.data);
-                        this.pedido = this.pedidos[0];
-                        this.total = accounting.formatMoney(
-                            +this.totalPedidos[0],
-                            {
-                                symbol: "Bs ",
-                                thousand: ".",
-                                decimal: ",",
-                            }
-                        );
-                    } else {
-                        this.pedido = this.pedidos[0];
-                        this.pedido.detalles.filter(
-                            (a) =>
-                                (a.precio = accounting.formatMoney(+a.precio, {
-                                    symbol: "Bs ",
-                                    thousand: ".",
-                                    decimal: ",",
-                                }))
-                        );
-                        this.total = accounting.formatMoney(
-                            +this.totalPedidos[0],
-                            {
-                                symbol: "Bs ",
-                                thousand: ".",
-                                decimal: ",",
-                            }
-                        );
+        getPedidosUsuario(){
+                this.loading = true;
+                Usuario().get(`/${this.user.data.id}/pedidos/?rest_estatus_id=1`).then((response) => {
+                    this.pedidos = response.data.data;
+                    this.pedidos.filter((a,i) => this.getEmpresas(a.adm_empresa_id,i)); 
+                    console.log(this.pedidos);
+                }).catch(e => {
+                    console.log(e);
+                });
+            },
+            getEmpresas(id,i){
+                Empresa().get(`/${id}/?fields=nombre_comercial,imagen,id`).then((response) => {
+                    this.pedidos[i].empresa = response.data.data;
+                    if(this.pedidos.length -1 == i){
+                        this.loading = false;
+                        this.pedidoSelect = this.pedidos[0];
+                        this.pedidos.filter(a => a.detalles.filter(b => b.precio = accounting.formatMoney(+b.precio,{symbol:"Bs ",thousand:'.',decimal:','})));
+                        this.calcularTotal(this.pedidos[0].detalles);
                     }
-                })
-                .catch((e) => {
+                }).catch(e => {
                     console.log(e);
                 });
-        },
-
-        getConceptos(id) {
-            Pedidos()
-                .get(`/${id}/conceptos`)
-                .then((response) => {
-                    this.conceptos = response.data.data;
-                })
-                .catch((e) => {
-                    console.log(e);
-                });
-        },
-
+            },
         checkPago() {
             this.data.adm_status_id = 2;
             this.data.adm_tipo_pago_id = this.pago.id;
@@ -775,7 +741,9 @@ export default {
             Pagos()
                 .post("/", { data: { ...this.data, monto: money } })
                 .then((response) => {
-                    this.process();
+                    this.alert = true;
+                    this.alert_notifier = empiezaPago;
+                    this.takeFile = true;
                 })
                 .catch((e) => {
                     console.log(e);
