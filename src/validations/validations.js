@@ -2,6 +2,10 @@ let required = (properType) => {
     return v => v && v.length > 0 || `${properType} requerid@(s)`
 }
 
+let requiredBoolean = (properType) => {
+    return v => v && v == true || `${properType} es requerido`
+}
+
 let minLength = (properType,minLength) => {
     return v => v && v.length >= minLength || `${properType} debe tener ${minLength} caracteres`
 }
@@ -38,5 +42,6 @@ export default{
     maxLength,
     emailFormat,
     number,
-    cedula
+    cedula,
+    requiredBoolean
 }

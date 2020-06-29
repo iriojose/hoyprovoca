@@ -27,7 +27,7 @@
                                 
                                 <v-card elevation="0" height="50">
                                     <v-fade-transition>
-                                        <v-alert dense :type="type" v-show="showMessage">
+                                        <v-alert border="left" colored-border elevation="2"  dense :type="type" v-show="showMessage">
                                             {{mensaje}}
                                         </v-alert>
                                     </v-fade-transition> 
@@ -74,8 +74,7 @@
                                     ></v-text-field>
 
                                     <v-btn
-                                        rounded color="#2950c3"
-                                        block
+                                        rounded color="#2950c3" block
                                         :loading="loading" height="40"
                                         :disabled="valid && success !== '' ? false:true"
                                         @click="login()"
@@ -95,8 +94,8 @@
             </v-row>
         </v-card-text>
 
-        <v-footer fixed class="font-weight-medium" elevation="2">
-            <v-col class="text-center" cols="12">
+        <v-footer fixed class="font-weight-medium" elevation="0" color="#1f3b63">
+            <v-col class="text-center white--text" cols="12">
                 {{ new Date().getFullYear() }} — <strong>Hoyprovoca</strong> 
             </v-col>
         </v-footer>
@@ -178,10 +177,10 @@ import {mapActions} from 'vuex';
             login(){
                 this.loading = true;
                 Auth().post("/login",{data:this.data}).then((response) =>{
-                    if(response.data.response.data.bloqueado == 1){
+                    if(response.data.data.bloqueado == 1){
                         this.setModalBloqueado(true);
                         this.loading = false;
-                    }else if(response.data.response.data.perfil_id == 3){
+                    }else if(response.data.data.perfil_id == 3){
                         this.logged(response.data);
                         this.respuesta("Bienvenido.","success");
                         setTimeout(() => { this.home()},1000);

@@ -2,33 +2,20 @@
     <v-card elevation="0" color="#f7f7f7">
         <v-toolbar elevation="2" color="#0f2441">
             <v-toolbar-title>
-                <v-img
-                    contain
-                    height="100"
-                    width="150"
-                    src="@/assets/logo 6.png"
-                />
+                <v-img contain height="100" width="150" src="@/assets/logo 6.png" />
             </v-toolbar-title>
 
             <v-spacer></v-spacer>
 
-            <v-hover v-slot:default="{ hover }">
-                <v-btn
-                    :elevation="hover ? 2 : 0"
-                    color="#fff"
-                    class="text-capitalize body-2 font-weight-bold black--text"
-                    to="/"
-                    >Seguir comprando</v-btn
-                >
-            </v-hover>
+            <v-btn
+                elevation="2" color="#fff" to="/"
+                class="text-capitalize body-2 font-weight-bold black--text"
+            >
+                Seguir comprando
+            </v-btn>
         </v-toolbar>
-        <v-scroll-x-transition>
-            <v-card elevation="0" color="#f7f7f7" v-show="view == 1">
-                <v-card-text>
-                    <div class="text-center my-5 display-1 font-weight-bold">
-                        Checkout
-                    </div>
-
+            <v-scroll-x-transition>
+                <v-card v-show="view ==1" elevation="0" color="#f7f7f7">
                     <v-slide-group
                         multiple
                         show-arrows
@@ -189,7 +176,6 @@
                             </v-row>
                         </v-card-text>
                     </v-card>
-                </v-card-text>
             </v-card>
         </v-scroll-x-transition>
         <v-scroll-x-transition>
@@ -463,7 +449,7 @@
                     </v-stepper-items>
                 </v-stepper>
             </div>
-        </v-scroll-x-transition>
+        </v-card-text>
     </v-card>
 </template>
 
@@ -544,22 +530,11 @@ export default {
     head: {
         title() {
             return {
-                inner: "Checkout",
-                separator: " ",
-                complement: " ",
-            };
-        },
-    },
-    watch: {
-        view() {
-            if (this.view == 2) {
-                this.data.emisor =
-                    this.user.data.nombre + " " + this.user.data.apellido;
-                this.data.usuario_id = this.user.data.id;
-                this.data.monto = this.total;
-                this.data.adm_tipo_pago_id = this.pago.id;
-                this.dataadm_status_id = 1;
-                this.data.adm_pedidos_id = this.pedido.id;
+                ...variables,
+                loading:false,
+                pedidos:[],
+                pedidoSelect:{},
+                total:0,
             }
         },
     },
@@ -615,65 +590,52 @@ export default {
                     console.log(e);
                 });
         },
-        selectPedido(pedido, i) {
-            this.view = 1;
-            this.pedido = pedido;
-            this.pedido.detalles.filter(
-                (a) =>
-                    (a.precio = accounting.formatMoney(+a.precio, {
-                        symbol: "Bs ",
-                        thousand: ".",
-                        decimal: ",",
-                    }))
-            );
-            this.total = accounting.formatMoney(+this.totalPedidos[i], {
-                symbol: "Bs ",
-                thousand: ".",
-                decimal: ",",
-            });
+        head: {
+            title() {
+                return {
+                    inner: "Checkout",
+                    separator: " ",
+                    complement: " ",
+                };
+            },
         },
-        getConceptos(id) {
-            Pedidos()
-                .get(`/${id}/conceptos`)
-                .then((response) => {
-                    this.conceptos = response.data.data;
-                    console.log(response);
-                })
-                .catch((e) => {
+        mounted() {
+            this.getPedidosUsuario();
+        },
+        methods: {
+            getPedidosUsuario(){
+                this.loading = true;
+                Usuario().get(`/${this.user.data.id}/pedidos/?rest_estatus_id=1`).then((response) => {
+                    this.pedidos = response.data.data;
+                    this.pedidos.filter((a,i) => this.getEmpresas(a.adm_empresa_id,i)); 
+                }).catch(e => {
                     console.log(e);
                 });
-        },
-        postPago() {
-            Pagos()
-                .post("/", { data: this.data })
-                .then((response) => {
-                    this.process();
-                })
-                .catch((e) => {
+            },
+            getEmpresas(id,i){
+                Empresa().get(`/${id}/?fields=nombre_comercial,imagen,id`).then((response) => {
+                    this.pedidos[i].empresa = response.data.data;
+                    if(this.pedidos.length -1 == i){
+                        this.loading = false;
+                        this.pedidoSelect = this.pedidos[0];
+                        this.pedidos.filter(a => a.detalles.filter(b => b.precio = accounting.formatMoney(+b.precio,{symbol:"Bs ",thousand:'.',decimal:','})));
+                        this.calcularTotal(this.pedidos[0].detalles);
+                    }
+                }).catch(e => {
                     console.log(e);
                 });
+            },
+            calcularTotal(detalles){
+                let suma = 0;
+                detalles.filter(a => suma+= +a.precio * a.cantidad);
+                this.total = accounting.formatMoney(+suma,{symbol:"Bs ",thousand:'.',decimal:','});
+            },
+            seleccionarPedido(evt){
+                this.pedidoSelect = evt;
+                this.calcularTotal(evt.detalles);
+            }
         },
-        process(fieldName, file, metadata, load, error, abort) {
-            let formdata = new FormData();
-            formdata.append("image", file);
-            abort();
-
-            Images()
-                .post(`/main/pagos/${this.pedido.id}`, formdata)
-                .then((response) => {
-                    load("Imagen añadida");
-                })
-                .catch((e) => {
-                    console.log(e);
-                    error("Erro al subir la imagen");
-                });
-        },
-    },
-};
-
-//adm_tipo_pago_id = 1 (Banesco panama)
-//adm_tipo_pago_id = 2 (Zelle)
-//adm_tipo_pago_id = 3 (Bancos nacionales)
+    }
 </script>
 
 <style lang="scss" scoped>
@@ -702,17 +664,7 @@ export default {
     &-text {
         text-align: center;
     }
-    &-list {
-        position: relative;
-        &:after {
-            content: "";
-            position: absolute;
-            right: 0;
-            top: 30%;
-            width: 1px;
-            height: 40%;
-            background-color: rgba(0, 0, 0, 0.123);
-        }
+    .margen-movil{
+        margin-top:100px;
     }
-}
 </style>

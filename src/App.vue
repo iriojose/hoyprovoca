@@ -45,7 +45,8 @@ import Footer from '@/components/footer/Footer';
                     this.$route.name == 'prueba' ||
                     this.$route.name == 'comopagar' || 
                     this.$route.name == 'terminosycondiciones' ||
-                    this.$route.name == 'privacidad'
+                    this.$route.name == 'privacidad' ||
+                    this.$route.name == 'reset'
                 ){
                     return false;
                 }else{

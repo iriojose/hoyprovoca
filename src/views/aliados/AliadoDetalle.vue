@@ -194,7 +194,7 @@ import {mapState} from 'vuex';
                 });
             },
             async getConceptos(id,i){
-                await Grupos().get(`/${id}/conceptos/?limit=10`).then((response) => {
+                await Grupos().get(`/${id}/conceptos/?limit=10&adm_empresa_id=${this.empresa.id}`).then((response) => {
                     response.data.data.filter(a => a.agregado=false);
                     response.data.data.filter(a => this.agregados.filter(b => a.id == b ? a.agregado=true:null));
                     this.grupos.filter(a => a.id == response.data.data[0].adm_grupos_id ? a.conceptos = response.data.data:null);
@@ -218,7 +218,7 @@ import {mapState} from 'vuex';
             },
             async getConceptosGrupos(id){
                 this.loading2 = true;
-                await Grupos().get(`/${id}/conceptos/?limit=12&offset=${this.after}`).then((response) => {
+                await Grupos().get(`/${id}/conceptos/?limit=12&offset=${this.after}&adm_empresa_id=${this.empresa.id}`).then((response) => {
                     response.data.data.filter(a => a.agregado=false);
                     response.data.data.filter(a => this.agregados.filter(b => a.id == b ? a.agregado=true:null));
                     response.data.data.filter(a => this.conceptos.push(a));
