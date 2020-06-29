@@ -74,8 +74,7 @@
                                     ></v-text-field>
 
                                     <v-btn
-                                        rounded color="#2950c3"
-                                        block
+                                        rounded color="#2950c3" block
                                         :loading="loading" height="40"
                                         :disabled="valid && success !== '' ? false:true"
                                         @click="login()"
