@@ -516,8 +516,10 @@
                                                     v-model="file"
                                                     label-idle="Arrastrar Aqui..."
                                                     labelFileAdded="Archivo Añadido"
-                                                    :server="{process}"
-                                                    :onaddfilestart="initProcess"
+                                                    :server="{ process }"
+                                                    :onaddfilestart="
+                                                        initProcess
+                                                    "
                                                 />
                                             </v-card-text>
                                         </v-card>
@@ -613,8 +615,10 @@
                                                     v-model="file2"
                                                     label-idle="Arrastrar Aqui..."
                                                     labelFileAdded="Archivo Añadido"
-                                                    :server="{process}"
-                                                    :onaddfilestart="initProcess"
+                                                    :server="{ process }"
+                                                    :onaddfilestart="
+                                                        initProcess
+                                                    "
                                                 />
                                             </v-card-text>
                                         </v-card>
@@ -650,6 +654,35 @@
                 </v-snackbar>
             </v-card>
         </v-scroll-x-transition>
+        <v-scroll-x-transition>
+            <v-dialog v-if="view == 3" v-model="success" width="800" justify="center">
+                <v-col class="pa-5">
+                    <v-card justify="center">
+                        <v-card-title>
+                            Felicidades!
+                        </v-card-title>
+                        <v-card-text>
+                            <v-img
+                                contain
+                                :width="
+                                    $vuetify.breakpoint.smAndDown ? 150 : 200
+                                "
+                                :height="
+                                    $vuetify.breakpoint.smAndDown ? 100 : 150
+                                "
+                                :src="require('@/assets/4591.jpg')"
+                                class="pb-3"
+                            />
+                        </v-card-text>
+                        <v-card-subtitle>
+                            Su pago ha sido procesado exitosamente puede
+                            dirigirse a su perfil para verificar el estado de su
+                            pedido
+                        </v-card-subtitle>
+                    </v-card>
+                </v-col>
+            </v-dialog>
+        </v-scroll-x-transition>
     </v-card>
 </template>
 
@@ -667,7 +700,7 @@ import { mapState, mapActions } from "vuex";
 import validations from "@/validations/validations";
 import vueFilePond from "vue-filepond";
 import FilePondPluginImagePreview from "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.esm.js";
-import router from '@/router';
+import router from "@/router";
 import "filepond/dist/filepond.min.css";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css";
 
@@ -709,12 +742,13 @@ export default {
             total: 0,
             stepper: 1,
             loading: true,
-            file2:{},
+            file2: {},
             stock: null,
             stock_notifier: checking,
             alert_notifier: maxPago,
             diferentes: false,
             pedidoSelect: {},
+            success: false,
             restante: 0,
             conceptos: [],
             montos: ["0", "0"],
@@ -879,9 +913,9 @@ export default {
                 })
             );
         },
-           initProcess(){
-                this.loading = true;
-            },
+        initProcess() {
+            this.loading = true;
+        },
         async checkExistence() {
             this.loading = true;
             this.disponibilidad = 0;
@@ -955,11 +989,13 @@ export default {
                     console.log(e);
                 });
         },
-        actualizarEstadoPedido(){
-                Pedidos()
-                .post(`/${this.data.adm_pedidos_id}`,{data:{rest_estatus_id:2}})
+        actualizarEstadoPedido() {
+            Pedidos()
+                .post(`/${this.data.adm_pedidos_id}`, {
+                    data: { rest_estatus_id: 2 },
+                })
                 .then((response) => {
-                    console.log("actuaizado",response)
+                    console.log("actuaizado", response);
                 })
                 .catch((e) => {
                     console.log(e);
@@ -995,20 +1031,23 @@ export default {
         },
         verificarMonto() {
             const aCubrir = parseFloat(
-                    this.total
-                        .split(" ")[1]
-                        .split(".")
-                        .join("")
-                        .replace(",", ".")
-                );
+                this.total
+                    .split(" ")[1]
+                    .split(".")
+                    .join("")
+                    .replace(",", ".")
+            );
             const PagoObjetivo = this.stepper - 3;
             if (+this.montos[0] + +this.montos[1] > aCubrir) {
                 this.alert_notifier = pagoExedido;
                 this.alert = true;
                 return true;
             }
-            console.log(this.montos[0] ,this.montos[1] , "montos" )
-            if(this.stepper ===4 && (+this.montos[0] + +this.montos[1] < aCubrir)){
+            console.log(this.montos[0], this.montos[1], "montos");
+            if (
+                this.stepper === 4 &&
+                +this.montos[0] + +this.montos[1] < aCubrir
+            ) {
                 this.alert_notifier = pagoInsuficiente;
                 this.alert = true;
                 return true;
@@ -1031,15 +1070,15 @@ export default {
             );
             this.postPago(money);
         },
-        resetRestante(){
+        resetRestante() {
             this.restante = parseFloat(
-                    this.total
-                        .split(" ")[1]
-                        .split(".")
-                        .join("")
-                        .replace(",", ".")
-                );
-                this.stepper = 3;
+                this.total
+                    .split(" ")[1]
+                    .split(".")
+                    .join("")
+                    .replace(",", ".")
+            );
+            this.stepper = 3;
         },
         postPago(money) {
             Pagos()
@@ -1061,35 +1100,37 @@ export default {
                 .post(`/main/pagos/${this.pedidoSelect.id}`, formdata)
                 .then((response) => {
                     load("Imagen añadida");
-                     this.alert = true;
-                     this.alert_notifier = pagoExitoso;
                     if (this.diferentes) {
                         const PagoObjetivo = this.stepper - 3;
                         const inInt = +this.montos[PagoObjetivo];
                         this.restante -= inInt;
 
-                        if(this.stepper===3){
-                             this.alert = true;
-                             this.alert_notifier = pagoExitoso;
-                            this.stepper= 4;
-                            this.takeFile =false;
-                            return
+                        if (this.stepper === 3) {
+                            this.alert = true;
+                            this.alert_notifier = pagoExitoso;
+                            this.stepper = 4;
+                            this.takeFile = false;
+                            return;
                         }
-                        if(this.stepper===4){
-                            this.takeFile =false;
+                        if (this.stepper === 4) {
+                            this.takeFile = false;
                             this.actualizarEstadoPedido();
                             this.deletePedidosStore(this.indexPedido);
-                        };
-                    }else{
+                        }
+                    } else {
                         this.actualizarEstadoPedido();
-                        this.indexPedido = array.indexOf(this.pedidos,this.pedidoSelect);
+                        this.indexPedido = this.pedidos.indexOf(
+                            this.pedidoSelect
+                        );
                         this.deletePedidosStore(this.indexPedido);
-                    };
-                    this.alert = true;
-                    this.alert_notifier = pagoFinalizado;
-                    setTimeout(()=>{
-                            router.push("/");
-                    },[300])
+                    }
+                    // this.alert = true;
+                    // this.alert_notifier = pagoFinalizado;
+                    this.view =3;
+                    this.success = true;
+                    setTimeout(() => {
+                        router.push("/");
+                    }, [3000]);
                 })
                 .catch((e) => {
                     console.log(e);
