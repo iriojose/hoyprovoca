@@ -449,7 +449,7 @@
                     </v-stepper-items>
                 </v-stepper>
             </div>
-        </v-card-text>
+               </v-scroll-x-transition>
     </v-card>
 </template>
 
@@ -635,7 +635,8 @@ export default {
                 this.calcularTotal(evt.detalles);
             }
         },
-    }
+    },
+}
 </script>
 
 <style lang="scss" scoped>
@@ -666,5 +667,6 @@ export default {
     }
     .margen-movil{
         margin-top:100px;
+    }
     }
 </style>
