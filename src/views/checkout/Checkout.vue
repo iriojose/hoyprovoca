@@ -180,7 +180,7 @@
                                     block
                                     color="#0f2441"
                                     class="text-capitalize subtitle-2 my-5 white--text font-weight-bold"
-                                    @click="changeView('view',2)"
+                                    @click="changeView('view', 2)"
                                     >Pagar</v-btn
                                 >
                             </v-col>
@@ -427,7 +427,11 @@
                             <v-btn
                                 color="#0f2441"
                                 :disabled="this.bloqueo"
-                                @click="changeView('stepper', 3)"
+                                @click="
+                                    changeView('stepper', 3);
+                                    setLocal('pago', pago);
+                                    setLocal('diferentes', diferentes);
+                                "
                             >
                                 <span style="color:white">Continue</span>
                             </v-btn>
@@ -748,22 +752,34 @@ export default {
             disponibilidad: 0,
             bloqueo: true,
             alert: false,
-            total: 0,
+            valid: true,
+            total: "0",
             stepper: 1,
-            state:{stepper:1,total: 0,disponibilidad: 0,view: 1,stock: null, diferentes: false,restante:0,montos:["0", "0"], pago: {},pedidos:[],data:{}},
+            state: {
+                stepper: 1,
+                total: 0,
+                view: 1,
+                stock: null,
+                diferentes: false,
+                restante: 0,
+                montos: ["0", "0"],
+                pago: {},
+                pedidos: [],
+                data: {},
+                pagoId: {},
+            },
             loading: true,
             file2: {},
             stock: null,
             stock_notifier: checking,
             alert_notifier: maxPago,
             diferentes: false,
-            pedidoSelect: {
-                
-            },
+            pedidoSelect: {},
             success: false,
             restante: 0,
             montos: ["0", "0"],
             pago: {},
+            pagoId: { 0: 0, 1: 0 },
             pedidos: [
                 {
                     id: 1,
@@ -835,12 +851,7 @@ export default {
         },
     },
     watch: {
-       /* state(){
-            console.log("updated");
-            localStorage.setItem('state',this.state);
-        },*/
         view() {
-            if(this.view==1){}
             if (this.view == 2) {
                 this.data.emisor =
                     this.user.data.nombre + " " + this.user.data.apellido;
@@ -849,18 +860,19 @@ export default {
                 this.data.adm_tipo_pago_id = this.pago.id;
                 this.data.adm_status_id = 1;
                 this.data.adm_pedidos_id = this.pedidoSelect.id;
-                this.restante = this.total; /* parseFloat(
+                this.restante = this.total;
+                /* parseFloat(
                     this.total
                         .split(" ")[1]
                         .split(".")
                         .join("")
                         .replace(",", ".")
                 );*/
-                const toSave = JSON.stringify(this.pedidoSelect);
-                const TotalPedidos = JSON.stringify(this.pedidos);
-                this.setLocal("pedidos",TotalPedidos);
-                this.setLocal("pedido", toSave);
-
+                this.setLocal("pedidos", this.pedidos);
+                this.setLocal("view", this.view);
+                this.setLocal("pedidoSelect", this.pedidoSelect);
+                this.setLocal("total", this.total);
+                this.setLocal("data", this.data);
                 this.checkExistence();
             }
         },
@@ -906,15 +918,31 @@ export default {
     methods: {
         ...mapActions(["setPedidos", "deletePedidoStore"]),
         setInitView() {
-            let lastView = localStorage.getItem("view");
-            let lastStep = localStorage.getItem("stepper");
-            let chosedPedido = localStorage.getItem("pedido");
-            this.pedidoSelect = chosedPedido ? JSON.parse(chosedPedido) : this.pedidos[0];
-            this.view = lastView ? lastView : 1;
-            this.stepper = lastStep ? lastStep : 1;
-            if(this.view==1){this.getPedidosUsuario()}
+            const savedData = localStorage.getItem("state");
+            if (savedData) {
+                let toLoad = JSON.parse(savedData);
+
+                [
+                    "total",
+                    "stepper",
+                    "view",
+                    "monto",
+                    "restante",
+                    "diferentes",
+                    "pago",
+                    "pedidos",
+                    "pedidoSelect",
+                    "pagoId",
+                    "data",
+                ].forEach((value) => {
+                    this[value] = toLoad[value];
+                });
+                console.log("saved data", toLoad);
+            } else {
+                this.getPedidosUsuario();
+            }
         },
-        change(){},
+        change() {},
         resetPago(value) {
             this.pago = [];
             this.bloqueo = true;
@@ -1039,7 +1067,7 @@ export default {
                     if (this.pedidos.length - 1 == i) {
                         this.loading = false;
                         this.pedidoSelect = this.pedidos[0];
-                        
+
                         this.calcularTotal(this.pedidos[0].detalles);
                         this.pedidos.filter((a) =>
                             a.detalles.filter(
@@ -1113,7 +1141,13 @@ export default {
                     this.alert = true;
                     this.alert_notifier = empiezaPago;
                     this.takeFile = true;
-                    console.log("pagos response",response)
+                    this.pagoId[this.stepper - 3] = response.data.data.id;
+                    this.setLocal("pagoId", this.pagoId);
+                    console.log(
+                        "pagos response",
+                        this.pagoId,
+                        this.stepper - 3
+                    );
                 })
                 .catch((e) => {
                     console.log(e);
@@ -1124,9 +1158,10 @@ export default {
             formdata.append("image", file);
             abort();
             Images()
-                .post(`/main/pagos/${this.pedidoSelect.id}`, formdata)
+                .post(`/main/pagos/${this.pagoId[this.stepper - 3]}`, formdata)
                 .then((response) => {
                     load("Imagen añadida");
+                    console.log(response);
                     if (this.diferentes) {
                         const PagoObjetivo = this.stepper - 3;
                         const inInt = parseFloat(this.montos[PagoObjetivo]);
@@ -1147,19 +1182,34 @@ export default {
                         );
 
                         if (this.stepper === 3) {
+                            this.setLocal("monto", this.monto);
+                            this.setLocal("restante", this.restante);
                             this.alert = true;
                             this.alert_notifier = pagoExitoso;
                             this.stepper = 4;
+                            this.setLocal("stepper", 4);
                             this.takeFile = false;
                             return;
                         }
                         if (this.stepper === 4) {
                             this.takeFile = false;
                             this.actualizarEstadoPedido();
+                            localStorage.setItem('state',null);
                             this.deletePedidosStore(this.indexPedido);
+                            this.view = 3;
+                            this.success = true;
+                            setTimeout(() => {
+                                router.push("/");
+                            }, [3000]);
                         }
                     } else {
                         this.actualizarEstadoPedido();
+                        this.view = 3;
+                        localStorage.setItem('state',null);
+                        this.success = true;
+                        setTimeout(() => {
+                            router.push("/");
+                        }, [3000]);
                         this.indexPedido = this.pedidos.indexOf(
                             this.pedidoSelect
                         );
@@ -1167,12 +1217,6 @@ export default {
                     }
                     // this.alert = true;
                     // this.alert_notifier = pagoFinalizado;
-                    this.view = 3;
-                    this.success = true;
-                    localStorage.clear();
-                    setTimeout(() => {
-                        router.push("/");
-                    }, [3000]);
                 })
                 .catch((e) => {
                     console.log(e);
@@ -1180,7 +1224,9 @@ export default {
         },
         setLocal(item, value) {
             this.state[item] = value;
-            window.localStorage.setItem(`state`, state);
+            console.log("saved", `${item}`);
+            const savedState = JSON.stringify(this.state);
+            window.localStorage.setItem(`state`, savedState);
         },
         deleteLocal() {},
         changeView(model, value) {
