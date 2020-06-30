@@ -47,7 +47,7 @@
 
         <v-spacer></v-spacer>
             
-        <v-btn 
+        <!--v-btn 
             fab class="mx-3" 
             small 
             color="transparent"
@@ -58,7 +58,7 @@
             <v-icon color="#fff">
                 gps_fixed
             </v-icon>
-        </v-btn>
+        </v-btn-->
 
         <v-btn 
             fab class="mx-3" 

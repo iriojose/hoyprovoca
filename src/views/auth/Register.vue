@@ -203,6 +203,7 @@ import {mapActions} from 'vuex';
                     password:'',
                     adm_empresa_id:null,
                     perfil_id:3,
+                    imagen:"default.png"
                 },
                 password2:''
             }

@@ -40,7 +40,7 @@ import router from '@/router';
             return {
                 items:[
                     {text:'Pedidos',icon:'mdi-basket',to:() => this.modalCarrtio()},
-                    {text:'Dirección',icon:'gps_fixed',to:() => this.modalDireccion()},
+                    //{text:'Dirección',icon:'gps_fixed',to:() => this.modalDireccion()},
                     {text:'Notificaciones',icon:'mdi-bell',to:() => this.notificaciones()},
                     {text:'Perfil',icon:'mdi-account-circle',to:() => this.perfil()},
                     {text:'Cerrar sesión',icon:'mdi-exit-to-app',to:() => this.cerrar()},
