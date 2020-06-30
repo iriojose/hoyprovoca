@@ -180,7 +180,7 @@
                                     block
                                     color="#0f2441"
                                     class="text-capitalize subtitle-2 my-5 white--text font-weight-bold"
-                                    @click="startStepper()"
+                                    @click="changeView('view',2)"
                                     >Pagar</v-btn
                                 >
                             </v-col>
@@ -353,14 +353,16 @@
                                 :disabled="this.bloqueo"
                                 color="#0f2441"
                                 @click="
-                                    stepper = 2;
+                                    changeView('stepper', 2);
                                     bloqueo = true;
                                 "
                             >
                                 <span style="color:white">Continue</span>
                             </v-btn>
 
-                            <v-btn text @click="view = 1">Cancel</v-btn>
+                            <v-btn text @click="changeView('view', 1)"
+                                >Cancel</v-btn
+                            >
                         </v-stepper-content>
 
                         <v-stepper-content step="2">
@@ -425,12 +427,14 @@
                             <v-btn
                                 color="#0f2441"
                                 :disabled="this.bloqueo"
-                                @click="stepper = 3"
+                                @click="changeView('stepper', 3)"
                             >
                                 <span style="color:white">Continue</span>
                             </v-btn>
 
-                            <v-btn text @click="stepper = 1">Atras</v-btn>
+                            <v-btn text @click="changeView('stepper', 1)"
+                                >Atras</v-btn
+                            >
                         </v-stepper-content>
 
                         <v-stepper-content step="3">
@@ -535,7 +539,9 @@
                                 <span style="color:white">Enviar</span>
                             </v-btn>
 
-                            <v-btn text @click="stepper = 2">Atras</v-btn>
+                            <v-btn text @click="changeView('stepper', 2)"
+                                >Atras</v-btn
+                            >
                         </v-stepper-content>
 
                         <v-stepper-content step="4" v-if="diferentes">
@@ -655,7 +661,12 @@
             </v-card>
         </v-scroll-x-transition>
         <v-scroll-x-transition>
-            <v-dialog v-if="view == 3" v-model="success" width="800" justify="center">
+            <v-dialog
+                v-if="view == 3"
+                v-model="success"
+                width="800"
+                justify="center"
+            >
                 <v-col class="pa-5">
                     <v-card justify="center">
                         <v-card-title>
@@ -732,8 +743,6 @@ export default {
         return {
             ...validations,
             ...variables,
-            model: null,
-            valid: false,
             view: 1,
             takeFile: false,
             disponibilidad: 0,
@@ -741,16 +750,18 @@ export default {
             alert: false,
             total: 0,
             stepper: 1,
+            state:{stepper:1,total: 0,disponibilidad: 0,view: 1,stock: null, diferentes: false,restante:0,montos:["0", "0"], pago: {},pedidos:[],data:{}},
             loading: true,
             file2: {},
             stock: null,
             stock_notifier: checking,
             alert_notifier: maxPago,
             diferentes: false,
-            pedidoSelect: {},
+            pedidoSelect: {
+                
+            },
             success: false,
             restante: 0,
-            conceptos: [],
             montos: ["0", "0"],
             pago: {},
             pedidos: [
@@ -761,7 +772,7 @@ export default {
                     rest_estatus_id: 1,
                     estado: "0",
                     cant_personas: 1,
-                    nombre_comercial: "",
+                    empresa: { nombre_comercial: "" },
                     imagen: "default.png",
                     adm_empresa_id: 2,
                     detalles: [
@@ -812,7 +823,7 @@ export default {
         };
     },
     mounted() {
-        this.getPedidosUsuario();
+        this.setInitView();
     },
     head: {
         title() {
@@ -824,7 +835,12 @@ export default {
         },
     },
     watch: {
+       /* state(){
+            console.log("updated");
+            localStorage.setItem('state',this.state);
+        },*/
         view() {
+            if(this.view==1){}
             if (this.view == 2) {
                 this.data.emisor =
                     this.user.data.nombre + " " + this.user.data.apellido;
@@ -833,13 +849,19 @@ export default {
                 this.data.adm_tipo_pago_id = this.pago.id;
                 this.data.adm_status_id = 1;
                 this.data.adm_pedidos_id = this.pedidoSelect.id;
-                this.restante = parseFloat(
+                this.restante = this.total; /* parseFloat(
                     this.total
                         .split(" ")[1]
                         .split(".")
                         .join("")
                         .replace(",", ".")
-                );
+                );*/
+                const toSave = JSON.stringify(this.pedidoSelect);
+                const TotalPedidos = JSON.stringify(this.pedidos);
+                this.setLocal("pedidos",TotalPedidos);
+                this.setLocal("pedido", toSave);
+
+                this.checkExistence();
             }
         },
         pago(value) {
@@ -883,7 +905,16 @@ export default {
     },
     methods: {
         ...mapActions(["setPedidos", "deletePedidoStore"]),
-
+        setInitView() {
+            let lastView = localStorage.getItem("view");
+            let lastStep = localStorage.getItem("stepper");
+            let chosedPedido = localStorage.getItem("pedido");
+            this.pedidoSelect = chosedPedido ? JSON.parse(chosedPedido) : this.pedidos[0];
+            this.view = lastView ? lastView : 1;
+            this.stepper = lastStep ? lastStep : 1;
+            if(this.view==1){this.getPedidosUsuario()}
+        },
+        change(){},
         resetPago(value) {
             this.pago = [];
             this.bloqueo = true;
@@ -924,6 +955,9 @@ export default {
             //empieza a cargar las existencias una vez temina la funcion  se modifica el total si faltan productos a la existencia
             this.getCheck().then((checked) => {
                 this.loading = false;
+                const toSave = JSON.stringify(this.pedidoSelect);
+                this.setLocal("pedido", toSave);
+
                 if (this.disponibilidad === this.pedidoSelect.detalles.length) {
                     this.stock_notifier = avaible;
                     this.bloqueo = false;
@@ -971,10 +1005,6 @@ export default {
                     : 0
                 : concepto.existencias;
         },
-        startStepper() {
-            this.view = 2;
-            this.checkExistence();
-        },
         getPedidosUsuario() {
             this.loading = true;
             Usuario()
@@ -1009,6 +1039,7 @@ export default {
                     if (this.pedidos.length - 1 == i) {
                         this.loading = false;
                         this.pedidoSelect = this.pedidos[0];
+                        
                         this.calcularTotal(this.pedidos[0].detalles);
                         this.pedidos.filter((a) =>
                             a.detalles.filter(
@@ -1043,7 +1074,6 @@ export default {
                 this.alert = true;
                 return true;
             }
-            console.log(this.montos[0], this.montos[1], "montos");
             if (
                 this.stepper === 4 &&
                 +this.montos[0] + +this.montos[1] < aCubrir
@@ -1061,23 +1091,19 @@ export default {
             }
             this.data.adm_status_id = 2;
             this.data.adm_tipo_pago_id = this.pago.id;
-            const money = parseFloat(
-                this.data.monto
-                    .split(" ")[1]
-                    .split(".")
-                    .join("")
-                    .replace(",", ".")
-            );
+            const money = this.diferentes
+                ? this.montos[this.stepper - 3]
+                : parseFloat(
+                      this.data.monto
+                          .split(" ")[1]
+                          .split(".")
+                          .join("")
+                          .replace(",", ".")
+                  );
             this.postPago(money);
         },
         resetRestante() {
-            this.restante = parseFloat(
-                this.total
-                    .split(" ")[1]
-                    .split(".")
-                    .join("")
-                    .replace(",", ".")
-            );
+            this.restante = this.total;
             this.stepper = 3;
         },
         postPago(money) {
@@ -1087,6 +1113,7 @@ export default {
                     this.alert = true;
                     this.alert_notifier = empiezaPago;
                     this.takeFile = true;
+                    console.log("pagos response",response)
                 })
                 .catch((e) => {
                     console.log(e);
@@ -1102,8 +1129,22 @@ export default {
                     load("Imagen añadida");
                     if (this.diferentes) {
                         const PagoObjetivo = this.stepper - 3;
-                        const inInt = +this.montos[PagoObjetivo];
-                        this.restante -= inInt;
+                        const inInt = parseFloat(this.montos[PagoObjetivo]);
+                        let parSedRestante = parseFloat(
+                            this.restante
+                                .split(" ")[1]
+                                .split(".")
+                                .join("")
+                                .replace(",", ".")
+                        );
+                        this.restante = accounting.formatMoney(
+                            parSedRestante - inInt,
+                            {
+                                symbol: "Bs ",
+                                thousand: ".",
+                                decimal: ",",
+                            }
+                        );
 
                         if (this.stepper === 3) {
                             this.alert = true;
@@ -1126,8 +1167,9 @@ export default {
                     }
                     // this.alert = true;
                     // this.alert_notifier = pagoFinalizado;
-                    this.view =3;
+                    this.view = 3;
                     this.success = true;
+                    localStorage.clear();
                     setTimeout(() => {
                         router.push("/");
                     }, [3000]);
@@ -1136,10 +1178,19 @@ export default {
                     console.log(e);
                 });
         },
+        setLocal(item, value) {
+            this.state[item] = value;
+            window.localStorage.setItem(`state`, state);
+        },
+        deleteLocal() {},
+        changeView(model, value) {
+            console.log("paso adelante", model, value);
+            this[model] = value;
+            this.setLocal(model, value);
+        },
         calcularTotal(detalles) {
             let suma = 0;
             detalles.filter((a) => (suma += +a.precio * a.cantidad));
-            console.log(suma);
             this.total = accounting.formatMoney(+suma, {
                 symbol: "Bs ",
                 thousand: ".",
