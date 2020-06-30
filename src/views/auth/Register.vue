@@ -282,7 +282,7 @@ import {mapActions} from 'vuex';
                 Clientes().post("/",{data:cliente}).then((response) => {
                     this.logged(usuario);
                     this.respuesta("Usuario registrado exitosamente.","success");
-                    //this.subscribeNotificaciones(usuario.data.id);
+                    this.subscribeNotificaciones(usuario.data.id);
                     setTimeout(() => { this.login()},1000);
                 }).catch(e => {
                     console.log(e);
@@ -290,7 +290,7 @@ import {mapActions} from 'vuex';
                 });
             },
             //metodo de subscription en la web
-            /*subscribeNotificaciones(id){
+            subscribeNotificaciones(id){
                 if ("serviceWorker" in navigator && "PushManager" in window) {
                     navigator.serviceWorker.register('NotificationListener.js').then((response) => {
                         const applicationServerKey = this.urlB64ToUint8Array(this.key_notificaciones);
@@ -337,7 +337,7 @@ import {mapActions} from 'vuex';
                 }).catch(e => {
                     console.log(e);
                 });
-            },*/
+            },
         },
     }
 </script>

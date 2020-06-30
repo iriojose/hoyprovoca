@@ -38,6 +38,8 @@ import TerminosCondiciones from '@/views/terminos/TerminosCondiciones';
 import Privacidad from '@/views/terminos/Privacidad';
 import ComoPagar from '@/views/terminos/ComoPagar';
 
+import Pruebas from '@/views/pruebas/Pruebas';
+
 Vue.use(Router);
 
 const router = new Router({
@@ -48,6 +50,14 @@ const router = new Router({
             path: "/",
             name: "home",
             component: Home,
+            meta:{
+                auth:false
+            }
+        },
+        {
+            path: "/pruebas",
+            name: "pruebas",
+            component: Pruebas,
             meta:{
                 auth:false
             }
