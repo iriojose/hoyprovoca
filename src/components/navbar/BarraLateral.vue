@@ -43,8 +43,7 @@ import variables from '@/services/variables_globales';
         },
         mounted() {
             let grupos = window.localStorage.getItem('gruposMasVendidos');
-            console.log(grupos);
-            
+
             if(!grupos) this.getGrupos();
             else this.grupos = JSON.parse(grupos);
         },

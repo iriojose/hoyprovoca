@@ -1,5 +1,5 @@
 <template>
-    <v-app-bar color="#0f2441" app
+    <v-app-bar color="#0f2441" app class="index"
         :elevation="$vuetify.breakpoint.smAndDown ? 0:null" 
         :elevate-on-scroll="$vuetify.breakpoint.smAndDown ? false:true" 
         :extended="$vuetify.breakpoint.smAndDown && $route.name !== 'home' ? true:false"
@@ -165,6 +165,6 @@ import router from '@/router';
         cursor:pointer;
     }
     .index{
-        z-index:0;
+        z-index:1;
     }
 </style>

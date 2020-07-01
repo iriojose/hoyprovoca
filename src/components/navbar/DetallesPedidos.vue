@@ -12,14 +12,14 @@
                     :loading="loading" :disabled="detalles.length == 1 ? true:false" 
                     width="40" height="40" tile icon
                     @click="deleteDetalle(detalle,i)" 
-                    :elevation="hover ? 5:0"
+                    :elevation="hover ? 3:0" title="eliminar"
                 >
                     <v-icon small>delete</v-icon>
                 </v-btn>
             </v-hover>
 
             <v-hover v-slot:default="{hover}" v-else>
-                <v-btn @click="resta(detalle,i)" :loading="loading" :disabled="loading" width="40" height="40" tile icon :elevation="hover ? 5:0">
+                <v-btn title="reducir" @click="resta(detalle,i)" :loading="loading" :disabled="loading" width="40" height="40" tile icon :elevation="hover ? 3:0">
                     <v-icon small>remove</v-icon>
                 </v-btn>
             </v-hover>
@@ -27,7 +27,7 @@
             <div class="mx-3">{{Number.parseInt(detalle.cantidad)}}</div>
 
             <v-hover v-slot:default="{hover}">
-                <v-btn @click="suma(detalle,i)" :disabled="loading" :loading="loading" width="40" height="40" tile icon :elevation="hover ? 5:0">
+                <v-btn title="agregar" @click="suma(detalle,i)" :disabled="loading" :loading="loading" width="40" height="40" tile icon :elevation="hover ? 3:0">
                     <v-icon small>add</v-icon>
                 </v-btn>
             </v-hover>
@@ -41,7 +41,6 @@
 <script>
 import variables from '@/services/variables_globales';
 import Pedidos from '@/services/Pedidos';
-import Conceptos from '@/services/Conceptos';
 import {mapActions} from 'vuex';
 import accounting from 'accounting';
 
@@ -114,27 +113,16 @@ import accounting from 'accounting';
                 this.loading = true;
                 let cantidad = Number.parseInt(detalle.cantidad);
                 cantidad+=1;
-                this.getConceptoExistencia(detalle,cantidad,i);
+                this.updateDetalle(detalle,cantidad,i);
             },
             resta(detalle,i){
                 this.loading = true;
                 let cantidad = Number.parseInt(detalle.cantidad);
                 cantidad -= 1;
-                this.getConceptoExistencia(detalle,cantidad,i);
-            },
-            getConceptoExistencia(detalle,cantidad,i){
-                Conceptos().get(`${detalle.adm_conceptos_id}/depositos`).then((response) => {
-                    if(!Number.parseInt(detalle.cantidad) > cantidad || response.data.data[0].existencia < cantidad){
-                        this.error('Ooops, agotado '+response.data.data[0].existencia+'.');
-                    }else{
-                        this.updateDetalle(detalle,cantidad,i);
-                    }
-                }).catch(e => {
-                    console.log(e);
-                    this.error('Ooops, ocurrio un error.');
-                });
+                this.updateDetalle(detalle,cantidad,i);
             },
             updateDetalle(detalle,cantidad,index){
+                console.log(detalle);
                 this.data.indexDetalle=index;
                 this.data.indexPedido=this.indexPedido;
                 this.data.cantidad = cantidad;
@@ -146,7 +134,7 @@ import accounting from 'accounting';
                 }).catch(e => {
                     console.log(e);
                     this.error('Ooops, ocurrio un error.');
-                })
+                });
             }
         },
     }

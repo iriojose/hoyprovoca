@@ -5,7 +5,7 @@
         temporary
         hide-overlay
         v-model="carritos" 
-        width="500"
+        :width="$vuetify.breakpoint.smAndDonw ? 400:500"
         color="#f5f5f5"
         class="index"
     >
@@ -42,14 +42,27 @@
         </v-expansion-panels>
         
         <v-footer absolute width="100%" height="60" color="#fff" class="px-12">
-            <v-divider></v-divider>
-            <v-btn 
-                block rounded color="#232323" @click="modal"
-                class="white--text text-capitalize" 
-                :disabled="pedidos.length == 0 ? true:false"
-            >
-                Vaciar carrito
-            </v-btn>
+            <v-card-actions>
+                <v-btn 
+                    rounded color="#232323" @click="modal"
+                    class="white--text text-capitalize" 
+                    :block="$vuetify.breakpoint.smAndDown ? false:true"
+                    :disabled="pedidos.length == 0 ? true:false"
+                >
+                    Vaciar
+                    <v-icon class="mx-2" color="#fff">mdi-delete</v-icon>
+                </v-btn>
+                <v-spacer class="mx-1"></v-spacer>
+                <v-btn 
+                    rounded color="#232323" @click="push()"
+                    class="white--text text-capitalize" 
+                    :block="$vuetify.breakpoint.smAndDown ? false:true"
+                    :disabled="pedidos.length == 0 ? true:false"
+                >
+                    Checkout
+                    <v-icon class="mx-2" color="#fff">mdi-cash</v-icon>
+                </v-btn>
+            </v-card-actions>
         </v-footer>
 
         <VaciarCarrito />
@@ -62,6 +75,7 @@ import VaciarCarrito from '@/components/dialogs/VaciarCarrito';
 import EncabezadoPedido from './EncabezadoPedido';
 import DetallesPedidos from './DetallesPedidos';
 import Usuario from '@/services/Usuario';
+import router from '@/router';
 
     export default {
         components:{
@@ -93,12 +107,16 @@ import Usuario from '@/services/Usuario';
             change(){
                 this.carrito ?  this.setCarrito(false):this.setCarrito(true);
             },
+            push(){
+                router.push('/checkout');
+            },
             modal(){
                 this.setModalCarrito(true);
             },
             getPedidosUsuario(){
                 Usuario().get(`/${this.user.data.id}/pedidos/?rest_estatus_id=1`).then((response) => {
                     if(response.data.data){
+                        console.log(response.data.data);
                         this.setPedidos(response.data.data);
                     }
                 }).catch(e => {
