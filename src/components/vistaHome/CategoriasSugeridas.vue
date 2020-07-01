@@ -1,23 +1,26 @@
 <template>
-    <v-row justify="center">
-        <v-card 
-            :elevation="0" 
-            class="border mx-2 mb-4"
-            color="transparent"
-            :width="$vuetify.breakpoint.smAndDown ? 100:200" 
-            :height="$vuetify.breakpoint.smAndDown ? 100:200" 
-            v-for="(grupo,i) in grupos" :key="i"
-            @click="push(grupo)"
-        >
-            <v-img 
-                contain 
+    <div>
+        <div class="text-left black--text headline font-weight-black">Categorías</div>
+        <v-row justify="center">
+            <v-card 
+                :elevation="0" 
+                class="border mx-2 mb-4"
+                color="transparent"
                 :width="$vuetify.breakpoint.smAndDown ? 100:200" 
-                :height="$vuetify.breakpoint.smAndDown ? 80:180"
-                :src="image+grupo.imagen" 
-            /> 
-            <div class="mt-2 text-center subtitle-2 font-weight-black">{{grupo.nombre}}</div>
-        </v-card>
-    </v-row>
+                :height="$vuetify.breakpoint.smAndDown ? 100:200" 
+                v-for="(grupo,i) in grupos" :key="i"
+                @click="push(grupo)"
+            >
+                <v-img 
+                    contain 
+                    :width="$vuetify.breakpoint.smAndDown ? 100:200" 
+                    :height="$vuetify.breakpoint.smAndDown ? 80:180"
+                    :src="image+grupo.imagen" 
+                /> 
+                <div class="mt-2 text-center subtitle-2 font-weight-black">{{grupo.nombre}}</div>
+            </v-card>
+        </v-row>
+    </div>
 </template>
 
 <script>

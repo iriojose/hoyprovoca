@@ -1,5 +1,5 @@
 <template>
-    <v-card :height="$vuetify.breakpoint.smAndDown ? 450:500" color="#FFB607" width="100%" style="margin-top:46px" :class="$vuetify.breakpoint.smAndDown ? 'mx-auto':null">
+    <v-card :height="$vuetify.breakpoint.smAndDown ? 450:500" color="#e6e6e6" width="100%" style="margin-top:46px" :class="$vuetify.breakpoint.smAndDown ? 'mx-auto':null">
         <v-card-text>
             <v-row justify="center">
                 <v-col cols="12" md="4" class="hidden-sm-and-down">
@@ -13,11 +13,11 @@
                 </v-col>
                 <v-col cols="12" md="4" sm="10">
                     <div 
-                        :class="$vuetify.breakpoint.smAndDown ? 'black--text display-1 text-center my-5 font-weight-black':'display-1 text-center my-10 black--text font-weight-black'">
+                        :class="$vuetify.breakpoint.smAndDown ? 'black--text display-1 text-center my-12 font-weight-bold':'display-1 text-center my-10 black--text font-weight-bold'">
                         ¿Pensando en comprarte algo?
                     </div>
 
-                    <v-text-field 
+                    <!--v-text-field 
                         label="¿Que te provoca?..."
                         hide-details
                         solo
@@ -29,10 +29,10 @@
                         <v-btn slot="append" @click="push" color="#0F2441" tile class="text-capitalize white--text">
                             <v-icon color="#fff" class="mx-2">mdi-magnify</v-icon>
                         </v-btn>
-                    </v-text-field>
+                    </v-text-field-->
 
                     <div 
-                        :class="$vuetify.breakpoint.smAndDown ? 'headline text-center mt-5 font-weight-black black--text':'headline black--text text-center margen font-weight-black'">
+                        :class="$vuetify.breakpoint.smAndDown ? 'headline text-center mt-12 font-weight-black black--text':'headline black--text text-center font-weight-black'">
                         Mejor hazlo desde aqui...
                     </div>
                 </v-col>

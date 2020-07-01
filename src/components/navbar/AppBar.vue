@@ -28,7 +28,6 @@
         </v-toolbar-title>
 
         <v-text-field
-            v-if="$route.name !== 'home'"
             v-model="busquedas"
             label="Buscar producto..."
             hide-details
@@ -89,7 +88,7 @@
         </div>
 
         <v-text-field 
-            v-if="$vuetify.breakpoint.smAndDown && $route.name !=='home'"
+            v-if="$vuetify.breakpoint.smAndDown"
             class="mx-5 index"
             slot="extension"
             v-model="busquedas"

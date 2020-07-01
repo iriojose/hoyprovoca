@@ -2,7 +2,7 @@
     <div>
         <v-navigation-drawer 
             app v-model="drawers" temporary hide-overlay width="270"
-            :style="$vuetify.breakpoint.smAndDown && $route.name !== 'home' ? 'margin-top:106px;':'margin-top:60px'"
+            :style="$vuetify.breakpoint.smAndDown ? 'margin-top:106px;':'margin-top:60px'"
         >
             <LoaderRect v-if="loading" />
 
