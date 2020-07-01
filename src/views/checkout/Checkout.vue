@@ -442,7 +442,7 @@
                         </v-stepper-content>
 
                         <v-stepper-content step="3">
-                            <v-row justify="center">
+                            <v-row justify="center" v-if="stepper === 3">
                                 <v-col cols="12" md="6" sm="12" class="pa-5">
                                     <div class="font-weight-bold title">
                                         Subtotal a pagar
@@ -456,10 +456,11 @@
                                     >
                                         Datos de la cuenta
                                     </div>
-                                    <div>Nombre:Jesus Bellorin</div>
-                                    <div>cedula:212121212</div>
-                                    <div>cuenta:212121212121212</div>
-                                    <div>banco:zelle</div>
+                                    <div>Nombre:{{pago.propietario}}</div>
+                                    <div>{{pago.identificacion}}</div>
+                                    <div>{{pago.cuenta}}</div>
+                                    <div>{{pago.nombre}}</div>
+                                     <div><strong>{{pago.detalle}}</strong></div>
 
                                     <v-form v-model="valid" class="my-5">
                                         <v-text-field
@@ -511,7 +512,7 @@
                                     v-model="Imagen"
                                     width="500"
                                     justify="center"
-                                    persistent="true"
+                                    persistent
                                 >
                                     <v-card justify="center">
                                         <v-card-title>
@@ -738,6 +739,48 @@ const pagoExedido = "se ha excedido del limite";
 const pagoExitoso = "su pago ha sido registtrado exitosamente!";
 const pagoInsuficiente = "el monto ingresado es insuficiente";
 //const pagoFinalizado = "el proceso de pago ha finalizado exitosamente!";
+
+// aqui vienen descripciones de tipos de pago
+const metodosDePago = [
+    {
+        id: 0,
+        nombre: "Pago Movil : Banesco",
+        propietario: "Jesus Bellorin",
+        identificacion: "C.I: 17654976",
+        cuenta: "movil : 04127955560",
+        detalle: "",
+        monto: 0,
+    },
+    {
+        id: 1,
+        nombre: "Transferencis Banco Nacional: Banplus",
+        propietario: "Jesus Bellorin",
+        identificacion: "C.I: 17654976",
+        cuenta: "Corriente : 01740112201124312701",
+        detalle:
+            "recuerde!, transferencias de diferentes bancos tardan al menos 1 dia en ser confirmadas",
+        monto: 0,
+    },
+    {
+        id: 2,
+        nombre: "Transferencis Banco Nacional: Banesco",
+        propietario: "Jesus Bellorin",
+        identificacion: "C.I: 17654976",
+        cuenta: "Ahorro : 01340563895633049696",
+        detalle:
+            "recuerde!, transferencias de diferentes bancos tardan al menos 1 dia en ser confirmadas",
+        monto: 0,
+    },
+    {
+        id: 3,
+        nombre: "Banesco Panama",
+        propietario: "Jesus Bellorin",
+        identificacion: "C.I: 17654976",
+        cuenta: "Cuenta: 201800957218",
+        detalle: "",
+        monto: 0,
+    },
+];
 export default {
     components: {
         FilePond,
@@ -810,23 +853,7 @@ export default {
                 },
             ],
             file: {},
-            tiposDePago: [
-                {
-                    id: 1,
-                    nombre: "Banesco Panama",
-                    monto: 0,
-                },
-                {
-                    id: 2,
-                    nombre: "Zelle",
-                    monto: 0,
-                },
-                {
-                    id: 3,
-                    nombre: "Banco nacional",
-                    monto: 0,
-                },
-            ],
+            tiposDePago: metodosDePago,
             data: {
                 emisor: "",
                 receptor: "Jesus Bellorin",
@@ -901,6 +928,7 @@ export default {
             }
         },
         pago(value) {
+            console.log(this.pago);
             if (!value) {
                 this.bloqueo = true;
                 return;
@@ -934,14 +962,18 @@ export default {
         },
     },
     computed: {
-        ...mapState(["user","modalPago"]),
-        Imagen:{
-                get(){ return this.modalPago },
-                set(val){ this.setModalPago(true)}
-            }
+        ...mapState(["user", "modalPago"]),
+        Imagen: {
+            get() {
+                return this.modalPago;
+            },
+            set(val) {
+                this.setModalPago(true);
+            },
+        },
     },
     methods: {
-        ...mapActions(["setPedidos", "deletePedidoStore","setModalPago"]),
+        ...mapActions(["setPedidos", "deletePedidoStore", "setModalPago"]),
         setInitView() {
             const savedData = localStorage.getItem("state");
             if (savedData) {
@@ -961,7 +993,6 @@ export default {
                 ].forEach((value) => {
                     this[value] = toLoad[value];
                 });
-                
             }
         },
 
@@ -1201,11 +1232,11 @@ export default {
                             this.alert_notifier = pagoExitoso;
                             this.stepper = 4;
                             this.setLocal("stepper", 4);
-                            this.setModalPago(false)
+                            this.setModalPago(false);
                             return;
                         }
                         if (this.stepper === 4) {
-                            this.setModalPago(true)
+                            this.setModalPago(true);
                             this.actualizarEstadoPedido();
                             localStorage.setItem("state", null);
                             this.deletePedidosStore(this.indexPedido);
