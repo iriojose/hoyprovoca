@@ -184,7 +184,6 @@ import accounting from 'accounting';
                     this.error("Error al procesar detalles del pedido.");
                 });
             },
-            
             parseExistencia(concepto){
                 return (Array.isArray(concepto.existencias) ? concepto.existencias.length > 0 ? concepto.existencias.map(a => Math.trunc(+a.existencia)).reduce((a, b) => a + b) : 0 : concepto.existencias)
             }

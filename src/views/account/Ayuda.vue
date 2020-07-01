@@ -4,7 +4,6 @@
         <v-row justify="center" align="center" class="mt-3" style="padding-top:15px;">
             <div id="talkjs-container" style="width: 100%;; height: 450px"><i><v-spacer></v-spacer><loader style="padding-top:20%" /> <v-spacer></v-spacer></i></div>
         </v-row>
-
     </v-card>
 </template>
 
@@ -30,6 +29,7 @@ export default {
             ...w,
             me: null,
             other: null,
+            loading:false,
         }
     },
     computed:{
@@ -39,6 +39,7 @@ export default {
         ...mapActions(['setSnackbar','setFoto','setFotoChanged']),
     },
     mounted() {
+        this.loading = true;
         let inbox;
         Talk.ready.then(async () => {
         this.me = new Talk.User({
@@ -70,7 +71,8 @@ export default {
                 conversation.setParticipant(this.me);
                 conversation.setParticipant(this.other);
                 inbox = window.talkSession.createInbox({selected: conversation});
-                    
+                this.loading = false;
+                console.log("listo if");
             }else{
                 window.talkSession = new Talk.Session({
                     appId: process.env.VUE_APP_TALKJS_ID,
@@ -81,10 +83,12 @@ export default {
                 conversation.setParticipant(this.me);
                     
                 inbox = window.talkSession.createInbox({selected: conversation});
+                this.loading = false;
+                console.log("listo else");
             }
-            
             inbox.mount(document.getElementById("talkjs-container"));
-                
+            this.loading = false;
+            console.log("listo por siacaso");
         });
     }
 }
