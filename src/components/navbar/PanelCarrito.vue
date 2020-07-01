@@ -116,7 +116,6 @@ import router from '@/router';
             getPedidosUsuario(){
                 Usuario().get(`/${this.user.data.id}/pedidos/?rest_estatus_id=1`).then((response) => {
                     if(response.data.data){
-                        console.log(response.data.data);
                         this.setPedidos(response.data.data);
                     }
                 }).catch(e => {

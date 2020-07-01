@@ -71,7 +71,7 @@ const router = new Router({
             }
         },
         {
-            path: "/resetpassword",
+            path: "/resetpassword/:email/:token",
             name:"reset",
             component:Reset,
             meta:{

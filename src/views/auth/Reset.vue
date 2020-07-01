@@ -41,7 +41,7 @@
                                     <v-btn
                                         rounded color="#2950c3" block
                                         :disabled="!valid" :loading="loading"
-                                        height="40" @click="reset"
+                                        height="40" @click="reset" 
                                         class="text-capitalize caption white--text"
                                     >
                                         Resetear contraseña
@@ -85,8 +85,7 @@ import router from '@/router';
             }
         },
         mounted() {
-            let url = decodeURIComponent(window.location.href);
-            console.log(url);
+            this.email = this.$route.params.email;
         },
         computed: {
             passwordConfirmationRule() {
