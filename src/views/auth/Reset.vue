@@ -71,7 +71,8 @@ import router from '@/router';
                 loading:false,
                 showMessage:false,
                 contraseña:'',
-                contraseña2:''
+                contraseña2:'',
+                email:'',
             }
         },
         head:{
@@ -82,6 +83,10 @@ import router from '@/router';
                     complement: ' '
                 }
             }
+        },
+        mounted() {
+            let url = decodeURIComponent(window.location.href);
+            console.log(url);
         },
         computed: {
             passwordConfirmationRule() {
@@ -114,7 +119,3 @@ import router from '@/router';
         }
     }
 </script>
-
-<style lang="scss" scoped>
-
-</style>

@@ -154,6 +154,9 @@ export default new Vuex.Store({
         UPDATE_DETALLE(state,data){//actualiza la cantidad de un detalle
             state.pedidos[data.indexPedido].detalles[data.indexDetalle].cantidad = data.cantidad;
         },
+        SET_DATA(state,val){
+            state.user.data = val;
+        },
     },
     actions: {
         setDrawer({commit},val){
@@ -233,6 +236,9 @@ export default new Vuex.Store({
         },
         setFotoFile({ commit }, val) {
             commit('SET_FOTOFILE', val);
+        },
+        setData({commit},val){
+            commit('SET_DATA',val);
         },
     }
 });

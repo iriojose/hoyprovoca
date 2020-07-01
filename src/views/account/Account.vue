@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-row style="padding:0 10px;">
+        <v-row style="padding:0 10px;" :class="$vuetify.breakpoint.smAndDown ? 'mt-12':''">
             <v-col cols="12" md=3>
                 <v-card class="bg" :min-height="clicked ? '572.5px' : '150px'">
                     <v-list dense nav style="margin-top: 64px;background: none;">
