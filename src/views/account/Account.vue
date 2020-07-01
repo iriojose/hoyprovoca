@@ -4,31 +4,12 @@
             <v-col cols="12" md=3>
                 <v-card class="bg" :min-height="clicked ? '572.5px' : '150px'">
                     <v-list dense nav style="margin-top: 64px;background: none;">
-                        <v-list-item two-line @click.self.stop.prevent="expand()">
-                            
-                            <v-list-item-avatar size="115" v-if="!$route.name === 'profile'">
-                                <v-img :src="user.data.imagen === 'default.png' && !fotoChanged? fotoChanged ? foto  : require('@/assets/user.jpg') :  fotoChanged ? foto : image+user.data.imagen"></v-img>
+                        <v-list-item two-line>
+                            <v-list-item-avatar size="115">
+                                <v-img :src="user.data.imagen === 'default.png' ? require('@/assets/user.jpg'):image+user.data.imagen"></v-img>
                             </v-list-item-avatar>
-                            <v-list-item-avatar class="border" size="115" v-else>
-                                <croppa 
-                                    ref="avatar"
-                                    placeholder="" 
-                                    disable-click-to-choose 
-                                    disable-scroll-to-zoom 
-                                    disable-pinch-to-zoom 
-                                    remove-button-color="black" 
-                                    show-loading class="bg-center" 
-                                    :width="115" 
-                                    :height="115" 
-                                    v-model="fotoAux" 
-                                    canvas-color="transparent"
-                                    @new-image-drawn="onNewImage()" 
-                                    :style="(user.data.imagen === 'default.png' && !fotoChanged? fotoChanged ? 'background:url('+foto+');'  : 'background:url('+require('@/assets/user.jpg')+');' :  fotoChanged ? 'background:url('+foto+');' : 'background:url('+image+user.data.imagen+');')"
-                                >
-                                </croppa>
-                            </v-list-item-avatar>
-                            <v-avatar  @click.stop.prevent ="!fotoChanged ? uploadFoto() : restoreFoto() " v-if="$route.name === 'profile'" class="abs_center" size="35" style="z-index:2;" color="#F5F5F5">
-                                <v-icon style="font-size:21px;">{{ !fotoChanged ? 'mdi-camera' : 'close' }}</v-icon>
+                            <v-avatar @click="dialog = !dialog" class="abs_center" size="35" style="z-index:2;" color="#F5F5F5">
+                                <v-icon style="font-size:21px;">mdi-camera</v-icon>
                             </v-avatar>
                             <v-list-item-content class="white--text font-weight-bold">
                                 <v-list-item-title class="subtitle-1 mb-1" style="text-overflow:none; white-space:normal;">{{user.data.nombre +' '+ user.data.apellido}}</v-list-item-title>
@@ -67,80 +48,50 @@
                 </v-card>
             </v-col>
         </v-row>
+
+        <!--modal para cambiar imagen-->
+        <CambiarImagen :dialog="dialog">
+            <template v-slot:close>
+                <v-btn tile color="#232323" text @click="dialog = !dialog">
+                    Cancelar
+                </v-btn>
+            </template>
+            <template v-slot:salir>
+                <v-btn fab small color="#fff" @click="dialog = !dialog">
+                    <v-icon color="#fff">mdi-close</v-icon>
+                </v-btn>
+            </template>
+        </CambiarImagen>
     </div>
 </template>
 
 <script>
 import {mapState, mapActions} from 'vuex';
 import variables from '@/services/variables_globales';
+import CambiarImagen from '@/components/dialogs/CambiarImagen';
 
-export default {
-    data() {
-        return {
-            ...variables,
-            fotoAux:{},
-            items: [
-                {icon:'mdi-cogs', to:'/account/profile',title:'Ajustes de Cuenta'},
-                //{icon:'mdi-history',to:'/account/notificaciones',title:'Centro de Notificaciones'},
-                {icon:'mdi-alert-circle',to:'/account/ordenes',title:'últimas Ordenes'},
-                {icon: 'mdi-help-circle',to:'/account/ayuda',title:'Centro de Ayuda'},
-            ],
-            clicked:true,
-            clickable: false,
-        }
-    },
-    methods:{
-        ...mapActions(['setFoto','setFotoChanged','setFotoFile']),
-        restoreFoto(){
-            this.fotoAux.remove();
-            this.setFotoChanged(false);
-            this.setFoto(this.user.data.imagen);
-            this.setFotoFile(null);
+    export default {
+        components:{
+            CambiarImagen
         },
-        uploadFoto(){
-            this.fotoAux.chooseFile();
+        data() {
+            return {
+                ...variables,
+                items: [
+                    {icon:'mdi-cogs', to:'/account/profile',title:'Ajustes de Cuenta'},
+                    //{icon:'mdi-history',to:'/account/notificaciones',title:'Centro de Notificaciones'},
+                    {icon:'mdi-alert-circle',to:'/account/ordenes',title:'últimas Ordenes'},
+                    {icon: 'mdi-help-circle',to:'/account/ayuda',title:'Centro de Ayuda'},
+                ],
+                clicked:true,
+                clickable: false,
+                dialog:false,
+            }
         },
-        onNewImage(){
-            this.setFotoFile(this.fotoAux.getChosenFile());
-            this.setFotoChanged(true);
-            this.setFoto(this.fotoAux.generateDataUrl());
+        computed:{
+            ...mapState(['user']),
         },
-        onResize() {
-            if (window.innerWidth < 957) {
-                this.clicked = false;
-                this.clickable = true;
-            }else {
-                this.clicked = true;
-                this.clickable = false;
-           }
-        },
-        expand(){
-            this.clickable ? this.clicked = !this.clicked : NaN
-        }
-    },
-    watch:{
-        fotoChanged(){
-            !this.fotoChanged ? this.fotoAux.remove() : NaN;
-        }
-    },
-    computed:{
-        ...mapState(['user','fotoChanged','foto']),
-    },
-    created() {
-        this.setFoto(this.user.data.imagen);
-        this.setFotoChanged(false);
-        window.addEventListener('resize', this.onResize);
-        this.onResize();
-    },
-    mounted(){
-        this.fotoAux.remove();
-        console.log(this.$route.name);
-    },
-    beforeDestroy() {
-        window.removeEventListener('resize', this.onResize)
-    },
-}
-
+    }
 </script>
 
 <style lang="scss" scoped>

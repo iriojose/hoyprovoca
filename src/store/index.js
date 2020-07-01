@@ -157,6 +157,9 @@ export default new Vuex.Store({
         SET_DATA(state,val){
             state.user.data = val;
         },
+        SET_FOTO_PROFILE(state,val){
+            state.user.data.imagen = val;
+        },
     },
     actions: {
         setDrawer({commit},val){
@@ -239,6 +242,9 @@ export default new Vuex.Store({
         },
         setData({commit},val){
             commit('SET_DATA',val);
+        },
+        setFotoProfile({commit},val){
+            commit('SET_FOTO_PROFILE',val);
         },
     }
 });
