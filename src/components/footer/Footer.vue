@@ -15,7 +15,7 @@
             <v-row justify="center">
                 <v-col cols="12" md="4" sm="12" v-for="(n,i) in 4" :key="i">
                     <div v-if="i == 0">
-                        <div v-for="(categoria,e) in categorias" :key="e" class="underline my-5 text-center font-weight-bold">
+                        <div v-for="(categoria,e) in categorias" :key="e" @click="push(categoria)" class="underline my-5 text-center font-weight-bold">
                             {{categoria.text}}
                         </div>
                     </div>
@@ -55,6 +55,8 @@
 </template>
 
 <script>
+import router from '@/router';
+
     export default {
         data() {
             return {
@@ -64,10 +66,10 @@
                     {img:'safe.svg',text:'Privacidad garantizada'},
                 ],
                 categorias:[
-                    {text:'Viveres'},
-                    {text:'Farmacia'},
-                    {text:'Comida'},
-                    {text:'Restaurantes'}
+                    {text:'Viveres',id:1},
+                    {text:'Salud',id:2},
+                    {text:'Bebidas',id:3},
+                    {text:'Snack',id:4}
                 ],
                 intereses:[
                     {text:'Terminos y condiciones'},
@@ -85,6 +87,13 @@
                     {img:'playstore.png',text:'Android'}
                 ],*/
             }
+        },
+        methods: {
+            push(item){
+                window.localStorage.setItem('grupo',item.id);
+                let nombre = item.text.toLowerCase(); 
+                router.push({name:'grupoDetalle', params:{text:nombre}});
+            },
         },
     }
 </script>

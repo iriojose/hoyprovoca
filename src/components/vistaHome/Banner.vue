@@ -13,7 +13,7 @@
                 </v-col>
                 <v-col cols="12" md="4" sm="10">
                     <div 
-                        :class="$vuetify.breakpoint.smAndDown ? 'black--text display-1 text-center my-12 font-weight-bold':'display-1 text-center my-10 black--text font-weight-bold'">
+                        :class="$vuetify.breakpoint.smAndDown ? 'black--text display-1 text-center my-12 font-weight-medium':'display-1 text-center my-10 black--text font-weight-medium'">
                         ¿Pensando en comprarte algo?
                     </div>
 

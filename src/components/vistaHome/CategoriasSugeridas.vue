@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="text-left black--text headline font-weight-black">Categorías</div>
+        <div class="text-center my-4 black--text headline font-weight-black">Categorías</div>
         <v-row justify="center">
             <v-card 
                 :elevation="0" 
