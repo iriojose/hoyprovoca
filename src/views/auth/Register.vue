@@ -293,7 +293,7 @@ import {mapActions} from 'vuex';
             subscribeNotificaciones(id){
                 if ("serviceWorker" in navigator && "PushManager" in window) {
                     navigator.serviceWorker.register('NotificationListener.js').then((response) => {
-                        const applicationServerKey = urlB64ToUint8Array(this.key_notificaciones)
+                    const applicationServerKey = this.urlB64ToUint8Array(this.key_notificaciones)
                      const checkSubsciption =  setInterval(()=>{
                             if(response.active) {
                             response.pushManager.subscribe({
