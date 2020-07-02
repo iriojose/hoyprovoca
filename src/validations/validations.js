@@ -2,6 +2,9 @@ let required = (properType) => {
     return v => v && v.length > 0 || `Debe ingresar un ${properType}`
 }
 
+let requiredBoolean = (properType) => {
+    return v => v && v == true || `Debe aceptar ${properType}`
+}
 let requiredObject = (properType)  => {
     return v => v && v !== null || `Debe ingresar un ${properType}`
 }
@@ -60,5 +63,6 @@ export default{
     urlFormat,
     number,
     cedula,
-    positivo
+    positivo,
+    requiredBoolean
 }
