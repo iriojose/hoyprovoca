@@ -42,7 +42,7 @@
                     ></v-switch>
 
                     <v-switch 
-                        v-model="notificaciones" 
+                        v-model="notificaciones" :disabled="process"
                         class="ma-4" color="green" :label="label2"
                         v-if="!$vuetify.breakpoint.smAndDown"
                     ></v-switch>
@@ -85,7 +85,7 @@
                     ></v-switch>
 
                     <v-switch 
-                        v-model="notificaciones" 
+                        v-model="notificaciones" :disabled="process"
                         class="ma-4" color="green" :label="label2"
                         v-if="$vuetify.breakpoint.smAndDown"
                     ></v-switch>
@@ -124,12 +124,15 @@ import variables from '@/services/variables_globales';
     export default {
         data() {
             return {
+                ...variables,
                 ...validations,
                 loading:false,
                 loading2:false,
                 loading3:false,
                 valid:false,
+                enviando:false,
                 editable:false,
+                process:false,
                 data:{},
                 mensaje:'',
                 type:'error',
@@ -155,7 +158,29 @@ import variables from '@/services/variables_globales';
         },
         watch: {
             notificaciones(){
-                if(this.notificaciones) this.subscribeNotificaciones(this.user.data.id);
+                 if ("serviceWorker" in navigator && "PushManager" in window) {
+                    navigator.serviceWorker.register('./../../NotificationListener.js').then((Registration) => {
+                        let result;
+                        this.process = true;
+                        Registration.pushManager.getSubscription().then((subscription) =>{
+                            if (subscription) {
+                                subscription.unsubscribe();
+                                this.process = false;
+                                this.notificaciones = false;
+                            }else{
+                                this.subscribeNotificaciones(this.user.data.id,Registration);
+                                 console.log("agrega")
+                            }
+                            })
+                            .catch((error)=> {
+                                console.log('', result,error);
+                            })
+                    }).catch(function (error) {
+                        console.error("Service Worker Error", error);
+                    });
+                } else {
+                    console.warn("Push messaging is not supported");
+                }
             }
         },
         mounted() {
@@ -222,9 +247,7 @@ import variables from '@/services/variables_globales';
                 });
             },
 
-            subscribeNotificaciones(id){
-                if ("serviceWorker" in navigator && "PushManager" in window) {
-                    navigator.serviceWorker.register('NotificationListener.js').then((response) => {
+            subscribeNotificaciones(id,response){
                         const applicationServerKey = this.urlB64ToUint8Array(this.key_notificaciones)
                         const checkSubsciption =  setInterval(()=>{
                             if(response.active) {
@@ -234,20 +257,13 @@ import variables from '@/services/variables_globales';
                                 }).then((subscription) => {
                                     clearInterval(checkSubsciption)
                                     const traducirSbuscription = JSON.stringify(subscription);
-                                    this.postSubscribe(traducirSbuscription,id);
+                                    if(!this.enviando) this.postSubscribe(traducirSbuscription,id);
                                 }).catch(function (err) {
                                     clearInterval(checkSubsciption)
                                     console.log("Failed to subscribe the user: ", err);
                                 });
                             }
                         },1000);
-                    }).catch(function (error) {
-                        console.error("Service Worker Error", error);
-                    });
-                } else {
-                    console.warn("Push messaging is not supported");
-                    pushButton.textContent = "Push Not Supported";
-                }
             },
             //encriptar public key de nots
             urlB64ToUint8Array(base64String) {
@@ -255,6 +271,7 @@ import variables from '@/services/variables_globales';
                 const base64 = (base64String + padding)
                     .replace(/\-/g, "+")
                     .replace(/_/g, "/");
+
 
                 const rawData = window.atob(base64);
                 const outputArray = new Uint8Array(rawData.length);
@@ -266,13 +283,19 @@ import variables from '@/services/variables_globales';
             },
             //subscribir para recibir nots
             postSubscribe(data,id){
+                this.enviando = true;
                 let subscribe = {
                     subscription_data:data,
                     usuario_id:id
                 };
                 Nots().post("/push/subscribe",{data:subscribe}).then((response) => {
                     console.log(response);
+                    this.enviando = false;
+                    this.process = false;
                 }).catch(e => {
+                    this.envianeo = false;
+                    this.process = false;
+                    this.notificaciones = false;
                     console.log(e);
                 });
             },
