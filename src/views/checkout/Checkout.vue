@@ -180,8 +180,8 @@
                                     block
                                     color="#0f2441"
                                     class="text-capitalize subtitle-2 my-5 white--text font-weight-bold"
-                                    @click="changeView('view', 2)"
-                                    >Pagar</v-btn
+                                    @click="view = 2"
+                                    >{{ messagePendiente }}</v-btn
                                 >
                             </v-col>
                         </v-row>
@@ -223,13 +223,13 @@
                             color="#0f2441"
                             >Pagar</v-stepper-step
                         >
-                        <v-divider v-show="diferentes"></v-divider>
+                        <!-- <v-divider v-show="diferentes"></v-divider>
                         <v-stepper-step
                             v-show="diferentes"
                             step="4"
                             color="#0f2441"
                             >Pagar</v-stepper-step
-                        >
+                        >-->
                     </v-stepper-header>
 
                     <v-stepper-items>
@@ -311,7 +311,7 @@
                                                     :disabled="loading"
                                                     small
                                                     :color="
-                                                        stock_notifier.color
+                                                        stockNotifier.color
                                                     "
                                                     @click="loader = 'loading'"
                                                 >
@@ -338,10 +338,10 @@
                                             ><span
                                                 :style="
                                                     'color:' +
-                                                        stock_notifier.color
+                                                        stockNotifier.color
                                                 "
                                                 >{{
-                                                    stock_notifier.message
+                                                    stockNotifier.message
                                                 }}</span
                                             ></v-subheader
                                         >
@@ -381,13 +381,13 @@
                                     <div class="font-weight-bold subtitle-1">
                                         {{ total }}
                                     </div>
-                                    <v-checkbox
+                                    <!--    <v-checkbox
                                         @click="resetPago($event)"
                                         label="diferentes tipos de pago?"
                                         color="#0f2441"
                                         hide-details
-                                    ></v-checkbox>
-                                    <v-select
+                                    ></v-checkbox>-->
+                                    <!--    <v-select
                                         :items="tiposDePago"
                                         dense
                                         color="#0f2441"
@@ -402,9 +402,10 @@
                                         hint="Metodo De Pago"
                                         label="Seleccione su metodo de pago"
                                         single-line
-                                        v-model="pago"
+                                        v-model="pago" 
                                         class="my-5"
-                                    ></v-select>
+                                    ></v-select>-->
+                                    <!--aqui abajo se debe colocar un v else ejemplo : v-else -->
                                     <v-select
                                         :items="tiposDePago"
                                         dense
@@ -413,7 +414,6 @@
                                         item-value="nombre"
                                         return-object
                                         item-text="nombre"
-                                        v-else
                                         chips
                                         persistent-hint
                                         hint="Metodo De Pago"
@@ -442,7 +442,7 @@
                         </v-stepper-content>
 
                         <v-stepper-content step="3">
-                            <v-row justify="center">
+                            <v-row justify="center" v-if="stepper === 3">
                                 <v-col cols="12" md="6" sm="12" class="pa-5">
                                     <div class="font-weight-bold title">
                                         Subtotal a pagar
@@ -456,10 +456,11 @@
                                     >
                                         Datos de la cuenta
                                     </div>
-                                    <div>Nombre:Jesus Bellorin</div>
-                                    <div>cedula:212121212</div>
-                                    <div>cuenta:212121212121212</div>
-                                    <div>banco:zelle</div>
+                                    <div>Nombre:{{pago.propietario}}</div>
+                                    <div>{{pago.identificacion}}</div>
+                                    <div>{{pago.cuenta}}</div>
+                                    <div>{{pago.nombre}}</div>
+                                     <div><strong>{{pago.detalle}}</strong></div>
 
                                     <v-form v-model="valid" class="my-5">
                                         <v-text-field
@@ -508,30 +509,28 @@
                                     ></v-text-field>
                                 </v-col>
                                 <v-dialog
-                                    v-model="takeFile"
+                                    v-model="Imagen"
                                     width="500"
                                     justify="center"
+                                    persistent
                                 >
-                                    <v-col class="pa-5">
-                                        <v-card justify="center">
-                                            <v-card-title>
-                                                Ingrese Foto de Su pago
-                                            </v-card-title>
-                                            <v-card-text>
-                                                <FilePond
-                                                    class="file"
-                                                    ref="pond"
-                                                    v-model="file"
-                                                    label-idle="Arrastrar Aqui..."
-                                                    labelFileAdded="Archivo Añadido"
-                                                    :server="{ process }"
-                                                    :onaddfilestart="
-                                                        initProcess
-                                                    "
-                                                />
-                                            </v-card-text>
-                                        </v-card>
-                                    </v-col>
+                                    <v-card justify="center">
+                                        <v-card-title>
+                                            Ingrese Foto de Su pago
+                                        </v-card-title>
+                                        <v-card-text>
+                                            <FilePond
+                                                class="file"
+                                                ref="pond"
+                                                :disabled="loading"
+                                                v-model="file"
+                                                label-idle="Arrastrar Aqui..."
+                                                labelFileAdded="Archivo Añadido"
+                                                :server="{ process }"
+                                                :onaddfilestart="initProcess"
+                                            />
+                                        </v-card-text>
+                                    </v-card>
                                 </v-dialog>
                             </v-row>
 
@@ -547,7 +546,8 @@
                                 >Atras</v-btn
                             >
                         </v-stepper-content>
-
+                        <!--aqui viene todo el contenido de la 4ta vista -->
+                        <!--  
                         <v-stepper-content step="4" v-if="diferentes">
                             <v-row justify="center">
                                 <v-col cols="6" md="6" sm="12" class="pa-5">
@@ -645,11 +645,11 @@
                             </v-btn>
 
                             <v-btn text @click="resetRestante">Atras</v-btn>
-                        </v-stepper-content>
+                        </v-stepper-content>-->
                     </v-stepper-items>
                 </v-stepper>
                 <v-snackbar class="text--pink" v-model="alert">
-                    {{ alert_notifier }}
+                    {{ alertNotifier }}
 
                     <template v-slot:action="{ attrs }">
                         <v-btn
@@ -726,8 +726,7 @@ const avaible = {
     color: "green",
 };
 const isOut = {
-    message:
-        "Lo sentimos, se acabo la existencia de algunos de sus Productos, Desea continuar con los disponibles?",
+    message:"Lo sentimos, se acabo la existencia de algunos de sus Productos, Desea continuar con los disponibles?",
     color: "red",
 };
 const checking = { message: "Checkeando existencias...", color: "gray" };
@@ -738,7 +737,47 @@ const empiezaPago = "ingrese el pago";
 const pagoExedido = "se ha excedido del limite";
 const pagoExitoso = "su pago ha sido registtrado exitosamente!";
 const pagoInsuficiente = "el monto ingresado es insuficiente";
-const pagoFinalizado = "el proceso de pago ha finalizado exitosamente!";
+//const pagoFinalizado = "el proceso de pago ha finalizado exitosamente!";
+
+// aqui vienen descripciones de tipos de pago
+const metodosDePago = [
+    {
+        id: 0,
+        nombre: "Pago Movil : Banesco",
+        propietario: "Jesus Bellorin",
+        identificacion: "C.I: 17654976",
+        cuenta: "movil : 04127955560",
+        detalle: "",
+        monto: 0,
+    },
+    {
+        id: 1,
+        nombre: "Transferencia Banco Nacional: Banplus",
+        propietario: "Jesus Bellorin",
+        identificacion: "C.I: 17654976",
+        cuenta: "Corriente : 01740112201124312701",
+        detalle:"Recuerde!, Transferencias de diferentes bancos tardan al menos 1 dia en ser confirmadas",
+        monto: 0,
+    },
+    {
+        id: 2,
+        nombre: "Transferencia Banco Nacional: Banesco",
+        propietario: "Jesus Bellorin",
+        identificacion: "C.I: 17654976",
+        cuenta: "Ahorro : 01340563895633049696",
+        detalle:"Recuerde!, Transferencias de diferentes bancos tardan al menos 1 dia en ser confirmadas",
+        monto: 0,
+    },
+    {
+        id: 3,
+        nombre: "Banesco Panama",
+        propietario: "Jesus Bellorin",
+        identificacion: "C.I: 17654976",
+        cuenta: "Cuenta: 201800957218",
+        detalle: "",
+        monto: 0,
+    },
+];
 export default {
     components: {
         FilePond,
@@ -762,6 +801,7 @@ export default {
                 stock: null,
                 diferentes: false,
                 restante: 0,
+                pedidoSelect: {},
                 montos: ["0", "0"],
                 pago: {},
                 pedidos: [],
@@ -771,12 +811,14 @@ export default {
             loading: true,
             file2: {},
             stock: null,
-            stock_notifier: checking,
-            alert_notifier: maxPago,
+            stockNotifier: checking,
+            alertNotifier: maxPago,
             diferentes: false,
             pedidoSelect: {},
+            messagePendiente: "Pagar",
             success: false,
             restante: 0,
+            pendiente: false,
             montos: ["0", "0"],
             pago: {},
             pagoId: { 0: 0, 1: 0 },
@@ -808,23 +850,7 @@ export default {
                 },
             ],
             file: {},
-            tiposDePago: [
-                {
-                    id: 1,
-                    nombre: "Banesco Panama",
-                    monto: 0,
-                },
-                {
-                    id: 2,
-                    nombre: "Zelle",
-                    monto: 0,
-                },
-                {
-                    id: 3,
-                    nombre: "Banco nacional",
-                    monto: 0,
-                },
-            ],
+            tiposDePago: metodosDePago,
             data: {
                 emisor: "",
                 receptor: "Jesus Bellorin",
@@ -839,7 +865,7 @@ export default {
         };
     },
     mounted() {
-        this.setInitView();
+        this.getPedidosUsuario();
     },
     head: {
         title() {
@@ -851,29 +877,50 @@ export default {
         },
     },
     watch: {
+        pedidoSelect() {
+            if (this.view === 1) {
+                const savedData = localStorage.getItem("state");
+                if (savedData) {
+                    let toLoad = JSON.parse(savedData);
+                    if (this.pedidoSelect.id === toLoad.pedidoSelect.id) {
+                        this.pendiente = true;
+                        this.messagePendiente = "Continuar Pago...";
+                        return;
+                    }
+                    this.pendiente = false;
+                } else {
+                    return (this.pendiente = false);
+                }
+            }
+        },
         view() {
-            if (this.view == 2) {
-                this.data.emisor =
-                    this.user.data.nombre + " " + this.user.data.apellido;
-                this.data.usuario_id = this.user.data.id;
-                this.data.monto = this.total;
-                this.data.adm_tipo_pago_id = this.pago.id;
-                this.data.adm_status_id = 1;
-                this.data.adm_pedidos_id = this.pedidoSelect.id;
-                this.restante = this.total;
-                /* parseFloat(
+            if (this.view === 2) {
+                if (this.pendiente === true) {
+                    this.setInitView();
+                    return;
+                } else {
+                    this.data.emisor =
+                        this.user.data.nombre + " " + this.user.data.apellido;
+                    this.data.usuario_id = this.user.data.id;
+                    this.data.monto = this.total;
+                    this.data.adm_tipo_pago_id = this.pago.id;
+                    this.data.adm_status_id = 1;
+                    this.data.adm_pedidos_id = this.pedidoSelect.id;
+                    this.restante = this.total;
+                    this.pendiente = true;
+                    /* parseFloat(
                     this.total
                         .split(" ")[1]
                         .split(".")
                         .join("")
                         .replace(",", ".")
                 );*/
-                this.setLocal("pedidos", this.pedidos);
-                this.setLocal("view", this.view);
-                this.setLocal("pedidoSelect", this.pedidoSelect);
-                this.setLocal("total", this.total);
-                this.setLocal("data", this.data);
-                this.checkExistence();
+                    this.setLocal("pedidoSelect", this.pedidoSelect);
+                    this.setLocal("pedidos", this.pedidos);
+                    this.setLocal("total", this.total);
+                    this.setLocal("data", this.data);
+                    this.checkExistence();
+                }
             }
         },
         pago(value) {
@@ -894,7 +941,7 @@ export default {
                 return;
             }
             if (value.length > 2) {
-                this.alert_notifier = maxPago;
+                this.alertNotifier = maxPago;
                 this.alert = true;
             } //cambia este alert por un $toasted de Vue, investigalo
             if (value.length === 2) {
@@ -908,24 +955,28 @@ export default {
             this.pago = this.pago.slice(0, 2);
             this.bloqueo = false;
         },
-        file(value) {
-            console.log(value);
-        },
     },
     computed: {
-        ...mapState(["user"]),
+        ...mapState(["user", "modalPago"]),
+        Imagen: {
+            get() {
+                return this.modalPago;
+            },
+            set(val) {
+                this.setModalPago(true);
+            },
+        },
     },
     methods: {
-        ...mapActions(["setPedidos", "deletePedidoStore"]),
+        ...mapActions(["setPedidos", "deletePedidoStore", "setModalPago"]),
         setInitView() {
             const savedData = localStorage.getItem("state");
             if (savedData) {
                 let toLoad = JSON.parse(savedData);
-
+                this.state = toLoad;
                 [
                     "total",
                     "stepper",
-                    "view",
                     "monto",
                     "restante",
                     "diferentes",
@@ -937,13 +988,10 @@ export default {
                 ].forEach((value) => {
                     this[value] = toLoad[value];
                 });
-                console.log("saved data", toLoad);
-            } else {
-                this.getPedidosUsuario();
             }
         },
-        change() {},
-        resetPago(value) {
+
+        resetPago() {
             this.pago = [];
             this.bloqueo = true;
             this.diferentes = !this.diferentes;
@@ -954,7 +1002,7 @@ export default {
         getCheck() {
             return Promise.all(
                 //devuelve las promesas que se realizan al solicitar la existencia de cada producto
-                this.pedidoSelect.detalles.map(async (product, key) => {
+                this.pedidoSelect.detalles.map(async (product) => {
                     const stock = await this.getExistencia(
                         product.adm_conceptos_id
                     );
@@ -978,23 +1026,19 @@ export default {
         async checkExistence() {
             this.loading = true;
             this.disponibilidad = 0;
-            this.stock_notifier = checking;
-            let newPriceList = [];
+            this.stockNotifier = checking;
             //empieza a cargar las existencias una vez temina la funcion  se modifica el total si faltan productos a la existencia
             this.getCheck().then((checked) => {
                 this.loading = false;
-                const toSave = JSON.stringify(this.pedidoSelect);
-                this.setLocal("pedido", toSave);
-
                 if (this.disponibilidad === this.pedidoSelect.detalles.length) {
-                    this.stock_notifier = avaible;
+                    this.stockNotifier = avaible;
                     this.bloqueo = false;
                 } else if (
                     this.disponibilidad > 0 &&
                     this.disponibilidad < this.pedidoSelect.detalles.length
                 ) {
                     //en este caso no todos los productos estan disponibles asi que se procede a modificar el total con los disponibles
-                    this.stock_notifier = avaible;
+                    this.stockNotifier = avaible;
                     this.total = accounting.formatMoney(
                         +(checked.reduce(
                             (acumulator, current) =>
@@ -1004,7 +1048,7 @@ export default {
                     );
                     this.bloqueo = false;
                 } else {
-                    this.stock_notifier = isOut;
+                    this.stockNotifier = isOut;
                 }
             });
         },
@@ -1096,9 +1140,8 @@ export default {
                     .join("")
                     .replace(",", ".")
             );
-            const PagoObjetivo = this.stepper - 3;
             if (+this.montos[0] + +this.montos[1] > aCubrir) {
-                this.alert_notifier = pagoExedido;
+                this.alertNotifier = pagoExedido;
                 this.alert = true;
                 return true;
             }
@@ -1106,7 +1149,7 @@ export default {
                 this.stepper === 4 &&
                 +this.montos[0] + +this.montos[1] < aCubrir
             ) {
-                this.alert_notifier = pagoInsuficiente;
+                this.alertNotifier = pagoInsuficiente;
                 this.alert = true;
                 return true;
             }
@@ -1139,15 +1182,10 @@ export default {
                 .post("/", { data: { ...this.data, monto: money } })
                 .then((response) => {
                     this.alert = true;
-                    this.alert_notifier = empiezaPago;
-                    this.takeFile = true;
+                    this.alertNotifier = empiezaPago;
+                    this.setModalPago(true);
                     this.pagoId[this.stepper - 3] = response.data.data.id;
                     this.setLocal("pagoId", this.pagoId);
-                    console.log(
-                        "pagos response",
-                        this.pagoId,
-                        this.stepper - 3
-                    );
                 })
                 .catch((e) => {
                     console.log(e);
@@ -1155,13 +1193,14 @@ export default {
         },
         process(fieldName, file, metadata, load, error, abort) {
             let formdata = new FormData();
+            this.loading = true;
             formdata.append("image", file);
             abort();
             Images()
                 .post(`/main/pagos/${this.pagoId[this.stepper - 3]}`, formdata)
                 .then((response) => {
                     load("Imagen añadida");
-                    console.log(response);
+                    this.loading = false;
                     if (this.diferentes) {
                         const PagoObjetivo = this.stepper - 3;
                         const inInt = parseFloat(this.montos[PagoObjetivo]);
@@ -1185,16 +1224,16 @@ export default {
                             this.setLocal("monto", this.monto);
                             this.setLocal("restante", this.restante);
                             this.alert = true;
-                            this.alert_notifier = pagoExitoso;
+                            this.alertNotifier = pagoExitoso;
                             this.stepper = 4;
                             this.setLocal("stepper", 4);
-                            this.takeFile = false;
+                            this.setModalPago(false);
                             return;
                         }
                         if (this.stepper === 4) {
-                            this.takeFile = false;
+                            this.setModalPago(true);
                             this.actualizarEstadoPedido();
-                            localStorage.setItem('state',null);
+                            localStorage.setItem("state", null);
                             this.deletePedidosStore(this.indexPedido);
                             this.view = 3;
                             this.success = true;
@@ -1205,7 +1244,7 @@ export default {
                     } else {
                         this.actualizarEstadoPedido();
                         this.view = 3;
-                        localStorage.setItem('state',null);
+                        localStorage.setItem("state", null);
                         this.success = true;
                         setTimeout(() => {
                             router.push("/");
@@ -1216,7 +1255,7 @@ export default {
                         this.deletePedidosStore(this.indexPedido);
                     }
                     // this.alert = true;
-                    // this.alert_notifier = pagoFinalizado;
+                    // this.alertNotifier = pagoFinalizado;
                 })
                 .catch((e) => {
                     console.log(e);
@@ -1224,13 +1263,11 @@ export default {
         },
         setLocal(item, value) {
             this.state[item] = value;
-            console.log("saved", `${item}`);
             const savedState = JSON.stringify(this.state);
             window.localStorage.setItem(`state`, savedState);
         },
         deleteLocal() {},
         changeView(model, value) {
-            console.log("paso adelante", model, value);
             this[model] = value;
             this.setLocal(model, value);
         },

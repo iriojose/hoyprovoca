@@ -25,6 +25,7 @@ export default new Vuex.Store({
         modalsesion:false,
         modalcarrito:false,
         bandera:false,
+        modalPago:false,
         modalUbicacion:false,
         modalProducto:false,
         modalImagen:false,
@@ -60,6 +61,9 @@ export default new Vuex.Store({
         },
         SET_MODAL_SESION(state,val){
             val ? state.modalsesion = true:state.modalsesion = false;
+        },
+        SET_MODAL_PAGO(state,val){
+            val ? state.modalPago = true:state.modalPago = false;
         },
         SET_MODAL_BLOQUEADO(state,val){
             val ? state.bloqueado = true:state.bloqueado = false;
@@ -157,6 +161,7 @@ export default new Vuex.Store({
         SET_DATA(state,val){
             state.user.data = val;
         },
+        
         SET_FOTO_PROFILE(state,val){
             state.user.data.imagen = val;
         },
@@ -168,6 +173,9 @@ export default new Vuex.Store({
         setCarrito({commit},val){
             commit('SET_CARRITO',val);
         },
+        setModalPago({ commit }, val) {
+            commit("SET_MODAL_PAGO", val);
+          },
         setBandera({commit},val){
             commit('SET_BANDERA',val);
         },
