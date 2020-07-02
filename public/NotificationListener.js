@@ -1,9 +1,9 @@
 //archivo de subscribciones de notificaciones
 'use strict';
 
-self.addEventListener('push',() => {
-    const title = 'Push Codelab';
-    
+self.addEventListener('push',(event) => {
+    const title = "Push Tabaco ta bello";
+    console.log("llego", event)
     const options = {
         body: 'Yay it works.',
         icon: 'images/icon.png',

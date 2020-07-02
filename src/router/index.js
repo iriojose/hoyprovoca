@@ -13,6 +13,7 @@ import Login from '@/views/auth/Login';
 import Register from '@/views/auth/Register';
 import Forgot from '@/views/auth/Forgot';
 import Reset from '@/views/auth/Reset';
+import Verify from '@/views/auth/Verify';
 
 //vistas
 import Search from '@/views/search/Search';
@@ -74,6 +75,14 @@ const router = new Router({
             path: "/resetpassword/:email/:token",
             name:"reset",
             component:Reset,
+            meta:{
+                auth:false
+            }
+        },
+        {
+            path: "/verify/:email/:token",
+            name:"verify",
+            component:Verify,
             meta:{
                 auth:false
             }

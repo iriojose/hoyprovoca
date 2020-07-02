@@ -1252,7 +1252,7 @@ export default {
                         this.indexPedido = this.pedidos.indexOf(
                             this.pedidoSelect
                         );
-                        this.deletePedidosStore(this.indexPedido);
+                        this.deletePedidoStore(this.indexPedido);
                     }
                     // this.alert = true;
                     // this.alertNotifier = pagoFinalizado;
