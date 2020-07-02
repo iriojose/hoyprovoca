@@ -181,7 +181,7 @@
                                     color="#0f2441"
                                     class="text-capitalize subtitle-2 my-5 white--text font-weight-bold"
                                     @click="view = 2"
-                                    >{{ pendiente_message }}</v-btn
+                                    >{{ messagePendiente }}</v-btn
                                 >
                             </v-col>
                         </v-row>
@@ -311,7 +311,7 @@
                                                     :disabled="loading"
                                                     small
                                                     :color="
-                                                        stock_notifier.color
+                                                        stockNotifier.color
                                                     "
                                                     @click="loader = 'loading'"
                                                 >
@@ -338,10 +338,10 @@
                                             ><span
                                                 :style="
                                                     'color:' +
-                                                        stock_notifier.color
+                                                        stockNotifier.color
                                                 "
                                                 >{{
-                                                    stock_notifier.message
+                                                    stockNotifier.message
                                                 }}</span
                                             ></v-subheader
                                         >
@@ -649,7 +649,7 @@
                     </v-stepper-items>
                 </v-stepper>
                 <v-snackbar class="text--pink" v-model="alert">
-                    {{ alert_notifier }}
+                    {{ alertNotifier }}
 
                     <template v-slot:action="{ attrs }">
                         <v-btn
@@ -726,8 +726,7 @@ const avaible = {
     color: "green",
 };
 const isOut = {
-    message:
-        "Lo sentimos, se acabo la existencia de algunos de sus Productos, Desea continuar con los disponibles?",
+    message:"Lo sentimos, se acabo la existencia de algunos de sus Productos, Desea continuar con los disponibles?",
     color: "red",
 };
 const checking = { message: "Checkeando existencias...", color: "gray" };
@@ -753,22 +752,20 @@ const metodosDePago = [
     },
     {
         id: 1,
-        nombre: "Transferencis Banco Nacional: Banplus",
+        nombre: "Transferencia Banco Nacional: Banplus",
         propietario: "Jesus Bellorin",
         identificacion: "C.I: 17654976",
         cuenta: "Corriente : 01740112201124312701",
-        detalle:
-            "recuerde!, transferencias de diferentes bancos tardan al menos 1 dia en ser confirmadas",
+        detalle:"Recuerde!, Transferencias de diferentes bancos tardan al menos 1 dia en ser confirmadas",
         monto: 0,
     },
     {
         id: 2,
-        nombre: "Transferencis Banco Nacional: Banesco",
+        nombre: "Transferencia Banco Nacional: Banesco",
         propietario: "Jesus Bellorin",
         identificacion: "C.I: 17654976",
         cuenta: "Ahorro : 01340563895633049696",
-        detalle:
-            "recuerde!, transferencias de diferentes bancos tardan al menos 1 dia en ser confirmadas",
+        detalle:"Recuerde!, Transferencias de diferentes bancos tardan al menos 1 dia en ser confirmadas",
         monto: 0,
     },
     {
@@ -814,11 +811,11 @@ export default {
             loading: true,
             file2: {},
             stock: null,
-            stock_notifier: checking,
-            alert_notifier: maxPago,
+            stockNotifier: checking,
+            alertNotifier: maxPago,
             diferentes: false,
             pedidoSelect: {},
-            pendiente_message: "Pagar",
+            messagePendiente: "Pagar",
             success: false,
             restante: 0,
             pendiente: false,
@@ -887,7 +884,7 @@ export default {
                     let toLoad = JSON.parse(savedData);
                     if (this.pedidoSelect.id === toLoad.pedidoSelect.id) {
                         this.pendiente = true;
-                        this.pendiente_message = "Continuar Pago...";
+                        this.messagePendiente = "Continuar Pago...";
                         return;
                     }
                     this.pendiente = false;
@@ -899,7 +896,6 @@ export default {
         view() {
             if (this.view === 2) {
                 if (this.pendiente === true) {
-                    console.log(this.pendiente, "sucede");
                     this.setInitView();
                     return;
                 } else {
@@ -928,7 +924,6 @@ export default {
             }
         },
         pago(value) {
-            console.log(this.pago);
             if (!value) {
                 this.bloqueo = true;
                 return;
@@ -946,7 +941,7 @@ export default {
                 return;
             }
             if (value.length > 2) {
-                this.alert_notifier = maxPago;
+                this.alertNotifier = maxPago;
                 this.alert = true;
             } //cambia este alert por un $toasted de Vue, investigalo
             if (value.length === 2) {
@@ -1031,19 +1026,19 @@ export default {
         async checkExistence() {
             this.loading = true;
             this.disponibilidad = 0;
-            this.stock_notifier = checking;
+            this.stockNotifier = checking;
             //empieza a cargar las existencias una vez temina la funcion  se modifica el total si faltan productos a la existencia
             this.getCheck().then((checked) => {
                 this.loading = false;
                 if (this.disponibilidad === this.pedidoSelect.detalles.length) {
-                    this.stock_notifier = avaible;
+                    this.stockNotifier = avaible;
                     this.bloqueo = false;
                 } else if (
                     this.disponibilidad > 0 &&
                     this.disponibilidad < this.pedidoSelect.detalles.length
                 ) {
                     //en este caso no todos los productos estan disponibles asi que se procede a modificar el total con los disponibles
-                    this.stock_notifier = avaible;
+                    this.stockNotifier = avaible;
                     this.total = accounting.formatMoney(
                         +(checked.reduce(
                             (acumulator, current) =>
@@ -1053,7 +1048,7 @@ export default {
                     );
                     this.bloqueo = false;
                 } else {
-                    this.stock_notifier = isOut;
+                    this.stockNotifier = isOut;
                 }
             });
         },
@@ -1146,7 +1141,7 @@ export default {
                     .replace(",", ".")
             );
             if (+this.montos[0] + +this.montos[1] > aCubrir) {
-                this.alert_notifier = pagoExedido;
+                this.alertNotifier = pagoExedido;
                 this.alert = true;
                 return true;
             }
@@ -1154,7 +1149,7 @@ export default {
                 this.stepper === 4 &&
                 +this.montos[0] + +this.montos[1] < aCubrir
             ) {
-                this.alert_notifier = pagoInsuficiente;
+                this.alertNotifier = pagoInsuficiente;
                 this.alert = true;
                 return true;
             }
@@ -1187,7 +1182,7 @@ export default {
                 .post("/", { data: { ...this.data, monto: money } })
                 .then((response) => {
                     this.alert = true;
-                    this.alert_notifier = empiezaPago;
+                    this.alertNotifier = empiezaPago;
                     this.setModalPago(true);
                     this.pagoId[this.stepper - 3] = response.data.data.id;
                     this.setLocal("pagoId", this.pagoId);
@@ -1229,7 +1224,7 @@ export default {
                             this.setLocal("monto", this.monto);
                             this.setLocal("restante", this.restante);
                             this.alert = true;
-                            this.alert_notifier = pagoExitoso;
+                            this.alertNotifier = pagoExitoso;
                             this.stepper = 4;
                             this.setLocal("stepper", 4);
                             this.setModalPago(false);
@@ -1260,7 +1255,7 @@ export default {
                         this.deletePedidosStore(this.indexPedido);
                     }
                     // this.alert = true;
-                    // this.alert_notifier = pagoFinalizado;
+                    // this.alertNotifier = pagoFinalizado;
                 })
                 .catch((e) => {
                     console.log(e);
@@ -1268,7 +1263,6 @@ export default {
         },
         setLocal(item, value) {
             this.state[item] = value;
-            console.log("saved", `${item}`);
             const savedState = JSON.stringify(this.state);
             window.localStorage.setItem(`state`, savedState);
         },
