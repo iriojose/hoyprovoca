@@ -90,29 +90,21 @@ import router from '@/router';
                 this.mensaje = mensaje;
                 this.icon = icon;
                 this.color = color;
-                this.loading = false;ss
+                this.loading = false;
             },
             validCode(){
                 this.loading = true;
-                Auth().post("/validcode",{data:{hash:this.token}}).then((response) => {
+                Auth().post("/validcode",{data:{user:this.email,hash:this.token}}).then((response) => {
                     if(response.data.code == 401) this.respuesta("Token expirado, envie nuevamente un correo de validación.","mdi-alert-circle","red");
-                    else this.getUser();
-                }).catch(e => {
-                    console.log(e);
-                    this.respuesta('Error de conexion, intente Nuevamente.','mdi-alert-circle','red');
-                });
-            },
-            getUser(){
-                Usuario().get(`/?email=${this.email}`).then((response) => {
-                    console.log(response.data.data);
-                    this.updateUser(response.data.data[0].id);
+                    else this.updateUser(response.data.user.id);
                 }).catch(e => {
                     console.log(e);
                     this.respuesta('Error de conexion, intente Nuevamente.','mdi-alert-circle','red');
                 });
             },
             updateUser(id){
-                Usuario().get(`/${id}`,{data:{verificado:1}}).then(() => {
+                Usuario().post(`/${id}`,{data:{verificado:1}}).then((response) => {
+                    console.log(response);
                     this.respuesta("Su correo electrónico fue verificado exitosamente.","mdi-check-circle","green");
                 }).catch(e => {
                     console.log(e);

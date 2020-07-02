@@ -127,11 +127,6 @@
                                                     label="Aceptar términos y condiciones" 
                                                     :rules="[requiredBoolean('Términos y condiciones')]"
                                                 ></v-checkbox>
-                                                <v-checkbox 
-                                                    v-model="nots" color="green" 
-                                                    label="Aceptar recibir notificaciones"
-                                                    :rules="[requiredBoolean('Notificaciones')]"
-                                                ></v-checkbox>
                                             </v-stepper-content>
                                         </v-stepper-items>
                                     </v-stepper>
@@ -170,9 +165,7 @@ import router from '@/router';
 import validations from '@/validations/validations';
 import Auth from '@/services/Auth';
 import Usuario from '@/services/Usuario';
-import Nots from '@/services/Nots';
 import Clientes from '@/services/Clientes';
-import variables from '@/services/variables_globales';
 import {mapActions} from 'vuex';
 
     export default {
@@ -282,66 +275,10 @@ import {mapActions} from 'vuex';
                 Clientes().post("/",{data:cliente}).then((response) => {
                     this.logged(usuario);
                     this.respuesta("Usuario registrado exitosamente.","success");
-                    this.subscribeNotificaciones(usuario.data.id);
                     setTimeout(() => { this.login()},1000);
                 }).catch(e => {
                     console.log(e);
                     this.respuesta("Error al registrar, intente mas tarde.","error");
-                });
-            },
-            //metodo de subscription en la web
-            subscribeNotificaciones(id){
-                if ("serviceWorker" in navigator && "PushManager" in window) {
-                    navigator.serviceWorker.register('NotificationListener.js').then((response) => {
-                    const applicationServerKey = this.urlB64ToUint8Array(this.key_notificaciones)
-                     const checkSubsciption =  setInterval(()=>{
-                            if(response.active) {
-                            response.pushManager.subscribe({
-                                userVisibleOnly: true,
-                                applicationServerKey: applicationServerKey,
-                            }).then((subscription) => {
-                                clearInterval(checkSubsciption)
-                                const traducirSbuscription = JSON.stringify(subscription);
-                                this.postSubscribe(traducirSbuscription,id);
-                            }).catch(function (err) {
-                                clearInterval(checkSubsciption)
-                                console.log("Failed to subscribe the user: ", err);
-                            });
-                        }
-                        },1000)
-                    }).catch(function (error) {
-                        console.error("Service Worker Error", error);
-                    });
-                } else {
-                    console.warn("Push messaging is not supported");
-                    pushButton.textContent = "Push Not Supported";
-                }
-            },
-            //encriptar public key de nots
-            urlB64ToUint8Array(base64String) {
-                const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
-                const base64 = (base64String + padding)
-                    .replace(/\-/g, "+")
-                    .replace(/_/g, "/");
-
-                const rawData = window.atob(base64);
-                const outputArray = new Uint8Array(rawData.length);
-
-                for (let i = 0; i < rawData.length; ++i) {
-                    outputArray[i] = rawData.charCodeAt(i);
-                }
-                return outputArray;
-            },
-            //subscribir para recibir nots
-            postSubscribe(data,id){
-                let subscribe = {
-                    subscription_data:data,
-                    usuario_id:id
-                };
-                Nots().post("/push/subscribe",{data:subscribe}).then((response) => {
-                    console.log(response);
-                }).catch(e => {
-                    console.log(e);
                 });
             },
         },

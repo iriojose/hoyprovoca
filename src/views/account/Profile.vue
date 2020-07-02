@@ -34,6 +34,18 @@
                         color="#2950c3" :disabled="loading"
                         @input="validEdit()"
                     ></v-text-field>
+
+                    <v-switch 
+                        v-model="email" class="ma-4" color="green" @input="sendEmail()"
+                        :label="label" :loading="loading2" :readonly="block"
+                        v-if="!$vuetify.breakpoint.smAndDown"
+                    ></v-switch>
+
+                    <v-switch 
+                        v-model="notificaciones" 
+                        class="ma-4" color="green" :label="label2"
+                        v-if="!$vuetify.breakpoint.smAndDown"
+                    ></v-switch>
                 </v-col>
                 <v-col cols="12" md="6" sm="12" class="px-10">
                     <v-text-field
@@ -65,6 +77,18 @@
                         </template>
                         <v-date-picker v-model="data.fecha_nac" landscape show-current  header-color="#2950c3" color="#2950c3"  locale="es"/>
                     </v-menu>
+
+                    <v-switch 
+                        v-model="email" class="ma-4" color="green" @input="sendEmail()"
+                        :label="label" :loading="loading2" :readonly="block"
+                        v-if="$vuetify.breakpoint.smAndDown"
+                    ></v-switch>
+
+                    <v-switch 
+                        v-model="notificaciones" 
+                        class="ma-4" color="green" :label="label2"
+                        v-if="$vuetify.breakpoint.smAndDown"
+                    ></v-switch>
                 </v-col>
             </v-row>
         </v-form>
@@ -92,19 +116,29 @@
 <script>
 import {mapState,mapActions} from 'vuex';
 import Usuario from '@/services/Usuario';
+import Auth from '@/services/Auth';
 import validations from '@/validations/validations';
+import Nots from '@/services/Nots';
+import variables from '@/services/variables_globales';
 
     export default {
         data() {
             return {
                 ...validations,
                 loading:false,
+                loading2:false,
+                loading3:false,
                 valid:false,
                 editable:false,
                 data:{},
                 mensaje:'',
                 type:'error',
                 showMessage:false,
+                email:false,
+                notificaciones:false,
+                block:false,
+                label:"Verificar correo electrónico",
+                label2:"Recibir notificaciones"
             }
         },
         head: {
@@ -119,17 +153,33 @@ import validations from '@/validations/validations';
         computed:{
             ...mapState(['user']),
         },
+        watch: {
+            notificaciones(){
+                if(this.notificaciones) this.subscribeNotificaciones(this.user.data.id);
+            }
+        },
         mounted() {
             this.data = Object.assign({},this.user.data);
             this.data.fecha_nac = this.data.fecha_nac.substr(0, 10); 
+            if (this.data.verificado == 1) {
+                this.email = true;
+                this.label = "Correo electrónico verificado.";
+                this.block = true;
+            }
         },
         methods:{
             ...mapActions(['setData']),
 
             respuesta(mensaje,type){
                 this.mensaje = mensaje;
-                this.type = type
+                this.type = type;
                 this.loading = false;
+                this.showMessage = true;
+            },
+            respuesta2(mensaje,type){
+                this.mensaje = mensaje;
+                this.type = type;
+                this.loading2 = false;
                 this.showMessage = true;
             },
             changeNumber(){
@@ -158,7 +208,74 @@ import validations from '@/validations/validations';
                     console.log(e);
                     this.respuesta("Error al intentar actualizar",'error');
                 });
-            }
+            },
+            sendEmail(){
+                this.loading2 = true;
+                this.showMessage = false;
+                Auth().post("/verify",{data:{user:this.user.data.email}}).then((response) => {
+                    this.respuesta2("correo enviado, verifica su cuenta.",'success');
+                    this.block = true;
+                }).catch(e => {
+                    console.log(e);
+                    this.email = false;
+                    this.respuesta2("Error al enviar email",'error');
+                });
+            },
+
+            subscribeNotificaciones(id){
+                if ("serviceWorker" in navigator && "PushManager" in window) {
+                    navigator.serviceWorker.register('NotificationListener.js').then((response) => {
+                        const applicationServerKey = this.urlB64ToUint8Array(this.key_notificaciones)
+                        const checkSubsciption =  setInterval(()=>{
+                            if(response.active) {
+                                response.pushManager.subscribe({
+                                    userVisibleOnly: true,
+                                    applicationServerKey: applicationServerKey,
+                                }).then((subscription) => {
+                                    clearInterval(checkSubsciption)
+                                    const traducirSbuscription = JSON.stringify(subscription);
+                                    this.postSubscribe(traducirSbuscription,id);
+                                }).catch(function (err) {
+                                    clearInterval(checkSubsciption)
+                                    console.log("Failed to subscribe the user: ", err);
+                                });
+                            }
+                        },1000);
+                    }).catch(function (error) {
+                        console.error("Service Worker Error", error);
+                    });
+                } else {
+                    console.warn("Push messaging is not supported");
+                    pushButton.textContent = "Push Not Supported";
+                }
+            },
+            //encriptar public key de nots
+            urlB64ToUint8Array(base64String) {
+                const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
+                const base64 = (base64String + padding)
+                    .replace(/\-/g, "+")
+                    .replace(/_/g, "/");
+
+                const rawData = window.atob(base64);
+                const outputArray = new Uint8Array(rawData.length);
+
+                for (let i = 0; i < rawData.length; ++i) {
+                    outputArray[i] = rawData.charCodeAt(i);
+                }
+                return outputArray;
+            },
+            //subscribir para recibir nots
+            postSubscribe(data,id){
+                let subscribe = {
+                    subscription_data:data,
+                    usuario_id:id
+                };
+                Nots().post("/push/subscribe",{data:subscribe}).then((response) => {
+                    console.log(response);
+                }).catch(e => {
+                    console.log(e);
+                });
+            },
         },
     }
 </script>
