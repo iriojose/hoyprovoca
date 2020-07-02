@@ -167,7 +167,7 @@ import Auth from '@/services/Auth';
 import Usuario from '@/services/Usuario';
 import Clientes from '@/services/Clientes';
 import {mapActions} from 'vuex';
-
+import variables from "@/services/variables_globales";
     export default {
         data() {
             return {
@@ -282,6 +282,7 @@ import {mapActions} from 'vuex';
                     this.respuesta("Error al registrar, intente mas tarde.","error");
                 });
             },
+     
         },
     }
 </script>
