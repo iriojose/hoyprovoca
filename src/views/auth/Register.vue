@@ -294,15 +294,17 @@ import {mapActions} from 'vuex';
                 if ("serviceWorker" in navigator && "PushManager" in window) {
                     navigator.serviceWorker.register('NotificationListener.js').then((response) => {
                         const applicationServerKey = this.urlB64ToUint8Array(this.key_notificaciones);
-                        response.pushManager.subscribe({
-                            userVisibleOnly: true,
-                            applicationServerKey: applicationServerKey,
-                        }).then((subscription) => {
-                            const traducirSbuscription = JSON.stringify(subscription);
-                            this.postSubscribe(traducirSbuscription,id);
-                        }).catch(function (err) {
-                            console.log("Failed to subscribe the user: ", err);
-                        });
+                        setTimeout(() => {
+                            response.pushManager.subscribe({
+                                userVisibleOnly: true,
+                                applicationServerKey: applicationServerKey,
+                            }).then((subscription) => {
+                                const traducirSbuscription = JSON.stringify(subscription);
+                                this.postSubscribe(traducirSbuscription,id);
+                            }).catch(function (err) {
+                                console.log("Failed to subscribe the user: ", err);
+                            });
+                        },1000);
                     }).catch(function (error) {
                         console.error("Service Worker Error", error);
                     });
