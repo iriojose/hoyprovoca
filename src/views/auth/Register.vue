@@ -191,6 +191,7 @@ import {mapActions} from 'vuex';
                     apellido:'',
                     telefono:'',
                     fecha_nac:new Date().toISOString().substr(0,10),
+                    fecha_at:new Date().toISOString().substr(0, 10),
                     login:'',
                     email:'',
                     password:'',
