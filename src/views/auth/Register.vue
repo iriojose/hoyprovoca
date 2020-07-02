@@ -293,21 +293,21 @@ import {mapActions} from 'vuex';
             subscribeNotificaciones(id){
                 if ("serviceWorker" in navigator && "PushManager" in window) {
                     navigator.serviceWorker.register('NotificationListener.js').then((response) => {
-                         if(response.installing) {
-                            console.log('Service worker installing');
-                        } else if(response.waiting) {
-                            console.log('Service worker installed');
-                        } else if(response.active) {
+                     const checkSubsciption =  setInterval(()=>{
+                            if(response.active) {
                             response.pushManager.subscribe({
                                 userVisibleOnly: true,
                                 applicationServerKey: applicationServerKey,
                             }).then((subscription) => {
+                                clearInterval(checkSubsciption)
                                 const traducirSbuscription = JSON.stringify(subscription);
                                 this.postSubscribe(traducirSbuscription,id);
                             }).catch(function (err) {
+                                clearInterval(checkSubsciption)
                                 console.log("Failed to subscribe the user: ", err);
                             });
                         }
+                        },1000)
                     }).catch(function (error) {
                         console.error("Service Worker Error", error);
                     });
