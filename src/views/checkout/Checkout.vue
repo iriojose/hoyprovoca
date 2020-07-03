@@ -244,7 +244,7 @@
                                     <div class="font-weight-bold title">
                                         Tus productos
                                     </div>
-                                    <div class="font-weight-bold subtitle-1">
+                                    <div  v-if="pedidoSelect.detalles" class="font-weight-bold subtitle-1">
                                         {{ pedidoSelect.detalles.length + " " }}
                                         item
                                     </div>
@@ -371,7 +371,7 @@
                                     <div class="font-weight-bold title">
                                         Tus productos
                                     </div>
-                                    <div class="font-weight-bold subtitle-1">
+                                    <div v-if="pedidoSelect.detalles" class="font-weight-bold subtitle-1">
                                         {{ pedidoSelect.detalles.length + " " }}
                                         item
                                     </div>
@@ -430,7 +430,6 @@
                                 @click="
                                     changeView('stepper', 3);
                                     setLocal('pago', pago);
-                                    setLocal('diferentes', diferentes);
                                 "
                             >
                                 <span style="color:white">Continue</span>
@@ -481,7 +480,7 @@
                                         ></v-text-field>
                                     </v-form>
                                 </v-col>
-                                <v-col
+                              <!--  <v-col
                                     cols="6"
                                     md="3"
                                     sm="12"
@@ -507,7 +506,7 @@
                                         label="Monto"
                                         :rules="[required('Monto')]"
                                     ></v-text-field>
-                                </v-col>
+                                </v-col>-->
                                 <v-dialog
                                     v-model="Imagen"
                                     width="500"
@@ -979,7 +978,6 @@ export default {
                     "stepper",
                     "monto",
                     "restante",
-                    "diferentes",
                     "pago",
                     "pedidos",
                     "pedidoSelect",
@@ -988,13 +986,16 @@ export default {
                 ].forEach((value) => {
                     this[value] = toLoad[value];
                 });
+                if(this.view ===2){
+                    this.checkExistence();
+                }
             }
         },
 
         resetPago() {
             this.pago = [];
             this.bloqueo = true;
-            this.diferentes = !this.diferentes;
+            //this.diferentes = !this.diferentes;
         },
         calcRestante(id) {
             this.restante -= this.montos(id);
@@ -1201,7 +1202,7 @@ export default {
                 .then((response) => {
                     load("Imagen añadida");
                     this.loading = false;
-                    if (this.diferentes) {
+                    if (this.diferentes === true) {
                         const PagoObjetivo = this.stepper - 3;
                         const inInt = parseFloat(this.montos[PagoObjetivo]);
                         let parSedRestante = parseFloat(
@@ -1231,12 +1232,12 @@ export default {
                             return;
                         }
                         if (this.stepper === 4) {
-                            this.setModalPago(true);
                             this.actualizarEstadoPedido();
                             localStorage.setItem("state", null);
                             this.deletePedidosStore(this.indexPedido);
                             this.view = 3;
                             this.success = true;
+                             this.setModalPago(false);
                             setTimeout(() => {
                                 router.push("/");
                             }, [3000]);
@@ -1245,14 +1246,14 @@ export default {
                         this.actualizarEstadoPedido();
                         this.view = 3;
                         localStorage.setItem("state", null);
+                         this.setModalPago(false);
                         this.success = true;
                         setTimeout(() => {
                             router.push("/");
                         }, [3000]);
-                        this.indexPedido = this.pedidos.indexOf(
-                            this.pedidoSelect
-                        );
-                        this.deletePedidoStore(this.indexPedido);
+                        console.log(this.pedidos,this.pedidos.indexOf(this.pedidoSelect),"indices")
+                        const indexPedido = this.pedidos.indexOf(this.pedidoSelect);
+                        this.deletePedidoStore(indexPedido);
                     }
                     // this.alert = true;
                     // this.alertNotifier = pagoFinalizado;
