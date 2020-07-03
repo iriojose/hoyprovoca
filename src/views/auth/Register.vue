@@ -191,7 +191,7 @@ import variables from "@/services/variables_globales";
                     apellido:'',
                     telefono:'',
                     fecha_nac:new Date().toISOString().substr(0,10),
-                    fecha_at:new Date().toISOString().substr(0, 10),
+                    usuario_in:new Date().toISOString().substr(0, 10),
                     login:'',
                     email:'',
                     password:'',
