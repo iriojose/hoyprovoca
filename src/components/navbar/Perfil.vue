@@ -83,7 +83,7 @@ import router from '@/router';
     }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
     .customized {
         margin-top: 10px;
     }
