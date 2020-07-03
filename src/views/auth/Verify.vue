@@ -104,7 +104,6 @@ import router from '@/router';
             },
             updateUser(id){
                 Usuario().post(`/${id}`,{data:{verificado:1}}).then((response) => {
-                    console.log(response);
                     this.respuesta("Su correo electrónico fue verificado exitosamente.","mdi-check-circle","green");
                 }).catch(e => {
                     console.log(e);
