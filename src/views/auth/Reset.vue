@@ -22,31 +22,53 @@
                                     </v-fade-transition> 
                                 </v-card>
 
-                                <v-form v-model="valid" @submit.prevent="">
-                                    <v-text-field
-                                        filled rounded :disabled="loading" dense
-                                        v-model="contraseña" single-line type="password"
-                                        color="#0f2441" :rules="[required('Contraseña'),minLength('Contraseña',8)]"
-                                        label="Nueva contraseña"
-                                    ></v-text-field>
+                                <v-row justify="center" class="my-5" v-if="loading2">
+                                    <v-progress-circular
+                                        :size="70"
+                                        :width="5"
+                                        color="#1f3b63"
+                                        indeterminate
+                                        class="my-8"
+                                    ></v-progress-circular>
+                                </v-row>
+                                
+                                <v-row justify="center" class="my-5" v-if="error">
+                                    <v-icon size="70" :color="color">
+                                        {{icon}}
+                                    </v-icon>
+                                </v-row>
 
-                                    <v-text-field
-                                        filled rounded :disabled="loading"
-                                        v-model="contraseña2" single-line
-                                        type="password" color="#0f2441"
-                                        :rules="[required('Confirmar contraseña'),passwordConfirmationRule()]"
-                                        label="Confirmar contraseña" dense
-                                    ></v-text-field>
+                                <div class="text-center title font-weight-black my-5" v-if="error">
+                                    {{mensaje}}
+                                </div>
+                                
+                                <v-scroll-x-transition>
+                                    <v-form v-model="valid" v-show="cambiarPassword">
+                                        <v-text-field
+                                            filled rounded :disabled="loading" dense
+                                            v-model="contraseña" single-line type="password"
+                                            color="#0f2441" :rules="[required('Contraseña'),minLength('Contraseña',8)]"
+                                            label="Nueva contraseña" append-icon="mdi-lock"
+                                        ></v-text-field>
 
-                                    <v-btn
-                                        rounded color="#2950c3" block
-                                        :disabled="!valid" :loading="loading"
-                                        height="40" @click="reset" 
-                                        class="text-capitalize caption white--text"
-                                    >
-                                        Resetear contraseña
-                                    </v-btn>
-                                </v-form>
+                                        <v-text-field
+                                            filled rounded :disabled="loading"
+                                            v-model="contraseña2" single-line
+                                            type="password" color="#0f2441"
+                                            :rules="[required('Confirmar contraseña'),passwordConfirmationRule()]"
+                                            label="Confirmar contraseña" dense append-icon="mdi-lock"
+                                        ></v-text-field>
+
+                                        <v-btn
+                                            rounded color="#2950c3" block
+                                            :disabled="!valid" :loading="loading"
+                                            height="40" @click="reset" 
+                                            class="text-capitalize caption white--text"
+                                        >
+                                            Resetear contraseña
+                                        </v-btn>
+                                    </v-form>
+                                </v-scroll-x-transition>
                             </v-col>
                         </v-row>
                     </v-card>
@@ -75,10 +97,14 @@ import router from '@/router';
                 mensaje:'',
                 type:'error',
                 loading:false,
+                loading2:false,
                 showMessage:false,
+                cambiarPassword:false,
                 contraseña:'',
                 contraseña2:'',
                 email:'',
+                token:'',
+                error:false
             }
         },
         head:{
@@ -92,6 +118,8 @@ import router from '@/router';
         },
         mounted() {
             this.email = this.$route.params.email;
+            this.token = this.$route.params.token;
+            this.validCode();
         },
         computed: {
             passwordConfirmationRule() {
@@ -108,6 +136,29 @@ import router from '@/router';
                 this.loading = false;
                 this.showMessage = true;
                 setTimeout(() => {this.showMessage = false}, 1000);
+            },
+            respuesta2(mensaje,icon,color,error){
+                this.mensaje = mensaje;
+                this.icon = icon;
+                this.color = color;
+                this.loading2 = false;
+            },
+            validCode(){
+                this.loading2 = true;
+                Auth().post("/validcode",{data:{user:this.email,hash:this.token}}).then((response) => {
+                    if(response.data.code == 401){
+                        this.error = true;
+                        this.respuesta2("Token expirado, envie nuevamente un correo de recuperación.","mdi-alert-circle","red");
+                    }
+                    else {
+                        this.cambiarPassword = true;
+                        this.loading2 = false;
+                    }
+                }).catch(e => {
+                    this.error = true;
+                    console.log(e);
+                    this.respuesta2('Error de conexion, intente Nuevamente.','mdi-alert-circle','red');
+                });
             },
             reset(){
                 this.loading = true;

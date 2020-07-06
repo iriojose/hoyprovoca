@@ -59,18 +59,7 @@
             </v-icon>
         </v-btn-->
 
-        <v-btn 
-            fab class="mx-3" 
-            color="transparent"
-            elevation="0"
-            small to="/account/notificaciones"
-            v-if="user.loggedIn && !$vuetify.breakpoint.smAndDown"
-        >
-            <v-icon color="#fff">
-                mdi-bell
-            </v-icon>
-        </v-btn>
-
+        <Notificaciones />
         <Carrito /> 
         <Perfil />
         <MovilOpciones />
@@ -89,7 +78,7 @@
 
         <v-text-field 
             v-if="$vuetify.breakpoint.smAndDown"
-            class="mx-5 index"
+            class="mx-5"
             slot="extension"
             v-model="busquedas"
             label="Buscar producto..."
@@ -118,6 +107,7 @@ import ModalUbicacion from '@/components/dialogs/ModalUbicacion';
 import Perfil from './Perfil';
 import Carrito from './Carrito';
 import MovilOpciones from './MovilOpciones';
+import Notificaciones from './Notificaciones';
 import router from '@/router';
 
     export default {
@@ -126,7 +116,8 @@ import router from '@/router';
             Carrito,
             Perfil,
             ModalUbicacion,
-            MovilOpciones
+            MovilOpciones,
+            Notificaciones
         },
         computed: {
             ...mapState(['drawer','user','search','bandera']),
@@ -163,8 +154,5 @@ import router from '@/router';
 <style scoped lang="scss">
     .cursor{
         cursor:pointer;
-    }
-    .index{
-        z-index:1;
     }
 </style>

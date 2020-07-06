@@ -270,7 +270,7 @@ router.beforeEach((to,from,next) => {
             next({name:'home'});
         }else if(to.name == 'register' && user){
             next({name:'home'});
-        }else if(to.name == 'resetPassword' && user){
+        }else if(to.name == 'reset' && user){
             next({name:'home'});
         }else if(to.name == 'forgot' && user){
             next({name:'home'});
