@@ -84,7 +84,7 @@
                                         <v-list-item-title class="imag">
                                             <p>Imagen</p>
                                         </v-list-item-title>
-                                        <v-list-item-title>
+                                        <v-list-item-title  v-if="!$vuetify.breakpoint.smAndDown">
                                             <p>Nombre</p>
                                         </v-list-item-title>
                                         <v-list-item-title>
@@ -114,7 +114,7 @@
                                                 ></v-img>
                                             </v-list-item-avatar>
                                         </v-list-item-title>
-                                        <v-list-item-title class="product-text">
+                                        <v-list-item-title  v-if="!$vuetify.breakpoint.smAndDown" class="product-text">
                                             <p>
                                                 {{ detalle.nombre }}
                                             </p>
@@ -244,7 +244,10 @@
                                     <div class="font-weight-bold title">
                                         Tus productos
                                     </div>
-                                    <div  v-if="pedidoSelect.detalles" class="font-weight-bold subtitle-1">
+                                    <div
+                                        v-if="pedidoSelect.detalles"
+                                        class="font-weight-bold subtitle-1"
+                                    >
                                         {{ pedidoSelect.detalles.length + " " }}
                                         item
                                     </div>
@@ -254,7 +257,7 @@
                                             <v-list-item-title class="imag">
                                                 <p>Imagen</p>
                                             </v-list-item-title>
-                                            <v-list-item-title>
+                                            <v-list-item-title  v-if="!$vuetify.breakpoint.smAndDown">
                                                 <p>Nombre</p>
                                             </v-list-item-title>
                                             <v-list-item-title>
@@ -285,6 +288,7 @@
                                             </v-list-item-title>
                                             <v-list-item-title
                                                 class="product-text"
+                                                v-if="!$vuetify.breakpoint.smAndDown"
                                             >
                                                 <p>
                                                     {{ detalle.nombre }}
@@ -310,9 +314,7 @@
                                                     :loading="loading"
                                                     :disabled="loading"
                                                     small
-                                                    :color="
-                                                        stockNotifier.color
-                                                    "
+                                                    :color="stockNotifier.color"
                                                     @click="loader = 'loading'"
                                                 >
                                                     {{ detalle.stock }}
@@ -350,7 +352,7 @@
                             </v-row>
 
                             <v-btn
-                                :disabled="this.bloqueo"
+                                :disabled="this.loading"
                                 color="#0f2441"
                                 @click="
                                     changeView('stepper', 2);
@@ -371,7 +373,10 @@
                                     <div class="font-weight-bold title">
                                         Tus productos
                                     </div>
-                                    <div v-if="pedidoSelect.detalles" class="font-weight-bold subtitle-1">
+                                    <div
+                                        v-if="pedidoSelect.detalles"
+                                        class="font-weight-bold subtitle-1"
+                                    >
                                         {{ pedidoSelect.detalles.length + " " }}
                                         item
                                     </div>
@@ -455,11 +460,13 @@
                                     >
                                         Datos de la cuenta
                                     </div>
-                                    <div>Nombre:{{pago.propietario}}</div>
-                                    <div>{{pago.identificacion}}</div>
-                                    <div>{{pago.cuenta}}</div>
-                                    <div>{{pago.nombre}}</div>
-                                     <div><strong>{{pago.detalle}}</strong></div>
+                                    <div>Nombre:{{ pago.propietario }}</div>
+                                    <div>{{ pago.identificacion }}</div>
+                                    <div>{{ pago.cuenta }}</div>
+                                    <div>{{ pago.nombre }}</div>
+                                    <div>
+                                        <strong>{{ pago.detalle }}</strong>
+                                    </div>
 
                                     <v-form v-model="valid" class="my-5">
                                         <v-text-field
@@ -480,7 +487,7 @@
                                         ></v-text-field>
                                     </v-form>
                                 </v-col>
-                              <!--  <v-col
+                                <!--  <v-col
                                     cols="6"
                                     md="3"
                                     sm="12"
@@ -521,7 +528,6 @@
                                             <FilePond
                                                 class="file"
                                                 ref="pond"
-                                                :disabled="loading"
                                                 v-model="file"
                                                 label-idle="Arrastrar Aqui..."
                                                 labelFileAdded="Archivo Añadido"
@@ -534,8 +540,11 @@
                             </v-row>
 
                             <v-btn
-                                :disabled="data.codigo_referencia === ''"
+                                :disabled="
+                                    data.codigo_referencia === '' && loading
+                                "
                                 color="#0f2441"
+                                :loading="loading"
                                 @click="checkPago"
                             >
                                 <span style="color:white">Enviar</span>
@@ -725,7 +734,8 @@ const avaible = {
     color: "green",
 };
 const isOut = {
-    message:"Lo sentimos, se acabo la existencia de algunos de sus Productos, Desea continuar con los disponibles?",
+    message:
+        "Lo sentimos, se acabo la existencia de algunos de sus Productos, Desea continuar con los disponibles?",
     color: "red",
 };
 const checking = { message: "Checkeando existencias...", color: "gray" };
@@ -755,7 +765,8 @@ const metodosDePago = [
         propietario: "Jesus Bellorin",
         identificacion: "C.I: 17654976",
         cuenta: "Corriente : 01740112201124312701",
-        detalle:"Recuerde!, Transferencias de diferentes bancos tardan al menos 1 dia en ser confirmadas",
+        detalle:
+            "Recuerde!, Transferencias de diferentes bancos tardan al menos 1 dia en ser confirmadas",
         monto: 0,
     },
     {
@@ -764,7 +775,8 @@ const metodosDePago = [
         propietario: "Jesus Bellorin",
         identificacion: "C.I: 17654976",
         cuenta: "Ahorro : 01340563895633049696",
-        detalle:"Recuerde!, Transferencias de diferentes bancos tardan al menos 1 dia en ser confirmadas",
+        detalle:
+            "Recuerde!, Transferencias de diferentes bancos tardan al menos 1 dia en ser confirmadas",
         monto: 0,
     },
     {
@@ -986,7 +998,7 @@ export default {
                 ].forEach((value) => {
                     this[value] = toLoad[value];
                 });
-                if(this.view ===2){
+                if (this.view === 2) {
                     this.checkExistence();
                 }
             }
@@ -1026,6 +1038,7 @@ export default {
         },
         async checkExistence() {
             this.loading = true;
+            this.bloqueo = true;
             this.disponibilidad = 0;
             this.stockNotifier = checking;
             //empieza a cargar las existencias una vez temina la funcion  se modifica el total si faltan productos a la existencia
@@ -1098,7 +1111,12 @@ export default {
                     data: { rest_estatus_id: 2 },
                 })
                 .then((response) => {
-                    console.log("actuaizado", response);
+                    this.loading = false;
+                    this.success = true;
+                    this.view = 3;
+                    setTimeout(() => {
+                        router.push("/");
+                    }, [5000]);
                 })
                 .catch((e) => {
                     console.log(e);
@@ -1112,7 +1130,7 @@ export default {
                     if (this.pedidos.length - 1 == i) {
                         this.loading = false;
                         this.pedidoSelect = this.pedidos[0];
-
+                        console.log(this.pedidos)
                         this.calcularTotal(this.pedidos[0].detalles);
                         this.pedidos.filter((a) =>
                             a.detalles.filter(
@@ -1161,6 +1179,7 @@ export default {
                 const isNotValidMount = this.verificarMonto();
                 if (isNotValidMount) return;
             }
+            this.loading = true;
             this.data.adm_status_id = 2;
             this.data.adm_tipo_pago_id = this.pago.id;
             const money = this.diferentes
@@ -1222,41 +1241,37 @@ export default {
                         );
 
                         if (this.stepper === 3) {
+                            this.setModalPago(false);
                             this.setLocal("monto", this.monto);
                             this.setLocal("restante", this.restante);
                             this.alert = true;
                             this.alertNotifier = pagoExitoso;
                             this.stepper = 4;
                             this.setLocal("stepper", 4);
-                            this.setModalPago(false);
                             return;
                         }
                         if (this.stepper === 4) {
+                            const indexPedido = this.pedidos.indexOf(
+                                this.pedidoSelect
+                            );
+                            this.setModalPago(false);
                             this.actualizarEstadoPedido();
                             localStorage.setItem("state", null);
-                            this.deletePedidosStore(this.indexPedido);
-                            this.view = 3;
-                            this.success = true;
-                             this.setModalPago(false);
-                            setTimeout(() => {
-                                router.push("/");
-                            }, [3000]);
+                            this.deletePedidosStore(indexPedido);
                         }
                     } else {
                         this.actualizarEstadoPedido();
                         this.view = 3;
                         localStorage.setItem("state", null);
-                         this.setModalPago(false);
-                        this.success = true;
-                        setTimeout(() => {
-                            router.push("/");
-                        }, [3000]);
-                        console.log(this.pedidos,this.pedidos.indexOf(this.pedidoSelect),"indices")
-                        const indexPedido = this.pedidos.indexOf(this.pedidoSelect);
-                        this.deletePedidoStore(indexPedido);
+                        this.setModalPago(false);
+                        console.log(
+                            this.pedidos,
+                            this.pedidos.indexOf(this.pedidoSelect),
+                            "indices"
+                        );
+                           const indexPedido = this.pedidos.indexOf(this.pedidoSelect);
+                         this.deletePedidoStore(indexPedido);
                     }
-                    // this.alert = true;
-                    // this.alertNotifier = pagoFinalizado;
                 })
                 .catch((e) => {
                     console.log(e);
@@ -1322,5 +1337,11 @@ export default {
 }
 .margen-movil {
     margin-top: 100px;
+}
+.v-progress-circular--indeterminate svg {
+    color:white!important
+}
+.theme--light.v-btn {
+    color:white!important
 }
 </style>
