@@ -674,36 +674,30 @@
         </v-scroll-x-transition>
         <v-scroll-x-transition>
             <v-dialog
-                v-if="view == 3"
                 v-model="success"
                 width="800"
                 justify="center"
+                class="succes"
             >
-                <v-col class="pa-5">
-                    <v-card justify="center">
-                        <v-card-title>
-                            Felicidades!
+                    <v-card justify="center" >
+                        <v-card-title  >
+                            <p class="succes-title">Felicidades!</p>
                         </v-card-title>
-                        <v-card-text>
+                        <v-card-text class="success-img" >
                             <v-img
                                 contain
-                                :width="
-                                    $vuetify.breakpoint.smAndDown ? 150 : 200
-                                "
                                 :height="
                                     $vuetify.breakpoint.smAndDown ? 100 : 150
                                 "
-                                :src="require('@/assets/4591.jpg')"
+                                :src="require('@/assets/pago terminado.svg')"
                                 class="pb-3"
                             />
                         </v-card-text>
-                        <v-card-subtitle>
-                            Su pago ha sido procesado exitosamente puede
-                            dirigirse a su perfil para verificar el estado de su
-                            pedido
+                        <v-card-subtitle class="containersub" >
+                           <p class="success-description">proceso de pago terminado se le notificara por correo electronico si su pago
+                            fue verificado y como sera el proceso de entrega; sera redigido en unos segundos</p>
                         </v-card-subtitle>
                     </v-card>
-                </v-col>
             </v-dialog>
         </v-scroll-x-transition>
     </v-card>
@@ -1116,7 +1110,7 @@ export default {
                     this.view = 3;
                     setTimeout(() => {
                         router.push("/");
-                    }, [5000]);
+                    }, [9000]);
                 })
                 .catch((e) => {
                     console.log(e);
@@ -1344,4 +1338,27 @@ export default {
 .theme--light.v-btn {
     color:white!important
 }
+.succes{
+   
+    &-title{
+        text-align: center;
+        width: 100%;
+    }
+    &-description{
+        width: 50%;
+    }
+}
+.v-dialog{
+     width: 50%;
+}
+.containersub{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    p{
+        width: 50%;
+        text-align: center;
+    }
+}
+
 </style>
