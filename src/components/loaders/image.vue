@@ -7,14 +7,7 @@
                     v-show="load"
                     :src="image + imagenViene"
                 />         
-                <v-progress-circular
-                        indeterminate
-                    v-show="!load"
-                    size="40"
-                    class="margen-movil"
-                    color="#0f2441"
-                >
-                </v-progress-circular>
+                <Puntos :color="color" v-if="!load" />
             </div>
              
 </template>
@@ -22,6 +15,7 @@
 <script>
 import variables from "@/services/variables_globales";
 import router from "@/router";
+import Puntos from "./Puntos"
 
 export default {
     props: {
@@ -29,6 +23,13 @@ export default {
             type: String,
             default: "",
         },
+        color:{
+            type:String,
+            default:"blue"
+        }
+    },
+    components:{
+        Puntos
     },
     data() {
         return {

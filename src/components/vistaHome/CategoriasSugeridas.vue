@@ -14,7 +14,7 @@
                 :key="i"
                 @click="push(grupo)"
             >
-                <loadImage :imagenViene=grupo.imagen />
+                <loadImage :color="colores[i]" :imagenViene=grupo.imagen />
                 <div class="mt-2 text-center subtitle-2 font-weight-black">
                     {{ grupo.nombre }}
                 </div>
@@ -26,7 +26,7 @@
 <script>
 import variables from "@/services/variables_globales";
 import router from "@/router";
-import loadImage from "./../image/image"
+import loadImage from "./../loaders/image"
 export default {
     props: {
         grupos: {
@@ -45,6 +45,18 @@ export default {
         return {
             ...variables,
             loads: [],
+            colores:[
+                    {color:'#D32F2F'},
+                    {color:'#512DA8'},
+                    {color:'#0288D1'},
+                    {color:'#388E3C'},
+                    {color:'#FBC02D'},
+                    {color:'#E64A19'},
+                    {color:'#5D4037'},
+                    {color:'#455A64'},
+                    {color:'#00796B'},
+                    {color:'#7B1FA2'},
+                ]
         };
     },
     watch: {

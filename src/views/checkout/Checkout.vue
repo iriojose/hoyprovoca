@@ -934,7 +934,8 @@ export default {
         };
     },
     mounted() {
-        if (!this.data.NotVerified) {
+        console.log(this.user)
+        if (!this.user.data.verificado) {
             this.view = 3;
             this.NotVerified = true;
             this.verifyMessage = notverified;
@@ -1220,7 +1221,6 @@ export default {
                     if (this.pedidos.length - 1 == i) {
                         this.loading = false;
                         this.pedidoSelect = this.pedidos[0];
-                        console.log(this.pedidos);
                         this.calcularTotal(this.pedidos[0].detalles);
                         this.pedidos.filter((a) =>
                             a.detalles.filter(
@@ -1381,13 +1381,11 @@ export default {
         },
         calcularTotal(detalles) {
              const checkValue = (mount)=>{
-                console.log(mount)
                 return (mount.includes("Bs")) ? this.formatToNumber(mount) : +mount;
             }
             let suma = 0;
             detalles.map((a) => (a.cantidad = Math.floor(a.cantidad)));
             detalles.map((a) => (suma += checkValue(a.precio) * a.cantidad));
-            console.log(suma , "holi")
             this.total = accounting.formatMoney(+suma, {
                 symbol: "Bs ",
                 thousand: ".",
