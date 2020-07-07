@@ -250,6 +250,7 @@
                                     md="6"
                                     sm="12"
                                     class="pa-5 products-list"
+                                    v-if={pedidoSelect}
                                 >
                                     <div class="font-weight-bold title">
                                         Tus productos
@@ -386,7 +387,7 @@
                         </v-stepper-content>
 
                         <v-stepper-content step="2">
-                            <v-row justify="center">
+                            <v-row justify="center" v-if={pedidoSelect}>
                                 <v-col cols="12" md="6" sm="12">
                                     <div class="font-weight-bold title">
                                         Tus productos
@@ -933,14 +934,13 @@ export default {
         };
     },
     mounted() {
-    /*    if (!this.data.NotVerified) {
+        if (!this.data.NotVerified) {
             this.view = 3;
             this.NotVerified = true;
             this.verifyMessage = notverified;
             this.loading = false;
-        }else{*/
+        }
             this.getPedidosUsuario();
-     //   }
 
      //   console.log(this.user, "user", this.data, "data");
         
