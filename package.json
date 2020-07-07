@@ -16,6 +16,8 @@
         "filepond": "^4.17.1",
         "filepond-plugin-image-preview": "^4.6.4",
         "leaflet": "^1.6.0",
+        "lottie": "0.0.1",
+        "lottie-vuejs": "^0.3.7",
         "moment": "^2.26.0",
         "roboto-fontface": "*",
         "talkjs": "^0.14.2",

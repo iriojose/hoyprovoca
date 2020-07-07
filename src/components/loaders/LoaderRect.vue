@@ -19,6 +19,7 @@
     </v-row>
 </template>
 
+
 <style lang="css" scope>
     .padding{
         padding-top:150px;

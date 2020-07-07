@@ -63,6 +63,7 @@
                             ? 'my-5 mx-2'
                             : 'mx-10 my-5'
                     "
+                    v-if="pedidoSelect"
                 >
                     <v-card-text>
                         <v-row class="align" justify="center">
@@ -84,7 +85,11 @@
                                         <v-list-item-title class="imag">
                                             <p>Imagen</p>
                                         </v-list-item-title>
-                                        <v-list-item-title  v-if="!$vuetify.breakpoint.smAndDown">
+                                        <v-list-item-title
+                                            v-if="
+                                                !$vuetify.breakpoint.smAndDown
+                                            "
+                                        >
                                             <p>Nombre</p>
                                         </v-list-item-title>
                                         <v-list-item-title>
@@ -114,7 +119,12 @@
                                                 ></v-img>
                                             </v-list-item-avatar>
                                         </v-list-item-title>
-                                        <v-list-item-title  v-if="!$vuetify.breakpoint.smAndDown" class="product-text">
+                                        <v-list-item-title
+                                            v-if="
+                                                !$vuetify.breakpoint.smAndDown
+                                            "
+                                            class="product-text"
+                                        >
                                             <p>
                                                 {{ detalle.nombre }}
                                             </p>
@@ -257,7 +267,12 @@
                                             <v-list-item-title class="imag">
                                                 <p>Imagen</p>
                                             </v-list-item-title>
-                                            <v-list-item-title  v-if="!$vuetify.breakpoint.smAndDown">
+                                            <v-list-item-title
+                                                v-if="
+                                                    !$vuetify.breakpoint
+                                                        .smAndDown
+                                                "
+                                            >
                                                 <p>Nombre</p>
                                             </v-list-item-title>
                                             <v-list-item-title>
@@ -288,7 +303,10 @@
                                             </v-list-item-title>
                                             <v-list-item-title
                                                 class="product-text"
-                                                v-if="!$vuetify.breakpoint.smAndDown"
+                                                v-if="
+                                                    !$vuetify.breakpoint
+                                                        .smAndDown
+                                                "
                                             >
                                                 <p>
                                                     {{ detalle.nombre }}
@@ -679,52 +697,62 @@
                 justify="center"
                 class="succes"
             >
-                    <v-card justify="center" >
-                        <v-card-title  >
-                            <p class="succes-title">Felicidades!</p>
-                        </v-card-title>
-                        <v-card-text class="success-img" >
-                            <v-img
-                                contain
-                                :height="
-                                    $vuetify.breakpoint.smAndDown ? 100 : 150
-                                "
-                                :src="require('@/assets/pago terminado.svg')"
-                                class="pb-3"
-                            />
-                        </v-card-text>
-                        <v-card-subtitle class="containersub" >
-                           <p class="success-description">proceso de pago terminado se le notificara por correo electronico si su pago
-                            fue verificado y como sera el proceso de entrega; sera redigido en unos segundos</p>
-                        </v-card-subtitle>
-                    </v-card>
+                <v-card justify="center">
+                    <v-card-title>
+                        <p class="succes-title">Felicidades!</p>
+                    </v-card-title>
+                    <v-card-text class="success-img">
+                        <v-img
+                            contain
+                            :height="$vuetify.breakpoint.smAndDown ? 100 : 150"
+                            :src="require('@/assets/pago terminado.svg')"
+                            class="pb-3"
+                        />
+                    </v-card-text>
+                    <v-card-subtitle class="containersub">
+                        <p class="success-description">
+                            proceso de pago terminado se le notificara por
+                            correo electronico si su pago fue verificado y como
+                            sera el proceso de entrega; sera redigido en unos
+                            segundos
+                        </p>
+                    </v-card-subtitle>
+                </v-card>
             </v-dialog>
         </v-scroll-x-transition>
-          <v-scroll-x-transition>
+        <v-scroll-x-transition>
             <v-dialog
-                v-model="verified"
+                v-model="NotVerified"
                 width="400"
                 justify="center"
                 class="succes"
+                v-show="view == 3"
             >
-                    <v-card justify="center" >
-                        <v-card-title  >
-                            <p class="succes-title">Oops no has verificado tu usuario</p>
-                        </v-card-title>
-                        <v-card-text class="success-img" >
-                            <v-img
-                                contain
-                                :height="
-                                    $vuetify.breakpoint.smAndDown ? 100 : 150
-                                "
-                                :src="require('@/assets/pago terminado.svg')"
-                                class="pb-3"
-                            />
-                        </v-card-text>
-                        <v-card-subtitle class="containersub" >
-                           <p class="success-description">Necesita verificar su correo para poder procesar un pedido</p>
-                        </v-card-subtitle>
-                    </v-card>
+                <v-card justify="center">
+                    <v-card-title>
+                        <p class="succes-title">
+                            Oops!, no has verificado tu correo
+                        </p>
+                    </v-card-title>
+                    <v-card-text class="success-img">
+                        <v-img
+                            contain
+                            :height="$vuetify.breakpoint.smAndDown ? 100 : 150"
+                            :src="require('@/assets/technical-support.svg')"
+                            class="pb-3"
+                        />
+                    </v-card-text>
+                    <v-card-subtitle class="containersub">
+                        <p class="success-description">
+                           {{verifyMessage}}
+                        </p>
+                    </v-card-subtitle>
+                    <v-card-text justify="center" class="containersub">
+                        <v-btn :disabled="block" :loading="loading" color="#0f2441" @click="sendEmail">
+                            <span style="color:white">Verificar</span>
+                        </v-btn></v-card-text
+                    >
+                </v-card>
             </v-dialog>
         </v-scroll-x-transition>
     </v-card>
@@ -747,7 +775,7 @@ import FilePondPluginImagePreview from "filepond-plugin-image-preview/dist/filep
 import router from "@/router";
 import "filepond/dist/filepond.min.css";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css";
-
+import Auth from "@/services/Auth"
 const FilePond = vueFilePond(FilePondPluginImagePreview);
 //for stock notifier
 const avaible = {
@@ -769,6 +797,11 @@ const pagoExitoso = "su pago ha sido registtrado exitosamente!";
 const pagoInsuficiente = "el monto ingresado es insuficiente";
 //const pagoFinalizado = "el proceso de pago ha finalizado exitosamente!";
 
+// verify email 
+const notverified = "Necesita verificar su correo para poder procesar un pedido";
+const verifying = "verificando";
+const verified = "flicitaciones! su correo ha sido verificado satisfactoriamente";
+const messageSend = "correo enviado, verifique su email para mas instrucciones en cuanto a la verificacion";
 // aqui vienen descripciones de tipos de pago
 const metodosDePago = [
     {
@@ -821,10 +854,12 @@ export default {
             view: 1,
             takeFile: false,
             disponibilidad: 0,
+            verifyMessage:"",
             bloqueo: true,
             alert: false,
             valid: true,
-            verified:false,
+            block:false,
+            NotVerified: false,
             total: "0",
             stepper: 1,
             state: {
@@ -898,7 +933,17 @@ export default {
         };
     },
     mounted() {
-        this.getPedidosUsuario();
+    /*    if (!this.data.NotVerified) {
+            this.view = 3;
+            this.NotVerified = true;
+            this.verifyMessage = notverified;
+            this.loading = false;
+        }else{*/
+            this.getPedidosUsuario();
+     //   }
+
+     //   console.log(this.user, "user", this.data, "data");
+        
     },
     head: {
         title() {
@@ -1002,6 +1047,19 @@ export default {
     },
     methods: {
         ...mapActions(["setPedidos", "deletePedidoStore", "setModalPago"]),
+         sendEmail(){
+                this.loading = true;
+                this.block= true;
+                this.verifyMessage = verifying;
+                Auth().post("/verify",{data:{user:this.user.data.email}}).then((response) => {
+                      this.verifyMessage = messageSend;
+                      this.loading = false;
+                }).catch(e => {
+                    console.log(e);
+                    this.email = false;
+                    this.respuesta2("Error al enviar email",'error');
+                });
+            },
         setInitView() {
             const savedData = localStorage.getItem("state");
             if (savedData) {
@@ -1054,6 +1112,15 @@ export default {
                     }
                 })
             );
+        },
+        formatToNumber(mount){
+            return parseFloat(
+                      mount
+                          .split(" ")[1]
+                          .split(".")
+                          .join("")
+                          .replace(",", ".")
+                  );
         },
         initProcess() {
             this.loading = true;
@@ -1122,6 +1189,7 @@ export default {
                     this.pedidos.filter((a, i) =>
                         this.getEmpresas(a.adm_empresa_id, i)
                     );
+                    //  console.log(this.pedidos)
                 })
                 .catch((e) => {
                     console.log(e);
@@ -1152,7 +1220,7 @@ export default {
                     if (this.pedidos.length - 1 == i) {
                         this.loading = false;
                         this.pedidoSelect = this.pedidos[0];
-                        console.log(this.pedidos)
+                        console.log(this.pedidos);
                         this.calcularTotal(this.pedidos[0].detalles);
                         this.pedidos.filter((a) =>
                             a.detalles.filter(
@@ -1291,8 +1359,10 @@ export default {
                             this.pedidos.indexOf(this.pedidoSelect),
                             "indices"
                         );
-                           const indexPedido = this.pedidos.indexOf(this.pedidoSelect);
-                         this.deletePedidoStore(indexPedido);
+                        const indexPedido = this.pedidos.indexOf(
+                            this.pedidoSelect
+                        );
+                        this.deletePedidoStore(indexPedido);
                     }
                 })
                 .catch((e) => {
@@ -1310,8 +1380,14 @@ export default {
             this.setLocal(model, value);
         },
         calcularTotal(detalles) {
+             const checkValue = (mount)=>{
+                console.log(mount)
+                return (mount.includes("Bs")) ? this.formatToNumber(mount) : +mount;
+            }
             let suma = 0;
-            detalles.filter((a) => (suma += +a.precio * a.cantidad));
+            detalles.map((a) => (a.cantidad = Math.floor(a.cantidad)));
+            detalles.map((a) => (suma += checkValue(a.precio) * a.cantidad));
+            console.log(suma , "holi")
             this.total = accounting.formatMoney(+suma, {
                 symbol: "Bs ",
                 thousand: ".",
@@ -1320,6 +1396,8 @@ export default {
         },
         seleccionarPedido(evt) {
             this.pedidoSelect = evt;
+            console.log(evt);
+            this.messagePendiente = "Pagar";
             this.calcularTotal(evt.detalles);
         },
     },
@@ -1361,27 +1439,25 @@ export default {
     margin-top: 100px;
 }
 
-.succes{
-   
-    &-title{
+.succes {
+    &-title {
         text-align: center;
         width: 100%;
     }
-    &-description{
+    &-description {
         width: 50%;
     }
 }
-.v-dialog{
-     width: 50%;
+.v-dialog {
+    width: 50%;
 }
-.containersub{
+.containersub {
     display: flex;
     justify-content: center;
     align-items: center;
-    p{
+    p {
         width: 50%;
         text-align: center;
     }
 }
-
 </style>
