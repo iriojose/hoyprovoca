@@ -122,7 +122,6 @@ import accounting from 'accounting';
                 this.updateDetalle(detalle,cantidad,i);
             },
             updateDetalle(detalle,cantidad,index){
-                console.log(detalle);
                 this.data.indexDetalle=index;
                 this.data.indexPedido=this.indexPedido;
                 this.data.cantidad = cantidad;
@@ -130,7 +129,7 @@ import accounting from 'accounting';
                 Pedidos().post(`/${detalle.rest_pedidos_id}/detalles/${detalle.id}`,
                 {data:{cantidad:this.data.cantidad}}).then((response) => {
                     this.updateDetalleStore(this.data);
-                    this.success('detalle Actualizado exitosamente.');
+                    this.success('Detalle Actualizado exitosamente.');
                 }).catch(e => {
                     console.log(e);
                     this.error('Ooops, ocurrio un error.');
