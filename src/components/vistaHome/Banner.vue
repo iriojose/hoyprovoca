@@ -1,75 +1,32 @@
 <template>
-    <!--v-card :height="$vuetify.breakpoint.smAndDown ? 450:500" width="100%" style="margin-top:46px" :class="$vuetify.breakpoint.smAndDown ? 'mx-auto':null">
-        <v-card-text-->
-            <v-img style="margin-top:46px" :class="$vuetify.breakpoint.smAndDown ? 'mx-auto':null" :height="$vuetify.breakpoint.smAndDown ? 450:500" hwidth="100%" :src="require('@/assets/index.jpeg')">
-                <v-row justify="center">
-                    <!--v-col cols="12" md="4" class="hidden-sm-and-down">
-                        <v-img 
-                            class="transition-chica" 
-                            contain 
-                            height="500" 
-                            widht="100%" 
-                            :src="require('@/assets/chica.png')"
-                        ></v-img>
-                    </v-col-->
-                    <v-col cols="12" md="6" sm="10">
-                        <div 
-                            :class="$vuetify.breakpoint.smAndDown ? 'white--text display-1 text-center my-12 mx-5 font-weight-black':'display-1 text-center my-12 mx-5 white--text font-weight-black'">
-                            ¿Pensando en comprarte algo?
-                        </div>
-
-                        <v-text-field 
-                            label="¿Que te provoca?..."
-                            hide-details
-                            solo
-                            v-model="busquedas"
-                            v-on:keyup.enter="push"
-                            color="#fff"
-                            single-line
-                            class="mx-5"
-                        >
-                            <v-btn slot="append" @click="push" color="#0F2441" tile class="text-capitalize white--text">
-                                <v-icon color="#fff" class="mx-2">mdi-magnify</v-icon>
-                            </v-btn>
-                        </v-text-field>
-
-                        <!--div 
-                            :class="$vuetify.breakpoint.smAndDown ? 'headline text-center mt-12 font-weight-black black--text':'headline black--text text-center font-weight-black'">
-                            Mejor hazlo desde aqui...
-                        </div-->
-                    </v-col>
-                    <!--v-col cols="12" md="4" class="hidden-sm-and-down">
-                        <v-img 
-                            class="transition-chico" 
-                            contain 
-                            height="500" 
-                            widht="100%" 
-                            :src="require('@/assets/chico.png')"
-                        ></v-img>
-                    </v-col-->
-
-                    <!--v-col cols="6" sm="6" v-if="$vuetify.breakpoint.smAndDown">
-                        <v-img 
-                            class="transition-chica" 
-                            contain 
-                            height="200"
-                            widht="200" 
-                            :src="require('@/assets/chica.png')"
-                        ></v-img>
-                    </v-col>
-                    <v-col cols="6" sm="6" v-if="$vuetify.breakpoint.smAndDown">
-                        <v-img 
-                            class="transition-chico" 
-                            contain 
-                            height="200" 
-                            widht="200" 
-                            :src="require('@/assets/chico.png')"
-                        ></v-img>
-                    </v-col-->
-                </v-row>
-            </v-img>
-        <!--/v-card-text>
-    </v-card-->
+    <v-img 
+        style="margin-top:46px" 
+        :height="500" width="100%" 
+        :src="require('@/assets/index2.jpg')"
+        v-if="!$vuetify.breakpoint.smAndDown"
+    >
+        <v-row justify="center">
+            <v-col cols="12" md="5">
+                <div class="text-center display-1 my-12 white--text">
+                    Te llevamos el <span class="font-weight-black">Mercado</span> o lo que te <span class="font-weight-black">provoque</span> a la puerta de tu <span class="font-weight-black">casa</span>...
+                </div>
+            </v-col>
+        </v-row>
+    </v-img>
+    <v-img 
+        style="margin-top:46px" 
+        :height="500" width="100%" 
+        :src="require('@/assets/index_movil.jpg')"
+        v-else
+    >
+        <v-row justify="start">
+            <v-col cols="12" sm="4" offset-sm="4" style="padding-right:150px">
+                <div style="padding-top:46px" class="text-center title my-12 white--text">
+                    Te llevamos el <span class="font-weight-black">Mercado</span> o lo que te <span class="font-weight-black">provoque</span> a la puerta de tu <span class="font-weight-black">casa</span>...
+                </div>
+            </v-col>
+        </v-row>
+    </v-img>
 </template>
 
 <script>

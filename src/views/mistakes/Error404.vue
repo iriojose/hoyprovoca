@@ -3,7 +3,7 @@
         <v-card-text>
             <v-row justify="center" class="mt-12">
                 <v-col cols="12" md="6" sm="6">
-                    <v-img contain :src="require('@/assets/error404.svg')"></v-img>
+                    <v-img contain :src="require('@/assets/404.png')"></v-img>
                 </v-col>
             </v-row>
         </v-card-text>
