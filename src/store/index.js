@@ -96,9 +96,12 @@ export default new Vuex.Store({
         //autenticacion
         SET_LOGGED(state,val){//logea al usuario
             window.localStorage.clear();//se elimina el cache guardado
-            state.user.loggedIn = true;
-            state.user.token = val.token;
-            state.user.data = val.data;
+            let data = {//se hizo asi para que los watch puedan escuchar el cambio de la variable user al iniciar sesion
+                loggedIn:true,
+                token:val.token,
+                data:val.data
+            };
+            state.user = data;
             window.sessionStorage.setItem('token_client',val.token);
         },
         LOGOUT(state){//cierra la sesion
@@ -107,6 +110,8 @@ export default new Vuex.Store({
             state.user.data={};
             state.user.loggedIn=false;
             state.pedidos = [];//se elimina los pedidos en local
+            state.agregados = [];//se elemina los ids de los pedidos guardados
+            state.totalPedidos = [];//se elimina los totales
             window.sessionStorage.clear();//se elimina la data de la sesion
             window.localStorage.clear();//se elimina la data del localstorage
         },

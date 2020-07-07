@@ -29,11 +29,12 @@
 
         <v-text-field
             v-model="busquedas"
-            label="Buscar producto..."
+            label="¿Que te provoca?..."
             hide-details
             dense 
             v-on:keyup.enter="push"
             solo
+            v-if="$route.name !== 'home'"
             class="ml-10 hidden-sm-and-down"
             single-line
             color="#232323"
@@ -77,11 +78,11 @@
         </div>
 
         <v-text-field 
-            v-if="$vuetify.breakpoint.smAndDown"
+            v-if="$vuetify.breakpoint.smAndDown && $route.name !== 'home'"
             class="mx-5 search"
             slot="extension"
             v-model="busquedas"
-            label="Buscar producto..."
+            label="¿Que te provoca?..."
             hide-details
             dense 
             v-on:keyup.enter="push"
@@ -96,14 +97,14 @@
         </v-text-field>
 
         <BarraLateral />
-        <ModalUbicacion />
+        <!--ModalUbicacion /-->
     </v-app-bar>
 </template>
 
 <script>
 import {mapState,mapActions} from 'vuex';
 import BarraLateral from '@/components/navbar/BarraLateral';
-import ModalUbicacion from '@/components/dialogs/ModalUbicacion';
+//import ModalUbicacion from '@/components/dialogs/ModalUbicacion';
 import Perfil from './Perfil';
 import Carrito from './Carrito';
 import MovilOpciones from './MovilOpciones';
@@ -115,7 +116,7 @@ import router from '@/router';
             BarraLateral,
             Carrito,
             Perfil,
-            ModalUbicacion,
+            //ModalUbicacion,
             MovilOpciones,
             Notificaciones
         },

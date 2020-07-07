@@ -146,7 +146,7 @@ import Usuario from '@/services/Usuario';
                     }else if(response.data.data.perfil_id == 3){
                         this.logged(response.data);
                         this.respuesta("Bienvenido.","success");
-                        setTimeout(() => { this.home()},1000);
+                        setTimeout(() => { this.close()},500);
                     }else{
                         this.respuesta("Este usuario no es un cliente.","error");
                     }

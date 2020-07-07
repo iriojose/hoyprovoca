@@ -36,7 +36,7 @@
                     ></v-text-field>
 
                     <v-switch 
-                        v-model="email" class="ma-4" color="green" @input="sendEmail()"
+                        v-model="email" class="ma-4" color="green" @change="sendEmail()"
                         :label="label" :loading="loading2" :readonly="block"
                         v-if="!$vuetify.breakpoint.smAndDown"
                     ></v-switch>
@@ -79,7 +79,7 @@
                     </v-menu>
 
                     <v-switch 
-                        v-model="email" class="ma-4" color="green" @input="sendEmail()"
+                        v-model="email" class="ma-4" color="green" @change="sendEmail()"
                         :label="label" :loading="loading2" :readonly="block"
                         v-if="$vuetify.breakpoint.smAndDown"
                     ></v-switch>

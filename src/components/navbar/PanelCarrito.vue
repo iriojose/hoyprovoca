@@ -41,13 +41,14 @@
             </v-expansion-panel>
         </v-expansion-panels>
         
-        <v-footer absolute width="100%" height="60" color="#fff" class="px-12">
+        <v-footer absolute width="100%" height="60" color="#fff" class="pr-5 pl-5">
             <v-card-actions>
                 <v-btn 
                     rounded color="#232323" @click="modal"
                     class="white--text text-capitalize" 
                     :block="$vuetify.breakpoint.smAndDown ? false:true"
                     :disabled="pedidos.length == 0 ? true:false"
+                    width="100"
                 >
                     Vaciar
                     <v-icon class="mx-2" color="#fff">mdi-delete</v-icon>
@@ -58,6 +59,7 @@
                     class="white--text text-capitalize" 
                     :block="$vuetify.breakpoint.smAndDown ? false:true"
                     :disabled="pedidos.length == 0 ? true:false"
+                    width="100"
                 >
                     Checkout
                     <v-icon class="mx-2" color="#fff">mdi-cash</v-icon>
