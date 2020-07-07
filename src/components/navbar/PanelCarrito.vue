@@ -46,9 +46,8 @@
                 <v-btn 
                     rounded color="#232323" @click="modal"
                     class="white--text text-capitalize" 
-                    :block="$vuetify.breakpoint.smAndDown ? false:true"
-                    :disabled="pedidos.length == 0 ? true:false"
-                    width="100"
+                    block :disabled="pedidos.length == 0 ? true:false"
+                    :width="$vuetify.breakpoint.smAndDown ? 80:100"
                 >
                     Vaciar
                     <v-icon class="mx-2" color="#fff">mdi-delete</v-icon>
@@ -57,9 +56,8 @@
                 <v-btn 
                     rounded color="#232323" @click="push()"
                     class="white--text text-capitalize" 
-                    :block="$vuetify.breakpoint.smAndDown ? false:true"
-                    :disabled="pedidos.length == 0 ? true:false"
-                    width="100"
+                    block :disabled="pedidos.length == 0 ? true:false"
+                    :width="$vuetify.breakpoint.smAndDown ? 80:100"
                 >
                     Checkout
                     <v-icon class="mx-2" color="#fff">mdi-cash</v-icon>
