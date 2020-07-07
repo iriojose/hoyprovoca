@@ -675,7 +675,7 @@
         <v-scroll-x-transition>
             <v-dialog
                 v-model="success"
-                width="800"
+                width="400"
                 justify="center"
                 class="succes"
             >
@@ -696,6 +696,33 @@
                         <v-card-subtitle class="containersub" >
                            <p class="success-description">proceso de pago terminado se le notificara por correo electronico si su pago
                             fue verificado y como sera el proceso de entrega; sera redigido en unos segundos</p>
+                        </v-card-subtitle>
+                    </v-card>
+            </v-dialog>
+        </v-scroll-x-transition>
+          <v-scroll-x-transition>
+            <v-dialog
+                v-model="verified"
+                width="400"
+                justify="center"
+                class="succes"
+            >
+                    <v-card justify="center" >
+                        <v-card-title  >
+                            <p class="succes-title">Oops no has verificado tu usuario</p>
+                        </v-card-title>
+                        <v-card-text class="success-img" >
+                            <v-img
+                                contain
+                                :height="
+                                    $vuetify.breakpoint.smAndDown ? 100 : 150
+                                "
+                                :src="require('@/assets/pago terminado.svg')"
+                                class="pb-3"
+                            />
+                        </v-card-text>
+                        <v-card-subtitle class="containersub" >
+                           <p class="success-description">Necesita verificar su correo para poder procesar un pedido</p>
                         </v-card-subtitle>
                     </v-card>
             </v-dialog>
@@ -797,6 +824,7 @@ export default {
             bloqueo: true,
             alert: false,
             valid: true,
+            verified:false,
             total: "0",
             stepper: 1,
             state: {
