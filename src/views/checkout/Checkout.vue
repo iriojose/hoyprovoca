@@ -1332,12 +1332,7 @@ export default {
 .margen-movil {
     margin-top: 100px;
 }
-.v-progress-circular--indeterminate svg {
-    color:white!important
-}
-.theme--light.v-btn {
-    color:white!important
-}
+
 .succes{
    
     &-title{

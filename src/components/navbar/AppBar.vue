@@ -78,7 +78,7 @@
 
         <v-text-field 
             v-if="$vuetify.breakpoint.smAndDown"
-            class="mx-5"
+            class="mx-5 search"
             slot="extension"
             v-model="busquedas"
             label="Buscar producto..."
@@ -151,8 +151,11 @@ import router from '@/router';
     }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
     .cursor{
         cursor:pointer;
+    }
+    .v-toolbar__content, .v-toolbar__extension{
+        z-index:unset!important;
     }
 </style>
