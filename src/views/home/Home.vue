@@ -3,7 +3,7 @@
         <Banner />
         <v-card elevation="0" color="#f7f7f7" width="100%">
             <v-card-text>
-                <CategoriasSugeridas :grupos="grupos"  />
+                <CategoriasSugeridas :grupos="grupos" v-if="!loadingG"  />
 
                 <v-divider class="mt-12"></v-divider>
 
@@ -24,11 +24,9 @@ import Grupos from "@/services/Grupos";
 import Banner from "@/components/vistaHome/Banner";
 import EmpresasSugeridas from "@/components/vistaHome/EmpresasSugeridas";
 import CategoriasSugeridas from "@/components/vistaHome/CategoriasSugeridas";
-import LoaderCategorias from "@/components/loaders/LoaderCategorias";
 
 export default {
     components: {
-        LoaderCategorias,
         Banner,
         EmpresasSugeridas,
         CategoriasSugeridas,

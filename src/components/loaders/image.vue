@@ -15,7 +15,7 @@
                 :height="$vuetify.breakpoint.smAndDown ? 100:170"
             >
                 <v-row justify="center" align="center" class="fill-height">
-                    <Puntos :color="color"  />
+                    <Puntos  />
                 </v-row>
             </v-card>
             </div>
