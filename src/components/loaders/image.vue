@@ -7,16 +7,24 @@
                     v-show="load"
                     :src="image + imagenViene"
                 />         
-                <Puntos :color="color" v-if="!load" />
+               <v-card 
+                elevation="0"
+                v-if="!load"
+                :color="color" 
+                :width="$vuetify.breakpoint.smAndDown ? 100:200" 
+                :height="$vuetify.breakpoint.smAndDown ? 100:170"
+            >
+                <v-row justify="center" align="center" class="fill-height">
+                    <Puntos  />
+                </v-row>
+            </v-card>
             </div>
-             
 </template>
-
+ 
 <script>
 import variables from "@/services/variables_globales";
 import router from "@/router";
 import Puntos from "./Puntos"
-
 export default {
     props: {
         imagenViene: {

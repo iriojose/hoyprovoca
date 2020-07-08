@@ -14,7 +14,7 @@
                 :key="i"
                 @click="push(grupo)"
             >
-                <loadImage :color="colores[i]" :imagenViene=grupo.imagen />
+                <loadImage :color="colores[i].color" :imagenViene=grupo.imagen />
                 <div class="mt-2 text-center subtitle-2 font-weight-black">
                     {{ grupo.nombre }}
                 </div>

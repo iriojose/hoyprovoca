@@ -26,14 +26,25 @@
         </div>
         <v-scroll-x-transition>
             <v-row justify="center" v-show="view == 1" v-if="loading">
-                <v-progress-circular
-                    indeterminate
-                    size="100"
-                    class="margen-movil"
-                    color="#0f2441"
-                    :width="4"
+                <v-card
+                    :class="
+                        $vuetify.breakpoint.smAndDown
+                            ? 'my-5 mx-2 center-progress'
+                            : 'mx-10 my-5 center-progress'
+                    "
+                    justify="center"
                 >
-                </v-progress-circular>
+                    <v-card-text>
+                        <v-progress-circular
+                            indeterminate
+                            size="100"
+                            class="load"
+                            color="#0f2441"
+                            :width="4"
+                        >
+                        </v-progress-circular>
+                    </v-card-text>
+                </v-card>
             </v-row>
             <div v-else v-show="view == 1">
                 <v-slide-group
@@ -162,6 +173,10 @@
                                             Empresa
                                         </div>
                                         <div
+                                            v-if="
+                                                pedidoSelect.empresa
+                                                    .nombre_comercial
+                                            "
                                             class="font-weight-bold subtitle-1"
                                         >
                                             {{
@@ -250,7 +265,7 @@
                                     md="6"
                                     sm="12"
                                     class="pa-5 products-list"
-                                    v-if={pedidoSelect}
+                                    v-if="{ pedidoSelect }"
                                 >
                                     <div class="font-weight-bold title">
                                         Tus productos
@@ -333,7 +348,8 @@
                                                     :loading="loading"
                                                     :disabled="loading"
                                                     small
-                                                    :color="stockNotifier.color"
+                                                    v-if="detalle"
+                                                    :color="productsAvaible[i]"
                                                     @click="loader = 'loading'"
                                                 >
                                                     {{ detalle.stock }}
@@ -343,30 +359,36 @@
                                     </v-list>
                                 </v-col>
                                 <v-col cols="10" md="4" sm="12">
-                                    <div class="font-weight-bold title">
-                                        Subtotal a pagar
-                                    </div>
-                                    <div class="font-weight-bold subtitle-1">
-                                        {{ total }}
-                                    </div>
-                                    <v-col
-                                        cols="12"
-                                        md="8"
-                                        sm="12"
-                                        class="font-weight-bold subtitle-3"
-                                    >
-                                        <v-subheader v-if="stock == null"
-                                            ><span
-                                                :style="
-                                                    'color:' +
-                                                        stockNotifier.color
-                                                "
-                                                >{{
-                                                    stockNotifier.message
-                                                }}</span
-                                            ></v-subheader
+                                    <v-card class="no-shadow">
+                                        <v-card-title
+                                            class="font-weight-bold title"
                                         >
-                                    </v-col>
+                                            Subtotal a pagar
+                                        </v-card-title>
+                                        <v-card-title
+                                            class="font-weight-bold subtitle-1"
+                                        >
+                                            {{ total }}
+                                        </v-card-title>
+                                        <v-card-text
+                                            cols="12"
+                                            md="8"
+                                            sm="12"
+                                            class="font-weight-bold subtitle-3"
+                                        >
+                                            <v-subheader v-if="stock == null"
+                                                ><span
+                                                    :style="
+                                                        'color:' +
+                                                            stockNotifier.color
+                                                    "
+                                                    >{{
+                                                        stockNotifier.message
+                                                    }}</span
+                                                ></v-subheader
+                                            >
+                                        </v-card-text>
+                                    </v-card>
                                 </v-col>
                             </v-row>
 
@@ -381,13 +403,13 @@
                                 <span style="color:white">Continue</span>
                             </v-btn>
 
-                            <v-btn text @click="changeView('view', 1)"
+                            <v-btn text @click="changeView('view', 1);"
                                 >Cancel</v-btn
                             >
                         </v-stepper-content>
 
                         <v-stepper-content step="2">
-                            <v-row justify="center" v-if={pedidoSelect}>
+                            <v-row justify="center" v-if="{ pedidoSelect }">
                                 <v-col cols="12" md="6" sm="12">
                                     <div class="font-weight-bold title">
                                         Tus productos
@@ -745,11 +767,16 @@
                     </v-card-text>
                     <v-card-subtitle class="containersub">
                         <p class="success-description">
-                           {{verifyMessage}}
+                            {{ verifyMessage }}
                         </p>
                     </v-card-subtitle>
                     <v-card-text justify="center" class="containersub">
-                        <v-btn :disabled="block" :loading="loading" color="#0f2441" @click="sendEmail">
+                        <v-btn
+                            :disabled="block"
+                            :loading="loading"
+                            color="#0f2441"
+                            @click="sendEmail"
+                        >
                             <span style="color:white">Verificar</span>
                         </v-btn></v-card-text
                     >
@@ -776,7 +803,7 @@ import FilePondPluginImagePreview from "filepond-plugin-image-preview/dist/filep
 import router from "@/router";
 import "filepond/dist/filepond.min.css";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css";
-import Auth from "@/services/Auth"
+import Auth from "@/services/Auth";
 const FilePond = vueFilePond(FilePondPluginImagePreview);
 //for stock notifier
 const avaible = {
@@ -784,6 +811,11 @@ const avaible = {
     color: "green",
 };
 const isOut = {
+    message:
+        "Lo sentimos, se acabo la existencia de susproductos se ha agotado",
+    color: "red",
+};
+const notComplete = {
     message:
         "Lo sentimos, se acabo la existencia de algunos de sus Productos, Desea continuar con los disponibles?",
     color: "red",
@@ -798,11 +830,14 @@ const pagoExitoso = "su pago ha sido registtrado exitosamente!";
 const pagoInsuficiente = "el monto ingresado es insuficiente";
 //const pagoFinalizado = "el proceso de pago ha finalizado exitosamente!";
 
-// verify email 
-const notverified = "Necesita verificar su correo para poder procesar un pedido";
+// verify email
+const notverified =
+    "Necesita verificar su correo para poder procesar un pedido";
 const verifying = "verificando";
-const verified = "flicitaciones! su correo ha sido verificado satisfactoriamente";
-const messageSend = "correo enviado, verifique su email para mas instrucciones en cuanto a la verificacion";
+const verified =
+    "flicitaciones! su correo ha sido verificado satisfactoriamente";
+const messageSend =
+    "correo enviado, verifique su email para mas instrucciones en cuanto a la verificacion";
 // aqui vienen descripciones de tipos de pago
 const metodosDePago = [
     {
@@ -855,11 +890,12 @@ export default {
             view: 1,
             takeFile: false,
             disponibilidad: 0,
-            verifyMessage:"",
+            verifyMessage: "",
             bloqueo: true,
             alert: false,
             valid: true,
-            block:false,
+            productsAvaible: ["green"],
+            block: false,
             NotVerified: false,
             total: "0",
             stepper: 1,
@@ -883,7 +919,19 @@ export default {
             stockNotifier: checking,
             alertNotifier: maxPago,
             diferentes: false,
-            pedidoSelect: {},
+            pedidoSelect: {
+                id: 1,
+                rest_pedidos_id: 1,
+                adm_conceptos_id: 2,
+                cantidad: "1",
+                empresa: { nombre_comercial: "" },
+                nombre: "0",
+                precio: "0",
+                imagen: "default.png",
+                rest_estatus_id: 1,
+                stock: 3,
+                estado: "0",
+            },
             messagePendiente: "Pagar",
             success: false,
             restante: 0,
@@ -908,6 +956,7 @@ export default {
                             rest_pedidos_id: 1,
                             adm_conceptos_id: 2,
                             cantidad: "1",
+                            empresa: { nombre_comercial: "" },
                             nombre: "0",
                             precio: "0",
                             imagen: "default.png",
@@ -934,17 +983,15 @@ export default {
         };
     },
     mounted() {
-        console.log(this.user)
         if (!this.user.data.verificado) {
             this.view = 3;
             this.NotVerified = true;
             this.verifyMessage = notverified;
             this.loading = false;
         }
-            this.getPedidosUsuario();
+        this.getPedidosUsuario();
 
-     //   console.log(this.user, "user", this.data, "data");
-        
+        //   console.log(this.user, "user", this.data, "data");
     },
     head: {
         title() {
@@ -1000,6 +1047,8 @@ export default {
                     this.setLocal("data", this.data);
                     this.checkExistence();
                 }
+            }else if (this.view==1){
+                this.calcularTotal(this.pedidoSelect.detalles);
             }
         },
         pago(value) {
@@ -1048,19 +1097,22 @@ export default {
     },
     methods: {
         ...mapActions(["setPedidos", "deletePedidoStore", "setModalPago"]),
-         sendEmail(){
-                this.loading = true;
-                this.block= true;
-                this.verifyMessage = verifying;
-                Auth().post("/verify",{data:{user:this.user.data.email}}).then((response) => {
-                      this.verifyMessage = messageSend;
-                      this.loading = false;
-                }).catch(e => {
+        sendEmail() {
+            this.loading = true;
+            this.block = true;
+            this.verifyMessage = verifying;
+            Auth()
+                .post("/verify", { data: { user: this.user.data.email } })
+                .then((response) => {
+                    this.verifyMessage = messageSend;
+                    this.loading = false;
+                })
+                .catch((e) => {
                     console.log(e);
                     this.email = false;
-                    this.respuesta2("Error al enviar email",'error');
+                    this.respuesta2("Error al enviar email", "error");
                 });
-            },
+        },
         setInitView() {
             const savedData = localStorage.getItem("state");
             if (savedData) {
@@ -1096,13 +1148,15 @@ export default {
         getCheck() {
             return Promise.all(
                 //devuelve las promesas que se realizan al solicitar la existencia de cada producto
-                this.pedidoSelect.detalles.map(async (product) => {
+                this.pedidoSelect.detalles.map(async (product, i) => {
                     const stock = await this.getExistencia(
                         product.adm_conceptos_id
                     );
                     product.stock = stock;
                     if (stock > 0) {
-                        this.disponibilidad += 1;
+                        this.disponibilidad += product.cantidad > stock ? 1 : 0;
+                        this.productsAvaible[i] =
+                            product.cantidad > stock ? "green" : "red";
                         //checkea si la cantidad solicitada esta disponible en su totalidad
                         //si lo esta mantiene la cantidad solicitada
                         //si no modifica la cantidad solicitada con la disponible en stock
@@ -1114,14 +1168,14 @@ export default {
                 })
             );
         },
-        formatToNumber(mount){
+        formatToNumber(mount) {
             return parseFloat(
-                      mount
-                          .split(" ")[1]
-                          .split(".")
-                          .join("")
-                          .replace(",", ".")
-                  );
+                mount
+                    .split(" ")[1]
+                    .split(".")
+                    .join("")
+                    .replace(",", ".")
+            );
         },
         initProcess() {
             this.loading = true;
@@ -1129,11 +1183,14 @@ export default {
         async checkExistence() {
             this.loading = true;
             this.bloqueo = true;
+            this.producsAvaible = new Array(this.pedidoSelect);
+            this.productsAvaible.fill("green");
             this.disponibilidad = 0;
             this.stockNotifier = checking;
             //empieza a cargar las existencias una vez temina la funcion  se modifica el total si faltan productos a la existencia
             this.getCheck().then((checked) => {
                 this.loading = false;
+                this.productsAvaible.reverse();
                 if (this.disponibilidad === this.pedidoSelect.detalles.length) {
                     this.stockNotifier = avaible;
                     this.bloqueo = false;
@@ -1142,14 +1199,22 @@ export default {
                     this.disponibilidad < this.pedidoSelect.detalles.length
                 ) {
                     //en este caso no todos los productos estan disponibles asi que se procede a modificar el total con los disponibles
-                    this.stockNotifier = avaible;
-                    this.total = accounting.formatMoney(
-                        +(checked.reduce(
-                            (acumulator, current) =>
-                                acumulator + +current.precio
-                        ),
-                        { symbol: "Bs ", thousand: ".", decimal: "," })
-                    );
+                    this.stockNotifier = notComplete;
+                    let suma = 0;
+                    this.total = 0;
+                    this.pedidoSelect.detalles.map((a) => {
+                        suma +=
+                            a.cantidad < a.stock
+                                ? this.checkValue(a.precio) * a.cantidad
+                                : this.checkValue(a.precio) * a.stock;
+                        console.log(suma, a);
+                    });
+                    console.log(this);
+                    this.total = accounting.formatMoney(suma, {
+                        symbol: "Bs ",
+                        thousand: ".",
+                        decimal: ",",
+                    });
                     this.bloqueo = false;
                 } else {
                     this.stockNotifier = isOut;
@@ -1379,13 +1444,15 @@ export default {
             this[model] = value;
             this.setLocal(model, value);
         },
+        checkValue(mount) {
+            return mount.includes("Bs") ? this.formatToNumber(mount) : +mount;
+        },
         calcularTotal(detalles) {
-             const checkValue = (mount)=>{
-                return (mount.includes("Bs")) ? this.formatToNumber(mount) : +mount;
-            }
             let suma = 0;
             detalles.map((a) => (a.cantidad = Math.floor(a.cantidad)));
-            detalles.map((a) => (suma += checkValue(a.precio) * a.cantidad));
+            detalles.map(
+                (a) => (suma += this.checkValue(a.precio) * a.cantidad)
+            );
             this.total = accounting.formatMoney(+suma, {
                 symbol: "Bs ",
                 thousand: ".",
@@ -1415,11 +1482,30 @@ export default {
 }
 .center {
     margin-top: 10vh;
+
+    &-progress {
+        width: 400px !important;
+        height: 50vh;
+        .v-card__text{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width:100%;
+            height: 100%;
+            margin: 0;
+        }
+    }
+}
+.load {
+    margin: 0;
 }
 .file {
     &:hover {
         opacity: 0.8;
     }
+}
+.no-shadow {
+    box-shadow: none !important;
 }
 .products {
     &-row {
