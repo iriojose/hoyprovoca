@@ -1,6 +1,6 @@
 <template>
     <v-card class="fixHeight"  style="background:transparent;border: none;padding:25px;" outlined>
-        <div class="font-weight-black title" style="padding-top:10px;text-align:center;">Centro de Soporte al Cliente</div>
+        <div class="font-weight-black title" style="padding-top:10px;text-align:center;">Atención al cliente</div>
         <v-row justify="center" align="center" class="mt-3" style="padding-top:15px;">
             <div id="talkjs-container" style="width: 100%;; height: 450px"><i><v-spacer></v-spacer><loader style="padding-top:20%" /> <v-spacer></v-spacer></i></div>
         </v-row>
@@ -20,7 +20,7 @@ export default {
             return {
                 inner: "Hoyprovoca",
                 separator:'|',
-                complement:'Soporte'
+                complement:'Atención al cliente'
             };
         }
     },

@@ -34,7 +34,6 @@
             dense 
             v-on:keyup.enter="push"
             solo
-            v-if="$route.name !== 'home'"
             class="ml-10 hidden-sm-and-down"
             single-line
             color="#232323"
@@ -78,7 +77,7 @@
         </div>
 
         <v-text-field 
-            v-if="$vuetify.breakpoint.smAndDown && $route.name !== 'home'"
+            v-if="$vuetify.breakpoint.smAndDown"
             class="mx-5 search"
             slot="extension"
             v-model="busquedas"

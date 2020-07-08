@@ -77,11 +77,12 @@ import CambiarImagen from '@/components/dialogs/CambiarImagen';
         data() {
             return {
                 ...variables,
+                
                 items: [
                     {icon:'mdi-cogs', to:'/account/profile',title:'Ajustes de Cuenta'},
                     //{icon:'mdi-history',to:'/account/notificaciones',title:'Centro de Notificaciones'},
                     {icon:'mdi-alert-circle',to:'/account/ordenes',title:'últimas Ordenes'},
-                    {icon: 'mdi-help-circle',to:'/account/ayuda',title:'Centro de Ayuda'},
+                    {icon: 'mdi-help-circle',to:'/account/ayuda',title:'Atención al cliente'},
                 ],
                 clicked:true,
                 clickable: false,
