@@ -1025,8 +1025,7 @@ export default {
                     this.setInitView();
                     return;
                 } else {
-                    this.data.emisor =
-                    this.user.data.nombre + " " + this.user.data.apellido;
+                    this.data.emisor = this.user.data.nombre + " " + this.user.data.apellido;
                     this.data.adm_clientes_id = this.user.cliente.id;
                     this.data.monto = this.total;
                     this.data.adm_tipo_pago_id = this.pago.id;
