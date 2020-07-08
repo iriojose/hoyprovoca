@@ -736,8 +736,8 @@
                         <p class="success-description">
                             proceso de pago terminado se le notificara por
                             correo electronico si su pago fue verificado y como
-                            sera el proceso de entrega; sera redigido en unos
-                            segundos
+                            sera el proceso de entrega; <strong> sera redigido en unos
+                            segundos</strong>
                         </p>
                     </v-card-subtitle>
                 </v-card>
@@ -791,11 +791,10 @@ import variables from "@/services/variables_globales";
 //import Pagos from '@/services/Pagos';
 import Pedidos from "@/services/Pedidos";
 import accounting from "accounting";
-import Usuario from "@/services/Usuario";
+import Clientes from "@/services/Clientes";
 import Empresa from "@/services/Empresa";
 import Pagos from "@/services/Pagos";
 import Images from "@/services/Images";
-import Clientes from "@/services/Clientes";
 import Conceptos from "@/services/Conceptos";
 import { mapState, mapActions } from "vuex";
 import validations from "@/validations/validations";
@@ -905,13 +904,13 @@ export default {
                 total: 0,
                 view: 1,
                 stock: null,
-                diferentes: false,
-                restante: 0,
-                pedidoSelect: {},
+                diferentes: null,
+                restante: null,
+                pedidoSelect: null,
                 montos: ["0", "0"],
                 pago: {},
-                pedidos: [],
-                data: {},
+                pedidos: null,
+                data:null,
                 pagoId: {},
             },
             loading: true,
@@ -943,7 +942,7 @@ export default {
             pedidos: [
                 {
                     id: 1,
-                    usuario_id: 7,
+                    adm_clientes_id: 7,
                     rest_mesas_id: 0,
                     rest_estatus_id: 1,
                     estado: "0",
@@ -979,7 +978,7 @@ export default {
                 monto: "",
                 codigo_referencia: "",
                 imagen: "",
-                usuario_id: "",
+                adm_clientes_id: "",
             },
         };
     },
@@ -992,7 +991,7 @@ export default {
         }
         this.getPedidosUsuario();
 
-        //   console.log(this.user, "user", this.data, "data");
+           console.log(this.user);
     },
     head: {
         title() {
@@ -1027,8 +1026,8 @@ export default {
                     return;
                 } else {
                     this.data.emisor =
-                        this.user.data.nombre + " " + this.user.data.apellido;
-                    this.data.usuario_id = this.user.data.id;
+                    this.user.data.nombre + " " + this.user.data.apellido;
+                    this.data.adm_clientes_id = this.user.cliente.id;
                     this.data.monto = this.total;
                      this.data.adm_clientes_id = this.user.cliente.id;
                     this.data.adm_tipo_pago_id = this.pago.id;
@@ -1043,8 +1042,6 @@ export default {
                         .join("")
                         .replace(",", ".")
                 );*/
-                    this.setLocal("pedidoSelect", this.pedidoSelect);
-                    this.setLocal("pedidos", this.pedidos);
                     this.setLocal("total", this.total);
                     this.setLocal("data", this.data);
                     this.checkExistence();
@@ -1131,7 +1128,7 @@ export default {
                     "pagoId",
                     "data",
                 ].forEach((value) => {
-                    this[value] = toLoad[value];
+                  if(toLoad[value]){this[value] =  toLoad[value]};
                 });
                 if (this.view === 2) {
                     this.checkExistence();
@@ -1156,9 +1153,10 @@ export default {
                     );
                     product.stock = stock;
                     if (stock > 0) {
-                        this.disponibilidad += product.cantidad > stock ? 1 : 0;
+                        this.disponibilidad += product.cantidad < stock ? 1 : 0;
                         this.productsAvaible[i] =
-                            product.cantidad > stock ? "green" : "red";
+                            product.cantidad < stock ? "green" : "red";
+                            console.log(this.disponibilidad)
                         //checkea si la cantidad solicitada esta disponible en su totalidad
                         //si lo esta mantiene la cantidad solicitada
                         //si no modifica la cantidad solicitada con la disponible en stock
@@ -1192,7 +1190,6 @@ export default {
             //empieza a cargar las existencias una vez temina la funcion  se modifica el total si faltan productos a la existencia
             this.getCheck().then((checked) => {
                 this.loading = false;
-                this.productsAvaible.reverse();
                 if (this.disponibilidad === this.pedidoSelect.detalles.length) {
                     this.stockNotifier = avaible;
                     this.bloqueo = false;
@@ -1250,9 +1247,8 @@ export default {
         },
         getPedidosUsuario() {
             this.loading = true;
-            console.log(this)
             Clientes()
-                .get(`/${this.user.cliente.id}/pedido`)
+                .get(`/${this.user.cliente.id}/pedidos/?rest_estatus_id=1`)
                 .then((response) => {
                     this.pedidos = response.data.data;
                     this.pedidos.filter((a, i) =>
@@ -1361,6 +1357,8 @@ export default {
                 .then((response) => {
                     this.alert = true;
                     this.alertNotifier = empiezaPago;
+                     this.setLocal("pedidoSelect", this.pedidoSelect);
+                    this.setLocal("pedidos", this.pedidos);
                     this.setModalPago(true);
                     this.pagoId[this.stepper - 3] = response.data.data.id;
                     this.setLocal("pagoId", this.pagoId);

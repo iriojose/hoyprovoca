@@ -2,7 +2,16 @@
     <v-card class="fixHeight"  style="background:transparent;border: none;padding:25px;" outlined>
         <div class="font-weight-black title" style="padding-top:10px;text-align:center;">Atención al cliente</div>
         <v-row justify="center" align="center" class="mt-3" style="padding-top:15px;">
-            <div id="talkjs-container" style="width: 100%;; height: 450px"><i><v-spacer></v-spacer><loader style="padding-top:20%" /> <v-spacer></v-spacer></i></div>
+            <v-scroll-x-transition>
+                <div v-show="!loading" id="talkjs-container" style="width: 100%;; height: 450px"><i><v-spacer></v-spacer><v-spacer></v-spacer></i></div>
+            </v-scroll-x-transition>
+            <v-progress-circular
+                indeterminate
+                color="#0f2441"
+                v-if="loading"
+                width="5"
+                size="100"
+            ></v-progress-circular>
         </v-row>
     </v-card>
 </template>
@@ -72,7 +81,6 @@ export default {
                 conversation.setParticipant(this.other);
                 inbox = window.talkSession.createInbox({selected: conversation});
                 this.loading = false;
-                console.log("listo if");
             }else{
                 window.talkSession = new Talk.Session({
                     appId: process.env.VUE_APP_TALKJS_ID,
@@ -84,11 +92,9 @@ export default {
                     
                 inbox = window.talkSession.createInbox({selected: conversation});
                 this.loading = false;
-                console.log("listo else");
             }
             inbox.mount(document.getElementById("talkjs-container"));
             this.loading = false;
-            console.log("listo por siacaso");
         });
     }
 }

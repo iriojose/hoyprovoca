@@ -65,6 +65,7 @@ import accounting from 'accounting';
                 loading:false,
                 data:{
                     usuario_id:0,
+                    adm_clientes_id:0,
                     adm_empresa_id:0,
                     imagen:'',
                     fecha_at:new Date().toISOString().substr(0,10),
@@ -156,7 +157,7 @@ import accounting from 'accounting';
                 }
             },
             postPedidos(item){
-                this.data.usuario_id = this.user.data.id;
+                this.data.adm_clientes_id = this.user.cliente.id;
                 this.data1[0].adm_conceptos_id = item.id;
                 this.data1[0].precio = item.precio_a;
                 this.data1[0].imagen = item.imagen;

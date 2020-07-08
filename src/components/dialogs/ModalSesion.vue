@@ -78,6 +78,7 @@ import {mapState,mapActions} from 'vuex';
 import validations from '@/validations/validations';
 import Auth from '@/services/Auth';
 import Usuario from '@/services/Usuario';
+import Clientes from '@/services/Clientes';
 
     export default {
         data() {
@@ -144,12 +145,21 @@ import Usuario from '@/services/Usuario';
                         this.setModalBloqueado(true);
                         this.loading = false;
                     }else if(response.data.data.perfil_id == 3){
-                        this.logged(response.data);
-                        this.respuesta("Bienvenido.","success");
-                        setTimeout(() => { this.close()},500);
+                        this.getCliente(response.data);
                     }else{
                         this.respuesta("Este usuario no es un cliente.","error");
                     }
+                }).catch((e) => {
+                    console.log(e);
+                    this.respuesta("Contraseña incorrecta.","error");
+                });
+            },
+            getCliente(data){
+                Clientes().get(`/?usuario_id=${data.data.id}`).then((response) => {
+                    data.cliente = response.data.data[0];
+                    this.logged(data);
+                    this.respuesta("Bienvenido.","success");
+                    setTimeout(() => { this.home()},500);
                 }).catch((e) => {
                     console.log(e);
                     this.respuesta("Contraseña incorrecta.","error");

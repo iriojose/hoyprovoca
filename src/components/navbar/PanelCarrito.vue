@@ -74,7 +74,7 @@ import {mapActions,mapState} from 'vuex';
 import VaciarCarrito from '@/components/dialogs/VaciarCarrito';
 import EncabezadoPedido from './EncabezadoPedido';
 import DetallesPedidos from './DetallesPedidos';
-import Usuario from '@/services/Usuario';
+import Clientes from '@/services/Clientes';
 import router from '@/router';
 
     export default {
@@ -98,7 +98,7 @@ import router from '@/router';
         },
         mounted() {
             if(this.user.loggedIn){
-                this.getPedidosUsuario();
+                this.getPedidosCliente();
             }
         },
         methods: {
@@ -113,8 +113,8 @@ import router from '@/router';
             modal(){
                 this.setModalCarrito(true);
             },
-            getPedidosUsuario(){
-                Usuario().get(`/${this.user.data.id}/pedidos/?rest_estatus_id=1`).then((response) => {
+            getPedidosCliente(){
+                Clientes().get(`/${this.user.cliente.id}/pedidos/?rest_estatus_id=1`).then((response) => {
                     if(response.data.data){
                         this.setPedidos(response.data.data);
                     }
