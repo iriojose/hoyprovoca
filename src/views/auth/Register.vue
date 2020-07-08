@@ -168,6 +168,7 @@ import Usuario from '@/services/Usuario';
 import Clientes from '@/services/Clientes';
 import {mapActions} from 'vuex';
 import variables from "@/services/variables_globales";
+
     export default {
         data() {
             return {
@@ -273,10 +274,13 @@ import variables from "@/services/variables_globales";
                     telefono1:usuario.data.telefono,
                     correo_electronico:usuario.data.email
                 };
+                
                 Clientes().post("/",{data:cliente}).then((response) => {
+                    cliente.id = response.data.insertId;
+                    usuario.cliente = cliente;
                     this.logged(usuario);
                     this.respuesta("Usuario registrado exitosamente.","success");
-                    setTimeout(() => { this.login()},1000);
+                    setTimeout(() => { router.push("/") },1000);
                 }).catch(e => {
                     console.log(e);
                     this.respuesta("Error al registrar, intente mas tarde.","error");

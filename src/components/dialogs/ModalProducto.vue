@@ -71,6 +71,7 @@ import Empresa from '@/services/Empresa';
                 encontradoPedido:0,
                 data:{
                     usuario_id:0,
+                    adm_clientes_id:0,
                     adm_empresa_id:0,
                     imagen:'',
                     fecha_at:new Date().toISOString().substr(0,10),
@@ -158,7 +159,7 @@ import Empresa from '@/services/Empresa';
                 }
             },
             postPedidos(item){
-                this.data.usuario_id = this.user.data.id;
+                this.data.adm_clientes_id = this.user.cliente.id;
                 this.data1[0].adm_conceptos_id = item.id;
                 this.data1[0].precio = item.precio_a;
                 this.data1[0].imagen = item.imagen;
@@ -166,6 +167,7 @@ import Empresa from '@/services/Empresa';
                 Pedidos().post("/",{data: this.data , data1: this.data1 }).then((response) => {
                     this.addPedidos(response.data.data);
                     this.success("Agregado exitosamente.");
+                    this.close();
                 }).catch(e => {
                     console.log(e);
                     this.error("Error al crear pedido.");
@@ -181,6 +183,7 @@ import Empresa from '@/services/Empresa';
                     this.encontradoPedido = 0;
                     this.addDetalle(response.data.data);
                     this.success("Agregado exitosamente.");
+                    this.close();
                 }).catch(e => {
                     console.log(e);
                     this.error("Error al crear detalle de pedido..");

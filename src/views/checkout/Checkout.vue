@@ -764,7 +764,7 @@ import variables from "@/services/variables_globales";
 //import Pagos from '@/services/Pagos';
 import Pedidos from "@/services/Pedidos";
 import accounting from "accounting";
-import Usuario from "@/services/Usuario";
+import Clientes from "@/services/Clientes";
 import Empresa from "@/services/Empresa";
 import Pagos from "@/services/Pagos";
 import Images from "@/services/Images";
@@ -894,7 +894,7 @@ export default {
             pedidos: [
                 {
                     id: 1,
-                    usuario_id: 7,
+                    adm_clientes_id: 7,
                     rest_mesas_id: 0,
                     rest_estatus_id: 1,
                     estado: "0",
@@ -929,7 +929,7 @@ export default {
                 monto: "",
                 codigo_referencia: "",
                 imagen: "",
-                usuario_id: "",
+                adm_clientes_id: "",
             },
         };
     },
@@ -979,8 +979,8 @@ export default {
                     return;
                 } else {
                     this.data.emisor =
-                        this.user.data.nombre + " " + this.user.data.apellido;
-                    this.data.usuario_id = this.user.data.id;
+                    this.user.data.nombre + " " + this.user.data.apellido;
+                    this.data.adm_clientes_id = this.user.cliente.id;
                     this.data.monto = this.total;
                     this.data.adm_tipo_pago_id = this.pago.id;
                     this.data.adm_status_id = 1;
@@ -1183,8 +1183,8 @@ export default {
         },
         getPedidosUsuario() {
             this.loading = true;
-            Usuario()
-                .get(`/${this.user.data.id}/pedidos/?rest_estatus_id=1`)
+            Clientes()
+                .get(`/${this.user.cliente.id}/pedidos/?rest_estatus_id=1`)
                 .then((response) => {
                     this.pedidos = response.data.data;
                     this.pedidos.filter((a, i) =>

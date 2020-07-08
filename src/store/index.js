@@ -8,6 +8,7 @@ export default new Vuex.Store({
         user:{//variabla de sesion
             token:null,
             data:{},
+            cliente:{},
             loggedIn:false
         },
         foto: '',
@@ -99,7 +100,8 @@ export default new Vuex.Store({
             let data = {//se hizo asi para que los watch puedan escuchar el cambio de la variable user al iniciar sesion
                 loggedIn:true,
                 token:val.token,
-                data:val.data
+                data:val.data,
+                cliente:val.cliente
             };
             state.user = data;
             window.sessionStorage.setItem('token_client',val.token);
