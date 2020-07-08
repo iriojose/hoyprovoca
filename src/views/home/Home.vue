@@ -12,7 +12,6 @@
                     :empresas="empresas"
                     v-if="!loadingE"
                 />
-                <LoaderCategorias v-else />
             </v-card-text>
         </v-card>
     </div>

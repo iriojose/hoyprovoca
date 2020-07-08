@@ -795,6 +795,7 @@ import Usuario from "@/services/Usuario";
 import Empresa from "@/services/Empresa";
 import Pagos from "@/services/Pagos";
 import Images from "@/services/Images";
+import Clientes from "@/services/Clientes";
 import Conceptos from "@/services/Conceptos";
 import { mapState, mapActions } from "vuex";
 import validations from "@/validations/validations";
@@ -1029,6 +1030,7 @@ export default {
                         this.user.data.nombre + " " + this.user.data.apellido;
                     this.data.usuario_id = this.user.data.id;
                     this.data.monto = this.total;
+                     this.data.adm_clientes_id = this.user.cliente.id;
                     this.data.adm_tipo_pago_id = this.pago.id;
                     this.data.adm_status_id = 1;
                     this.data.adm_pedidos_id = this.pedidoSelect.id;
@@ -1248,8 +1250,9 @@ export default {
         },
         getPedidosUsuario() {
             this.loading = true;
-            Usuario()
-                .get(`/${this.user.data.id}/pedidos/?rest_estatus_id=1`)
+            console.log(this)
+            Clientes()
+                .get(`/${this.user.cliente.id}/pedido`)
                 .then((response) => {
                     this.pedidos = response.data.data;
                     this.pedidos.filter((a, i) =>
@@ -1354,7 +1357,7 @@ export default {
         },
         postPago(money) {
             Pagos()
-                .post("/", { data: { ...this.data, monto: money } })
+                .post("/", { data: { ...this.data,adm_clientes_id:this.user.cliente.id, monto: money } })
                 .then((response) => {
                     this.alert = true;
                     this.alertNotifier = empiezaPago;
