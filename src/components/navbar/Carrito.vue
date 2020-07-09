@@ -7,10 +7,10 @@
             small @click="change" v-if="user.loggedIn && !$vuetify.breakpoint.smAndDown"
         >
             <v-badge dot overlap color="#D32F2F" v-if="pedidos.length > 0">
-                <v-icon color="#fff">mdi-basket</v-icon>
+                <v-icon color="#000">mdi-basket</v-icon>
             </v-badge>
 
-            <v-icon color="#fff" v-else>mdi-basket</v-icon>
+            <v-icon color="#000" v-else>mdi-basket</v-icon>
         </v-btn>
 
         <PanelCarrito />

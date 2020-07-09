@@ -9,7 +9,7 @@
                     fab class="mx-3" color="transparent"
                     elevation="0" small v-on="on"
                 >
-                    <v-icon color="#fff">
+                    <v-icon color="#000">
                         mdi-bell
                     </v-icon>
                 </v-btn>
