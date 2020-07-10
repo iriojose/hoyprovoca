@@ -260,12 +260,6 @@ import variables from "@/services/variables_globales";
                 this.loading = true;
                 Auth().post("/signup",{data:this.data}).then(async (response) => {
                     this.postCliente(response.data);
-                    await Auth().post("/verify",{data:{user:this.data.email}}).then((response) => {
-                        this.respuesta("Correo de verificación enviado.",'success');
-                    }).catch(e => {
-                        console.log(e);
-                        this.respuesta("Error al enviar correo de verificación.",'error');
-                    });
                 }).catch(e => {
                     console.log(e);
                     this.respuesta("Error al registrar, intente mas tarde.","error");
@@ -290,6 +284,13 @@ import variables from "@/services/variables_globales";
                 }).catch(e => {
                     console.log(e);
                     this.respuesta("Error al registrar, intente mas tarde.","error");
+                });
+
+                Auth().post("/verify",{data:{user:this.data.email}}).then((response) => {
+                    this.respuesta("Correo de verificación enviado.",'success');
+                }).catch(e => {
+                    console.log(e);
+                    this.respuesta("Error al enviar correo de verificación.",'error');
                 });
             },
      
