@@ -260,6 +260,8 @@ import variables from "@/services/variables_globales";
                 this.loading = true;
                 Auth().post("/signup",{data:this.data}).then(async (response) => {
                     this.postCliente(response.data);
+                    this.sendmail(response.data);
+                    this.respuesta("Usuario registrado exitosamente.","success");
                 }).catch(e => {
                     console.log(e);
                     this.respuesta("Error al registrar, intente mas tarde.","error");
@@ -278,21 +280,24 @@ import variables from "@/services/variables_globales";
                 Clientes().post("/",{data:cliente}).then((response) => {
                     cliente.id = response.data.insertId;
                     usuario.cliente = cliente;
-                    this.logged(usuario);
-                    this.respuesta("Usuario registrado exitosamente.","success");
+                    
                 }).catch(e => {
                     console.log(e);
                     this.respuesta("Error al registrar, intente mas tarde.","error");
                 });
 
-                Auth().post("/verify",{data:{user:this.data.email}}).then((response) => {
-                    this.respuesta("Correo de verificación enviado.",'success');
-                    setTimeout(() => { router.push("/") },1500);
+                
+            },
+            sendmail(usuario){
+                Auth().post("/verify",{data: { user: usuario.data.email }}).then((response) => {
+                    this.logged(usuario);
+                    this.respuesta("Correo de verificación enviado.","success");
+                    setTimeout(() => router.push("/"), 1000)
                 }).catch(e => {
                     console.log(e);
                     this.respuesta("Error al enviar correo de verificación.",'error');
                 });
-            },
+            }
      
         },
     }
