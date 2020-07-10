@@ -295,7 +295,9 @@ import variables from "@/services/variables_globales";
                     setTimeout(() => router.push("/"), 1000)
                 }).catch(e => {
                     console.log(e);
-                    this.respuesta("Error al enviar correo de verificación.",'error');
+                    this.logged(usuario);
+                    setTimeout(() => router.push("/account/profile"), 1500)
+                    this.respuesta("Error al enviar correo de verificación. Por favor, verifique manualmente en su perfil.",'error');
                 });
             }
      
