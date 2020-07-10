@@ -280,7 +280,6 @@ import variables from "@/services/variables_globales";
                     usuario.cliente = cliente;
                     this.logged(usuario);
                     this.respuesta("Usuario registrado exitosamente.","success");
-                    setTimeout(() => { router.push("/") },1000);
                 }).catch(e => {
                     console.log(e);
                     this.respuesta("Error al registrar, intente mas tarde.","error");
@@ -288,6 +287,7 @@ import variables from "@/services/variables_globales";
 
                 Auth().post("/verify",{data:{user:this.data.email}}).then((response) => {
                     this.respuesta("Correo de verificación enviado.",'success');
+                    setTimeout(() => { router.push("/") },1500);
                 }).catch(e => {
                     console.log(e);
                     this.respuesta("Error al enviar correo de verificación.",'error');
