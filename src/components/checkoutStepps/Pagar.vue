@@ -67,6 +67,21 @@
     </div>
 </template>
 <script>
+import { mapState, mapActions } from "vuex";
+import Pagos from "@/services/Pagos";
+import Pedidos from "@/services/Pedidos";
+import accounting from "accounting";
+import validations from "@/validations/validations";
+import router from "@/router";
+import Images from "@/services/Images";
+
+//
+const maxPago = "Solo puede escojer dos metodos de Pago";
+const empiezaPago = "ingrese el pago";
+const pagoExedido = "se ha excedido del limite";
+const pagoExitoso = "su pago ha sido registtrado exitosamente!";
+const pagoInsuficiente = "el monto ingresado es insuficiente";
+//
 const metodosDePago = [
     {
         id: 0,
@@ -108,30 +123,69 @@ const metodosDePago = [
     },
 ];
 export default {
-    props: {},
+    props: {
+        data: {
+            type: Object,
+            default: function() {
+                return {};
+            },
+        },
+        stepper: { type: Number, default: 0 },
+        total: {
+            default: 0,
+            type: Number | String,
+        },
+        pagoId: {
+            defulta: function() {
+                return { 0: 0, 1: 0 };
+            }, 
+            type: Object,
+        },
+        pago: {
+            default: function() {
+                return metodosDePago[1];
+            },
+            type: Object,
+        },
+        pedidoSelect:{
+             default: function() {
+                return {};
+            },
+            type: Object,
+        },
+        pedidos:{
+             default: function() {
+                return [];
+            },
+            type: Array,
+        }
+    },
     data() {
         return {
-         montos: ["0", "0"],
-          restante: 0,
-          success: false,
+            ...validations,
+            montos: ["0", "0"],
+            restante: 0,
+            success: false,
             file: {},
-            loading: true,
+            loading: false,
+            takeFile: false,
+            valid: false,
         };
     },
     watch: {},
     computed: {
         ...mapState(["user", "modalPago"]),
-    Imagen: {
-      get() {
-        return this.modalPago;
-      },
-      set(val) {
-        this.setModalPago(true);
-      },
-    },
+        Imagen: {
+            get() {
+                return this.modalPago;
+            },
+            set(val) {
+                this.setModalPago(true);
+            },
+        },
     },
     methods: {
-      ...mapActions(["setPedidos", "deletePedidoStore", "setModalPago"]),
+        ...mapActions(["setPedidos", "deletePedidoStore", "setModalPago"]),
         formatToNumber(mount) {
             return parseFloat(
                 mount
@@ -199,11 +253,15 @@ export default {
                 .then((response) => {
                     this.alert = true;
                     this.alertNotifier = empiezaPago;
-                    this.setLocal("pedidoSelect", this.pedidoSelect);
-                    this.setLocal("pedidos", this.pedidos);
+                    this.$emit("setLocal", "pedidoSelect", this.pedidoSelect);
+                    this.$emit("setLocal", "pedidos", this.pedidos);
                     this.setModalPago(true);
-                    this.pagoId[this.stepper - 3] = response.data.data.id;
-                    this.setLocal("pagoId", this.pagoId);
+                    this.$emit("updateArray", {
+                        name: "pagoId",
+                        x: this.stepper - 3,
+                        content: response.data.data.id,
+                    });
+                    this.$emit("setLocal", "pagoId", this.pagoId);
                 })
                 .catch((e) => {
                     console.log(e);
@@ -216,8 +274,8 @@ export default {
                 })
                 .then((response) => {
                     this.loading = false;
-                    this.success = true;
-                    this.view = 3;
+                    this.$emit("updatedState",{name:"success" ,content: true});
+                      this.$emit("updatedState",{name:"view" ,content: 3});
                     setTimeout(() => {
                         router.push("/");
                     }, [9000]);
@@ -231,6 +289,7 @@ export default {
             this.loading = true;
             formdata.append("image", file);
             abort();
+            console.log(this.pagoId)
             Images()
                 .post(`/main/pagos/${this.pagoId[this.stepper - 3]}`, formdata)
                 .then((response) => {
@@ -293,9 +352,12 @@ export default {
                     console.log(e);
                 });
         },
-           changeView(model, value) {
-            this.$emit('updatedState',{content:value,name:model})
-            this.$emit('setLocal', model, value);
+        changeView(model, value) {
+            this.$emit("updatedState", { content: value, name: model });
+            this.$emit("setLocal", model, value);
+        },
+        initProcess() {
+            this.loading = true;
         },
     },
 };

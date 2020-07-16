@@ -65,7 +65,7 @@
 
                     <v-stepper-items>
                         <v-stepper-content step="1">
-                            <Existencia :total="total" :pedidoSelect="pedidoSelect" @updatedState="updateState" :view="view" @setLocal="setLocal" />
+                            <Existencia :total="total" :pedidoSelect.sync="pedidoSelect" @updatedState="updateState" :view.sync="view" @setLocal="setLocal" />
                         </v-stepper-content>
 
                         <v-stepper-content step="2">
@@ -73,7 +73,7 @@
                         </v-stepper-content>
 
                         <v-stepper-content step="3">
-                          <Pagar />
+                          <Pagar :pedidos.sync="pedidos" :pedidoSelect.sync="pedidoSelect" @updateArray="updateSubStateArray" :stepper="stepper" @updatedState="updateState" @setLocal="setLocal" :pagoId.sync="pagoId" :pago.sync="pago" :total.sync="total" :data="data" />
                         </v-stepper-content>
                     </v-stepper-items>
                 </v-stepper>
@@ -176,10 +176,8 @@ import Pedidos from "@/services/Pedidos";
 import Clientes from "@/services/Clientes";
 import Empresa from "@/services/Empresa";
 import Pagos from "@/services/Pagos";
-import Images from "@/services/Images";
 import Conceptos from "@/services/Conceptos";
 import { mapState, mapActions } from "vuex";
-import validations from "@/validations/validations";
 
 import router from "@/router";
 import "filepond/dist/filepond.min.css";
@@ -196,11 +194,7 @@ const FilePond = vueFilePond(FilePondPluginImagePreview);
 
 
 // for alerts snackbar
-const maxPago = "Solo puede escojer dos metodos de Pago";
-const empiezaPago = "ingrese el pago";
-const pagoExedido = "se ha excedido del limite";
-const pagoExitoso = "su pago ha sido registtrado exitosamente!";
-const pagoInsuficiente = "el monto ingresado es insuficiente";
+
 //const pagoFinalizado = "el proceso de pago ha finalizado exitosamente!";
 const metodosDePago = [
     {
@@ -242,6 +236,11 @@ const metodosDePago = [
         monto: 0,
     },
 ];
+const maxPago = "Solo puede escojer dos metodos de Pago";
+const empiezaPago = "ingrese el pago";
+const pagoExedido = "se ha excedido del limite";
+const pagoExitoso = "su pago ha sido registtrado exitosamente!";
+const pagoInsuficiente = "el monto ingresado es insuficiente";
 // verify email
 const notverified =
     "Necesita verificar su correo para poder procesar un pedido";
@@ -262,17 +261,16 @@ export default {
   },
   data() {
     return {
-      ...validations,
       ...variables,
       view: 1,
-      takeFile: false,
       verifyMessage: "",
       bloqueo: true,
+      loading:true,
       alertNotifier: maxPago,
       alert: false,
-      valid: true,
       block:true,
       NotVerified: false,
+      loading:true,
       total: "0",
       stepper: 1,
       state: {
@@ -335,7 +333,6 @@ export default {
           },],
         },
         ],
-         tiposDePago: metodosDePago,
         data: {
             emisor: "",
             receptor: "Jesus Bellorin",
@@ -347,7 +344,7 @@ export default {
             imagen: "",
             adm_clientes_id: "",
         },
-    };
+  }
   },
   mounted() {
     if (!this.user.data.verificado) {
@@ -452,20 +449,10 @@ export default {
         });
       }
     },
-    /*resetPago() {
-        this.pago = [];
-        this.bloqueo = true;
-        //this.diferentes = !this.diferentes;
-    },
-    calcRestante(id) {
-        this.restante -= this.montos(id);
-    },*/
     formatToNumber (mount) {
       return parseFloat(mount.split(" ")[1].split(".").join("").replace(",", "."));
     },
-    initProcess () {
-      this.loading = true;
-    }, 
+    
     calcularTotal(detalles) {
       let suma = 0;
       detalles.map((a) => (a.cantidad = Math.floor(a.cantidad)));
@@ -499,7 +486,11 @@ export default {
     updateSubState(value) {
       this[value.name][value.x][value.position] = value.content;
       console.log(this);
-    }
+    },
+     updateSubStateArray(value) {
+      this[value.name][value.x] = value.content;
+      console.log(this);
+    },
   }
 };
 </script>

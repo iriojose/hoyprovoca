@@ -100,11 +100,11 @@ const metodosDePago = [
 export default {
   props:{
     pago: {
-      default:{},
+      default:function(){return{}},
       type:Object | Array
     },
     pedidoSelect:{
-      default:{},
+      default:function(){return{}},
       type:Object
     },
     total:{

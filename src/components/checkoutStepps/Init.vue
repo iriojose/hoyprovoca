@@ -182,12 +182,12 @@ export default {
         view: { type: Number, default: 1 },
         pedidos: {
             type: Array,
-            default: [],
+            default:function(){return[]},
         },
         total: { type: Number | String, default: 0 },
         pedidoSelect: {
             type: Object,
-            default: {
+            default:function(){return {
                 id: 1,
                 rest_pedidos_id: 1,
                 adm_conceptos_id: 2,
@@ -199,7 +199,7 @@ export default {
                 rest_estatus_id: 1,
                 stock: 3,
                 estado: "0",
-            },
+            }}
         },
     },
     data() {
@@ -211,7 +211,6 @@ export default {
     },
     mounted() {
         this.getPedidosUsuario();
-        console.log(this);
     },
     computed: {
         ...mapState(["user", "modalPago"]),
@@ -254,7 +253,6 @@ export default {
                     this.pedidos.filter((a, i) =>
                         this.getEmpresas(a.adm_empresa_id, i)
                     );
-                    //  console.log(this.pedidos)
                 })
                 .catch((e) => {
                     console.log(e);
@@ -265,7 +263,6 @@ export default {
                 .get(`/${id}/?fields=nombre_comercial,imagen,id`)
                 .then((response) => {
                     this.$emit("updatedSubState" ,{name:"pedidos",x:i,position:"empresa" ,content: response.data.data});
-                      console.log(this.pedidos.length)
                         this.loading = false;
                         this.$emit("updatedState",{name:"pedidoSelect",content:this.pedidos[0] }) ;
                         this.calcularTotal(this.pedidos[0].detalles);
@@ -299,7 +296,6 @@ export default {
         },
         seleccionarPedido(evt) {
             this.$emit("updatedState",{name:"pedidoSelect",content:evt }) ;
-            console.log(evt);
             this.messagePendiente = "Pagar";
             this.calcularTotal(evt.detalles);
         },
