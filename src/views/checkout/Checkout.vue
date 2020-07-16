@@ -61,307 +61,20 @@
                             color="#0f2441"
                             >Pagar</v-stepper-step
                         >
-                        <!-- <v-divider v-show="diferentes"></v-divider>
-                        <v-stepper-step
-                            v-show="diferentes"
-                            step="4"
-                            color="#0f2441"
-                            >Pagar</v-stepper-step
-                        >-->
                     </v-stepper-header>
 
                     <v-stepper-items>
                         <v-stepper-content step="1">
-                            <checkearExistencia :total="total" :pedidoSelect="pedidoSelect" @updatedState="updateState" :view="view" @setLocal="setLocal" />
+                            <Existencia :total="total" :pedidoSelect="pedidoSelect" @updatedState="updateState" :view="view" @setLocal="setLocal" />
                         </v-stepper-content>
 
                         <v-stepper-content step="2">
-                            <v-row justify="center" v-if="{ pedidoSelect }">
-                                <v-col cols="12" md="6" sm="12">
-                                    <div class="font-weight-bold title">
-                                        Tus productos
-                                    </div>
-                                    <div
-                                        v-if="pedidoSelect.detalles"
-                                        class="font-weight-bold subtitle-1"
-                                    >
-                                        {{ pedidoSelect.detalles.length + " " }}
-                                        item
-                                    </div>
-                                    <div class="font-weight-bold title">
-                                        Subtotal a pagar
-                                    </div>
-                                    <div class="font-weight-bold subtitle-1">
-                                        {{ total }}
-                                    </div>
-                                    <!--    <v-checkbox
-                                        @click="resetPago($event)"
-                                        label="diferentes tipos de pago?"
-                                        color="#0f2441"
-                                        hide-details
-                                    ></v-checkbox>-->
-                                    <!--    <v-select
-                                        :items="tiposDePago"
-                                        dense
-                                        color="#0f2441"
-                                        filled
-                                        item-value="nombre"
-                                        return-object
-                                        item-text="nombre"
-                                        v-if="diferentes"
-                                        multiple
-                                        chips
-                                        persistent-hint
-                                        hint="Metodo De Pago"
-                                        label="Seleccione su metodo de pago"
-                                        single-line
-                                        v-model="pago" 
-                                        class="my-5"
-                                    ></v-select>-->
-                                    <!--aqui abajo se debe colocar un v else ejemplo : v-else -->
-                                    <v-select
-                                        :items="tiposDePago"
-                                        dense
-                                        color="#0f2441"
-                                        filled
-                                        item-value="nombre"
-                                        return-object
-                                        item-text="nombre"
-                                        chips
-                                        persistent-hint
-                                        hint="Metodo De Pago"
-                                        label="Seleccione su metodo de pago"
-                                        single-line
-                                        v-model="pago"
-                                        class="my-5"
-                                    ></v-select>
-                                </v-col>
-                            </v-row>
-                            <v-btn
-                                color="#0f2441"
-                                :disabled="this.bloqueo"
-                                @click="
-                                    changeView('stepper', 3);
-                                    setLocal('pago', pago);
-                                "
-                            >
-                                <span style="color:white">Continue</span>
-                            </v-btn>
-
-                            <v-btn text @click="changeView('stepper', 1)"
-                                >Atras</v-btn
-                            >
+                            <TipoPago :total="total" :pedidoSelect="pedidoSelect" :stepper="stepper" :pago="pago" @updatedState="updateState" @setLocal="setLocal" />
                         </v-stepper-content>
 
                         <v-stepper-content step="3">
-                            <v-row justify="center" v-if="stepper === 3">
-                                <v-col cols="12" md="6" sm="12" class="pa-5">
-                                    <div class="font-weight-bold title">
-                                        Subtotal a pagar
-                                    </div>
-                                    <div class="font-weight-bold subtitle-1">
-                                        {{ total }}
-                                    </div>
-
-                                    <div
-                                        class="text-center font-weight-bold title my-5"
-                                    >
-                                        Datos de la cuenta
-                                    </div>
-                                    <div>Nombre:{{ pago.propietario }}</div>
-                                    <div>{{ pago.identificacion }}</div>
-                                    <div>{{ pago.cuenta }}</div>
-                                    <div>{{ pago.nombre }}</div>
-                                    <div>
-                                        <strong>{{ pago.detalle }}</strong>
-                                    </div>
-
-                                    <v-form v-model="valid" class="my-5">
-                                        <v-text-field
-                                            v-model="data.codigo_referencia"
-                                            filled
-                                            dense
-                                            color="#0f2441"
-                                            hint="Referencia del pago"
-                                            persistent-hint
-                                            rounded
-                                            single-line
-                                            label="Codigo de referencia"
-                                            :rules="[
-                                                required(
-                                                    'Codigo de referencia'
-                                                ),
-                                            ]"
-                                        ></v-text-field>
-                                    </v-form>
-                                </v-col>
-                                <!--  <v-col
-                                    cols="6"
-                                    md="3"
-                                    sm="12"
-                                    class="pa-5"
-                                    v-if="diferentes"
-                                >
-                                    <div class="font-weight-bold title">
-                                        Monto restante:
-                                    </div>
-                                    <div class="font-weight-regular title">
-                                        {{ restante }}
-                                    </div>
-                                    <v-text-field
-                                        v-model="montos[0]"
-                                        filled
-                                        type="number"
-                                        dense
-                                        color="#0f2441"
-                                        hint="Monto del pago"
-                                        persistent-hint
-                                        rounded
-                                        single-line
-                                        label="Monto"
-                                        :rules="[required('Monto')]"
-                                    ></v-text-field>
-                                </v-col>-->
-                                <v-dialog
-                                    v-model="Imagen"
-                                    width="500"
-                                    justify="center"
-                                    persistent
-                                >
-                                    <v-card justify="center">
-                                        <v-card-title>
-                                            Ingrese Foto de Su pago
-                                        </v-card-title>
-                                        <v-card-text>
-                                            <FilePond
-                                                class="file"
-                                                ref="pond"
-                                                v-model="file"
-                                                label-idle="Arrastrar Aqui..."
-                                                labelFileAdded="Archivo Añadido"
-                                                :server="{ process }"
-                                                :onaddfilestart="initProcess"
-                                            />
-                                        </v-card-text>
-                                    </v-card>
-                                </v-dialog>
-                            </v-row>
-
-                            <v-btn
-                                :disabled="
-                                    data.codigo_referencia === '' && loading
-                                "
-                                color="#0f2441"
-                                :loading="loading"
-                                @click="checkPago"
-                            >
-                                <span style="color:white">Enviar</span>
-                            </v-btn>
-
-                            <v-btn text @click="changeView('stepper', 2)"
-                                >Atras</v-btn
-                            >
+                          <Pagar />
                         </v-stepper-content>
-                        <!--aqui viene todo el contenido de la 4ta vista -->
-                        <!--  
-                        <v-stepper-content step="4" v-if="diferentes">
-                            <v-row justify="center">
-                                <v-col cols="6" md="6" sm="12" class="pa-5">
-                                    <div class="font-weight-bold title">
-                                        Subtotal a pagar
-                                    </div>
-                                    <div class="font-weight-bold subtitle-1">
-                                        {{ total }}
-                                    </div>
-
-                                    <div
-                                        class="text-center font-weight-bold title my-5"
-                                    >
-                                        Datos de la cuenta
-                                    </div>
-                                    <div>Nombre:Jesus Bellorin</div>
-                                    <div>cedula:212121212</div>
-                                    <div>cuenta:212121212121212</div>
-                                    <div>banco:zelle</div>
-
-                                    <v-form v-model="valid" class="my-5">
-                                        <v-text-field
-                                            v-model="data.codigo_referencia"
-                                            filled
-                                            dense
-                                            color="#0f2441"
-                                            hint="Referencia del pago"
-                                            persistent-hint
-                                            rounded
-                                            single-line
-                                            label="Codigo de referencia"
-                                            :rules="[
-                                                required(
-                                                    'Codigo de referencia'
-                                                ),
-                                            ]"
-                                        ></v-text-field>
-                                    </v-form>
-                                </v-col>
-                                <v-col cols="6" md="6" sm="12" class="pa-5">
-                                    <div class="font-weight-bold title">
-                                        Monto restante:
-                                    </div>
-                                    <div class="font-weight-regular title">
-                                        {{ restante }}
-                                    </div>
-                                    <v-text-field
-                                        v-model="montos[1]"
-                                        filled
-                                        type="number"
-                                        dense
-                                        color="#0f2441"
-                                        hint="Monto del pago"
-                                        persistent-hint
-                                        rounded
-                                        single-line
-                                        label="Monto"
-                                        :rules="[required('Monto')]"
-                                    ></v-text-field>
-                                </v-col>
-                                <v-dialog
-                                    v-model="takeFile"
-                                    width="500"
-                                    justify="center"
-                                >
-                                    <v-col class="pa-5">
-                                        <v-card justify="center">
-                                            <v-card-title>
-                                                Ingrese Foto de Su pago
-                                            </v-card-title>
-                                            <v-card-text>
-                                                <FilePond
-                                                    class="file"
-                                                    ref="pond"
-                                                    v-model="file2"
-                                                    label-idle="Arrastrar Aqui..."
-                                                    labelFileAdded="Archivo Añadido"
-                                                    :server="{ process }"
-                                                    :onaddfilestart="
-                                                        initProcess
-                                                    "
-                                                />
-                                            </v-card-text>
-                                        </v-card>
-                                    </v-col>
-                                </v-dialog>
-                            </v-row>
-
-                            <v-btn
-                                :disabled="data.codigo_referencia === ''"
-                                color="#0f2441"
-                                @click="checkPago"
-                            >
-                                <span style="color:white">Enviar</span>
-                            </v-btn>
-
-                            <v-btn text @click="resetRestante">Atras</v-btn>
-                        </v-stepper-content>-->
                     </v-stepper-items>
                 </v-stepper>
                 <v-snackbar class="text--pink" v-model="alert">
@@ -456,8 +169,10 @@
 <script>
 import variables from "@/services/variables_globales";
 //import Pagos from '@/services/Pagos';
-import Pedidos from "@/services/Pedidos";
+
 import accounting from "accounting";
+//servicios
+import Pedidos from "@/services/Pedidos";
 import Clientes from "@/services/Clientes";
 import Empresa from "@/services/Empresa";
 import Pagos from "@/services/Pagos";
@@ -465,14 +180,18 @@ import Images from "@/services/Images";
 import Conceptos from "@/services/Conceptos";
 import { mapState, mapActions } from "vuex";
 import validations from "@/validations/validations";
-import vueFilePond from "vue-filepond";
-import FilePondPluginImagePreview from "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.esm.js";
+
 import router from "@/router";
 import "filepond/dist/filepond.min.css";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css";
 import Auth from "@/services/Auth";
+//componentes
+import vueFilePond from "vue-filepond";
+import FilePondPluginImagePreview from "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.esm.js";
 import Init from "@/components/checkoutStepps/Init";
-import checkearExistencia from "@/components/checkoutStepps/checkearExistencia"
+import Existencia from "@/components/checkoutStepps/Existencia";
+import TipoPago from "@/components/checkoutStepps/TipoDePago";
+import Pagar from "@/components/checkoutStepps/Pagar";
 const FilePond = vueFilePond(FilePondPluginImagePreview);
 
 
@@ -483,16 +202,6 @@ const pagoExedido = "se ha excedido del limite";
 const pagoExitoso = "su pago ha sido registtrado exitosamente!";
 const pagoInsuficiente = "el monto ingresado es insuficiente";
 //const pagoFinalizado = "el proceso de pago ha finalizado exitosamente!";
-
-// verify email
-const notverified =
-    "Necesita verificar su correo para poder procesar un pedido";
-const verifying = "verificando";
-const verified =
-    "flicitaciones! su correo ha sido verificado satisfactoriamente";
-const messageSend =
-    "correo enviado, verifique su email para mas instrucciones en cuanto a la verificacion";
-// aqui vienen descripciones de tipos de pago
 const metodosDePago = [
     {
         id: 0,
@@ -533,11 +242,23 @@ const metodosDePago = [
         monto: 0,
     },
 ];
+// verify email
+const notverified =
+    "Necesita verificar su correo para poder procesar un pedido";
+const verifying = "verificando";
+const verified =
+    "flicitaciones! su correo ha sido verificado satisfactoriamente";
+const messageSend =
+    "correo enviado, verifique su email para mas instrucciones en cuanto a la verificacion";
+// aqui vienen descripciones de tipos de pago
+
 export default {
   components: {
-        FilePond,
-        checkearExistencia,
-        Init
+    FilePond,
+    Existencia,
+    TipoPago,
+    Pagar,
+    Init
   },
   data() {
     return {
@@ -547,9 +268,10 @@ export default {
       takeFile: false,
       verifyMessage: "",
       bloqueo: true,
+      alertNotifier: maxPago,
       alert: false,
       valid: true,
-      block: false,
+      block:true,
       NotVerified: false,
       total: "0",
       stepper: 1,
@@ -567,9 +289,7 @@ export default {
         data:null,
         pagoId: {},
       },
-      loading: true,
       file2: {},
-      alertNotifier: maxPago,
       diferentes: false,
       pedidoSelect: {
         id: 1,
@@ -584,7 +304,6 @@ export default {
         stock: 3,
         estado: "0",
       },
-      messagePendiente: "Pagar",
       success: false,
       restante: 0,
       pendiente: false,
@@ -616,8 +335,7 @@ export default {
           },],
         },
         ],
-        file: {},
-        tiposDePago: metodosDePago,
+         tiposDePago: metodosDePago,
         data: {
             emisor: "",
             receptor: "Jesus Bellorin",
@@ -692,49 +410,9 @@ export default {
       this.calcularTotal(this.pedidoSelect.detalles);
     }
   },
-      pago(value) {
-        if (!value) {
-          this.bloqueo = true;
-          return;
-        }
-        if (!this.diferentes && value === []) {
-          this.bloqueo = true;
-          return;
-        }
-        if (!this.diferentes) {
-          this.bloqueo = false;
-          return;
-        }
-        if (value.length === 0) {
-          this.bloqueo = true;
-          return;
-        }
-        if (value.length > 2) {
-          this.alertNotifier = maxPago;
-          this.alert = true;
-        } //cambia este alert por un $toasted de Vue, investigalo
-        if (value.length === 2) {
-          this.bloqueo = false;
-          return;
-        }
-        if (value.length < 2) {
-          this.bloqueo = true;
-          return;
-        }
-        this.pago = this.pago.slice(0, 2);
-        this.bloqueo = false;
-      },
-    },
+},
   computed: {
         ...mapState(["user", "modalPago"]),
-    Imagen: {
-      get() {
-        return this.modalPago;
-      },
-      set(val) {
-        this.setModalPago(true);
-      },
-    },
     },
   methods: {
     ...mapActions(["setPedidos", "deletePedidoStore", "setModalPago"]),
@@ -772,9 +450,6 @@ export default {
         ].forEach((value) => {
           if(toLoad[value]){this[value] =  toLoad[value]};
         });
-        if (this.view === 2) {
-          this.checkExistence();
-        }
       }
     },
     /*resetPago() {
@@ -790,63 +465,7 @@ export default {
     },
     initProcess () {
       this.loading = true;
-    },
-    actualizarEstadoPedido() {
-      Pedidos ().post(`/${this.data.adm_pedidos_id}`, { data: { rest_estatus_id: 2 }, }).then( (response) => { 
-        this.loading = false; 
-        this.success = true;
-        this.view = 3;
-        setTimeout(() => {
-            router.push("/");
-        }, [9000]);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-    },
-      
-    verificarMonto () {
-      const aCubrir = parseFloat( this.total.split(" ")[1].split(".").join("").replace(",", ".") );
-      if (+this.montos[0] + +this.montos[1] > aCubrir) {
-        this.alertNotifier = pagoExedido;
-        this.alert = true;
-        return true;
-      }
-      if ( this.stepper === 4 && +this.montos[0] + +this.montos[1] < aCubrir ) {
-          this.alertNotifier = pagoInsuficiente;
-          this.alert = true;
-          return true;
-        }
-      return false;
-    },
-    checkPago() {
-      if (this.diferentes) {
-        const isNotValidMount = this.verificarMonto();
-      if (isNotValidMount) return;
-      }
-      this.loading = true;
-      this.data.adm_status_id = 2;
-      this.data.adm_tipo_pago_id = this.pago.id;
-      const money = this.diferentes ? this.montos[this.stepper - 3] : parseFloat(this.data.monto.split(" ")[1].split(".").join("").replace(",", "."));
-      this.postPago(money);
-    },
-    resetRestante() {
-      this.restante = this.total;
-      this.stepper = 3;
-    },
-    postPago(money) { Pagos() .post("/", { data: { ...this.data,adm_clientes_id:this.user.cliente.id, monto: money } }) .then((response) => {
-      this.alert = true;
-      this.alertNotifier = empiezaPago;
-      this.setLocal("pedidoSelect", this.pedidoSelect);
-      this.setLocal("pedidos", this.pedidos);
-      this.setModalPago(true);
-      this.pagoId[this.stepper - 3] = response.data.data.id;
-      this.setLocal("pagoId", this.pagoId);
-    })
-    .catch((e) => {
-      console.log(e);
-    });
-    },
+    }, 
     calcularTotal(detalles) {
       let suma = 0;
       detalles.map((a) => (a.cantidad = Math.floor(a.cantidad)));
@@ -859,57 +478,7 @@ export default {
         this.messagePendiente = "Pagar";
         this.calcularTotal(evt.detalles);
     },
-    process(fieldName, file, metadata, load, error, abort) {
-        let formdata = new FormData();
-        this.loading = true;
-        formdata.append("image", file);
-        abort();
-        Images().post(`/main/pagos/${this.pagoId[this.stepper - 3]}`, formdata).then((response) => {
-          load("Imagen añadida");
-          this.loading = false;
-          if (this.diferentes === true) {
-            const PagoObjetivo = this.stepper - 3;
-            const inInt = parseFloat(this.montos[PagoObjetivo]);
-            let parSedRestante = parseFloat(this.restante.split(" ")[1].split(".").join("").replace(",", "."));
-        this.restante = accounting.formatMoney(
-          parSedRestante - inInt,
-          {
-            symbol: "Bs ",
-            thousand: ".",
-            decimal: ",",
-          }
-        );
-        if (this.stepper === 3) {
-          this.setModalPago(false);
-          this.setLocal("monto", this.monto);
-          this.setLocal("restante", this.restante);
-          this.alert = true;
-          this.alertNotifier = pagoExitoso;
-          this.stepper = 4;
-          this.setLocal("stepper", 4);
-          return;
-        }
-        if (this.stepper === 4) {
-          const indexPedido = this.pedidos.indexOf( this.pedidoSelect );
-          this.setModalPago(false);
-          this.actualizarEstadoPedido();
-          localStorage.setItem("state", null);
-          this.deletePedidosStore(indexPedido);
-        }
-        } else {
-          this.actualizarEstadoPedido();
-          this.view = 3;
-          localStorage.setItem( "state" , null );
-          this.setModalPago(false);
-          console.log( this.pedidos, this.pedidos.indexOf(this.pedidoSelect), "indices" );
-          const indexPedido = this.pedidos.indexOf( this.pedidoSelect );
-          this.deletePedidoStore(indexPedido);
-        }
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    },
+   
     setLocal(item, value) {
       this.state[item] = value;
       const savedState = JSON.stringify(this.state);

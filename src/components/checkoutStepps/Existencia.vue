@@ -1,5 +1,5 @@
 <template>
-    <v-col class="12">
+    <div style="width:100%">
         <v-row justify="center">
             <v-col cols="12" md="6" sm="12" class="pa-5 products-list" v-if="{ pedidoSelect }" >
                 <div class="font-weight-bold title">
@@ -69,7 +69,7 @@
             <span style="color:white">Continuar</span>
         </v-btn>
         <v-btn text @click="changeView('view', 1)">Cancelar</v-btn>
-    </v-col>
+    </div>
 </template>
 <script>
 import accounting from "accounting";
@@ -105,6 +105,7 @@ export default {
     data(){ 
         return {
             ...variables,
+            
             productsAvaible: ["green"],
             block: false,
             loading: true,
