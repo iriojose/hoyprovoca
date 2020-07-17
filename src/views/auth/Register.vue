@@ -307,88 +307,100 @@ export default {
   methods: {
     ...mapActions(["logged"]),
 
-            login(){
-                router.push('/login');
-            },
-            respuesta(mensaje,type){
-                this.mensaje = mensaje;
-                this.type = type
-                this.loading = false;
-                this.showMessage = true;
-                setTimeout(() => {this.showMessage = false}, 2000);
-            },
-            changeNumber(){
-                if(this.data.telefono.length == 4){
-                    this.data.telefono+='-';
-                }else if(this.data.telefono.length == 8){
-                    this.data.telefono+='-';
-                }
-            },
-            async getUser(email){
-                this.errors = [];
-                this.success = '';
-                if(email.length <= 0) return this.errors.push('Debe ingresar un email');
-                // eslint-disable-next-line
-                let regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/ 
-                if (!regex.test(email)) return this.errors.push(`Debe ingresar un email válido`);
-                this.loading2 = true;
-                await Usuario().get(`/?email=${email}`).then((response) => {
-                    this.loading2 = false;
-                    if(response.data.data) {
-                        return this.errors.push('Este email ya fue registrado');
-                    }else{
-                        this.success='Email verificado';
-                    }
-                }).catch(e => {
-                    console.log(e);
-                });
-            },
-            postUsuario(){
-                this.loading = true;
-                Auth().post("/signup",{data:this.data}).then(async (response) => {
-                    this.postCliente(response.data);
-                    this.sendmail(response.data);
-                    this.respuesta("Usuario registrado exitosamente.","success");
-                }).catch(e => {
-                    console.log(e);
-                    this.respuesta("Error al registrar, intente mas tarde.","error");
-                });
-            },
-            postCliente(usuario){
-                let cliente = {
-                    nombre:usuario.data.nombre + " " + usuario.data.apellido,
-                    fecha_nac:new Date().toISOString().substr(0,10),
-                    usuario_id:usuario.data.id,
-                    imagen:"default.png",
-                    telefono1:usuario.data.telefono,
-                    correo_electronico:usuario.data.email
-                };
-                
-                Clientes().post("/",{data:cliente}).then((response) => {
-                    cliente.id = response.data.insertId;
-                    usuario.cliente = cliente;
-                    
-                }).catch(e => {
-                    console.log(e);
-                    this.respuesta("Error al registrar, intente mas tarde.","error");
-                });
+    login() {
+      router.push("/login");
+    },
+    respuesta(mensaje, type) {
+      this.mensaje = mensaje;
+      this.type = type;
+      this.loading = false;
+      this.showMessage = true;
+      setTimeout(() => {
+        this.showMessage = false;
+      }, 2000);
+    },
+    changeNumber() {
+      if (this.data.telefono.length == 4) {
+        this.data.telefono += "-";
+      } else if (this.data.telefono.length == 8) {
+        this.data.telefono += "-";
+      }
+    },
+    async getUser(email) {
+      this.errors = [];
+      this.success = "";
+      if (email.length <= 0) return this.errors.push("Debe ingresar un email");
+      // eslint-disable-next-line
+      let regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/;
+      if (!regex.test(email))
+        return this.errors.push(`Debe ingresar un email válido`);
+      this.loading2 = true;
+      await Usuario()
+        .get(`/?email=${email}`)
+        .then(response => {
+          this.loading2 = false;
+          if (response.data.data) {
+            return this.errors.push("Este email ya fue registrado");
+          } else {
+            this.success = "Email verificado";
+          }
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
+    postUsuario() {
+      this.loading = true;
+      Auth()
+        .post("/signup", { data: this.data })
+        .then(async response => {
+          this.postCliente(response.data);
+          this.sendmail(response.data);
+          this.respuesta("Usuario registrado exitosamente.", "success");
+        })
+        .catch(e => {
+          console.log(e);
+          this.respuesta("Error al registrar, intente mas tarde.", "error");
+        });
+    },
+    postCliente(usuario) {
+      let cliente = {
+        nombre: usuario.data.nombre + " " + usuario.data.apellido,
+        fecha_nac: new Date().toISOString().substr(0, 10),
+        usuario_id: usuario.data.id,
+        imagen: "default.png",
+        telefono1: usuario.data.telefono,
+        correo_electronico: usuario.data.email
+      };
 
-                
-            },
-            sendmail(usuario){
-                Auth().post("/verify",{data: { user: usuario.data.email }}).then((response) => {
-                    this.logged(usuario);
-                    this.respuesta("Correo de verificación enviado.","success");
-                    setTimeout(() => router.push("/"), 1000)
-                }).catch(e => {
-                    console.log(e);
-                    this.logged(usuario);
-                    setTimeout(() => router.push("/account/profile"), 1500)
-                    this.respuesta("Error al enviar correo de verificación. Por favor, verifique manualmente en su perfil.",'error');
-                });
-            }
-     
-        },
+      Clientes()
+        .post("/", { data: cliente })
+        .then(response => {
+          cliente.id = response.data.insertId;
+          usuario.cliente = cliente;
+        })
+        .catch(e => {
+          console.log(e);
+          this.respuesta("Error al registrar, intente mas tarde.", "error");
+        });
+    },
+    sendmail(usuario) {
+      Auth()
+        .post("/verify", { data: { user: usuario.data.email } })
+        .then(response => {
+          this.logged(usuario);
+          this.respuesta("Correo de verificación enviado.", "success");
+          setTimeout(() => router.push("/"), 1000);
+        })
+        .catch(e => {
+          console.log(e);
+          this.logged(usuario);
+          setTimeout(() => router.push("/account/profile"), 1500);
+          this.respuesta(
+            "Error al enviar correo de verificación. Por favor, verifique manualmente en su perfil.",
+            "error"
+          );
+        });
     }
   }
 };
