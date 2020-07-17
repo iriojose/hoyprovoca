@@ -1,15 +1,15 @@
 <template>
-  <div style="width:100%">
-    <v-row justify="center" v-if="stepper === 3">
+  <div class="container" style="width:100%" justify="right">
+    <v-row justify="center"  v-if="stepper === 3">
       <v-col cols="12" md="6" sm="12" class="pa-5">
         <div class="font-weight-bold title">Subtotal a pagar</div>
         <div class="font-weight-bold subtitle-1">{{ total }}</div>
 
         <div class="text-center font-weight-bold title my-5">Datos de la cuenta</div>
-        <div>Nombre:{{ pago.propietario }}</div>
-        <div>{{ pago.identificacion }}</div>
-        <div>{{ pago.cuenta }}</div>
-        <div>{{ pago.nombre }}</div>
+        <div><strong>Nombre :</strong>{{ pago.propietario }}</div>
+        <div><strong>C.I :</strong>{{ pago.identificacion }}</div>
+        <div><strong>Detalles :</strong>{{ pago.cuenta }}</div>
+        <div><strong>Metodo :</strong>{{ pago.nombre }}</div>
         <div>
           <strong>{{ pago.detalle }}</strong>
         </div>
@@ -46,7 +46,8 @@
         </v-card>
       </v-dialog>
     </v-row>
-    <v-btn
+    <div class="stepper-buttons">
+      <v-btn 
       :disabled="data.codigo_referencia === '' && loading"
       color="#0f2441"
       :loading="loading"
@@ -56,6 +57,8 @@
     </v-btn>
 
     <v-btn text @click="changeView('stepper', 2)">Atras</v-btn>
+  </div>
+    
   </div>
 </template>
 <script>
@@ -81,29 +84,29 @@ const pagoInsuficiente = "el monto ingresado es insuficiente";
 const metodosDePago = [
   {
     id: 0,
-    nombre: "Pago Movil : Banesco",
+    nombre: "Pago Movil  Banesco",
     propietario: "Jesus Bellorin",
-    identificacion: "C.I: 17654976",
+    identificacion: " 17654976",
     cuenta: "movil : 04127955560",
     detalle: "",
     monto: 0
   },
   {
     id: 1,
-    nombre: "Transferencia Banco Nacional: Banplus",
+    nombre: "Transferencia Banco Nacional Banplus",
     propietario: "Jesus Bellorin",
-    identificacion: "C.I: 17654976",
-    cuenta: "Corriente : 01740112201124312701",
+    identificacion: " 17654976",
+    cuenta: "Corriente 01740112201124312701",
     detalle:
       "Recuerde!, Transferencias de diferentes bancos tardan al menos 1 dia en ser confirmadas",
     monto: 0
   },
   {
     id: 2,
-    nombre: "Transferencia Banco Nacional: Banesco",
+    nombre: "Transferencia Banco Nacional Banesco",
     propietario: "Jesus Bellorin",
-    identificacion: "C.I: 17654976",
-    cuenta: "Ahorro : 01340563895633049696",
+    identificacion: " 17654976",
+    cuenta: "Ahorro 01340563895633049696",
     detalle:
       "Recuerde!, Transferencias de diferentes bancos tardan al menos 1 dia en ser confirmadas",
     monto: 0
@@ -112,8 +115,8 @@ const metodosDePago = [
     id: 3,
     nombre: "Banesco Panama",
     propietario: "Jesus Bellorin",
-    identificacion: "C.I: 17654976",
-    cuenta: "Cuenta: 201800957218",
+    identificacion: " 17654976",
+    cuenta: "Cuentas 201800957218",
     detalle: "",
     monto: 0
   }
@@ -354,4 +357,13 @@ export default {
   }
 };
 </script>
-<style lang="sass"></style>
+<style scoped lang="scss">
+.container{
+  width:100%;
+  display: flex;
+  flex-direction: column;
+ 
+} .stepper-buttons{
+      align-self: flex-end;
+  }
+</style>

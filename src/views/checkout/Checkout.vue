@@ -37,7 +37,7 @@
         <v-stepper v-model="stepper">
           <v-stepper-header>
             <v-stepper-step color="#0f2441" :complete="stepper > 1" step="1">
-              Check Stock
+              Existencia
             </v-stepper-step>
             <v-divider></v-divider>
             <v-stepper-step color="#0f2441" :complete="stepper > 2" step="2">
@@ -297,6 +297,7 @@ export default {
     }
     //  this.getPedidosUsuario();
     console.log(this.user);
+    console.log(this)
   },
   head: {
     title() {

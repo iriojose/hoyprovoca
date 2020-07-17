@@ -266,6 +266,20 @@ export default {
     next() {
       this.$emit("updatedState", { name: "view", content: 2 });
     }
-  }
+  },
+
+  solicitarNombres() {
+    return Promise.all(done, () => {
+      this.pedidoSelect.detalles.map((element, i) => {
+          this.reqNombres(element.adm_conceptos_id);
+      });
+    });
+  },
+  reqNombres(element) {
+    Conceptos().get(`/${element}`, response => {
+      console.log(response);
+    });
+  },
+  solicitarNombres() {}
 };
 </script>

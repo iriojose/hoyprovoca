@@ -1,5 +1,5 @@
 <template>
-  <div style="width:100%">
+  <div  class="container" >
     <v-row justify="center" v-if="pedidoSelect">
       <v-col cols="12" md="6" sm="12">
         <div class="font-weight-bold title">Tus productos</div>
@@ -27,10 +27,12 @@
         ></v-select>
       </v-col>
     </v-row>
+     <div class="stepper-buttons">
     <v-btn color="#0f2441" :disabled="this.bloqueo" @click="changeView('stepper', 3)">
       <span style="color:white">Continue</span>
     </v-btn>
     <v-btn text @click="changeView('stepper', 1)">Atras</v-btn>
+     </div >
   </div>
 </template>
 <script>
@@ -166,4 +168,13 @@ export default {
   }
 };
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.container{
+  width:100%;
+  display: flex;
+  flex-direction: column;
+ 
+} .stepper-buttons{
+      align-self: flex-end;
+  }
+  </style>

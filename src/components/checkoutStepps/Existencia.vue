@@ -1,5 +1,5 @@
 <template>
-    <div style="width:100%">
+    <div  class="container">
         <v-row justify="center">
             <v-col
                 cols="12"
@@ -98,7 +98,7 @@
                 </v-card>
             </v-col>
         </v-row>
-
+         <div class="stepper-buttons">
         <v-btn
             :disabled="this.loading"
             color="#0f2441"
@@ -110,6 +110,7 @@
             <span style="color:white">Continuar</span>
         </v-btn>
         <v-btn text @click="changeView('view', 1)">Cancelar</v-btn>
+    </div>
     </div>
 </template>
 <script>
@@ -271,4 +272,12 @@ export default {
 .no-shadow {
     box-shadow: none !important;
 }
+.container{
+  width:100%;
+  display: flex;
+  flex-direction: column;
+ 
+} .stepper-buttons{
+      align-self: flex-end;
+  }
 </style>
