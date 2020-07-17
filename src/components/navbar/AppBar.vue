@@ -1,5 +1,5 @@
 <template>
-    <v-app-bar color="#0f2441" app class="index"
+    <v-app-bar color="#EBDED1" app class="index"
         :elevation="$vuetify.breakpoint.smAndDown ? 0:null" 
         :elevate-on-scroll="$vuetify.breakpoint.smAndDown ? false:true" 
         :extended="$vuetify.breakpoint.smAndDown && $route.name !== 'home' ? true:false"
@@ -7,11 +7,11 @@
         <v-app-bar-nav-icon 
             v-if="drawer==false"
             @click="change"
-            dark
+            color="#000"
         />
 
-        <v-btn fab v-else  @click="change" icon depressed dark>
-            <v-icon>
+        <v-btn fab v-else  @click="change" icon depressed>
+            <v-icon color="#000">
                 mdi-close
             </v-icon>
         </v-btn>
@@ -23,7 +23,7 @@
                 contain
                 width="200"
                 height="100"
-                src="@/assets/logo 6.png"
+                src="@/assets/logo2.png"
             />
         </v-toolbar-title>
 
@@ -65,7 +65,7 @@
         <MovilOpciones />
             
         <div v-if="!user.loggedIn" class="hidden-sm-and-down">
-            <v-btn text to="/login" class="mx-1 font-weight-bold text-capitalize white--text">
+            <v-btn text to="/login" class="mx-1 black--text font-weight-bold text-capitalize">
                 Iniciar sesión
             </v-btn>
                 

@@ -8,7 +8,7 @@
         >
             <template v-slot:activator="{ on }">
                 <v-btn v-on="on" fab class="mx-3" elevation="0" small color="transparent">
-                    <v-icon color="#fff">
+                    <v-icon color="#000">
                         mdi-account-circle
                     </v-icon>
                 </v-btn>

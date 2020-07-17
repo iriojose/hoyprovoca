@@ -238,12 +238,12 @@ import variables from '@/services/variables_globales';
                 this.loading2 = true;
                 this.showMessage = false;
                 Auth().post("/verify",{data:{user:this.user.data.email}}).then((response) => {
-                    this.respuesta2("correo enviado, verifica su cuenta.",'success');
+                    this.respuesta2("Correo de verificación enviado.",'success');
                     this.block = true;
                 }).catch(e => {
                     console.log(e);
                     this.email = false;
-                    this.respuesta2("Error al enviar email",'error');
+                    this.respuesta2("Error al enviar correo de verificación.",'error');
                 });
             },
 
