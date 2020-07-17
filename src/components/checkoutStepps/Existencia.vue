@@ -5,34 +5,34 @@
                 cols="12"
                 md="6"
                 sm="12"
-                class="pa-5 products-list"
+               :class=" $vuetify.breakpoint.smAndDown ? 'products': 'pa-5 products'"
                 v-if="pedido"
             >
-                <div class="font-weight-bold title">
+                <div class="font-weight-bold title titles">
                     Tus productos
                 </div>
-                <div v-if="pedido.detalles" class="font-weight-bold subtitle-1">
+                <div v-if="pedido.detalles" class="font-weight-bold titles subtitle-1">
                     {{ pedido.detalles.length + " " }} item
                 </div>
 
-                <v-list>
+                <v-list >
                     <v-list-item class="products-row">
                         <v-list-item-title class="imag">
-                            <p>Imagen</p>
+                            <p class="text-center">Imagen</p>
                         </v-list-item-title>
                         <v-list-item-title
                             v-if="!$vuetify.breakpoint.smAndDown"
                         >
-                            <p>Nombre</p>
+                            <p class="text-center">Nombre</p>
                         </v-list-item-title>
                         <v-list-item-title>
-                            <p>Precio</p>
+                            <p class="text-center">Precio</p>
                         </v-list-item-title>
                         <v-list-item-title>
-                            <p>solicitada</p>
+                            <p class="text-center">solicitada</p>
                         </v-list-item-title>
                         <v-list-item-title>
-                            <p>en Stock</p>
+                            <p class="text-center">en Stock</p>
                         </v-list-item-title>
                     </v-list-item>
                     <v-list-item
@@ -40,8 +40,8 @@
                         v-for="(detalle, i) in pedido.detalles"
                         :key="i"
                     >
-                        <v-list-item-title>
-                            <v-list-item-avatar>
+                        <v-list-item-title class="center">
+                            <v-list-item-avatar >
                                 <v-img :src="image + detalle.imagen"></v-img>
                             </v-list-item-avatar>
                         </v-list-item-title>
@@ -49,17 +49,19 @@
                             class="product-text"
                             v-if="!$vuetify.breakpoint.smAndDown"
                         >
-                            <p>{{ detalle.nombre }}</p>
+                            <p class="text-center">{{ detalle.nombre }}</p>
                         </v-list-item-title>
                         <v-list-item-title class="product-text">
+                          <p class="text-center">
                             {{ detalle.precio }}
+                          </p>
                         </v-list-item-title>
                         <v-list-item-title class="product-text">
-                            <p style="padding-left:10px">
+                            <p class="text-center" style="padding-left:10px">
                                 {{ detalle.cantidad }}
                             </p>
                         </v-list-item-title>
-                        <v-list-item-title class="product-text">
+                        <v-list-item-title class="product-text center">
                             <v-btn
                                 class="ma-2 bloked white--text"
                                 :loading="loading"
@@ -277,7 +279,23 @@ export default {
   display: flex;
   flex-direction: column;
  
-} .stepper-buttons{
+}
+.products{
+  padding:0!important
+}
+.titles{
+  padding-top:12px;
+  padding-left:12px;
+}
+ .stepper-buttons{
       align-self: flex-end;
   }
+.text-center{
+  text-align:center;
+}
+.center{
+  display:flex;
+  justify-content: center;
+  align-items: center;
+}
 </style>

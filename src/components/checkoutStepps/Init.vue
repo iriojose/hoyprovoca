@@ -34,9 +34,9 @@
     <v-card :class="$vuetify.breakpoint.smAndDown ? 'my-5 mx-2' : 'mx-10 my-5'" v-if="pedidoSelect">
       <v-card-text>
         <v-row class="align" justify="center">
-          <v-col cols="12" md="6" sm="12" class="pa-5 products-list">
-            <div class="font-weight-bold title">Tus productos</div>
-            <div v-if="pedidoSelect.detalles" class="font-weight-bold subtitle-1">
+          <v-col cols="12" md="6" sm="12" :class=" $vuetify.breakpoint.smAndDown ? 'products': 'pa-5 products'">
+            <div class="font-weight-bold title titles">Tus productos</div>
+            <div v-if="pedidoSelect.detalles" class="font-weight-bold titles subtitle-1">
               {{ pedidoSelect.detalles.length + " " }}
               item
             </div>
@@ -73,7 +73,7 @@
                 </v-list-item-title>
                 <v-list-item-title class="product-text">{{ detalle.precio }}</v-list-item-title>
                 <v-list-item-title class="product-text">
-                  <p style="padding-left:10px">{{ detalle.cantidad }}</p>
+                  <p style="margin:0;text-align:center">{{ detalle.cantidad }}</p>
                 </v-list-item-title>
                 <v-list-item-title class="product-text">
                   <v-chip
@@ -93,7 +93,7 @@
               </v-list-item>
             </v-list>
           </v-col>
-          <v-col cols="6" md="4" sm="12">
+          <v-col cols="10" md="4" sm="12">
             <v-row>
               <v-col cols="12" md="6" sm="12">
                 <div class="font-weight-bold title">Empresa</div>
@@ -283,3 +283,13 @@ export default {
   solicitarNombres() {}
 };
 </script>
+
+<style lang="scss" scoped>
+.products{
+  padding:0!important
+}
+.titles{
+  padding-top:12px;
+  padding-left:12px;
+}
+</style>
