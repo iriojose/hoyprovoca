@@ -24,7 +24,9 @@
         @updatedSubState="updateSubState"
         :total.sync="total"
         :pedidos.sync="pedidos"
+        @updateSubStateArray="updateSubStateArray"
         :pedidoSelect.sync="pedidoSelect"
+        @updateDetallePedido="updateDetallePedido"
         v-show="view == 1"
       />
     </v-scroll-x-transition>
@@ -233,6 +235,7 @@ export default {
         cantidad: "1",
         empresa: { nombre_comercial: "" },
         nombre: "0",
+        detalles:[],
         precio: "0",
         imagen: "default.png",
         rest_estatus_id: 1,
@@ -428,12 +431,22 @@ export default {
     },
     updateSubState(value) {
       this[value.name][value.x][value.position] = value.content;
-      console.log(this);
     },
     updateSubStateArray(value) {
       this[value.name][value.x] = value.content;
-      console.log(this);
-    }
+    },
+    updateDetallePedido(value){
+      this.pedidoSelect.detalles[value.x] = value.content
+    },
+     formatToNumber(mount) {
+      return parseFloat(
+        mount
+          .split(" ")[1]
+          .split(".")
+          .join("")
+          .replace(",", ".")
+      );
+    },
   }
 };
 </script>
