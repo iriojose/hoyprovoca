@@ -1,8 +1,8 @@
 <template>
-    <v-card width="100%" elevation="0" color="#1f3b63" height="1200">
+    <v-card width="100%" elevation="0" color="#1f3b63" height="1000">
         <v-card-text>
             <v-row justify="center" class="py-2">
-                <v-col cols="12" md="9" sm="12" :class="$vuetify.breakpoint.smAndDown ? 'mx-4':null">
+                <v-col cols="12" md="9" sm="12">
                     <v-row justify="center" class="pb-4">
                         <v-img contain width="100" height="50" :src="require('@/assets/logo 6.png')"></v-img>
                     </v-row>
@@ -11,7 +11,7 @@
                             <v-col cols="12" md="6" class="hidden-sm-and-down">
                                 <v-img width="100%" height="500" contain :src="require('@/assets/undrawregistro2.svg')"></v-img>
                             </v-col>
-                            <v-col cols="12" md="6" sm="12" class="pa-12">
+                            <v-col cols="12" md="6" sm="12" class="px-5 py-5">
                                 <div class="headline text-center mb-5">Registrate ahora!</div>
                                 
                                 <v-card elevation="0" height="50" v-if="showMessage">
@@ -24,57 +24,61 @@
                                 
                                 <v-form v-model="valid" @submit.prevent="" class="my-5">
                                     <v-stepper v-model="e1" class="elevation-0" non-linear>
-                                        <v-stepper-header class="elevation-0">
-                                            <v-stepper-step color="#2950c3" step="1" editable>Datos básicos</v-stepper-step>
-                                            <v-divider></v-divider>
-                                            <v-stepper-step color="#2950c3" step="2" editable>Datos privados</v-stepper-step>
-                                        </v-stepper-header>
-
                                         <v-stepper-items>
                                             <v-stepper-content step="1">
-                                                <v-text-field
-                                                    filled single-line
-                                                    label="Nombre" dense
-                                                    rounded hint="Nombre"
-                                                    :rules="[required('Nombre')]"
-                                                    v-model="data.nombre" persistent-hint
-                                                    color="#2950c3" :disabled="loading"
-                                                    append-icon="mdi-account"
-                                                ></v-text-field>
+                                                <v-form v-model="valid2">
+                                                    <v-text-field
+                                                        filled single-line
+                                                        label="Nombre" dense
+                                                        rounded hint="Nombre"
+                                                        :rules="[required('Nombre')]"
+                                                        v-model="data.nombre" persistent-hint
+                                                        color="#2950c3" :disabled="loading"
+                                                        append-icon="mdi-account"
+                                                    ></v-text-field>
 
-                                                <v-text-field
-                                                    filled single-line
-                                                    label="Apellido" dense
-                                                    rounded hint="Apellido"
-                                                    :rules="[required('Apellido')]"
-                                                    v-model="data.apellido" persistent-hint
-                                                    color="#2950c3" :disabled="loading"
-                                                    append-icon="mdi-account"
-                                                ></v-text-field>
+                                                    <v-text-field
+                                                        filled single-line
+                                                        label="Apellido" dense
+                                                        rounded hint="Apellido"
+                                                        :rules="[required('Apellido')]"
+                                                        v-model="data.apellido" persistent-hint
+                                                        color="#2950c3" :disabled="loading"
+                                                        append-icon="mdi-account"
+                                                    ></v-text-field>
 
-                                                <v-text-field
-                                                    filled single-line
-                                                    label="Telefono" dense
-                                                    rounded hint="format: 0000-000-0000"
-                                                    @input="changeNumber()"
-                                                    :rules="[required('Telefono'),minLength('Telefono',13),maxLength('Telefono',13)]"
-                                                    v-model="data.telefono" persistent-hint
-                                                    color="#2950c3" :disabled="loading"
-                                                    append-icon="mdi-cellphone"
-                                                ></v-text-field>
+                                                    <v-text-field
+                                                        filled single-line
+                                                        label="Telefono" dense
+                                                        rounded hint="format: 0000-000-0000"
+                                                        @input="changeNumber()"
+                                                        :rules="[required('Telefono'),minLength('Telefono',13),maxLength('Telefono',13)]"
+                                                        v-model="data.telefono" persistent-hint
+                                                        color="#2950c3" :disabled="loading"
+                                                        append-icon="mdi-cellphone"
+                                                    >
+                                                        <v-select 
+                                                            dense slot="prepend-inner" label="País"
+                                                            color="#2950c3" return-object filled
+                                                            full-width="40" single-line
+                                                            :items="paises" item-text="pais" 
+                                                        ></v-select>
+                                                    </v-text-field>
 
-                                                <v-menu :close-on-content-click="false" transition="scale-transition" max-width="100%" offset-overflow>
-                                                    <template v-slot:activator="{ on }">
-                                                        <v-text-field
-                                                            dense v-model="data.fecha_nac"
-                                                            label="Cumpleaños" color="#2950c3" append-icon="event" 
-                                                            filled v-on="on" rounded hint="Formato YYYY/MM/DD" 
-                                                            persistent-hint single-line
-                                                        ></v-text-field>
-                                                    </template>
-                                                    <v-date-picker v-model="data.fecha_nac" landscape show-current  header-color="#2950c3" color="#2950c3"  locale="es"/>
-                                                </v-menu>
+                                                    <v-menu :close-on-content-click="false" transition="scale-transition" max-width="100%" offset-overflow>
+                                                        <template v-slot:activator="{ on }">
+                                                            <v-text-field
+                                                                dense v-model="data.fecha_nac"
+                                                                label="Cumpleaños" color="#2950c3" append-icon="event" 
+                                                                filled v-on="on" rounded hint="Formato YYYY/MM/DD" 
+                                                                persistent-hint single-line
+                                                            ></v-text-field>
+                                                        </template>
+                                                        <v-date-picker v-model="data.fecha_nac" landscape show-current  header-color="#2950c3" color="#2950c3"  locale="es"/>
+                                                    </v-menu>
+                                                </v-form>
                                             </v-stepper-content>
+
                                             <v-stepper-content step="2">
                                                 <v-text-field
                                                     filled rounded persistent-hint
@@ -137,8 +141,19 @@
                                         :disabled="valid && success !== '' ? false:true"
                                         @click="postUsuario()"
                                         class="text-capitalize caption white--text"
+                                        v-if="e1 == 2"
                                     >
                                         Registrarse
+                                    </v-btn>
+                                    <v-btn
+                                        rounded color="#2950c3" block
+                                        :loading="loading" height="40"
+                                        :disabled="!valid2"
+                                        @click="e1 = 2"
+                                        class="text-capitalize caption white--text"
+                                        v-else
+                                    >
+                                        Siguiente
                                     </v-btn>
                                 </v-form>
 
@@ -178,6 +193,7 @@ import variables from "@/services/variables_globales";
                 mensaje:'',
                 type:'error',
                 nots:false,
+                paises:[],
                 terminos:false,
                 showMessage:false,
                 loading:false,

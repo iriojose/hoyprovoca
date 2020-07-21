@@ -13,16 +13,16 @@
         </v-card-actions>
         <v-card-text>
             <v-row justify="center" class="py-2">
-                <v-col cols="12" md="9" sm="12" :class="$vuetify.breakpoint.smAndDown ? 'mx-4':null">
+                <v-col cols="12" md="8" sm="12">
                     <v-row justify="center" class="pb-4 hidden-sm-and-up">
                         <v-img contain width="100" height="50" :src="require('@/assets/logo 6.png')"></v-img>
                     </v-row>
                     <v-card width="100%" elevation="0">
-                        <v-row justify="center">
+                        <v-row :justify="$vuetify.breakpoint.smAndDown ? null:'center'">
                             <v-col cols="12" md="6" class="hidden-sm-and-down">
                                 <v-img width="100%" height="400" contain :src="require('@/assets/undrawlogin.svg')"></v-img>
                             </v-col>
-                            <v-col cols="12" md="6" sm="12" class="pa-12">
+                            <v-col cols="12" md="6" sm="12" class="px-5 py-12">
                                 <div class="headline text-center mb-5">Inicia sesión ahora!</div>
                                 
                                 <v-card elevation="0" height="50">

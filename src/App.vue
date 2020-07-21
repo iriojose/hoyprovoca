@@ -1,9 +1,16 @@
 <template>
     <v-app style="background-color:#f7f7f7;">
-        <AppBar v-if="ruta() "/>
+
+        <v-card elevation="0" color="#fff" width="100%" height="100%" v-if="loading">
+            <v-row justify="center" class="fill-height" align="center">
+                <v-img width="500" height="500" contain :src="require('@/assets/loader.gif')"></v-img>
+            </v-row>
+        </v-card>
+
+        <AppBar v-if="ruta() && !loading" />
         
-        <transition name="fade">
-            <router-view/>
+        <transition name="fade" v-if="!loading">
+            <router-view />
         </transition> 
 
         <ModalBloqueado /> 
@@ -11,11 +18,15 @@
         <ModalSesion />
         <ModalImagen />
 
-        <Footer v-if="ruta()" class="margen" />
+        <Footer v-if="ruta() && !loading" class="margen" />
     </v-app>
 </template>
 
 <script>
+//services
+import Auth from '@/services/Auth';
+import Clientes from '@/services/Clientes';
+import store from "./store";
 import AppBar from '@/components/navbar/AppBar';
 import ModalBloqueado from '@/components/dialogs/ModalBloqueado';
 import ModalImagen from '@/components/dialogs/ModalImagen';
@@ -33,7 +44,36 @@ import Footer from '@/components/footer/Footer';
             ModalImagen,
             Footer,
         },
+        data(){
+            return {
+                loading:true,
+            }
+        },
+        mounted(){
+            let token = window.sessionStorage.getItem('token_client');
+            if(token) this.sesion(token);
+            else this.loading = false;
+        },
         methods:{
+            sesion(token){
+                Auth().post("/sesion",{token:token}).then((response) => {
+                    if(response.data.response.data.bloqueado == 1){
+                        store.state.bloqueado = true;
+                        this.loading = false;
+                    }else{
+                        store.state.user.data = response.data.response.data;
+                        store.state.user.loggedIn = true;
+                        store.state.user.token = token;
+                        Clientes().get(`/?usuario_id=${store.state.user.data.id}`).then((response) => {
+                            store.state.user.cliente = response.data.data[0];
+                            this.loading = false;
+                        }).catch(e => {this.loading = false;})
+                    }
+                }).catch(e => {
+                    console.log(e);
+                    this.loading = false;
+                });
+            },
             ruta(){
                 if(
                     this.$route.name == 'login' || 
