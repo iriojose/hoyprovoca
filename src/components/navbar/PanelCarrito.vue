@@ -5,7 +5,7 @@
         temporary
         hide-overlay
         v-model="carritos" 
-        :width="$vuetify.breakpoint.smAndDonw ? 400:500"
+        :width="$vuetify.breakpoint.smAndDonw ? 450:500"
         color="#f5f5f5"
         class="index"
     >
@@ -36,7 +36,7 @@
                 </v-expansion-panel-header>
 
                 <v-expansion-panel-content>
-                    <DetallesPedidos :detalles="pedido.detalles" :indexPedido="i" />
+                    <DetallesPedidos :conceptos="pedido.conceptos" :detalles="pedido.detalles" :indexPedido="i" />
                 </v-expansion-panel-content>
             </v-expansion-panel>
         </v-expansion-panels>
@@ -75,6 +75,7 @@ import VaciarCarrito from '@/components/dialogs/VaciarCarrito';
 import EncabezadoPedido from './EncabezadoPedido';
 import DetallesPedidos from './DetallesPedidos';
 import Clientes from '@/services/Clientes';
+import Pedidos from '@/services/Pedidos';
 import router from '@/router';
 
     export default {
@@ -82,6 +83,11 @@ import router from '@/router';
             EncabezadoPedido,
             DetallesPedidos,
             VaciarCarrito
+        },
+        data() {
+            return {
+                aux:null,
+            }
         },
         computed: {
             ...mapState(['pedidos','carrito','user','totalPedidos']),
@@ -116,12 +122,22 @@ import router from '@/router';
             getPedidosCliente(){
                 Clientes().get(`/${this.user.cliente.id}/pedidos/?rest_estatus_id=1`).then((response) => {
                     if(response.data.data){
-                        this.setPedidos(response.data.data);
+                        //this.setPedidos(response.data.data);
+                       this.aux = response.data.data;
+                        response.data.data.filter((a,i) => this.getConceptos(a,i));
                     }
                 }).catch(e => {
                     console.log(e);
                 });
             },
+            getConceptos(data,i){
+                Pedidos().get(`/${data.id}/conceptos`).then((response) => {
+                    this.aux[i].conceptos = response.data.data;
+                    if(i == this.aux.length - 1) this.setPedidos(this.aux);
+                }).catch(e => {
+                    console.log(e);
+                });
+            }
         },
     }
 </script>

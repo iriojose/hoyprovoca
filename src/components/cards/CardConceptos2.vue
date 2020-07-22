@@ -163,6 +163,8 @@ import accounting from 'accounting';
                 this.data1[0].imagen = item.imagen;
 
                 Pedidos().post("/",{data:this.data,data1:this.data1}).then((response) => {
+                    response.data.data.conceptos = [];
+                    response.data.data.conceptos.push(this.concepto);
                     this.addPedidos(response.data.data);
                     this.success("Agregado exitosamente.");
                 }).catch(e => {
@@ -177,6 +179,7 @@ import accounting from 'accounting';
                 let data = this.data1[0];
                 
                 Pedidos().post(`/${this.encontradoPedido}/detalles`,{data:data}).then((response) => {
+                    this.pedidos.filter(a => a.id ==  this.encontradoPedido ?  a.conceptos.push(this.concepto):null);
                     this.encontradoPedido = 0;
                     this.addDetalle(response.data.data);
                     this.success("Agregado exitosamente.");
