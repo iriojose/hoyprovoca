@@ -114,7 +114,7 @@ export default new Vuex.Store({
                 cliente:val.cliente
             };
             state.user = data;
-            window.sessionStorage.setItem('token_client',val.token);
+            window.sessionStorage.setItem('token_client',JSON.stringify(val.token));
         },
         LOGOUT(state){//cierra la sesion
             state.snackbar = false;

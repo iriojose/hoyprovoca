@@ -58,7 +58,7 @@ import Footer from '@/components/footer/Footer';
             ...mapState(['user'])
         },
         mounted(){
-            let token = window.sessionStorage.getItem('token_client');
+            let token = JSON.parse(window.sessionStorage.getItem('token_client'));
             if(token) this.sesion(token);
             else this.loading = false;
 
