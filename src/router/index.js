@@ -4,43 +4,6 @@ import store from '@/store';
 
 import Home from "@/views/home/Home";
 
-//errores
-import Error404 from "@/views/mistakes/Error404";
-import Error403 from "@/views/mistakes/Error403";
-
-//sesiones
-import Login from '@/views/auth/Login';
-import Register from '@/views/auth/Register';
-import Forgot from '@/views/auth/Forgot';
-import Reset from '@/views/auth/Reset';
-import Verify from '@/views/auth/Verify';
-
-//vistas
-import Search from '@/views/search/Search';
-import GrupoDetalle from '@/views/grupos/GrupoDetalle';
-import Grupos from '@/views/grupos/Grupos';
-import AliadoDetalle from '@/views/aliados/AliadoDetalle';
-import AliadoGrupo from '@/views/aliados/AliadoGrupo';
-import Aliados from '@/views/aliados/Aliados';
-import SubgrupoDetalle from '@/views/grupos/SubgrupoDetalle';
-
-//perfil
-import Account from '@/views/account/Account';
-import Profile from '@/views/account/Profile';
-import Ayuda from '@/views/account/Ayuda';
-import Notificaciones from '@/views/account/Notificaciones';
-import Ordenes from '@/views/account/Ordenes';
-
-//checkout
-import Checkout from '@/views/checkout/Checkout';
-
-//terminos y condiciones
-import TerminosCondiciones from '@/views/terminos/TerminosCondiciones';
-import Privacidad from '@/views/terminos/Privacidad';
-import ComoPagar from '@/views/terminos/ComoPagar';
-
-import Pruebas from '@/views/pruebas/Pruebas';
-
 Vue.use(Router);
 
 const router = new Router({
@@ -56,17 +19,9 @@ const router = new Router({
             }
         },
         {
-            path: "/pruebas",
-            name: "pruebas",
-            component: Pruebas,
-            meta:{
-                auth:false
-            }
-        },
-        {
             path: "/login",
             name:"login",
-            component:Login,
+            component:() => import('@/views/auth/Login'),
             meta:{
                 auth:false
             }
@@ -74,7 +29,7 @@ const router = new Router({
         {
             path: "/resetpassword/:email/:token",
             name:"reset",
-            component:Reset,
+            component:() => import('@/views/auth/Reset'),
             meta:{
                 auth:false
             }
@@ -82,7 +37,7 @@ const router = new Router({
         {
             path: "/verify/:email/:token",
             name:"verify",
-            component:Verify,
+            component:() => import('@/views/auth/Verify'),
             meta:{
                 auth:false
             }
@@ -90,7 +45,7 @@ const router = new Router({
         {
             path: "/register",
             name:"register",
-            component:Register,
+            component:() => import('@/views/auth/Register'),
             meta:{
                 auth:false
             }
@@ -98,7 +53,7 @@ const router = new Router({
         {
             path: "/forgot",
             name:"forgot",
-            component:Forgot,
+            component:() => import('@/views/auth/Forgot'),
             meta:{
                 auth:false
             }
@@ -106,7 +61,7 @@ const router = new Router({
         {
             path: "/subgrupo/:text",
             name:"subgrupoDetalle",
-            component:SubgrupoDetalle,
+            component:() => import('@/views/grupos/SubgrupoDetalle'),
             meta:{
                 auth:false
             }
@@ -114,7 +69,7 @@ const router = new Router({
         {
             path: "/grupos",
             name:"grupos",
-            component:Grupos,
+            component:() => import('@/views/grupos/Grupos'),
             meta:{
                 auth:false
             }
@@ -122,7 +77,7 @@ const router = new Router({
         {
             path: "/grupo/:text",
             name:"grupoDetalle",
-            component:GrupoDetalle,
+            component:() => import('@/views/grupos/GrupoDetalle'),
             meta:{
                 auth:false
             }
@@ -130,7 +85,7 @@ const router = new Router({
         {
             path: "/aliados",
             name:"aliados",
-            component:Aliados,
+            component:() => import('@/views/aliados/Aliados'),
             meta:{
                 auth:false
             },
@@ -138,7 +93,7 @@ const router = new Router({
         {
             path: "/aliados/:text",
             name:"aliadoDetalle",
-            component:AliadoDetalle,
+            component:() => import('@/views/aliados/AliadoDetalle'),
             meta:{
                 auth:false
             },
@@ -146,14 +101,14 @@ const router = new Router({
                 {
                     path:':text2',
                     name:"aliadoGrupo",
-                    component:AliadoGrupo
+                    component:() => import('@/views/aliados/AliadoGrupo'),
                 }
             ]
         },
         {
             path:'/search',
             name:'search',
-            component:Search,
+            component:() => import('@/views/search/Search'),
             meta:{
                 auth:false
             },
@@ -161,7 +116,7 @@ const router = new Router({
         {
             path:'/checkout',
             name:'checkout',
-            component:Checkout,
+            component:() => import('@/views/checkout/Checkout'),
             meta:{
                 auth:true
             },
@@ -169,7 +124,7 @@ const router = new Router({
         {
             path:'/account',
             name:'account',
-            component:Account,
+            component:() => import('@/views/account/Account'),
             meta:{
                 auth:true
             },
@@ -178,7 +133,7 @@ const router = new Router({
                 {
                     path: "profile",
                     name: "profile",
-                    component: Profile,
+                    component:() => import('@/views/account/Profile'),
                     meta: {
                         auth: true
                     }
@@ -186,7 +141,7 @@ const router = new Router({
                 {
                     path: "ayuda",
                     name: "ayuda",
-                    component: Ayuda,
+                    component:() => import('@/views/account/Ayuda'),
                     meta: {
                         auth: true
                     }
@@ -194,7 +149,7 @@ const router = new Router({
                 {
                     path: "notificaciones",
                     name: "notificaciones",
-                    component: Notificaciones,
+                    component: () => import('@/views/account/Notificaciones'),
                     meta: {
                         auth: true
                     }
@@ -202,7 +157,7 @@ const router = new Router({
                 {
                     path: "ordenes",
                     name: "ordenes",
-                    component: Ordenes,
+                    component:() => import('@/views/account/Ordenes'),
                     meta: {
                         auth: true
                     }
@@ -212,27 +167,27 @@ const router = new Router({
         {
             path: "/terminos-y-condiciones-de-pago-hoyprovoca",
             name: "comopagar",
-            component: ComoPagar
+            component:() => import('@/views/terminos/ComoPagar') 
         },
         {
             path: "/terminos-y-condiciones-hoyprovoca",
             name: "terminosycondiciones",
-            component: TerminosCondiciones
+            component:() => import('@/views/terminos/TerminosCondiciones') 
         },
         {
             path: "/politicas-de-privacidad-hoyprovoca",
             name: "privacidad",
-            component: Privacidad
+            component: () => import('@/views/terminos/Privacidad')
         },
         {
             path: "*",
             name: "notfound",
-            component: Error404
+            component:() => import("@/views/mistakes/Error404"),
         },
         {
             path: "/notAuthorized",
             name:"notauthorized",
-            component:Error403
+            component:() => import("@/views/mistakes/Error403"),
         },
         {
             path: "/500",
