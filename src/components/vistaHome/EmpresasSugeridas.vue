@@ -29,13 +29,10 @@
 <script>
 import variables from '@/services/variables_globales';
 import router from '@/router';
+import {mapState} from 'vuex';
 
     export default {
         props:{
-            empresas:{
-                Type:Array,
-                default:() => ([])
-            },
             title:{
                 Type:String,
                 default:''
@@ -45,6 +42,9 @@ import router from '@/router';
             return {
                 ...variables,
             }
+        },
+        computed: {
+            ...mapState(['empresas'])
         },
         methods: {
             push(empresa){

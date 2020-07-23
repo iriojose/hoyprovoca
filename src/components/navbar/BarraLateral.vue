@@ -4,9 +4,7 @@
             app v-model="drawers" temporary hide-overlay width="270"
             :style="$vuetify.breakpoint.smAndDown ? 'margin-top:106px;':'margin-top:60px'"
         >
-            <LoaderRect v-if="loading" />
-
-            <v-list v-else >
+            <v-list>
                 <div class="text-center font-weight-bold my-2">Categorías</div>
                 <v-divider></v-divider>
 
@@ -25,7 +23,6 @@
 
 <script>
 import {mapState,mapActions} from 'vuex';
-import Grupos from '@/services/Grupos';
 import router from '@/router';
 import LoaderRect from '@/components/loaders/LoaderRect';
 import variables from '@/services/variables_globales';
@@ -36,19 +33,11 @@ import variables from '@/services/variables_globales';
         },
         data() {
             return {
-                grupos:[],
-                loading:false,
                 ...variables
             }
         },
-        mounted() {
-            let grupos = window.localStorage.getItem('gruposMasVendidos');
-
-            if(!grupos) this.getGrupos();
-            else this.grupos = JSON.parse(grupos);
-        },
         computed:{
-            ...mapState(['drawer']),
+            ...mapState(['drawer','grupos']),
 
             drawers:{
                 get(){
@@ -66,16 +55,6 @@ import variables from '@/services/variables_globales';
                 window.localStorage.setItem('grupo',item.id);
                 let nombre = item.nombre.toLowerCase(); 
                 router.push({name:'grupoDetalle', params:{text:nombre}});
-            },
-            getGrupos(){
-                this.loading = true;
-                Grupos().get("/mostsold").then((response) => {
-                    window.localStorage.setItem("gruposMasVendidos",JSON.stringify(response.data.data));
-                    this.grupos = response.data.data;
-                    this.loading = false;
-                }).catch(e => {
-                    console.log(e);
-                });
             },
         },
     }

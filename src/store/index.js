@@ -30,6 +30,10 @@ export default new Vuex.Store({
         modalUbicacion:false,
         modalProducto:false,
         modalImagen:false,
+        //data global (grupos,subgrupos,empresas)
+        grupos:[],
+        //subgrupos:[],
+        empresas:[],
         //arrays
         pedidos:[],//guarda los pedidos
         agregados:[],//guarda ids de los conceptos agregados a pedidos
@@ -44,6 +48,13 @@ export default new Vuex.Store({
         
     },
     mutations: {
+        //data global
+        SET_GRUPOS(state,val){
+            state.grupos = val;
+        },
+        SET_EMPRESAS(state,val){
+            state.empresas = val;
+        },
         //banderas
         SET_FOTO(state, val) {
             state.foto = val;
@@ -174,6 +185,12 @@ export default new Vuex.Store({
         },
     },
     actions: {
+        setGrupos({commit},val){
+            commit('SET_GRUPOS',val);
+        },
+        setEmpresas({commit},val){
+            commit('SET_EMPRESAS',val);
+        },
         setDrawer({commit},val){
             commit('SET_DRAWER',val);
         },

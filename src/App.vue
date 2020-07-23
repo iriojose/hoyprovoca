@@ -26,7 +26,10 @@
 //services
 import Auth from '@/services/Auth';
 import Clientes from '@/services/Clientes';
-import store from "./store";
+import Empresa from "@/services/Empresa";
+import Grupos from "@/services/Grupos";
+import {mapActions} from 'vuex';
+//components
 import AppBar from '@/components/navbar/AppBar';
 import ModalBloqueado from '@/components/dialogs/ModalBloqueado';
 import ModalImagen from '@/components/dialogs/ModalImagen';
@@ -53,25 +56,56 @@ import Footer from '@/components/footer/Footer';
             let token = window.sessionStorage.getItem('token_client');
             if(token) this.sesion(token);
             else this.loading = false;
+
+            let grupos = JSON.parse(window.localStorage.getItem("gruposMasVendidos"));
+            if (!grupos) this.getGrupos();
+            else this.setGrupos(grupos);
+
+            let empresas = JSON.parse(window.localStorage.getItem("empresasMasVendidas"));
+            if (!empresas) this.getEmpresas();
+            else this.setEmpresas(empresas);
         },
         methods:{
+            ...mapActions(['logged','setModalBloqueado','setGrupos','setEmpresas']),
+
             sesion(token){
                 Auth().post("/sesion",{token:token}).then((response) => {
                     if(response.data.response.data.bloqueado == 1){
-                        store.state.bloqueado = true;
+                        this.setModalBloqueado(true);
                         this.loading = false;
-                    }else{
-                        store.state.user.data = response.data.response.data;
-                        store.state.user.loggedIn = true;
-                        store.state.user.token = token;
-                        Clientes().get(`/?usuario_id=${store.state.user.data.id}`).then((response) => {
-                            store.state.user.cliente = response.data.data[0];
-                            this.loading = false;
-                        }).catch(e => {this.loading = false;})
+                    }else {
+                        response.data.response.token = token;
+                        this.getClient(response.data.response);
                     }
                 }).catch(e => {
                     console.log(e);
                     this.loading = false;
+                });
+            },
+            getClient(data){
+                Clientes().get(`/?usuario_id=${data.data.id}`).then((response) => {
+                    data.cliente = response.data.data[0];
+                    this.logged(data);
+                    this.loading = false;
+                }).catch(e => {
+                    console.log(e);
+                    this.loading = false;
+                });
+            },
+            getEmpresas() {
+                Empresa().get("/?limit=8").then((response) => {
+                    window.localStorage.setItem("empresasMasVendidas",JSON.stringify(response.data.data));
+                    this.setEmpresas(response.data.data);
+                }).catch((e) => {
+                    console.log(e);
+                });
+            },
+            getGrupos() {
+                Grupos().get("/mostsold/?limit=10").then((response) => {
+                    window.localStorage.setItem("gruposMasVendidos",JSON.stringify(response.data.data));
+                    this.setGrupos(response.data.data);
+                }).catch((e) => {
+                    console.log(e);
                 });
             },
             ruta(){
@@ -134,5 +168,4 @@ import Footer from '@/components/footer/Footer';
     ::-webkit-scrollbar-track:active {
         background: #fff;
     }
-    
 </style>
