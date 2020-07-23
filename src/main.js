@@ -12,7 +12,6 @@ import 'leaflet/dist/leaflet.css';
 
 Vue.config.productionTip = true;
 
-
 new Vue({
     store,
     router,

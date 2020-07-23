@@ -1,16 +1,15 @@
 <template>
     <v-app style="background-color:#f7f7f7;">
+        <AppBar v-show="ruta() && !loading" />
 
-        <v-card elevation="0" color="#fff" width="100%" height="100%" v-if="loading">
+        <v-card elevation="0" color="#fff" width="100%" height="100%" v-show="loading">
             <v-row justify="center" class="fill-height" align="center">
                 <v-img width="500" height="500" contain :src="require('@/assets/loader.gif')"></v-img>
             </v-row>
         </v-card>
-
-        <AppBar v-if="ruta() && !loading" />
         
-        <transition name="fade" v-if="!loading">
-            <router-view />
+        <transition name="fade">
+            <router-view v-show="!loading" />
         </transition> 
 
         <ModalBloqueado /> 
@@ -18,7 +17,7 @@
         <ModalSesion />
         <ModalImagen />
 
-        <Footer v-if="ruta() && !loading" class="margen" />
+        <Footer v-show="ruta() && !loading" class="margen" />
     </v-app>
 </template>
 
@@ -30,23 +29,16 @@ import Clientes from '@/services/Clientes';
 import Empresa from "@/services/Empresa";
 import Grupos from "@/services/Grupos";
 import {mapActions,mapState} from 'vuex';
-//components
-import AppBar from '@/components/navbar/AppBar';
-import ModalBloqueado from '@/components/dialogs/ModalBloqueado';
-import ModalImagen from '@/components/dialogs/ModalImagen';
-import ModalProducto from '@/components/dialogs/ModalProducto';
-import ModalSesion from '@/components/dialogs/ModalSesion';
-import Footer from '@/components/footer/Footer';
 
     export default {
         name: 'App',
         components:{
-            AppBar,
-            ModalBloqueado,
-            ModalProducto,
-            ModalSesion,
-            ModalImagen,
-            Footer,
+            AppBar:() => import('@/components/navbar/AppBar'),
+            ModalBloqueado:() => import('@/components/dialogs/ModalBloqueado'),
+            ModalProducto:() => import('@/components/dialogs/ModalProducto'),
+            ModalSesion:() => import('@/components/dialogs/ModalSesion'),
+            ModalImagen:() => import('@/components/dialogs/ModalImagen'),
+            Footer:() => import('@/components/footer/Footer'),
         },
         data(){
             return {
@@ -57,11 +49,12 @@ import Footer from '@/components/footer/Footer';
         computed: {
             ...mapState(['user'])
         },
-        mounted(){
+        created() {
             let token = JSON.parse(window.sessionStorage.getItem('token_client'));
             if(token) this.sesion(token);
             else this.loading = false;
-
+        },
+        mounted(){
             let grupos = JSON.parse(window.localStorage.getItem("gruposMasVendidos"));
             if (!grupos) this.getGrupos();
             else this.setGrupos(grupos);
