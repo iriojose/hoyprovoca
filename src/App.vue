@@ -24,11 +24,12 @@
 
 <script>
 //services
+import Pedidos from '@/services/Pedidos';
 import Auth from '@/services/Auth';
 import Clientes from '@/services/Clientes';
 import Empresa from "@/services/Empresa";
 import Grupos from "@/services/Grupos";
-import {mapActions} from 'vuex';
+import {mapActions,mapState} from 'vuex';
 //components
 import AppBar from '@/components/navbar/AppBar';
 import ModalBloqueado from '@/components/dialogs/ModalBloqueado';
@@ -50,7 +51,11 @@ import Footer from '@/components/footer/Footer';
         data(){
             return {
                 loading:true,
+                aux:[]
             }
+        },
+        computed: {
+            ...mapState(['user'])
         },
         mounted(){
             let token = window.sessionStorage.getItem('token_client');
@@ -66,9 +71,14 @@ import Footer from '@/components/footer/Footer';
             else this.setEmpresas(empresas);
         },
         methods:{
-            ...mapActions(['logged','setModalBloqueado','setGrupos','setEmpresas']),
+            ...mapActions(['logged','setModalBloqueado','setGrupos','setEmpresas','setPedidos']),
 
-            sesion(token){
+            pedidosLocalStorage(){
+                let pedidos = JSON.parse(window.localStorage.getItem("pedidos"));
+                if(!pedidos) this.getPedidos();
+                else this.setPedidos(pedidos);//trae pedidos del cliente
+            },
+            sesion(token){//valida el token
                 Auth().post("/sesion",{token:token}).then((response) => {
                     if(response.data.response.data.bloqueado == 1){
                         this.setModalBloqueado(true);
@@ -82,17 +92,36 @@ import Footer from '@/components/footer/Footer';
                     this.loading = false;
                 });
             },
-            getClient(data){
+            getClient(data){//trae el cliente perteneciente a la cuenta
                 Clientes().get(`/?usuario_id=${data.data.id}`).then((response) => {
                     data.cliente = response.data.data[0];
                     this.logged(data);
                     this.loading = false;
+                    this.pedidosLocalStorage();//verifica los pedidos del localStorage
                 }).catch(e => {
                     console.log(e);
                     this.loading = false;
                 });
             },
-            getEmpresas() {
+            getPedidos(){
+                Clientes().get(`/${this.user.cliente.id}/pedidos/?rest_estatus_id=1`).then((response) => {
+                    if(response.data.data){
+                        this.aux = response.data.data;
+                        response.data.data.filter((a,i) => this.getConceptos(a,i));
+                    }
+                }).catch(e => {
+                    console.log(e);
+                });
+            },
+            getConceptos(data,i){//trae los conceptos de un pedido
+                Pedidos().get(`/${data.id}/conceptos`).then((response) => {
+                    this.aux[i].conceptos = response.data.data;
+                    if(i == this.aux.length - 1) this.setPedidos(this.aux);
+                }).catch(e => {
+                    console.log(e);
+                });
+            },
+            getEmpresas() {//trae las empreasa
                 Empresa().get("/?limit=8").then((response) => {
                     window.localStorage.setItem("empresasMasVendidas",JSON.stringify(response.data.data));
                     this.setEmpresas(response.data.data);
@@ -100,7 +129,7 @@ import Footer from '@/components/footer/Footer';
                     console.log(e);
                 });
             },
-            getGrupos() {
+            getGrupos() {//trae los grupos de la aplicacion
                 Grupos().get("/mostsold/?limit=10").then((response) => {
                     window.localStorage.setItem("gruposMasVendidos",JSON.stringify(response.data.data));
                     this.setGrupos(response.data.data);
