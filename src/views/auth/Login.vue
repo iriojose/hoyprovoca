@@ -11,88 +11,73 @@
                 ¿Olvido su contraseña?
             </v-btn>
         </v-card-actions>
-        <v-card-text>
-            <v-row justify="center" class="py-2">
-                <v-col cols="12" md="8" sm="12">
-                    <v-row justify="center" class="pb-4 hidden-sm-and-up">
-                        <v-img contain width="100" height="50" :src="require('@/assets/logo 6.png')"></v-img>
+
+        <v-row justify="center" class="pb-4 hidden-sm-and-up">
+            <v-img contain width="100" height="50" :src="require('@/assets/logo 6.png')"></v-img>
+        </v-row>
+
+        <v-row justify="center" class="py-2">
+            <v-col cols="12" md="8" sm="12">
+                <v-card width="100%" elevation="0">
+                    <v-row justify="center">
+                        <v-col cols="12" md="6" class="hidden-sm-and-down">
+                            <v-img width="100%" height="400" contain :src="require('@/assets/undrawlogin.svg')"></v-img>
+                        </v-col>
+                        <v-col cols="12" md="6" sm="12" class="px-8 py-12">
+                            <div class="headline text-center mb-5">Inicia sesión ahora!</div>
+                                
+                            <v-card elevation="0" height="50">
+                                <v-fade-transition>
+                                    <v-alert border="left" colored-border elevation="2"  dense :type="type" v-show="showMessage">
+                                        {{mensaje}}
+                                    </v-alert>
+                                </v-fade-transition> 
+                            </v-card>
+
+                            <v-form v-model="valid" @submit.prevent="">
+                                <v-text-field
+                                    filled rounded :disabled="loading" v-model="data.user"
+                                    single-line dense color="#0f2441"
+                                    :success-messages="success" :error-messages="errors"
+                                    @input="getUser(data.user)" label="Ingrese correo electrónico"
+                                >
+                                    <template v-slot:append>
+                                        <v-fade-transition leave-absolute>
+                                            <v-progress-circular
+                                                v-if="loading2" size="24"
+                                                color="#0f2441" indeterminate
+                                            ></v-progress-circular>
+                                            <img v-else width="24" height="24" :src="require('@/assets/logo 3.png')">
+                                        </v-fade-transition>
+                                    </template>
+                                </v-text-field>
+
+                                <v-text-field
+                                    filled rounded dense
+                                    :disabled="loading" v-model="data.password"
+                                    single-line type="password" color="#0f2441"
+                                    :rules="[required('Contraseña'),minLength('Contraseña',6)]"
+                                    label="Contraseña"
+                                ></v-text-field>
+
+                                <v-btn
+                                    rounded color="#2950c3" block
+                                    :loading="loading" height="40"
+                                    :disabled="valid && success !== '' ? false:true"
+                                    @click="login()" class="text-capitalize caption white--text"
+                                >
+                                    Iniciar sesión
+                                </v-btn>
+                            </v-form>
+
+                            <v-divider class="my-10"></v-divider>
+
+                            <div class="subtitle-2 text-center color" @click="register">¿No tienes una cuenta? ¡Registrate!</div>
+                        </v-col>
                     </v-row>
-                    <v-card width="100%" elevation="0">
-                        <v-row :justify="$vuetify.breakpoint.smAndDown ? null:'center'">
-                            <v-col cols="12" md="6" class="hidden-sm-and-down">
-                                <v-img width="100%" height="400" contain :src="require('@/assets/undrawlogin.svg')"></v-img>
-                            </v-col>
-                            <v-col cols="12" md="6" sm="12" class="px-5 py-12">
-                                <div class="headline text-center mb-5">Inicia sesión ahora!</div>
-                                
-                                <v-card elevation="0" height="50">
-                                    <v-fade-transition>
-                                        <v-alert border="left" colored-border elevation="2"  dense :type="type" v-show="showMessage">
-                                            {{mensaje}}
-                                        </v-alert>
-                                    </v-fade-transition> 
-                                </v-card>
-                                
-                                <v-form v-model="valid" @submit.prevent="">
-                                    <v-text-field
-                                        filled
-                                        rounded
-                                        :disabled="loading"
-                                        v-model="data.user"
-                                        single-line
-                                        dense
-                                        color="#0f2441"
-                                        :success-messages="success"
-                                        :error-messages="errors"
-                                        @input="getUser(data.user)"
-                                        label="Ingrese correo electrónico"
-                                    >
-                                        <template v-slot:append>
-                                            <v-fade-transition leave-absolute>
-                                                <v-progress-circular
-                                                    v-if="loading2"
-                                                    size="24"
-                                                    color="#0f2441"
-                                                    indeterminate
-                                                ></v-progress-circular>
-                                                <img v-else width="24" height="24" :src="require('@/assets/logo 3.png')">
-                                            </v-fade-transition>
-                                        </template>
-                                    </v-text-field>
-
-                                    <v-text-field
-                                        filled
-                                        rounded
-                                        dense
-                                        :disabled="loading"
-                                        v-model="data.password"
-                                        single-line
-                                        type="password"
-                                        color="#0f2441"
-                                        :rules="[required('Contraseña'),minLength('Contraseña',6)]"
-                                        label="Contraseña"
-                                    ></v-text-field>
-
-                                    <v-btn
-                                        rounded color="#2950c3" block
-                                        :loading="loading" height="40"
-                                        :disabled="valid && success !== '' ? false:true"
-                                        @click="login()"
-                                        class="text-capitalize caption white--text"
-                                    >
-                                        Iniciar sesión
-                                    </v-btn>
-                                </v-form>
-
-                                <v-divider class="my-10"></v-divider>
-
-                                <div class="subtitle-2 text-center color" @click="register">¿No tienes una cuenta? ¡Registrate!</div>
-                            </v-col>
-                        </v-row>
-                    </v-card>
-                </v-col>
-            </v-row>
-        </v-card-text>
+                </v-card>
+            </v-col>
+        </v-row>
 
         <v-footer fixed class="font-weight-medium" elevation="0" color="#1f3b63">
             <v-col class="text-center white--text" cols="12">
@@ -108,6 +93,7 @@ import validations from '@/validations/validations';
 import Auth from '@/services/Auth';
 import Usuario from '@/services/Usuario';
 import Clientes from '@/services/Clientes';
+import Pedidos from '@/services/Pedidos';
 import {mapActions} from 'vuex';
 
     export default {
@@ -122,6 +108,7 @@ import {mapActions} from 'vuex';
                 valid:false,
                 success:'',
                 errors:[],
+                aux:[],
                 data:{
                     user:'',
                     password:''
@@ -137,8 +124,8 @@ import {mapActions} from 'vuex';
                 }
             }
         },
-        methods: {
-            ...mapActions(['logged','setModalBloqueado']),
+        methods:{
+            ...mapActions(['logged','setModalBloqueado','setPedidos']),
 
             register(){
                 router.push('/register');
@@ -197,12 +184,31 @@ import {mapActions} from 'vuex';
                     this.logged(data);
                     this.respuesta("Bienvenido.","success");
                     setTimeout(() => { this.home()},1000);
+                    this.getPedidos(data.cliente.id);
                 }).catch((e) => {
                     console.log(e);
                     this.respuesta("Contraseña incorrecta.","error");
                 });
-            }
-        },
+            },
+            getPedidos(id){
+                Clientes().get(`/${id}/pedidos/?rest_estatus_id=1`).then((response) => {
+                    if(response.data.data){
+                        this.aux = response.data.data;
+                        response.data.data.filter((a,i) => this.getConceptos(a,i));
+                    }
+                }).catch(e => {
+                    console.log(e);
+                });
+            },
+            getConceptos(data,i){//trae los conceptos de un pedido
+                Pedidos().get(`/${data.id}/conceptos`).then((response) => {
+                    this.aux[i].conceptos = response.data.data;
+                    if(i == this.aux.length - 1) this.setPedidos(this.aux);
+                }).catch(e => {
+                    console.log(e);
+                });
+            },
+        }
     }
 </script>
 
