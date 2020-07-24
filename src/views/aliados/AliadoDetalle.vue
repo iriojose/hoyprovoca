@@ -88,20 +88,15 @@
 import Empresa from '@/services/Empresa';
 import Grupos from '@/services/Grupos';
 import variables from '@/services/variables_globales';
-import LoaderRect from '@/components/loaders/LoaderRect';
-import PanelCategorias from '@/components/vistaAliados/PanelCategorias';
-import CardConceptos from '@/components/cards/CardConceptos2';
-import CardConceptos2 from '@/components/cards/CardConceptos3';
-import DataAliados from '@/components/vistaAliados/DataAliados';
 import {mapState} from 'vuex';
 
     export default {
         components:{
-            LoaderRect,
-            PanelCategorias,
-            CardConceptos,
-            CardConceptos2,
-            DataAliados,
+            LoaderRect:() => import('@/components/loaders/LoaderRect'),
+            PanelCategorias:() => import('@/components/vistaAliados/PanelCategorias'),
+            CardConceptos:() => import('@/components/cards/CardConceptos2'),
+            CardConceptos2:() => import('@/components/cards/CardConceptos3'),
+            DataAliados:() => import('@/components/vistaAliados/DataAliados')
         },
         data(){
             return {

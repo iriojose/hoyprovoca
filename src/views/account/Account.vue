@@ -68,11 +68,9 @@
 <script>
 import {mapState, mapActions} from 'vuex';
 import variables from '@/services/variables_globales';
-import CambiarImagen from '@/components/dialogs/CambiarImagen';
-
     export default {
         components:{
-            CambiarImagen
+            CambiarImagen:() => import('@/components/dialogs/CambiarImagen')
         },
         data() {
             return {

@@ -45,16 +45,14 @@
 </template>
 
 <script>
-import LoaderRect from '@/components/loaders/LoaderRect';
-import GruposData from '@/components/vistaGrupos/GruposData';
 import Grupos from '@/services/Grupos';
 import SubGrupos from '@/services/SubGrupos';
 import {mapState} from 'vuex';
 
     export default {
         components:{
-            LoaderRect,
-            GruposData,
+            LoaderRect:() => import('@/components/loaders/LoaderRect'),
+            GruposData:() => import('@/components/vistaGrupos/GruposData'),
         },
         data(){
             return {

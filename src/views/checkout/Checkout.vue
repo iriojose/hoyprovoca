@@ -171,11 +171,6 @@ import accounting from "accounting";
 //servicios
 import { mapState, mapActions } from "vuex";
 import Auth from "@/services/Auth";
-//componentes
-import Init from "@/components/checkoutStepps/Init";
-import Existencia from "@/components/checkoutStepps/Existencia";
-import TipoPago from "@/components/checkoutStepps/TipoDePago";
-import Pagar from "@/components/checkoutStepps/Pagar";
 
 // for alerts snackbar
 //const pagoFinalizado = "el proceso de pago ha finalizado exitosamente!";
@@ -194,10 +189,10 @@ const messageSend =
 
 export default {
   components: {
-    Existencia,
-    TipoPago,
-    Pagar,
-    Init
+    Existencia:() => import("@/components/checkoutStepps/Existencia"),
+    TipoPago:() => import("@/components/checkoutStepps/TipoDePago"),
+    Pagar:() => import("@/components/checkoutStepps/Pagar"),
+    Init:() => import("@/components/checkoutStepps/Init")
   },
   data() {
     return {

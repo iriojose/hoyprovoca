@@ -101,14 +101,13 @@
 </template>
 
 <script>
-import LoaderRect from '@/components/loaders/LoaderRect';
 import Empresa from '@/services/Empresa';
 import variables from '@/services/variables_globales';
 import router from '@/router';
 
     export default {
         components:{
-            LoaderRect
+            LoaderRect:() => import('@/components/loaders/LoaderRect')
         },
         data() {
             return {
