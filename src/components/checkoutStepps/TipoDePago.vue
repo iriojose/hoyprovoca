@@ -1,5 +1,5 @@
 <template>
-  <div  class="container" >
+  <div class="container">
     <v-row justify="center" v-if="pedidoSelect">
       <v-col cols="12" md="6" sm="12">
         <div class="font-weight-bold title">Tus productos</div>
@@ -7,8 +7,8 @@
           {{ pedidoSelect.detalles.length + " " }}
           item
         </div>
-        <div class="font-weight-bold title">Subtotal a pagar</div>
-        <div class="font-weight-bold subtitle-1">{{ total }}</div>
+        <div class="font-weight-bold pa-2 title">Subtotal a pagar</div>
+        <div class="font-weight-bold px-2 subtitle-1">{{ total }}</div>
         <v-select
           :items="tiposDePago"
           dense
@@ -27,12 +27,12 @@
         ></v-select>
       </v-col>
     </v-row>
-     <div class="stepper-buttons">
-    <v-btn color="#0f2441" :disabled="this.bloqueo" @click="changeView('stepper', 3)">
-      <span style="color:white">Continue</span>
-    </v-btn>
-    <v-btn text @click="changeView('stepper', 1)">Atras</v-btn>
-     </div >
+    <div class="stepper-buttons">
+      <v-btn color="#0f2441" :disabled="bloqueo" @click="changeView('stepper', 3)">
+        <span style="color:white">Continuar</span>
+      </v-btn>
+      <v-btn text @click="changeView('stepper', 1)">Atras</v-btn>
+    </div>
   </div>
 </template>
 <script>
@@ -112,7 +112,7 @@ export default {
   data() {
     return {
       ...variables,
-      block: false,
+      block: true,
       alertNotifier: maxPago,
       bloqueo: true,
       tiposDePago: metodosDePago,
@@ -120,42 +120,15 @@ export default {
     };
   },
   mounted() {
-    this.select = this.pago;
+    //this.select = this.pago;
   },
   watch: {
     select(value) {
-      if (!value) {
-        this.bloqueo = true;
-        return;
-      }
-      if (!this.diferentes && value === []) {
-        this.bloqueo = true;
-        return;
-      }
-      if (!this.diferentes) {
+      if (value) {
         this.$emit("updatedState", { content: value, name: "pago" });
         this.bloqueo = false;
         return;
       }
-      if (value.length === 0) {
-        this.bloqueo = true;
-        return;
-      }
-      if (value.length > 2) {
-        this.alertNotifier = maxPago;
-        this.alert = true;
-      } //cambia este alert por un $toasted de Vue, investigalo
-      if (value.length === 2) {
-        this.$emit("updatedState", { content: value, name: "pago" });
-        this.bloqueo = false;
-        return;
-      }
-      if (value.length < 2) {
-        this.bloqueo = true;
-        return;
-      }
-      this.pago = this.pago.slice(0, 2);
-      this.bloqueo = false;
     }
   },
   methods: {
@@ -169,12 +142,12 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.container{
-  width:100%;
+.container {
+  width: 100%;
   display: flex;
   flex-direction: column;
- 
-} .stepper-buttons{
-      align-self: flex-end;
-  }
-  </style>
+}
+.stepper-buttons {
+  align-self: flex-end;
+}
+</style>

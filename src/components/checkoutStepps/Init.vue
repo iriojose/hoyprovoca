@@ -31,14 +31,18 @@
       </v-slide-item>
     </v-slide-group>
 
-    <v-card :class="$vuetify.breakpoint.smAndDown ? 'my-5 mx-2' : 'mx-10 my-5'" v-if="pedidoSelect">
+    <v-card :class="$vuetify.breakpoint.smAndDown ? 'my-5 mx-2' : 'mx-10 my-5'" >
       <v-card-text>
         <v-row class="align" justify="center">
           <v-col
             cols="8"
             md="7"
             sm="12"
-            :class=" $vuetify.breakpoint.smAndDown ? 'products': 'pa-5 products'"
+            :class="
+                            $vuetify.breakpoint.smAndDown
+                                ? 'products'
+                                : 'pa-5 products'
+                        "
           >
             <div class="font-weight-bold title titles">Tus productos</div>
             <div v-if="detalles" class="font-weight-bold titles subtitle-1">
@@ -48,13 +52,13 @@
             <v-list>
               <v-list-item class="products-row products line">
                 <v-list-item-title class="imag">
-                  <p  class="center-text">Imagen</p>
+                  <p class="center-text">Imagen</p>
                 </v-list-item-title>
                 <v-list-item-title v-if="!$vuetify.breakpoint.smAndDown">
                   <p class="center-text">Nombre</p>
                 </v-list-item-title>
                 <v-list-item-title>
-                  <p class="center-text" >Precio</p>
+                  <p class="center-text">Precio</p>
                 </v-list-item-title>
                 <v-list-item-title>
                   <p class="center-text">Cantidad</p>
@@ -63,30 +67,32 @@
                   <p class="center-text">Estado</p>
                 </v-list-item-title>
               </v-list-item>
-              <v-list-item class="products-row products line" v-for="(detalle, i) in detalles" :key="i">
+              <v-list-item
+                class="products-row products line"
+                v-for="(detalle, i) in detalles"
+                :key="i"
+              >
                 <v-list-item-title class="center">
-                  <v-list-item-avatar >
+                  <v-list-item-avatar>
                     <v-img :src="image + detalle.imagen"></v-img>
                   </v-list-item-avatar>
                 </v-list-item-title>
-                <v-list-item-title v-if="!$vuetify.breakpoint.smAndDown " class="product-text">
-                  <p
-                    class="caption font-weight-medium center-text"
-                  >{{ detalle.nombre ? detalle.nombre : "cargando..." }}</p>
+                <v-list-item-title v-if="!$vuetify.breakpoint.smAndDown" class="product-text">
+                  <p class="caption font-weight-medium center-text">
+                    {{ pedidoSelect.conceptos[i].descripcion }}
+                  </p>
                 </v-list-item-title>
                 <v-list-item-title class="product-text caption font-weight-medium">
-                  <span class="price center center-text">{{ detalle.precio }}</span>
+                  <span class="price center center-text">
+                    {{ pedidoSelect.conceptos[i].costo_dolar }} $
+                  </span>
                 </v-list-item-title>
                 <v-list-item-title class="product-text caption font-weight-medium">
                   <p class="center-text">{{ detalle.cantidad }}</p>
                 </v-list-item-title>
                 <v-list-item-title class="product-text center">
                   <v-chip
-                    v-bind:color="
-                                            detalle.estado == 'ACTIVO'
-                                                ? 'green'
-                                                : 'red'
-                                        "
+                    v-bind:color=" detalle.estado == 'ACTIVO' ? 'green' : 'red' "
                     class="ma-2"
                     text-color="white"
                   >
@@ -183,15 +189,10 @@ export default {
   watch: {
     pedidoSelect() {
       this.detalles = this.pedidoSelect.detalles;
-      this.getNombres();
-      console.log(this.pedidoSelect.detalles);
-    },
-    nombres() {
-      console.log("pasa");
     }
   },
   computed: {
-    ...mapState(["user", "modalPago"])
+    ...mapState(["user", "modalPago","pedidos"])
   },
   methods: {
     ...mapActions(["setPedidos", "deletePedidoStore", "setModalPago"]),
@@ -222,18 +223,12 @@ export default {
     },
     getPedidosUsuario() {
       this.loading = true;
-      Clientes()
-        .get(`/${this.user.cliente.id}/pedidos/?rest_estatus_id=1`)
-        .then(response => {
+          console.log(this.pedidos,this.pedidoSelect, "pedidos");
           this.$emit("updatedState", {
-            name: "pedidos",
-            content: response.data.data
-          });
+                name: "pedidos",
+                content: this.pedidos ? this.pedidos : JSON.parse(localStorage.getItem("pedidos"))
+              })
           this.pedidos.filter((a, i) => this.getEmpresas(a.adm_empresa_id, i));
-        })
-        .catch(e => {
-          console.log(e);
-        });
     },
     getEmpresas(id, i) {
       Empresa()
@@ -251,6 +246,7 @@ export default {
             content: this.pedidos[0]
           });
           this.calcularTotal(this.pedidos[0].detalles);
+          this.detalles = this.pedidos[0]
           this.pedidos.filter(a =>
             a.detalles.filter(
               b =>
@@ -283,28 +279,11 @@ export default {
     next() {
       this.$emit("updatedState", { name: "view", content: 2 });
     },
-    getNombres() {
-      Pedidos()
-        .get(`${this.pedidoSelect.id}/conceptos`)
-        .then(response => {
-          response.data.data.map((element, i) => {
-            this.$emit("updateDetallePedido", {
-              x: i,
-              content: Object.assign({}, this.pedidoSelect.detalles[i], {
-                precio_dolar: element.precio_dolar,
-                nombre: element.nombre
-              })
-            });
-          });
-          this.$forceUpdate();
-        });
-    }
   }
 };
 </script>
 
 <style lang="scss" scoped>
-
 .titles {
   padding-top: 12px;
   padding-left: 12px;
@@ -314,33 +293,33 @@ export default {
   justify-content: center;
   display: flex;
 }
-.line{
-  position:relative;
+.line {
+  position: relative;
   display: flex;
 }
-.line:before{
-    position:absolute;
-    content:"";
-    height: 1px;
-    opacity:0.6;
-    bottom: 0;
-    background-color: gray;
-    width: 100%;
-  }
-.center-text{
-  margin:0;
-  text-align:center;
+.line:before {
+  position: absolute;
+  content: "";
+  height: 1px;
+  opacity: 0.6;
+  bottom: 0;
+  background-color: gray;
+  width: 100%;
+}
+.center-text {
+  margin: 0;
+  text-align: center;
 }
 @media only screen and (max-width: 600px) {
   body {
     background-color: lightblue;
   }
-  .price{
-  position: absolute;
-  top: 40%;
-}
-.products {
-  padding: 0 !important;
-}
+  .price {
+    position: absolute;
+    top: 40%;
+  }
+  .products {
+    padding: 0 !important;
+  }
 }
 </style>
