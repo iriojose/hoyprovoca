@@ -67,18 +67,15 @@
 </template>
 
 <script>
-import LoaderRect from '@/components/loaders/LoaderRect';
 import SubGrupos from '@/services/SubGrupos';
-import CardConceptos from '@/components/cards/CardConceptos2';
-import CardConceptos2 from '@/components/cards/CardConceptos3';
 import variables from '@/services/variables_globales';
 import {mapState} from 'vuex';
 
     export default {
         components:{
-            LoaderRect,
-            CardConceptos,
-            CardConceptos2
+            LoaderRect:() => import('@/components/loaders/LoaderRect'),
+            CardConceptos:() => import('@/components/cards/CardConceptos2'),
+            CardConceptos2:() => import('@/components/cards/CardConceptos3')
         },
         data(){
             return {

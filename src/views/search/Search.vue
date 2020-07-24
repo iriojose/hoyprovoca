@@ -127,16 +127,13 @@
 <script>
 import Conceptos from '@/services/Conceptos';
 import Direcciones from '@/services/Direcciones';
-import LoaderRect from '@/components/loaders/LoaderRect';
-import CardConceptos from '@/components/cards/CardConceptos2';
-import CardConceptos2 from '@/components/cards/CardConceptos3';
 import {mapState} from 'vuex';
 
     export default {
         components:{
-            LoaderRect,
-            CardConceptos,
-            CardConceptos2,
+            LoaderRect:() => import('@/components/loaders/LoaderRect'),
+            CardConceptos:() => import('@/components/cards/CardConceptos2'),
+            CardConceptos2:() => import('@/components/cards/CardConceptos3'),
         },
         data() {
             return {

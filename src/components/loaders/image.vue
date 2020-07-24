@@ -1,30 +1,31 @@
 <template>
-            <div>
-                 <v-img
-                    contain
-                    :width="$vuetify.breakpoint.smAndDown ? 100 : 200"
-                    :height="$vuetify.breakpoint.smAndDown ? 80 : 180"
-                    v-show="load"
-                    :src="image + imagenViene"
-                />         
-               <v-card 
-                elevation="0"
-                v-if="!load"
-                :color="color" 
-                :width="$vuetify.breakpoint.smAndDown ? 100:200" 
-                :height="$vuetify.breakpoint.smAndDown ? 100:170"
-            >
-                <v-row justify="center" align="center" class="fill-height">
-                    <Puntos :color="'red'" v-if="!load" />
-                </v-row>
-            </v-card>
-            </div>
+    <div>
+        <v-img
+        contain
+        :width="$vuetify.breakpoint.smAndDown ? 100 : 200"
+        :height="$vuetify.breakpoint.smAndDown ? 80 : 180"
+        v-show="load"
+        :src="image + imagenViene"
+    />         
+        <v-card 
+            elevation="0"
+            v-if="!load"
+            :color="color" 
+            :width="$vuetify.breakpoint.smAndDown ? 100:200" 
+            :height="$vuetify.breakpoint.smAndDown ? 100:170"
+        >
+            <v-row justify="center" align="center" class="fill-height">
+                <Puntos :color="'red'" v-if="!load" />
+            </v-row>
+        </v-card>
+    </div>
 </template>
  
 <script>
 import variables from "@/services/variables_globales";
 import router from "@/router";
 import Puntos from "./Puntos"
+
 export default {
     props: {
         imagenViene: {
@@ -45,8 +46,8 @@ export default {
             load: false,
         };
     },
-   async mounted(){
-           await this.preload(this.image + this.imagenViene);
+    async mounted(){
+        await this.preload(this.image + this.imagenViene);
     },
     methods: {
          check(event){
@@ -77,7 +78,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.border {
-    border-radius: 30px !important;
-}
+    .border {
+        border-radius: 30px !important;
+    }
 </style>

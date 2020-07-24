@@ -22,8 +22,6 @@ import Talk from 'talkjs';
 import w from '@/services/variables_globales';
 
 export default {
-    components:{
-    },
     head: {
         title() { 
             return {
