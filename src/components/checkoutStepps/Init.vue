@@ -186,7 +186,6 @@ export default {
   mounted() {
     this.getPedidosUsuario();
   },
-
   computed: {
     ...mapState(["user", "modalPago","pedidos"])
   },

@@ -9,39 +9,37 @@
         color="#f5f5f5"
         class="index"
     >
-        <v-toolbar width="100%" elevation="1" v-if="user.loggedIn">
+        <v-toolbar width="100%" elevation="1" v-if="user.loggedIn" color="#fff">
             <v-toolbar-title>
                 <v-img contain width="150" height="80" :src="require('@/assets/logo2.png')"></v-img>
             </v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-hover v-slot:default="{hover}">
-                <v-btn icon fab depressed @click="change" :elevation="0">
-                    <v-icon :color="hover ? '#232323':null">close</v-icon>
-                </v-btn>
-            </v-hover>
+            <v-btn icon fab depressed @click="change" :elevation="0">
+                <v-icon color="#232323">mdi-close</v-icon>
+            </v-btn>
         </v-toolbar>
 
         <v-divider></v-divider>
 
         <v-row class="my-12" v-if="pedidos.length == 0" justify="center" align="center">
             <v-img class="mt-10" contain width="80%" height="200" :src="require('@/assets/undrawempty.svg')"></v-img>
-            <div class="subtitle-1 font-weight-bold mt-4">Su carrito esta vacio</div>
+            <div class="subtitle-1 font-weight-bold mt-4 black--text">Su carrito esta vacio</div>
         </v-row>
 
         <v-expansion-panels v-else class="my-1">
             <v-expansion-panel v-for="(pedido,i) in pedidos" :key="i">
 
-                <v-expansion-panel-header>
+                <v-expansion-panel-header color="#fff">
                     <EncabezadoPedido :index="i" :pedido="pedido" :total="totalPedidos[i]" />
                 </v-expansion-panel-header>
 
-                <v-expansion-panel-content>
+                <v-expansion-panel-content color="#fff">
                     <DetallesPedidos :conceptos="pedido.conceptos" :detalles="pedido.detalles" :indexPedido="i" />
                 </v-expansion-panel-content>
             </v-expansion-panel>
         </v-expansion-panels>
         
-        <v-footer absolute width="100%" height="60" color="#fff" class="pr-5 pl-5">
+        <v-footer absolute width="100%" height="60" color="#f5f5f5" class="pr-5 pl-5">
             <v-card-actions>
                 <v-btn 
                     rounded color="#232323" @click="modal"
@@ -71,16 +69,13 @@
 
 <script>
 import {mapActions,mapState} from 'vuex';
-import VaciarCarrito from '@/components/dialogs/VaciarCarrito';
-import EncabezadoPedido from './EncabezadoPedido';
-import DetallesPedidos from './DetallesPedidos';
 import router from '@/router';
 
     export default {
         components:{
-            EncabezadoPedido,
-            DetallesPedidos,
-            VaciarCarrito
+            EncabezadoPedido:() => import('./EncabezadoPedido'),
+            DetallesPedidos:() => import('./DetallesPedidos'),
+            VaciarCarrito:() => import("@/components/dialogs/VaciarCarrito")
         },
         computed: {
             ...mapState(['pedidos','carrito','user','totalPedidos']),

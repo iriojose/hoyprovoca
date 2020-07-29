@@ -79,7 +79,6 @@ import validations from '@/validations/validations';
 import Auth from '@/services/Auth';
 import Usuario from '@/services/Usuario';
 import Clientes from '@/services/Clientes';
-
     export default {
         data() {
             return {
@@ -100,7 +99,6 @@ import Clientes from '@/services/Clientes';
         },
         computed: {
             ...mapState(['modalsesion']),
-
             sesion:{
                 get(){ return this.modalsesion },
                 set(val){ this.setModalSesion(val) }
@@ -108,7 +106,6 @@ import Clientes from '@/services/Clientes';
         },
         methods: {
             ...mapActions(['setModalSesion','logged','setModalBloqueado']),
-
             close(){
                 this.setModalSesion(false);
             },
@@ -160,11 +157,30 @@ import Clientes from '@/services/Clientes';
                     this.logged(data);
                     this.respuesta("Bienvenido.","success");
                     setTimeout(() => { this.home()},500);
+                    this.getPedidos(data.cliente.id);
                 }).catch((e) => {
                     console.log(e);
                     this.respuesta("Contraseña incorrecta.","error");
                 });
-            }
+            },
+            getPedidos(id){
+                Clientes().get(`/${id}/pedidos/?rest_estatus_id=1`).then((response) => {
+                    if(response.data.data){
+                        this.aux = response.data.data;
+                        response.data.data.filter((a,i) => this.getConceptos(a,i));
+                    }
+                }).catch(e => {
+                    console.log(e);
+                });
+            },
+            getConceptos(data,i){//trae los conceptos de un pedido
+                Pedidos().get(`/${data.id}/conceptos`).then((response) => {
+                    this.aux[i].conceptos = response.data.data;
+                    if(i == this.aux.length - 1) this.setPedidos(this.aux);
+                }).catch(e => {
+                    console.log(e);
+                });
+            },
         },
     }
 </script>

@@ -59,7 +59,6 @@ import {mapState,mapActions} from 'vuex';
         },
         computed:{
             ...mapState(['user']),
-
             items () {
                 return Array.from({ length: this.length }, (k, v) => v + 1)
             },

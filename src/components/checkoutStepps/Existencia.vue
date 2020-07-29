@@ -124,7 +124,6 @@ export default {
   data() {
     return {
       ...variables,
-
       productsAvaible: ["green"],
       block: false,
       loading: true,

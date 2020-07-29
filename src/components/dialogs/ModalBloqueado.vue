@@ -30,14 +30,9 @@ import {mapState,mapActions} from 'vuex';
         },
         methods: {
             ...mapActions(['setModalBloqueado']),
-
             close(){
                 this.setModalBloqueado(false);
             }
         },
     }
 </script>
-
-<style lang="scss" scoped>
-
-</style>

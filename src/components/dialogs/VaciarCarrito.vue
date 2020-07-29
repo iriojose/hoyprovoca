@@ -44,7 +44,6 @@ import Pedidos from '@/services/Pedidos';
         },
         computed: {
             ...mapState(['modalcarrito','pedidos']),
-
             dialogs:{
                 get(){ return this.modalcarrito },
                 set(val){ this.setModalCarrito(val) }
@@ -65,6 +64,7 @@ import Pedidos from '@/services/Pedidos';
                     if(this.pedidos.length -1 == i){
                         this.deleteCarrito();
                         this.loading = false;
+                        window.localStorage.setItem("pedidos","");
                         this.close();
                     }
                 }).catch(e => {

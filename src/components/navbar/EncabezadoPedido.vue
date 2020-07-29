@@ -1,18 +1,12 @@
 <template>
-    <v-toolbar elevation="0" height="50">
-        <v-hover v-slot:default="{hover}">
-            <v-btn  
-                :loading="loading" 
-                :disabled="loading"
-                @click.stop.prevent="deletePedido(pedido.id)" 
-                icon
-                title="Borrar"
-                text
-                :elevation="0"
-            >
-                <v-icon :color="hover ? '#232323':null">mdi-delete</v-icon>
-            </v-btn>
-        </v-hover>
+    <v-toolbar elevation="0" height="50" color="#fff">
+        <v-btn  
+            :loading="loading" :disabled="loading" light
+            @click.stop.prevent="deletePedido(pedido.id)" 
+            icon title="Borrar" text :elevation="0"
+        >
+            <v-icon color="#232323">mdi-delete</v-icon>
+        </v-btn>
 
         <v-spacer></v-spacer>
 
@@ -22,7 +16,7 @@
 
         <v-spacer></v-spacer>
 
-        <div class="font-weight-black">{{sale}}</div>
+        <div class="font-weight-black black--text">{{sale}}</div>
     </v-toolbar>
 </template>
 
@@ -70,7 +64,7 @@ import accounting from 'accounting';
                     theme: "toasted-primary", 
                     position: "top-right", 
                     duration : 2000,
-                    icon : "done",
+                    //icon : "mdi-check",
                 });
                 this.loading = false;
             },
@@ -79,7 +73,7 @@ import accounting from 'accounting';
                     theme: "toasted-primary", 
                     position: "top-right", 
                     duration : 2000,
-                    icon : "error",
+                    //icon : "mdi-error",
                 });
                 this.loading = false;
             },
