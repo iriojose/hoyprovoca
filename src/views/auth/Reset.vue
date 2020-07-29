@@ -1,87 +1,89 @@
 <template>
-    <v-card width="100%" elevation="0" color="#1f3b63" height="1200">
-        <v-card-text>
-            <v-row justify="center" class="py-4">
-                <v-col cols="12" md="8" sm="12" :class="$vuetify.breakpoint.smAndDown ? 'mx-4':null">
-                    <v-row justify="center" class="pb-4">
-                        <v-img contain width="100" height="50" :src="require('@/assets/logo 6.png')"></v-img>
-                    </v-row>
-                    <v-card width="100%">
-                        <v-row justify="center">
-                            <v-col cols="12" md="6" class="hidden-sm-and-down">
-                                <v-img width="100%" height="400" contain :src="require('@/assets/forgot.svg')"></v-img>
-                            </v-col>
-                            <v-col cols="12" md="6" sm="12" class="pa-12">
-                                <div class="headline text-center mb-5">Resetear contraseña</div>
-                                
-                                <v-card elevation="0" height="50">
-                                    <v-fade-transition>
-                                        <v-alert border="left" colored-border elevation="2"  dense :type="type" v-show="showMessage">
-                                            {{mensaje}}
-                                        </v-alert>
-                                    </v-fade-transition> 
-                                </v-card>
-
-                                <v-row justify="center" class="my-5" v-if="loading2">
-                                    <v-progress-circular
-                                        :size="70"
-                                        :width="5"
-                                        color="#1f3b63"
-                                        indeterminate
-                                        class="my-8"
-                                    ></v-progress-circular>
-                                </v-row>
-                                
-                                <v-row justify="center" class="my-5" v-if="error">
-                                    <v-icon size="70" :color="color">
-                                        {{icon}}
-                                    </v-icon>
-                                </v-row>
-
-                                <div class="text-center title font-weight-black my-5" v-if="error">
-                                    {{mensaje}}
-                                </div>
-                                
-                                <v-scroll-x-transition>
-                                    <v-form v-model="valid" v-show="cambiarPassword">
-                                        <v-text-field
-                                            filled rounded :disabled="loading" dense
-                                            v-model="contraseña" single-line type="password"
-                                            color="#0f2441" :rules="[required('Contraseña'),minLength('Contraseña',8)]"
-                                            label="Nueva contraseña" append-icon="mdi-lock"
-                                        ></v-text-field>
-
-                                        <v-text-field
-                                            filled rounded :disabled="loading"
-                                            v-model="contraseña2" single-line
-                                            type="password" color="#0f2441"
-                                            :rules="[required('Confirmar contraseña'),passwordConfirmationRule()]"
-                                            label="Confirmar contraseña" dense append-icon="mdi-lock"
-                                        ></v-text-field>
-
-                                        <v-btn
-                                            rounded color="#2950c3" block
-                                            :disabled="!valid" :loading="loading"
-                                            height="40" @click="reset" 
-                                            class="text-capitalize caption white--text"
-                                        >
-                                            Resetear contraseña
-                                        </v-btn>
-                                    </v-form>
-                                </v-scroll-x-transition>
-                            </v-col>
+    <div class="fondo">
+        <v-card color="transparent" elevation="0" width="100%">
+            <v-card-text>
+                <v-row justify="center" class="py-4">
+                    <v-col cols="12" md="8" sm="12" :class="$vuetify.breakpoint.smAndDown ? 'mx-4':null">
+                        <v-row justify="center" class="pb-4">
+                            <v-img transition="scale-transition" contain width="100" height="50" :src="require('@/assets/logo 6.png')"></v-img>
                         </v-row>
-                    </v-card>
-                </v-col>
-            </v-row>
-        </v-card-text>
+                        <v-card width="100%">
+                            <v-row justify="center">
+                                <v-col cols="12" md="6" class="hidden-sm-and-down">
+                                    <v-img width="100%" height="400" contain :src="require('@/assets/forgot.svg')"></v-img>
+                                </v-col>
+                                <v-col cols="12" md="6" sm="12" class="pa-12">
+                                    <div class="headline text-center mb-5">Resetear contraseña</div>
+                                    
+                                    <v-card elevation="0" height="50">
+                                        <v-fade-transition>
+                                            <v-alert border="left" colored-border elevation="2"  dense :type="type" v-show="showMessage">
+                                                {{mensaje}}
+                                            </v-alert>
+                                        </v-fade-transition> 
+                                    </v-card>
+
+                                    <v-row justify="center" class="my-5" v-if="loading2">
+                                        <v-progress-circular
+                                            :size="70"
+                                            :width="5"
+                                            color="#1f3b63"
+                                            indeterminate
+                                            class="my-8"
+                                        ></v-progress-circular>
+                                    </v-row>
+                                    
+                                    <v-row justify="center" class="my-5" v-if="error">
+                                        <v-icon size="70" :color="color">
+                                            {{icon}}
+                                        </v-icon>
+                                    </v-row>
+
+                                    <div class="text-center title font-weight-black my-5" v-if="error">
+                                        {{mensaje}}
+                                    </div>
+                                    
+                                    <v-scroll-x-transition>
+                                        <v-form v-model="valid" v-show="cambiarPassword">
+                                            <v-text-field
+                                                filled rounded :disabled="loading" dense
+                                                v-model="contraseña" single-line type="password"
+                                                color="#0f2441" :rules="[required('Contraseña'),minLength('Contraseña',8)]"
+                                                label="Nueva contraseña" append-icon="mdi-lock"
+                                            ></v-text-field>
+
+                                            <v-text-field
+                                                filled rounded :disabled="loading"
+                                                v-model="contraseña2" single-line
+                                                type="password" color="#0f2441"
+                                                :rules="[required('Confirmar contraseña'),passwordConfirmationRule()]"
+                                                label="Confirmar contraseña" dense append-icon="mdi-lock"
+                                            ></v-text-field>
+
+                                            <v-btn
+                                                rounded color="#2950c3" block
+                                                :disabled="!valid" :loading="loading"
+                                                height="40" @click="reset" 
+                                                class="text-capitalize caption white--text"
+                                            >
+                                                Resetear contraseña
+                                            </v-btn>
+                                        </v-form>
+                                    </v-scroll-x-transition>
+                                </v-col>
+                            </v-row>
+                        </v-card>
+                    </v-col>
+                </v-row>
+            </v-card-text>
+        </v-card>
 
         <v-footer fixed class="font-weight-medium" elevation="0" color="#1f3b63">
             <v-col class="text-center white--text" cols="12">
                 {{ new Date().getFullYear() }} — <strong>Hoyprovoca</strong> 
             </v-col>
         </v-footer>
-    </v-card>
+    </div>
 </template>
 
 <script>
@@ -156,8 +158,8 @@ import router from '@/router';
                     }
                 }).catch(e => {
                     this.error = true;
-                    console.log(e);
-                    this.respuesta2('Error de conexion, intente Nuevamente.','mdi-alert-circle','red');
+                    if(e.response.status) this.respuesta2("Token expirado","mdi-alert-circle","red");
+                    else this.respuesta2('Error de conexion, intente Nuevamente.','mdi-alert-circle','red');
                 });
             },
             reset(){
@@ -168,10 +170,25 @@ import router from '@/router';
                         this.login();
                     },1000);
                 }).catch(e => {
-                    console.log(e);
                     this.respuesta("Error al resetear la contraseña.","error");
                 });
             },
         }
     }
 </script>
+
+<style lang="scss" scoped>
+    .fondo{
+        background:#1f3b63;
+        height: 100%;
+    }   
+    .color{
+        color:#000;
+        background:#fff;
+    }
+    .color:hover{
+        cursor:pointer;
+        text-decoration:underline;
+        background:#fff;
+    }
+</style>

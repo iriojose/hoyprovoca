@@ -1,53 +1,58 @@
 <template>
-    <div>
-        <v-row style="padding:0 10px;" :class="$vuetify.breakpoint.smAndDown ? 'mt-12':''">
-            <v-col cols="12" md=3>
-                <v-card class="bg" :min-height="clicked ? '572.5px' : '150px'">
-                    <v-list dense nav style="margin-top: 64px;background: none;">
-                        <v-list-item two-line>
-                            <v-list-item-avatar size="115">
-                                <v-img :src="user.data.imagen === 'default.png' ? require('@/assets/user.jpg'):image+user.data.imagen"></v-img>
-                            </v-list-item-avatar>
-                            <v-avatar @click="dialog = !dialog" class="abs_center" size="35" style="z-index:2;" color="#F5F5F5">
-                                <v-icon style="font-size:21px;">mdi-camera</v-icon>
-                            </v-avatar>
-                            <v-list-item-content class="white--text font-weight-bold">
-                                <v-list-item-title class="subtitle-1 mb-1" style="text-overflow:none; white-space:normal;">{{user.data.nombre +' '+ user.data.apellido}}</v-list-item-title>
-                                <v-list-item-subtitle class="subtitle-2 white--text font-weight-bold">Mi Perfil</v-list-item-subtitle>
-                            </v-list-item-content>
-                        </v-list-item>
-                    </v-list>
-
-                    <v-divider class="back" v-show="clicked"></v-divider>
-
-                    <v-expand-transition>
-                        <v-card-actions v-show="clicked">
-                            <v-list dense nav style="background: none;width:100%">
-                                <v-list-item 
-                                    v-for="item in items" 
-                                    :key="item.title" 
-                                    link 
-                                    :to="item.to"
-                                    active-class="white--text color font-weight-bold sombra"
-                                >
-                                    <v-list-item-icon>
-                                        <v-icon dark>{{ item.icon }}</v-icon>
-                                    </v-list-item-icon>
-                                    <v-list-item-content style="text-align:left;">
-                                        <v-list-item-title class="subtitle-2 white--text font-weight-bold">{{ item.title }}</v-list-item-title>
+   <div>
+       <v-card color="transparent" elevation="0" width="100%">
+            <v-card-text>
+                <v-row justify="center">
+                    <v-col cols="12" md="3">
+                        <v-card class="bg" :min-height="!$vuetify.breakpoint.smAndDown ? '572.5px' : '150px'">
+                            <v-list dense nav color="transparent">
+                                <v-list-item two-line>
+                                    <v-list-item-avatar size="115">
+                                        <v-img :src="user.data.imagen === 'default.png' ? require('@/assets/user.jpg'):image+user.data.imagen"></v-img>
+                                    </v-list-item-avatar>
+                                    <v-avatar @click="dialog = !dialog" class="abs_center" size="35" style="z-index:2;" color="#F5F5F5">
+                                        <v-icon style="font-size:21px;">mdi-camera</v-icon>
+                                    </v-avatar>
+                                    <v-list-item-content class="white--text font-weight-bold">
+                                        <v-list-item-title class="subtitle-1 mb-1" style="text-overflow:none; white-space:normal;">{{user.data.nombre +' '+ user.data.apellido}}</v-list-item-title>
+                                        <v-list-item-subtitle class="subtitle-2 white--text font-weight-bold">Mi Perfil</v-list-item-subtitle>
                                     </v-list-item-content>
                                 </v-list-item>
                             </v-list>
-                        </v-card-actions>
-                    </v-expand-transition>
-                </v-card>
-            </v-col>
-            <v-col cols=12 md="9">
-                <v-card :style="( !clickable ? 'margin-top:64px;padding: 25px 45px 0 45px;' : 'padding: 25px 15px')+'background:#fdfdfd;'" min-height="570px">
-                    <router-view></router-view>
-                </v-card>
-            </v-col>
-        </v-row>
+
+                            <v-divider class="back" v-show="!$vuetify.breakpoint.smAndDown"></v-divider>
+
+                            <v-expand-transition>
+
+                            <v-card-actions>
+                                <v-list dense nav style="background: none;width:100%">
+                                    <v-list-item 
+                                        v-for="item in items" 
+                                        :key="item.title" 
+                                        link 
+                                        :to="item.to"
+                                        active-class="white--text color font-weight-bold sombra"
+                                    >
+                                        <v-list-item-icon>
+                                            <v-icon dark>{{ item.icon }}</v-icon>
+                                        </v-list-item-icon>
+                                        <v-list-item-content style="text-align:left;">
+                                            <v-list-item-title class="subtitle-2 white--text font-weight-bold">{{ item.title }}</v-list-item-title>
+                                        </v-list-item-content>
+                                    </v-list-item>
+                                </v-list>
+                            </v-card-actions>
+                        </v-expand-transition>
+                        </v-card>
+                    </v-col>
+                    <v-col cols="12" md="9">
+                        <v-card min-height="570px">
+                            <router-view></router-view>
+                        </v-card>
+                    </v-col>
+                </v-row>
+            </v-card-text>
+        </v-card>
 
         <!--modal para cambiar imagen-->
         <CambiarImagen :dialog="dialog">
@@ -62,12 +67,13 @@
                 </v-btn>
             </template>
         </CambiarImagen>
-    </div>
+   </div>
 </template>
 
 <script>
 import {mapState, mapActions} from 'vuex';
 import variables from '@/services/variables_globales';
+
     export default {
         components:{
             CambiarImagen:() => import('@/components/dialogs/CambiarImagen')
@@ -82,8 +88,6 @@ import variables from '@/services/variables_globales';
                     {icon:'mdi-alert-circle',to:'/account/ordenes',title:'últimas Ordenes'},
                     {icon: 'mdi-help-circle',to:'/account/ayuda',title:'Atención al cliente'},
                 ],
-                clicked:true,
-                clickable: false,
                 dialog:false,
             }
         },

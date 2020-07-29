@@ -1,155 +1,111 @@
 <template>
-    <v-card width="100%" elevation="0" color="#f7f7f7">
-        <v-card-text>
-            <v-card v-if="loading" elevation="0" color="#f7f7f7" width="100%" height="500">
-                <LoaderRect />
-            </v-card>
+    <div>
+        <v-card elevation="0" color="#fff" width="100%" height="100%" v-if="loadingConceptos && loadingGrupos">
+            <v-card-text>
+                <v-row justify="center" class="fill-height" align="center">
+                    <v-img width="500" height="500" contain :src="require('@/assets/loader.gif')"></v-img>
+                </v-row>
+            </v-card-text>
+        </v-card>
 
-            <v-card 
-                width="100%" elevation="0" color="#f7f7f7" 
-                v-if="!loading && grupos.length == 0" 
-                :class="$vuetify.breakpoint.smAndDown ? 'margen-movil':'margen-top'"
-            >
-                <v-card-text>
-                    <v-row justify="center">
-                        <v-img src="@/assets/nodata.svg" contain width="500" height="500" />
-                    </v-row>
-                    <div class="text-center font-weight-bold headline">
-                        No se encontraron resultados
-                    </div>
-                </v-card-text>
-            </v-card>
+        <v-card elevation="0" color="#fff" width="100%" height="100%" v-else>
+
+            <v-card-title class="title font-weight-black">
+                <v-row justify="center" align="center">
+                    <v-avatar size="80" class="mx-2">
+                        <v-img :src="image+empresa.imagen"></v-img>
+                    </v-avatar>
+                    {{empresa.nombre_comercial}}
+                </v-row>
+            </v-card-title>
             
-            <v-row v-if="!loading && grupos.length > 0" justify="center" :class="$vuetify.breakpoint.smAndDown ? 'margen-movil':'margen-top'">
-                <v-col cols="12" md="4" sm="12" :class="$vuetify.breakpoint.smAndDown ? 'px-5':'px-10'">
-                    <PanelCategorias :grupos="grupos" :empresa="empresa" />
-                </v-col>
+            <v-card-text v-if="grupos.length!==0">
+                <v-row justify="center">
+                    <v-slide-group multiple :show-arrows="$vuetify.breakpoint.smAndDown ? false:true">
+                        <v-slide-item v-for="(grupo,i) in grupos" :key="i" class="mx-2" @click="push(grupo)">
+                            <div @click="push(grupo)">
+                                <v-avatar size="50">
+                                    <v-img :src="image+grupo.imagen"></v-img>
+                                </v-avatar>
+                                <div 
+                                    style="max-width:60px;"
+                                    class="text-center font-weight-black text-truncate">{{grupo.nombre}}
+                                </div>
+                            </div>
+                        </v-slide-item>
+                    </v-slide-group>
+                </v-row>
+            </v-card-text>
 
-                <v-col cols="12" md="8" sm="12" v-if="!this.$route.params.text2">
-                    <v-toolbar color="#f7f7f7" elevation="0" width="100%" class="mb-4 mx-5" v-if="$vuetify.breakpoint.smAndDown && !loading">
-                        <v-btn tile icon class="mx-2" outlined @click="tipo = true" :disabled="tipo">
-                            <v-icon dark>mdi-view-grid</v-icon>
-                        </v-btn>
-                        <v-btn tile icon class="mx-2" outlined @click="tipo = false" :disabled="!tipo">
-                            <v-icon dark>mdi-view-agenda</v-icon>
-                        </v-btn>
-                        <v-spacer></v-spacer>
-                    </v-toolbar>
+            <v-card-text v-if="conceptos.length!==0">
+                <!--div class="headline font-weight-black text-center mt-8">Todas las Categorías</div-->
+                <v-row justify="center">
+                    <v-col cols="12" sm="12" md="9">
+                        <v-toolbar color="#fff" elevation="0" width="100%" class="pb-4 px-5">
+                            <v-btn tile icon class="mx-2" outlined @click="tipo = true" :disabled="tipo">
+                                <v-icon dark>mdi-view-grid</v-icon>
+                            </v-btn>
+                            <v-btn tile icon class="mx-2" outlined @click="tipo = false" :disabled="!tipo">
+                                <v-icon dark>mdi-view-agenda</v-icon>
+                            </v-btn>
+                            <v-spacer></v-spacer>
+                        </v-toolbar>
+                    </v-col>
+                </v-row>
 
-                    <div :class="$vuetify.breakpoint.smAndDown ? 'mb-5':'sombra mb-5'" v-for="(grupo,i) in grupos" :key="i" >
-                        <DataAliados :grupo="grupo" :conceptos="conceptos[i]" :tipo="tipo"/>
-                    </div>
-                </v-col>
+                <v-row justify="center" v-if="tipo">
+                    <CardConceptos :concepto="concepto" v-for="(concepto,i) in conceptos" :key="i"/>
+                </v-row>
 
-                <v-col cols="12" md="8" sm="12" v-if="this.$route.params.text2">
-                    <v-toolbar color="#f7f7f7" elevation="0" width="100%" class="mb-4 mx-5" v-if="$vuetify.breakpoint.smAndDown && !loading2">
-                        <v-btn tile icon class="mx-2" outlined @click="tipo = true" :disabled="tipo">
-                            <v-icon dark>mdi-view-grid</v-icon>
-                        </v-btn>
-                        <v-btn tile icon class="mx-2" outlined @click="tipo = false" :disabled="!tipo">
-                            <v-icon dark>mdi-view-agenda</v-icon>
-                        </v-btn>
-                        <v-spacer></v-spacer>
-                    </v-toolbar>
+                <v-row justify="center" v-else>
+                    <CardConceptos2 :concepto="concepto" v-for="(concepto,i) in conceptos" :key="i"/>
+                </v-row>
 
-                    <transition name="slide-fade">
-                        <v-card width="100%" elevation="0" color="#f7f7f7" v-show="!loading">
-                            <v-row justify="center" v-if="tipo">
-                                <CardConceptos :concepto="concepto" v-for="(concepto,i) in conceptos" :key="i"/>
-                            </v-row>
-                            <v-row justify="center" v-else>
-                                <CardConceptos2 :concepto="concepto" v-for="(concepto,i) in conceptos" :key="i"/>
-                            </v-row>
-                            <v-toolbar elevation="0" class="mx-10" color="#f7f7f7">
-                                <v-spacer></v-spacer>
-                                <v-btn 
-                                    color="#232323" 
-                                    elevation="0"
-                                    :loading="loading2"
-                                    class="text-capitalize font-weigth-bold body-1"
-                                    dark
-                                    :disabled="total == conceptos.length ? true:false"
-                                    @click="getConceptosGrupos(conceptos[0].adm_grupos_id)"
-                                >
-                                    Ver más
-                                </v-btn>
-                                <v-spacer></v-spacer>
-                            </v-toolbar>
-                        </v-card>
-                    </transition>
-                </v-col>
-            </v-row>
+                <v-row justify="center" class="my-5">
+                    <v-btn 
+                        color="#232323" tile dark
+                        :loading="loadingConceptos" @click="getConceptos()"
+                        :disabled="total == conceptos.length ? true:false"
+                    >Ver más
+                    </v-btn>
+                </v-row>
+            </v-card-text>
 
-        </v-card-text>
-    </v-card>
+            <v-card-text v-else>
+                <div class="text-center font-weight-black headline mt-8">No se encontraron resultados.</div>
+                <v-row justify="center">
+                    <v-img width="500" height="500" contain :src="require('@/assets/cancel.svg')"></v-img>
+                </v-row>
+            </v-card-text>
+        </v-card>
+    </div>
 </template>
 
 <script>
 import Empresa from '@/services/Empresa';
 import Grupos from '@/services/Grupos';
 import variables from '@/services/variables_globales';
+import router from '@/router';
 import {mapState} from 'vuex';
 
     export default {
         components:{
-            LoaderRect:() => import('@/components/loaders/LoaderRect'),
-            PanelCategorias:() => import('@/components/vistaAliados/PanelCategorias'),
-            CardConceptos:() => import('@/components/cards/CardConceptos2'),
-            CardConceptos2:() => import('@/components/cards/CardConceptos3'),
-            DataAliados:() => import('@/components/vistaAliados/DataAliados')
+            CardConceptos: () => import("@/components/cards/CardConceptos"),
+            CardConceptos2:() => import("@/components/cards/CardConceptos2")
         },
-        data(){
+        data() {
             return {
                 ...variables,
-                empresa:{
-                    imagen:'default.png'
-                },
-                data:null,
+                empresa:{imagen:"default.png"},
                 grupos:[],
                 conceptos:[],
+                loadingConceptos:true,
+                loadingGrupos:true,
                 tipo:true,
-                grupo:{},
-                total:null,
-                loading:true,
-                loading2:false,
-                after:0,
+                total:0,
+                after:0
             }
-        },
-        mounted() {
-            let id = window.localStorage.getItem('aliado');
-
-            if(id){
-                this.after=0;
-                this.loading = true;
-                this.getEmpresa(id);
-            }else{
-                this.loading = false;
-            }
-        },
-        computed: {
-            ...mapState(['agregados']),
-        },
-        watch: {
-            agregados(){
-                if(this.$route.name == 'aliadoDetalle'){
-                    this.revision();
-                }else{
-                    this.revision2();
-                }
-            },
-            '$route'(val){
-                let id = window.localStorage.getItem('aliado');
-                this.conceptos = [];
-
-                if(id){
-                    this.after=0;
-                    this.loading = true;
-                    this.getEmpresa(id);
-                }else{
-                    this.loading = false;
-                }
-            },
-        },
+        },       
         head:{
             title(){
                 return {
@@ -159,105 +115,73 @@ import {mapState} from 'vuex';
                 }
             }
         },
-        methods:{
-            async getEmpresa(id){
-                await Empresa().get(`/${id}`).then((response) => {
-                    this.empresa = response.data.data;
-                    this.getGrupos(id);
-                }).catch(e => {
-                    console.log(e);
-                    this.loading = false;
-                });
+        computed:{
+            ...mapState(['agregados'])
+        }, 
+        watch: {
+            agregados(){
+                this.revision();
             },
-            async getGrupos(id){
-                await Empresa().get(`/${id}/grupos`).then((response) => {
+            '$route'(val){
+                let empresa = JSON.parse(window.localStorage.getItem('empresa'));
+                this.conceptos = [];
+                this.grupos = [];
+                if(empresa){
+                    this.getGrupos(empresa.id);
+                    this.getConceptos(empresa.id);
+                }
+            },
+        },
+        mounted() {
+            let empresa = JSON.parse(window.localStorage.getItem("aliado"));
+
+            if(empresa){
+                this.empresa = empresa;
+                this.getGrupos(empresa.id);
+                this.getConceptos(empresa.id);
+            }else{
+                this.loadingConceptos = false;
+                this.loadingGrupos = false;
+            }
+        },
+        methods:{
+            getGrupos(id){
+                Empresa().get(`/${id}/grupos`).then((response) => {
                     this.grupos = response.data.data.sort(function (a, b) {
                         if (a.nombre > b.nombre) {return 1;}
                         if (a.nombre < b.nombre) {return -1;}
                         return 0;
                     });
-
-                    if(!this.$route.params.text2){
-                        this.grupos.filter((a,i) => this.getConceptos(a.id,i));
-                    }else{
-                        let id = window.localStorage.getItem('detalle');
-                        this.getGrupo(id);
-                    }
                 }).catch(e => {
                     console.log(e);
-                    this.loading = false;
+                    this.loadingGrupos = false;
                 });
             },
-            async getConceptos(id,i){
-                await Grupos().get(`/${id}/conceptos/?limit=10&adm_empresa_id=${this.empresa.id}`).then((response) => {
-                    response.data.data.filter(a => a.agregado=false);
-                    response.data.data.filter(a => this.agregados.filter(b => a.id == b ? a.agregado=true:null));
-                    this.grupos.filter(a => a.id == response.data.data[0].adm_grupos_id ? a.conceptos = response.data.data:null);
-
-                    if(this.grupos.length - 1 == i){
-                        this.grupos.filter(a => this.conceptos.push(a.conceptos));
-                        this.loading = false;
-                    }
+            getConceptos(id){
+                Empresa().get(`/${id}/conceptos`).then((response) => {
+                    console.log(response);
+                    if(response.data.data){
+                        response.data.data.filter(a => a.agregado=false);
+                        response.data.data.filter(a => this.agregados.filter(b => a.id == b ? a.agregado=true:null));
+                        this.after +=20;
+                        this.total = response.data.totalCount;
+                        response.data.data.filter(a => this.conceptos.push(a));
+                        this.loadingConceptos = false;
+                    }else this.loadingConceptos = false;
                 }).catch(e => {
                     console.log(e);
-                    this.loading = false;
-                });
-            },
-            async getGrupo(id){
-                await Grupos().get(`/${id}`).then((response) => {
-                    this.grupo = response.data.data;
-                    this.getConceptosGrupos(this.grupo.id);
-                }).catch(e => {
-                    console.log(e);
-                });
-            },
-            async getConceptosGrupos(id){
-                this.loading2 = true;
-                await Grupos().get(`/${id}/conceptos/?limit=12&offset=${this.after}&adm_empresa_id=${this.empresa.id}`).then((response) => {
-                    response.data.data.filter(a => a.agregado=false);
-                    response.data.data.filter(a => this.agregados.filter(b => a.id == b ? a.agregado=true:null));
-                    response.data.data.filter(a => this.conceptos.push(a));
-                    this.after +=12;
-                    this.total = response.data.totalCount;
-                    this.loading = false;
-                    this.loading2 = false;
-                }).catch(e => {
-                    console.log(e);
+                    this.loadingConceptos = false;
                 });
             },
             revision(){
-                this.conceptos.filter(a => a.filter(b => b.agregado=false));
-                this.conceptos.filter(a => a.filter(b => this.agregados.filter(c => b.id == c ? b.agregado=true:null)));
-            },
-            revision2(){
-                this.conceptos.filter(a => a.agregado = false);
+                this.conceptos.filter(a => a.agregado=false);
                 this.conceptos.filter(a => this.agregados.filter(b => a.id == b ? a.agregado=true:null));
+            },
+            push(item){
+                window.localStorage.setItem("grupo",JSON.stringify(item));
+                let nombre = item.nombre.toLowerCase(); 
+                router.push({name:'grupoDetalle', params:{text:nombre}});
             }
         }
     }
 </script>
-
-<style lang="scss" scoped>
-    .sombra{
-        -webkit-box-shadow: 0px 5px 6px -5px rgba(0,0,0,0.75);
-        -moz-box-shadow: 0px 5px 6px -5px rgba(0,0,0,0.75);
-        box-shadow: 0px 5px 6px -5px rgba(0,0,0,0.75);
-    }
-    .margen-top{
-        margin-top:75px;
-    }
-    .margen-movil{
-        margin-top:100px;
-    }
-    .slide-fade-enter-active {
-        transition: all .3s ease;
-    }
-    .slide-fade-leave-active {
-        transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-    }
-    .slide-fade-enter, .slide-fade-leave-to
-        /* .slide-fade-leave-active for <2.1.8 */ {
-        transform: translateX(10px);
-        opacity: 0;
-    }
-</style>

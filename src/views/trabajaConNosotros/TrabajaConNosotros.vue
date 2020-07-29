@@ -6,7 +6,7 @@
         <v-row justify="center" class="pa-5 my-5">
             <v-col cols="12" md="7" sm="12"> </v-col>
         </v-row>
-        <v-card class="mx-1 pa-9">
+        <v-card class="px-9 pb-9" elevation="0">
             <v-card-title class="title">
                 01 : Acerca de Hoyprovoca
             </v-card-title>
@@ -101,17 +101,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.margen-top {
-    margin-top: 75px;
-}
-.margen-movil {
-    margin-top: 100px;
-}
-.requisito {
-    padding-top: 0 !important;
-    padding-bottom: 0 !important;
-}
-.font {
-    font-size: 1.1rem !important;
-}
+    .margen-top {
+        margin-top: 75px;
+    }
+    .margen-movil {
+        margin-top: 100px;
+    }
+    .requisito {
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+    }
+    .font {
+        font-size: 1.1rem !important;
+    }
 </style>
