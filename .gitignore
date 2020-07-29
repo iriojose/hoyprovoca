@@ -13,19 +13,7 @@ node_modules
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-<<<<<<< HEAD
-.env.production
-.env.development
-.env
-=======
-<<<<<<< HEAD
-.env.production
-.env.development
-.env
-=======
 
->>>>>>> 258a5429a566d8dcec8d85a87644a566d18e1498
->>>>>>> changes
 # Editor directories and files
 .idea
 .vscode
