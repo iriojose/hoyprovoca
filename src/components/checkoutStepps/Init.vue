@@ -13,7 +13,7 @@
       </v-card-text>
     </v-card>
   </v-row>
-  <div v-else v-show="view == 1">
+  <div v-else v-show="view == 1" >
     <v-slide-group multiple show-arrows :class="$vuetify.breakpoint.smAndDown ? null : 'mx-10'">
       <v-slide-item v-for="(pedi, i) in pedidos" :key="i + 'a'">
         <v-btn
@@ -31,7 +31,7 @@
       </v-slide-item>
     </v-slide-group>
 
-    <v-card :class="$vuetify.breakpoint.smAndDown ? 'my-5 mx-2' : 'mx-10 my-5'" >
+    <v-card :class="$vuetify.breakpoint.smAndDown ? 'my-5 mx-2' : 'mx-10 my-5'" v-if="pedidoSelect" >
       <v-card-text>
         <v-row class="align" justify="center">
           <v-col
@@ -186,11 +186,7 @@ export default {
   mounted() {
     this.getPedidosUsuario();
   },
-  watch: {
-    pedidoSelect() {
-      this.detalles = this.pedidoSelect.detalles;
-    }
-  },
+
   computed: {
     ...mapState(["user", "modalPago","pedidos"])
   },
@@ -205,10 +201,11 @@ export default {
           : 0
         : concepto.existencias;
     },
-    calcularTotal(detalles) {
+    calcularTotal(concepto,detalles) {
       let suma = 0;
       detalles.map(a => (a.cantidad = Math.floor(a.cantidad)));
-      detalles.map(a => (suma += this.checkValue(a.precio) * a.cantidad));
+      detalles.map((a,i) => (suma += this.checkValue(concepto[i].precio_a) * a.cantidad));
+      console.log(suma,detalles)
       this.$emit("updatedState", {
         content: accounting.formatMoney(+suma, {
           symbol: "Bs ",
@@ -245,8 +242,8 @@ export default {
             name: "pedidoSelect",
             content: this.pedidos[0]
           });
-          this.calcularTotal(this.pedidos[0].detalles);
-          this.detalles = this.pedidos[0]
+          this.calcularTotal(this.pedidos[0].conceptos,this.pedidos[0].detalles);
+          this.detalles = this.pedidos[0].detalles
           this.pedidos.filter(a =>
             a.detalles.filter(
               b =>
@@ -271,10 +268,11 @@ export default {
           .replace(",", ".")
       );
     },
-    seleccionarPedido(evt) {
+    seleccionarPedido(evt,i) {
       this.$emit("updatedState", { name: "pedidoSelect", content: evt });
       this.messagePendiente = "Pagar";
-      this.calcularTotal(evt.detalles);
+      console.log(evt.detalles)
+      this.calcularTotal(this.pedidos[i].conceptos,evt.detalles);
     },
     next() {
       this.$emit("updatedState", { name: "view", content: 2 });

@@ -16,13 +16,15 @@
                 <v-col cols="12" md="4" sm="12" v-for="(n,i) in 4" :key="i">
                     <div v-if="i == 0">
                         <div v-for="(categoria,e) in categorias" :key="e" @click="push(categoria)" class="underline my-5 text-center font-weight-bold">
-                            {{categoria.text}}
+                           
+                                {{categoria.text}}
+                            
                         </div>
                     </div>
 
                     <div v-if="i == 1">
                         <div v-for="(interes,g) in intereses" :key="g" class="underline my-5 text-center font-weight-bold">
-                            {{interes.text}}
+                          <a :href="interes.to ? interes.to : ''" class="underline text-center font-weight-bold">  {{interes.text}} </a>
                         </div>
                     </div>
 
@@ -73,7 +75,7 @@ import router from '@/router';
                 ],
                 intereses:[
                     {text:'Terminos y condiciones'},
-                    {text:'Trabaja con nosotros'},
+                    {text:'Trabaja con nosotros',to:'/trabajar'},
                     {text:'Politica de tratamientos de datos personales'},
                     {text:'Preguntas frecuentes'}
                 ],

@@ -28,9 +28,6 @@
             <v-list-item-title>
               <p class="text-center">solicitada</p>
             </v-list-item-title>
-            <v-list-item-title>
-              <p class="text-center">en Stock</p>
-            </v-list-item-title>
           </v-list-item>
           <v-list-item
             class="products-row line products"
@@ -48,9 +45,6 @@
             <v-list-item-title class="product-text">
               <p class="text-center">{{ pedidoSelect.conceptos[i].costo_dolar }} $</p>
             </v-list-item-title>
-            <v-list-item-title class="product-text">
-              <p class="text-center" style="padding-left:10px">{{ detalle.cantidad }}</p>
-            </v-list-item-title>
             <v-list-item-title class="product-text center">
               <v-btn
                 class="ma-2 bloked white--text"
@@ -60,7 +54,7 @@
                 v-if="detalle"
                 :color="productsAvaible[i]"
                 @click="loader = 'loading'"
-              >{{ detalle.stock }}</v-btn>
+              >{{ detalle.cantidad }}</v-btn>
             </v-list-item-title>
           </v-list-item>
         </v-list>

@@ -150,4 +150,5 @@ export default {
 .stepper-buttons {
   align-self: flex-end;
 }
+
 </style>
