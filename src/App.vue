@@ -14,7 +14,7 @@
         <ModalSesion />
         <ModalProducto />
 
-        <BottomNavigation />
+        <BottomNavigation v-if="ruta() && $vuetify.breakpoint.smAndDown"  />
 	</v-app>
 </template>
 
