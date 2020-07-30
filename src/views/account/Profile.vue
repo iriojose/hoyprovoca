@@ -41,11 +41,11 @@
                         v-if="!$vuetify.breakpoint.smAndDown"
                     ></v-switch>
 
-                    <v-switch 
+                    <!--v-switch 
                         v-model="notificaciones" :disabled="process"
                         class="ma-4" color="green" :label="label2"
                         v-if="!$vuetify.breakpoint.smAndDown"
-                    ></v-switch>
+                    ></v-switch-->
                 </v-col>
                 <v-col cols="12" md="6" sm="12" class="px-10">
                     <v-text-field

@@ -1,10 +1,10 @@
 <template>
    <div>
-       <v-card color="transparent" elevation="0" width="100%" @click="clicked = !clickable ? true : !clicked">
+       <v-card color="transparent" elevation="0" width="100%">
             <v-card-text>
                 <v-row justify="center">
                     <v-col cols="12" md="3">
-                        <v-card class="bg" :min-height="!$vuetify.breakpoint.smAndDown ? '572.5px' : '150px'">
+                        <v-card class="bg" :min-height="!$vuetify.breakpoint.smAndDown ? '572.5px' : '150px'" @click="clicked = !clickable ? true : !clicked">
                             <v-list dense nav color="transparent">
                                 <v-list-item two-line>
                                     <v-list-item-avatar size="115">
@@ -23,8 +23,7 @@
                             <v-divider class="back" v-show="!$vuetify.breakpoint.smAndDown"></v-divider>
 
                             <v-expand-transition>
-
-                                <v-card-actions  v-show="clicked">
+                                <v-card-actions v-show="clicked">
                                     <v-list dense nav style="background: none;width:100%">
                                         <v-list-item 
                                             v-for="item in items" 
