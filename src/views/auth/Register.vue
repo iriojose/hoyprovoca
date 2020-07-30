@@ -1,5 +1,15 @@
 <template>
     <v-card width="100%" elevation="0" color="#1f3b63" height="100%">
+        <v-card-actions>
+            <v-btn fab small color="#2950c3" @click="home">
+                <v-icon color="#fff">mdi-home</v-icon>
+            </v-btn>
+            <v-spacer></v-spacer>
+            <v-spacer></v-spacer>
+            <v-btn rounded color="#2950c3" class="text-capitalize white--text caption" @click="forgot">
+                ¿Olvido su contraseña?
+            </v-btn>
+        </v-card-actions>
         <v-card-text>
             <v-row justify="center"> 
                 <v-col cols="12" md="9" sm="12">
@@ -63,13 +73,13 @@
                                                     <template v-slot:activator="{ on }">
                                                         <v-text-field
                                                             dense v-model="data.fecha_nac" label="Cumpleaños"
-                                                            color="#2950c3" append-icon="mdi-event" filled
+                                                            color="#2950c3" append-icon="mdi-calendar" filled
                                                             v-on="on" rounded hint="Formato YYYY/MM/DD"
-                                                            persistent-hint single-line
+                                                            persistent-hint single-line 
                                                         ></v-text-field>
                                                     </template>
                                                     <v-date-picker
-                                                        v-model="data.fecha_nac" landscape show-current
+                                                        v-model="data.fecha_nac" :landscape="!$vuetify.breakpoint.smAndDown" show-current
                                                         header-color="#2950c3" color="#2950c3" locale="es"
                                                     />
                                                 </v-menu>
@@ -232,7 +242,13 @@ import variables from "@/services/variables_globales";
 
 		login() {
 			router.push("/login");
-		},
+        },
+        home(){
+            router.push('/');
+        },
+        forgot(){
+            router.push('/forgot');
+        },
 		respuesta(mensaje, type) {
 			this.mensaje = mensaje;
 			this.type = type;
@@ -314,7 +330,7 @@ import variables from "@/services/variables_globales";
 			});
 		}
 	}
-	};
+};
 </script>
 
 <style lang="scss" scoped>

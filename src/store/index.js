@@ -17,6 +17,7 @@ export default new Vuex.Store({
         modalsesion:false,
         modalProducto:false,
         bloqueado:false,
+        drawer:false,
         search:'',
         bandera:false,
 		//data global (grupos,empresas)
@@ -56,6 +57,9 @@ export default new Vuex.Store({
         },
         SET_MODAL_SESION(state,val){
             val ? state.modalsesion = true:state.modalsesion = false;
+        },
+        SET_DRAWER(state,val){
+            val ? state.drawer = true:state.drawer = false;
         },
         SET_MODAL_BLOQUEADO(state,val){
             val ? state.bloqueado = true:state.bloqueado = false;
@@ -234,6 +238,9 @@ export default new Vuex.Store({
         setModalSesion({commit},val){
             commit('SET_MODAL_SESION',val);
         },
+        setDrawer({commit},val){
+            commit("SET_DRAWER",val);
+        }
 	},
 	modules: {
 	}

@@ -5,9 +5,9 @@
         :elevate-on-scroll="$vuetify.breakpoint.smAndDown ? false:true"
         :extended="$vuetify.breakpoint.smAndDown && $route.name !== 'home' ? true:false"
     >
-        <v-app-bar-nav-icon  color="#000" class="mr-1" @click="dialog = !dialog" v-if="dialog==false" />
+        <v-app-bar-nav-icon  color="#000" class="mr-1" @click="change" v-if="dialog==false" />
 
-        <v-btn fab v-else  @click="dialog = !dialog" icon depressed class="mr-1">
+        <v-btn fab v-else  @click="change" icon depressed class="mr-1">
             <v-icon color="#000">
                 mdi-close
             </v-icon>
@@ -64,7 +64,7 @@
             </v-btn>
         </v-text-field>
 
-        <BarraLateral :dialog="dialog" />
+        <BarraLateral />
     </v-app-bar>
 </template>
 
@@ -86,7 +86,7 @@ import {mapState, mapActions} from 'vuex';
             }
         },
         computed:{
-            ...mapState(['user','search','bandera']),
+            ...mapState(['user','search','bandera','drawer']),
 
             busquedas:{
                 get(){ return this.search},
@@ -94,8 +94,11 @@ import {mapState, mapActions} from 'vuex';
             },
         },
         methods:{
-            ...mapActions(['setBuscar','setBandera']),
-
+            ...mapActions(['setBuscar','setBandera','setDrawer']),
+            
+             change(){
+                this.drawer ? this.setDrawer(false):this.setDrawer(true);
+            },
             push(){ 
                 if(this.bandera){
                     this.setBandera(false);

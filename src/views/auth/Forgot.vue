@@ -1,5 +1,16 @@
 <template>
-    <v-card width="100%" elevation="0" color="#1f3b63" height="1200">
+    <v-card width="100%" elevation="0" color="#1f3b63" height="100%">
+        <v-card-actions>
+            <v-btn fab small color="#2950c3" @click="home">
+                <v-icon color="#fff">mdi-home</v-icon>
+            </v-btn>
+            <v-spacer></v-spacer>
+            <v-spacer></v-spacer>
+            <v-btn rounded color="#2950c3" class="text-capitalize white--text caption" @click="register">
+                Registrate
+            </v-btn>
+        </v-card-actions>
+
         <v-card-text>
             <v-row justify="center" class="py-4">
                 <v-col cols="12" md="8" sm="12" :class="$vuetify.breakpoint.smAndDown ? 'mx-4':null">
@@ -112,6 +123,12 @@ import Usuario from '@/services/Usuario';
         methods:{
             login(){
                 router.push('/login');
+            },
+            home(){
+                router.push('/');
+            },
+            register(){
+                router.push('/register');
             },
             respuesta(mensaje,type){
                 this.mensaje = mensaje;
