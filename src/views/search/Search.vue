@@ -9,40 +9,44 @@
         </v-card>
 
         <v-card elevation="0" color="#fff" width="100%" height="100%" v-else>
-            <v-card-text v-if="conceptos">
-                <!--div class="headline font-weight-black text-center mt-8">Todas las Categorías</div-->
-                <v-row>
-                    <v-col cols="12" sm="12" md="9">
-                        <v-toolbar color="#fff" elevation="0" width="100%" class="pb-4 px-5">
-                            <v-btn tile icon class="mx-2" outlined @click="tipo = true" :disabled="tipo">
-                                <v-icon dark>mdi-view-grid</v-icon>
-                            </v-btn>
-                            <v-btn tile icon class="mx-2" outlined @click="tipo = false" :disabled="!tipo">
-                                <v-icon dark>mdi-view-agenda</v-icon>
-                            </v-btn>
-                            <v-btn tile icon class="mx-2" outlined @click="drawer = !drawer">
-                                <v-icon dark>mdi-magnify</v-icon>
-                            </v-btn>
-                            <v-spacer></v-spacer>
-                        </v-toolbar>
-                    </v-col>
-                </v-row>
+            <transition name="fade">
+                <v-card-text v-show="conceptos">
+                    <!--div class="headline font-weight-black text-center mt-8">Todas las Categorías</div-->
+                    <v-row>
+                        <v-col cols="12" sm="12" md="9">
+                            <v-toolbar color="#fff" elevation="0" width="100%" class="pb-4 px-5">
+                                <v-btn tile icon class="mx-2" outlined @click="tipo = true" :disabled="tipo">
+                                    <v-icon dark>mdi-view-grid</v-icon>
+                                </v-btn>
+                                <v-btn tile icon class="mx-2" outlined @click="tipo = false" :disabled="!tipo">
+                                    <v-icon dark>mdi-view-agenda</v-icon>
+                                </v-btn>
+                                <v-btn tile icon class="mx-2" outlined @click="drawer = !drawer">
+                                    <v-icon dark>mdi-magnify</v-icon>
+                                </v-btn>
+                                <v-spacer></v-spacer>
+                            </v-toolbar>
+                        </v-col>
+                    </v-row>
+                    
+                    <v-row justify="center" v-show="tipo">
+                        <CardConceptos :concepto="concepto" v-for="(concepto,i) in conceptos" :key="i"/>
+                    </v-row>
 
-                <v-row justify="center" v-if="tipo">
-                    <CardConceptos :concepto="concepto" v-for="(concepto,i) in conceptos" :key="i"/>
-                </v-row>
-
-                <v-row justify="center" v-else>
-                    <CardConceptos2 :concepto="concepto" v-for="(concepto,i) in conceptos" :key="i"/>
-                </v-row>
-            </v-card-text>
-
-            <v-card-text v-if="!loading && conceptos.length==0">
-                <div class="text-center font-weight-black headline mt-8">No se encontraron resultados.</div>
-                <v-row justify="center">
-                    <v-img width="500" height="500" contain :src="require('@/assets/cancel.svg')"></v-img>
-                </v-row>
-            </v-card-text>
+                    <v-row justify="center" v-show="!tipo">
+                        <CardConceptos2 :concepto="concepto" v-for="(concepto,i) in conceptos" :key="i"/>
+                    </v-row>
+                </v-card-text>
+            </transition> 
+            
+            <transition name="fade">
+                <v-card-text v-show="!loading && conceptos.length==0">
+                    <div class="text-center font-weight-black headline mt-8">No se encontraron resultados.</div>
+                    <v-row justify="center">
+                        <v-img width="500" height="500" contain :src="require('@/assets/cancel.svg')"></v-img>
+                    </v-row>
+                </v-card-text>
+            </transition>
         </v-card>
 
         <v-navigation-drawer 
@@ -194,10 +198,10 @@ import {mapState,mapActions} from 'vuex';
                 this.aux.filter(a => a.direcciones !== undefined ? a.direcciones.municipio == evt.municipio ? this.conceptos.push(a):null:null);
             },
             mayorPrecio(){
-                this.conceptos.sort((a, b) => b.precio_a - a.precio_a);
+                this.conceptos.sort((a, b) => b.precio_dolar - a.precio_dolar);
             },
             menorPrecio(){
-                this.conceptos.sort((a, b) => a.precio_a - b.precio_a);
+                this.conceptos.sort((a, b) => a.precio_dolar - b.precio_dolar);
             },
             alfabeticamente(){
                 this.conceptos.sort((a, b) => a.nombre.localeCompare(b.nombre));

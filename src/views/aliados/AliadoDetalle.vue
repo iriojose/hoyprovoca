@@ -22,17 +22,18 @@
             <v-card-text v-if="grupos.length!==0">
                 <v-row justify="center">
                     <v-slide-group multiple :show-arrows="$vuetify.breakpoint.smAndDown ? false:true">
-                        <v-slide-item v-for="(grupo,i) in grupos" :key="i" class="mx-2" @click="push(grupo)">
-                            <div @click="push(grupo)">
-                                <v-avatar size="50">
-                                    <v-img :src="image+grupo.imagen"></v-img>
-                                </v-avatar>
-                                <div 
-                                    style="max-width:60px;"
-                                    class="text-center font-weight-black text-truncate">{{grupo.nombre}}
+                            <v-slide-item v-for="(grupo,i) in grupos" :key="i" class="mx-4 cursor" @click="push(subgrupo)">
+                                <div @click="push(grupo)">
+                                    <v-row justify="center">
+                                        <v-avatar size="50">
+                                            <v-img :src="image+grupo.imagen"></v-img>
+                                        </v-avatar>
+                                    </v-row>
+                                    <div class="text-center font-weight-black text-truncate">
+                                        {{grupo.nombre}}
+                                    </div>
                                 </div>
-                            </div>
-                        </v-slide-item>
+                            </v-slide-item>
                     </v-slide-group>
                 </v-row>
             </v-card-text>
@@ -182,3 +183,9 @@ import {mapState} from 'vuex';
         }
     }
 </script>
+
+<style lang="scss" scope>
+    .cursor{
+        cursor:pointer;
+    }
+</style>

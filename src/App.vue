@@ -13,6 +13,8 @@
         <ModalBloqueado />
         <ModalSesion />
         <ModalProducto />
+
+        <BottomNavigation v-if="ruta() && $vuetify.breakpoint.smAndDown"  />
 	</v-app>
 </template>
 
@@ -31,7 +33,8 @@ import {mapActions,mapState} from 'vuex';
             Footer:() => import("@/components/footer/Footer"),
             ModalBloqueado:() => import("@/components/dialogs/ModalBloqueado"),
             ModalSesion:() => import("@/components/dialogs/ModalSesion"),
-            ModalProducto:() => import("@/components/dialogs/ModalProducto")
+            ModalProducto:() => import("@/components/dialogs/ModalProducto"),
+            BottomNavigation:() => import("@/components/footer/BottomNavigation")
         },
         data() {
             return {

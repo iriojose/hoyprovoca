@@ -9,22 +9,32 @@
         </v-card>
 
         <v-card elevation="0" color="#fff" width="100%" height="100%" v-else>
+            <v-card-title class="title font-weight-black">
+                <v-row justify="center" align="center">
+                    <v-avatar size="80" class="mx-2">
+                        <v-img :src="image+grupo.imagen"></v-img>
+                    </v-avatar>
+                    {{grupo.nombre}}
+                </v-row>
+            </v-card-title>
+
             <v-card-text v-if="subgrupos.length!==0">
                 <div class="text-center font-weight-black title my-2">Sub categorías</div>
                 <v-row justify="center">
                     <v-slide-group multiple :show-arrows="$vuetify.breakpoint.smAndDown ? false:true">
-                        <v-slide-item v-for="(subgrupo,i) in subgrupos" :key="i" class="mx-2" @click="push(subgrupo)">
-                            <div @click="push(subgrupo)">
-                                <v-avatar size="50">
-                                    <v-img :src="image+subgrupo.imagen"></v-img>
-                                </v-avatar>
-                                <div 
-                                    style="max-width:60px;"
-                                    class="text-center font-weight-black text-truncate">{{subgrupo.nombre}}
+                            <v-slide-item v-for="(subgrupo,i) in subgrupos" :key="i" class="mx-4 cursor" @click="push(subgrupo)">
+                                <div @click="push(subgrupo)">
+                                    <v-row justify="center">
+                                        <v-avatar size="50">
+                                            <v-img :src="image+subgrupo.imagen"></v-img>
+                                        </v-avatar>
+                                    </v-row>
+                                    <div class="text-center font-weight-black text-truncate">
+                                        {{subgrupo.nombre}}
+                                    </div>
                                 </div>
-                            </div>
-                        </v-slide-item>
-                </v-slide-group>
+                            </v-slide-item>
+                    </v-slide-group>
                 </v-row>
             </v-card-text>
 
@@ -52,7 +62,7 @@
                     <CardConceptos2 :concepto="concepto" v-for="(concepto,i) in conceptos" :key="i"/>
                 </v-row>
 
-                <v-row justify="center" class="my-5">
+                <v-row justify="center" class="my-10">
                     <v-btn 
                         color="#232323" tile dark
                         :loading="loadingConceptos" @click="getConceptos(grupo.id)"
@@ -110,7 +120,6 @@ import router from '@/router';
         },
         watch: {
             agregados(){
-                console.log("alo?");
                 this.revision();
             },
             '$route'(val){
@@ -172,3 +181,9 @@ import router from '@/router';
         }
     }
 </script>
+
+<style lang="scss" scope>
+    .cursor{
+        cursor:pointer;
+    }
+</style>

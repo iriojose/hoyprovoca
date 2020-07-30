@@ -1,54 +1,9 @@
 <template>
     <div>
-        <!--v-card elevation="0" height="60" width="100%" v-for="(detalle,i) in detalles" :key="i" color="#fff">
-            <v-row justify="space-around">
-                <v-col cols="12" sm="1">
-                    <v-avatar class="elevation-2" size="50">
-                        <v-img width="50" height="50" contain :src="image+detalle.imagen" />
-                    </v-avatar>
-                </v-col>
-
-                <v-col cols="12" sm="4" class="mt-3">
-                    <div class="mx-2 body-1 font-weight-black black--text text-center">{{conceptos[i].nombre}}</div>
-                </v-col>
-
-                <v-col cols="12" sm="4" class="mt-3">
-                    <div class="font-weight-black black--text text-center">{{sales[i]}}</div>
-                </v-col>
-
-                <v-col cols="12" sm="1">
-                    <v-btn 
-                        v-if="detalle.cantidad == 1" x-small fab
-                        :loading="loading" :disabled="detalles.length == 1 ? true:false"
-                        @click="deleteDetalle(detalle,i)" title="eliminar"
-                    >
-                        <v-icon color="#232323">mdi-delete</v-icon>
-                    </v-btn>
-                    <v-btn 
-                        v-else title="reducir" @click="resta(detalle,i)" :loading="loading"
-                        :disabled="loading" fab x-small
-                    >
-                        <v-icon color="#232323">mdi-remove</v-icon>
-                    </v-btn>
-                </v-col>
-
-                <v-col cols="12" sm="1" class="mt-2">
-                    <div class="font-weight-black body-1 black--text text-center ml-3">{{Number.parseInt(detalle.cantidad)}}</div>
-                </v-col>
-
-                <v-col cols="12" sm="1">
-                     <v-btn 
-                        title="agregar" @click="suma(detalle,i)" :loading="loading"
-                        :disabled="loading" fab x-small
-                    >
-                        <v-icon color="#232323">mdi-add</v-icon>
-                    </v-btn>
-                </v-col>
-            </v-row>
-        </v-card-->
         <v-toolbar elevation="0" height="60" v-for="(detalle,i) in detalles" :key="i" color="#fff">
             <v-avatar class="elevation-2" size="50">
-                <v-img width="50" height="50" contain :src="image+detalle.imagen" />
+                <v-img width="50" height="50" contain 
+                :src="typeof detalle.imagen === 'undefined'  || detalle.imagen === 'default.png' ? require('@/assets/box.svg') : image + detalle.imagen" />
             </v-avatar>
             <v-spacer></v-spacer>
             <div class="mx-2 caption font-weight-black black--text">{{conceptos[i].nombre}}</div>
