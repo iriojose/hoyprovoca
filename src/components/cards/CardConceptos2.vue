@@ -21,7 +21,7 @@
                 </v-col>
                 <v-col cols="12" sm="6">
                     <div class="text-center subtitle-1 font-weight-black">{{precioDolar}}</div>
-                    <div class="text-center body-1 font-weight-bold text-capitalize">{{concepto.nombre}}</div>
+                    <div class="text-center font-weight-bold text-capitalize">{{concepto.nombre}}</div>
                     
                     <v-row justify="center" align="center" class="mt-5" v-if="!$vuetify.breakpoint.smAndDown">
                         <AgregarButton :concepto="concepto" />

@@ -9,6 +9,15 @@
         </v-card>
 
         <v-card elevation="0" color="#fff" width="100%" height="100%" v-else>
+            <v-card-title class="title font-weight-black">
+                <v-row justify="center" align="center">
+                    <v-avatar size="80" class="mx-2">
+                        <v-img :src="image+subgrupo.imagen"></v-img>
+                    </v-avatar>
+                    {{subgrupo.nombre}}
+                </v-row>
+            </v-card-title>
+
             <v-card-text v-if="conceptos">
                 <!--div class="headline font-weight-black text-center mt-8">Todas las Categorías</div-->
                 <v-row justify="center">
@@ -33,10 +42,10 @@
                     <CardConceptos2 :concepto="concepto" v-for="(concepto,i) in conceptos" :key="i"/>
                 </v-row>
 
-                <v-row justify="center" class="my-5">
+                <v-row justify="center" class="my-10">
                     <v-btn 
                         color="#232323" tile dark
-                        :loading="loading" @click="getConceptos(subgrupo.id)"
+                        :loading="loading2" @click="getConceptos(subgrupo.id)"
                         :disabled="total == conceptos.length ? true:false"
                     >Ver más
                     </v-btn>
@@ -55,6 +64,7 @@
 
 <script>
 import SubGrupos from '@/services/SubGrupos';
+import variables from '@/services/variables_globales';
 import {mapState} from 'vuex';
 
     export default {
@@ -64,12 +74,14 @@ import {mapState} from 'vuex';
         },
         data() {
             return {
+                ...variables,
                 loading:true,
+                loading2:false,
                 tipo:false,
                 conceptos:[],
                 total:0,
                 after:0,
-                subgrupo:null
+                subgrupo:{imagen:"default.png"}
             }
         },
         head:{
@@ -103,7 +115,7 @@ import {mapState} from 'vuex';
         },
         methods:{
             getConceptos(id){
-                this.loading = true;
+                this.loading2 = true; 
                 SubGrupos().get(`/${id}/conceptos/?limit=20&offset=${this.after}`).then((response) => {
                     if(response.data.data){
                         response.data.data.filter(a => a.agregado=false);
@@ -112,9 +124,11 @@ import {mapState} from 'vuex';
                         this.total = response.data.totalCount;
                         response.data.data.filter(a => this.conceptos.push(a));
                         this.loading = false;
+                        this.loading2 = false;
                     }else this.loading = false;
                 }).catch(e => {
                     this.loading = false;
+                    this.loading2 = false;
                 });
             },
             revision(){
