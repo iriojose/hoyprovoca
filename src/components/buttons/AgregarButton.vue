@@ -54,6 +54,9 @@ import Empresa from '@/services/Empresa';
         methods:{
             ...mapActions(['addPedidos','addDetalle','setModalSesion','setModalProducto','setProducto']),
 
+            close(){
+                this.setModalProducto(false);
+            },
             success(mensaje){
                 this.$toasted.success(mensaje, { 
                     theme: "toasted-primary", 
@@ -106,6 +109,7 @@ import Empresa from '@/services/Empresa';
                     response.data.data.conceptos = [];
                     response.data.data.conceptos.push(this.concepto);
                     this.addPedidos(response.data.data);
+                    this.close();
                     this.success("Nuevo pedido Agregado.");
                 }).catch(e => {
                     this.error("Error al procesar pedido.");
@@ -122,6 +126,7 @@ import Empresa from '@/services/Empresa';
                     this.encontradoPedido = 0;
                     let data2 = {detalle:response.data.data,concepto:this.concepto};
                     this.addDetalle(data2);
+                    this.close();
                     this.success("Detalle Agregado.");
                 }).catch(e => {
                     this.error("Error al procesar detalles del pedido.");
