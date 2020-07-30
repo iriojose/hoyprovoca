@@ -9,26 +9,29 @@
           <v-img class="mx-3 my-1" src="./../../assets/humanos.svg"></v-img>
         </v-col>
         <v-col md="8" class="align-self-center" justify="center">
-          <v-card-title
-            class="description-title wrap text-left font-weight-black"
-          >Se parte del equipo que Transforma venezuela</v-card-title>
-          <v-divider></v-divider>
-          <v-card-text class="font text-left">
-            HoyProvoca es un sitio de consumo de alto crecimiento,
-            enfocada a la oferta de servicios que permitan conectar
-            a consumidores, transportistas y distribuidores en una
-            plataforma que permita la oferta de productos
-            alimenticios, tecnológicos, y mucho más. Provenientes de
-            nuestros aliados locales.
-          </v-card-text>
-          <v-card-text class="font text-left">
-            El sitio ha sido desarrollado por la empresa Somos
-            Sistemas C.A, operando en el Estado Nueva Esparta,
-            Venezuela. Nuestra misión es la de ofrecer una
-            plataforma de confianza donde se pueda virtualizar el
-            mercado venezolano, y donde cada empresa pueda ofrecer
-            diferentes bienes para el consumo final.
-          </v-card-text>
+            <v-card-title
+                class="description-title wrap text-left font-weight-black"
+            >
+                Se parte del equipo que Transforma venezuela
+            </v-card-title>
+            <v-divider></v-divider>
+            <v-card-text class="font text-left">
+                HoyProvoca ha sido desarrollado por la empresa Somos
+                Sistemas C.A, operando en el Estado Nueva Esparta,
+                Venezuela. Nuestra misión es la de ofrecer una
+                plataforma de confianza donde se pueda virtualizar el
+                mercado venezolano, y donde cada empresa pueda ofrecer
+                diferentes bienes para el consumo final.
+            </v-card-text>
+            <v-card-text class="font text-left">
+                Nuestra plataforma es un sitio de consumo de alto crecimiento,
+                enfocada a la oferta de servicios que permitan conectar
+                a consumidores, transportistas y distribuidores en una
+                sitio que permita la oferta de productos
+                alimenticios, tecnológicos, y mucho más. Provenientes de
+                nuestros aliados locales.
+            </v-card-text>
+          
           <v-card-text class="font text-left">¡No te pierdas de una experiencia inolvidable!</v-card-text>
         </v-col>
       </v-row>
