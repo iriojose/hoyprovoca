@@ -1,9 +1,9 @@
 <template>
     <v-card
         :width="$vuetify.breakpoint.smAndDown ? 150:200" 
-        :height="$vuetify.breakpoint.smAndDown ? 150:200"
-        class="hover scale mx-2 my-4" elevation="0" @click="modalDetalle"
-        active-class="active"
+        :height="$vuetify.breakpoint.smAndDown ? 150:230"
+        :class="$vuetify.breakpoint.smAndDown ? 'hover scale mx-2 mb-10':'hover scale mx-2 my-4'" 
+        elevation="0" @click="modalDetalle" active-class="active"
     >
         <v-img 
             contain :width="$vuetify.breakpoint.smAndDown ? 150:200" 

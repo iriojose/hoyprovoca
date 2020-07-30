@@ -62,7 +62,7 @@
                 </v-row>
             </v-card-text>
 
-            <v-card-text v-else>
+            <v-card-text v-if="!loadingConceptos && conceptos.length==0">
                 <div class="text-center font-weight-black headline mt-8">No se encontraron resultados.</div>
                 <v-row justify="center">
                     <v-img width="500" height="500" contain :src="require('@/assets/cancel.svg')"></v-img>
@@ -110,6 +110,7 @@ import router from '@/router';
         },
         watch: {
             agregados(){
+                console.log("alo?");
                 this.revision();
             },
             '$route'(val){
