@@ -36,7 +36,7 @@
                 <v-row justify="center" class="my-5">
                     <v-btn 
                         color="#232323" tile dark
-                        :loading="loading" @click="getConceptos()"
+                        :loading="loading" @click="getConceptos(subgrupo.id)"
                         :disabled="total == conceptos.length ? true:false"
                     >Ver más
                     </v-btn>
@@ -69,6 +69,7 @@ import {mapState} from 'vuex';
                 conceptos:[],
                 total:0,
                 after:0,
+                subgrupo:null
             }
         },
         head:{
@@ -88,24 +89,22 @@ import {mapState} from 'vuex';
                 this.revision();
             },
             '$route'(val){
-                let subgrupo = JSON.parse(window.localStorage.getItem('subgrupo'));
+                this.subgrupo = JSON.parse(window.localStorage.getItem('subgrupo'));
                 this.conceptos = [];
-                this.subgrupos = [];
-                if(subgrupo){
-                    this.getSubgrupos(subgrupo.id);
-                    this.getConceptos(subgrupo.id);
+                if(this.subgrupo){
+                    this.getSubgrupos(this.subgrupo.id);
+                    this.getConceptos(this.subgrupo.id);
                 }
             },
         },
         mounted() {
-            let subgrupo = JSON.parse(window.localStorage.getItem('subgrupo'));
-            this.getConceptos(subgrupo.id);
+            this.subgrupo = JSON.parse(window.localStorage.getItem('subgrupo'));
+            this.getConceptos(this.subgrupo.id);
         },
         methods:{
             getConceptos(id){
                 this.loading = true;
-                SubGrupos().get(`/${id}/conceptos`).then((response) => {
-                    console.log(response);
+                SubGrupos().get(`/${id}/conceptos/?limit=20&offset=${this.after}`).then((response) => {
                     if(response.data.data){
                         response.data.data.filter(a => a.agregado=false);
                         response.data.data.filter(a => this.agregados.filter(b => a.id == b ? a.agregado=true:null));
@@ -115,7 +114,6 @@ import {mapState} from 'vuex';
                         this.loading = false;
                     }else this.loading = false;
                 }).catch(e => {
-                    console.log(e);
                     this.loading = false;
                 });
             },

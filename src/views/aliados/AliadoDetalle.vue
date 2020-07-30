@@ -64,7 +64,7 @@
                 <v-row justify="center" class="my-5">
                     <v-btn 
                         color="#232323" tile dark
-                        :loading="loadingConceptos" @click="getConceptos()"
+                        :loading="loadingConceptos" @click="getConceptos(empresa.id)"
                         :disabled="total == conceptos.length ? true:false"
                     >Ver más
                     </v-btn>
@@ -153,13 +153,11 @@ import {mapState} from 'vuex';
                         return 0;
                     });
                 }).catch(e => {
-                    console.log(e);
                     this.loadingGrupos = false;
                 });
             },
             getConceptos(id){
                 Empresa().get(`/${id}/conceptos`).then((response) => {
-                    console.log(response);
                     if(response.data.data){
                         response.data.data.filter(a => a.agregado=false);
                         response.data.data.filter(a => this.agregados.filter(b => a.id == b ? a.agregado=true:null));
@@ -169,7 +167,6 @@ import {mapState} from 'vuex';
                         this.loadingConceptos = false;
                     }else this.loadingConceptos = false;
                 }).catch(e => {
-                    console.log(e);
                     this.loadingConceptos = false;
                 });
             },

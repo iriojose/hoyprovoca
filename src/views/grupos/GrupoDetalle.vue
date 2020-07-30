@@ -55,7 +55,7 @@
                 <v-row justify="center" class="my-5">
                     <v-btn 
                         color="#232323" tile dark
-                        :loading="loadingConceptos" @click="getConceptos()"
+                        :loading="loadingConceptos" @click="getConceptos(grupo.id)"
                         :disabled="total == conceptos.length ? true:false"
                     >Ver más
                     </v-btn>
@@ -88,11 +88,12 @@ import router from '@/router';
                 ...variables,
                 loadingConceptos:true,
                 loadingSubgrupos:true,
-                tipo:true,
+                tipo:false,
                 subgrupos:[],
                 conceptos:[],
                 after:0,
                 total:0,
+                grupo:null,
             }
         },
         head:{
@@ -112,19 +113,19 @@ import router from '@/router';
                 this.revision();
             },
             '$route'(val){
-                let grupo = JSON.parse(window.localStorage.getItem('grupo'));
+                this.grupo = JSON.parse(window.localStorage.getItem('grupo'));
                 this.conceptos = [];
                 this.subgrupos = [];
-                if(grupo){
-                    this.getSubgrupos(grupo.id);
-                    this.getConceptos(grupo.id);
+                if(this.grupo){
+                    this.getSubgrupos(this.grupo.id);
+                    this.getConceptos(this.grupo.id);
                 }
             },
         },
         mounted() {
-            let grupo = JSON.parse(window.localStorage.getItem('grupo'));
-            this.getSubgrupos(grupo.id);
-            this.getConceptos(grupo.id);
+            this.grupo = JSON.parse(window.localStorage.getItem('grupo'));
+            this.getSubgrupos(this.grupo.id);
+            this.getConceptos(this.grupo.id);
         },
         methods:{
             getSubgrupos(id){
@@ -140,13 +141,12 @@ import router from '@/router';
                         this.loadingSubgrupos = false;
                     }else this.loadingSubgrupos = false;
                 }).catch(e => {
-                    console.log(e);
                     this.loadingSubgrupos = false;
                 });
             },
             getConceptos(id){
                 this.loadingConceptos = true;
-                Grupos().get(`/${id}/conceptos`).then((response)=> {
+                Grupos().get(`/${id}/conceptos/?limit=20&offset=${this.after}`).then((response)=> {
                     if(response.data.data){
                         response.data.data.filter(a => a.agregado=false);
                         response.data.data.filter(a => this.agregados.filter(b => a.id == b ? a.agregado=true:null));
@@ -156,7 +156,6 @@ import router from '@/router';
                         this.loadingConceptos = false;
                     }else this.loadingConceptos = false;
                 }).catch(e => {
-                    console.log(e);
                     this.loadingConceptos = false;
                 });
             },
