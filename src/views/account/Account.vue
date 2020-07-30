@@ -1,6 +1,6 @@
 <template>
    <div>
-       <v-card color="transparent" elevation="0" width="100%">
+       <v-card color="transparent" elevation="0" width="100%" @click="clicked = !clickable ? true : !clicked">
             <v-card-text>
                 <v-row justify="center">
                     <v-col cols="12" md="3">
@@ -24,25 +24,25 @@
 
                             <v-expand-transition>
 
-                            <v-card-actions>
-                                <v-list dense nav style="background: none;width:100%">
-                                    <v-list-item 
-                                        v-for="item in items" 
-                                        :key="item.title" 
-                                        link 
-                                        :to="item.to"
-                                        active-class="white--text color font-weight-bold sombra"
-                                    >
-                                        <v-list-item-icon>
-                                            <v-icon dark>{{ item.icon }}</v-icon>
-                                        </v-list-item-icon>
-                                        <v-list-item-content style="text-align:left;">
-                                            <v-list-item-title class="subtitle-2 white--text font-weight-bold">{{ item.title }}</v-list-item-title>
-                                        </v-list-item-content>
-                                    </v-list-item>
-                                </v-list>
-                            </v-card-actions>
-                        </v-expand-transition>
+                                <v-card-actions  v-show="clicked">
+                                    <v-list dense nav style="background: none;width:100%">
+                                        <v-list-item 
+                                            v-for="item in items" 
+                                            :key="item.title" 
+                                            link 
+                                            :to="item.to"
+                                            active-class="white--text color font-weight-bold sombra"
+                                        >
+                                            <v-list-item-icon>
+                                                <v-icon dark>{{ item.icon }}</v-icon>
+                                            </v-list-item-icon>
+                                            <v-list-item-content style="text-align:left;">
+                                                <v-list-item-title class="subtitle-2 white--text font-weight-bold">{{ item.title }}</v-list-item-title>
+                                            </v-list-item-content>
+                                        </v-list-item>
+                                    </v-list>
+                                </v-card-actions>
+                            </v-expand-transition>
                         </v-card>
                     </v-col>
                     <v-col cols="12" md="9">
@@ -85,14 +85,34 @@ import variables from '@/services/variables_globales';
                 items: [
                     {icon:'mdi-cogs', to:'/account/profile',title:'Ajustes de Cuenta'},
                     //{icon:'mdi-history',to:'/account/notificaciones',title:'Centro de Notificaciones'},
-                    {icon:'mdi-alert-circle',to:'/account/ordenes',title:'últimas Ordenes'},
+                    {icon:'mdi-alert-circle',to:'/account/ordenes',title:'Últimas Ordenes'},
                     {icon: 'mdi-help-circle',to:'/account/ayuda',title:'Atención al cliente'},
                 ],
                 dialog:false,
+                clicked: false,
+                clickable: true,
             }
         },
         computed:{
             ...mapState(['user']),
+        },
+        created() {
+            window.addEventListener('resize', this.onResize);
+            this.onResize();
+        },
+        methods: {
+            onResize() {
+                if (window.innerWidth < 957) {
+                    this.clicked = false;
+                    this.clickable = true;
+                }else {
+                    this.clicked = true;
+                    this.clickable = false;
+                }
+            },
+        },
+        beforeDestroy() {
+            window.removeEventListener('resize', this.onResize)
         },
     }
 </script>
