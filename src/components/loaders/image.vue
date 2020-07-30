@@ -49,7 +49,7 @@ export default {
         await this.preload(this.image + this.imagenViene);
     },
     methods: {
-         check(event){
+        check(event){
             let img = new Image();
             img.src = event.target.responseURL;
            return this.load=true;
