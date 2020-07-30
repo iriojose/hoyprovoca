@@ -77,6 +77,7 @@ import router from '@/router';
             }
         },
         mounted() {
+            if(this.$vuetify.breakpoint.smAndDown) this.tipo = true;
             let cache = JSON.parse(window.localStorage.getItem("cache"));
 
             if(cache && cache.path == this.$route.path){

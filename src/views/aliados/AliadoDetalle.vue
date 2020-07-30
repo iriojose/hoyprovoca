@@ -134,6 +134,7 @@ import {mapState} from 'vuex';
             },
         },
         mounted() {
+            if(this.$vuetify.breakpoint.smAndDown) this.tipo = true;
             let empresa = JSON.parse(window.localStorage.getItem("aliado"));
 
             if(empresa){
