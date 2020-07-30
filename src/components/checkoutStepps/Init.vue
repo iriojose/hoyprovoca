@@ -14,8 +14,8 @@
     </v-card>
   </v-row>
   <div v-else v-show="view == 1" >
-    <v-slide-group multiple show-arrows :class="$vuetify.breakpoint.smAndDown ? null : 'mx-10'">
-      <v-slide-item v-for="(pedi, i) in pedidos" :key="i + 'a'">
+    <v-slide-group v-if="pedidos" multiple show-arrows :class="$vuetify.breakpoint.smAndDown ? null : 'mx-10'">
+      <v-slide-item   v-for="(pedi, i) in pedidos" :key="i + 'a'">
         <v-btn
           :disabled="pedidoSelect.id == pedi.id"
           class="mx-2"
@@ -105,8 +105,8 @@
             </v-list>
           </v-col>
           <v-col cols="6" md="4" sm="12">
-            <v-row>
-              <v-col cols="4" md="6" sm="12">
+            <v-row sm="12">
+              <v-col cols="12" md="6" sm="12">
                 <div class="font-weight-bold title">Empresa</div>
                 <div
                   v-if="pedidoSelect.empresa"
@@ -145,13 +145,13 @@ import Conceptos from "@/services/Conceptos";
 import { mapState, mapActions } from "vuex";
 export default {
   props: {
-    view: { type: Number, default: 1 },
-    pedidos: {
+    pedidosLoads: {
       type: Array,
       default: function() {
         return [];
       }
     },
+    view: { type: Number, default: 1 },
     total: { type: Number | String, default: 0 },
     pedidoSelect: {
       type: Object,
@@ -186,6 +186,14 @@ export default {
   mounted() {
     this.getPedidosUsuario();
   },
+  watch:{
+    pedidos(){
+       this.pedidos && this.getPedidosUsuario();
+    },
+    pedidoSelect(){
+      console.log(this.pedidoSelect,"pedidoselect")
+    }
+  },
   computed: {
     ...mapState(["user", "modalPago","pedidos"])
   },
@@ -204,7 +212,7 @@ export default {
       let suma = 0;
       detalles.map(a => (a.cantidad = Math.floor(a.cantidad)));
       detalles.map((a,i) => (suma += this.checkValue(concepto[i].precio_a) * a.cantidad));
-      console.log(suma,detalles)
+     
       this.$emit("updatedState", {
         content: accounting.formatMoney(+suma, {
           symbol: "Bs ",
@@ -219,9 +227,8 @@ export default {
     },
     getPedidosUsuario() {
       this.loading = true;
-          console.log(this.pedidos,this.pedidoSelect, "pedidos");
           this.$emit("updatedState", {
-                name: "pedidos",
+                name: "pedidosLoads",
                 content: this.pedidos ? this.pedidos : JSON.parse(localStorage.getItem("pedidos"))
               })
           this.pedidos.filter((a, i) => this.getEmpresas(a.adm_empresa_id, i));
@@ -230,6 +237,7 @@ export default {
       Empresa()
         .get(`/${id}/?fields=nombre_comercial,imagen,id`)
         .then(response => {
+        
           this.$emit("updatedSubState", {
             name: "pedidos",
             x: i,
@@ -270,7 +278,8 @@ export default {
     seleccionarPedido(evt,i) {
       this.$emit("updatedState", { name: "pedidoSelect", content: evt });
       this.messagePendiente = "Pagar";
-      console.log(evt.detalles)
+      this.detalles = evt.detalles;
+      console.log(evt , "evt","pedidos", this.pedidos)
       this.calcularTotal(this.pedidos[i].conceptos,evt.detalles);
     },
     next() {
