@@ -128,7 +128,7 @@ export default new Vuex.Store({
             window.localStorage.setItem("pedidos",JSON.stringify(state.pedidos));
         },
         ADD_DETALLE(state,val){//se añade un detalle a un pedido existente
-            state.agregados.push(val.adm_conceptos_id);
+            state.agregados.push(val.detalle.adm_conceptos_id);
             state.pedidos.filter(a=> a.id == val.detalle.rest_pedidos_id ? a.detalles.push(val.detalle):null);
             state.pedidos.filter(a => a.id == val.detalle.rest_pedidos_id ? a.conceptos.push(val.concepto):null);
             window.localStorage.setItem("pedidos",JSON.stringify(state.pedidos));
