@@ -4,7 +4,8 @@
             <v-btn fab small color="#2950c3" @click="home">
                 <v-icon color="#fff">mdi-home</v-icon>
             </v-btn>
-            <v-spacer></v-spacer>
+            <v-spacer class="hidden-sm-and-down"></v-spacer>
+            <v-img transition="scale-transition" class="hidden-sm-and-down" contain width="100" height="50" :src="require('@/assets/logo 6.png')"></v-img>
             <v-spacer></v-spacer>
             <v-btn rounded color="#2950c3" class="text-capitalize white--text caption" @click="forgot">
                 ¿Olvido su contraseña?
@@ -13,7 +14,7 @@
         <v-card-text>
             <v-row justify="center"> 
                 <v-col cols="12" md="9" sm="12">
-                    <v-row justify="center" class="pb-4">
+                    <v-row justify="center" class="pb-4 hidden-sm-and-up">
                         <v-img transition="scale-transition" contain width="100" height="50" :src="require('@/assets/logo 6.png')"></v-img>
                     </v-row>
 
@@ -58,8 +59,8 @@
 
                                                 <v-text-field
                                                     filled single-line label="Telefono"
-                                                    dense rounded hint="format: 0000-000-0000"
-                                                    @input="changeNumber()" :rules="[required('Telefono'),minLength('Telefono',13),maxLength('Telefono',13)]"
+                                                    dense rounded hint="format: +58-000-000-0000" prefix="+58"
+                                                    @input="changeNumber()" :rules="[required('Telefono'),telefonoFormat()]"
                                                     v-model="data.telefono" persistent-hint
                                                     color="#2950c3" :disabled="loading" append-icon="mdi-cellphone"
                                                 ></v-text-field>
@@ -259,9 +260,9 @@ import variables from "@/services/variables_globales";
 			}, 2000);
 		},
 		changeNumber() {
-			if (this.data.telefono.length == 4) {
+			if (this.data.telefono.length == 3) {
 				this.data.telefono += "-";
-			} else if (this.data.telefono.length == 8) {
+			} else if (this.data.telefono.length == 7) {
 				this.data.telefono += "-";
 			}
 		},
@@ -279,15 +280,21 @@ import variables from "@/services/variables_globales";
 				if (response.data.data) {
 					return this.errors.push("Este email ya fue registrado");
 				} else {
-					this.success = "Email verificado";
+                    if(response.data.data.bloqueado == 1){
+                        return this.errors.push("Esta cuenta se encuentra bloqueada.");
+                    }else{
+                        return this.success='Email verificado';
+                    }
 				}
-				})
-				.catch(e => {
-				console.log(e);
-				});
+			}).catch(e => {
+                console.log(e);
+                this.loading2 = false;
+                return this.errors.push('Error de conección');
+			});
 			},
 		postUsuario() {
-			this.loading = true;
+            this.loading = true;
+            this.data.telefono1 = this.data.telefono1;
 			Auth().post("/signup", { data: this.data }).then(async response => {
 				this.postCliente(response.data);
 				this.sendmail(response.data);
@@ -303,7 +310,7 @@ import variables from "@/services/variables_globales";
 				fecha_nac: new Date().toISOString().substr(0, 10),
 				usuario_id: usuario.data.id,
 				imagen: "default.png",
-				telefono1: usuario.data.telefono,
+				telefono1:usuario.data.telefono,
 				correo_electronico: usuario.data.email
 			};
 			Clientes().post("/", { data: cliente }).then(response => {

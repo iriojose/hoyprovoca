@@ -162,10 +162,16 @@ import {mapActions} from 'vuex';
                     if(!response.data.data) {
                         return this.errors.push('Este email no esta registrado');
                     }else{
-                        this.success='Email verificado';
+                        if(response.data.data[0].bloqueado == 1){
+                            return this.errors.push("Esta cuenta se encuentra bloqueada.");
+                        }else{
+                            return this.success='Email verificado';
+                        }
                     }
                 }).catch(e => {
                     console.log(e);
+                    this.loading2 = false;
+                    return this.errors.push('Error de conección');
                 });
             },
             login(){

@@ -18,25 +18,16 @@
                     
                     <v-form v-model="valid" @submit.prevent="">
                         <v-text-field
-                            filled
-                            rounded
-                            :disabled="loading"
-                            v-model="data.user"
-                            single-line
-                            dense
-                            color="#ffbd07"
-                            :success-messages="success"
-                            :error-messages="errors"
-                            @input="getUser(data.user)"
-                            label="Ingrese correo electrónico"
+                            filled rounded :disabled="loading" v-model="data.user"
+                            single-line dense color="#0f2441"
+                            :success-messages="success" :error-messages="errors"
+                            @input="getUser(data.user)" label="Ingrese correo electrónico"
                         >
                             <template v-slot:append>
                                 <v-fade-transition leave-absolute>
                                     <v-progress-circular
-                                        v-if="loading2"
-                                        size="24"
-                                        color="#ffbd07"
-                                        indeterminate
+                                        v-if="loading2" size="24"
+                                        color="#0f2441" indeterminate
                                     ></v-progress-circular>
                                     <img v-else width="24" height="24" :src="require('@/assets/logo 3.png')">
                                 </v-fade-transition>
@@ -44,14 +35,9 @@
                         </v-text-field>
 
                         <v-text-field
-                            filled
-                            rounded
-                            dense
-                            :disabled="loading"
-                            v-model="data.password"
-                            single-line
-                            type="password"
-                            color="#ffbd07"
+                            filled rounded dense
+                            :disabled="loading" v-model="data.password"
+                            single-line type="password" color="#0f2441"
                             :rules="[required('Contraseña'),minLength('Contraseña',6)]"
                             label="Contraseña"
                         ></v-text-field>
@@ -129,10 +115,15 @@ import Clientes from '@/services/Clientes';
                     if(!response.data.data) {
                         return this.errors.push('Este email no esta registrado');
                     }else{
-                        this.success='Email verificado';
+                        if(response.data.data[0].bloqueado == 1){
+                            return this.errors.push("Esta cuenta se encuentra bloqueada.");
+                        }else{
+                            return this.success='Email verificado';
+                        }
                     }
                 }).catch(e => {
                     console.log(e);
+                    return this.errors.push('Error de conección');
                 });
             },
             login(){

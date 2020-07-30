@@ -57,11 +57,11 @@
                     ></v-text-field>
 
                     <v-text-field
-                        filled single-line
+                        filled single-line prefix="+58"
                         label="Telefono" dense
-                        rounded hint="format: 0000-000-0000"
+                        rounded hint="format: +58-000-000-0000"
                         @input="changeNumber()"
-                        :rules="[required('Telefono'),minLength('Telefono',13),maxLength('Telefono',13)]"
+                        :rules="[required('Telefono'),telefonoFormat()]"
                         v-model="data.telefono" persistent-hint
                         color="#2950c3" :disabled="loading"
                     ></v-text-field>
@@ -75,7 +75,7 @@
                                 persistent-hint single-line @input="validEdit()"
                             ></v-text-field>
                         </template>
-                        <v-date-picker v-model="data.fecha_nac" landscape show-current  header-color="#2950c3" color="#2950c3"  locale="es"/>
+                        <v-date-picker v-model="data.fecha_nac" :landscape="!$vuetify.breakpoint.smAndDown" show-current  header-color="#2950c3" color="#2950c3"  locale="es"/>
                     </v-menu>
 
                     <v-switch 
@@ -220,9 +220,9 @@ import variables from '@/services/variables_globales';
             },
             changeNumber(){
                 this.validEdit();
-                if(this.data.telefono.length == 4){
+                if(this.data.telefono.length == 3){
                     this.data.telefono+='-';
-                }else if(this.data.telefono.length == 8){
+                }else if(this.data.telefono.length == 7){
                     this.data.telefono+='-';
                 }
             },

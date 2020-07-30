@@ -4,17 +4,18 @@
             <v-btn fab small color="#2950c3" @click="home">
                 <v-icon color="#fff">mdi-home</v-icon>
             </v-btn>
-            <v-spacer></v-spacer>
+            <v-spacer class="hidden-sm-and-down"></v-spacer>
+            <v-img transition="scale-transition" class="hidden-sm-and-down" contain width="100" height="50" :src="require('@/assets/logo 6.png')"></v-img>
             <v-spacer></v-spacer>
             <v-btn rounded color="#2950c3" class="text-capitalize white--text caption" @click="register">
-                Registrate
+                Register
             </v-btn>
         </v-card-actions>
 
         <v-card-text>
             <v-row justify="center" class="py-4">
-                <v-col cols="12" md="8" sm="12" :class="$vuetify.breakpoint.smAndDown ? 'mx-4':null">
-                    <v-row justify="center" class="pb-4">
+                <v-col cols="12" md="9" sm="12" :class="$vuetify.breakpoint.smAndDown ? 'mx-4':null">
+                    <v-row justify="center" class="pb-4 hidden-sm-and-up">
                         <v-img transition="scale-transition" contain width="100" height="50" :src="require('@/assets/logo 6.png')"></v-img>
                     </v-row>
                     <v-card width="100%">
@@ -159,10 +160,16 @@ import Usuario from '@/services/Usuario';
                     if(!response.data.data) {
                         return this.errors.push('Este email no esta registrado');
                     }else{
-                        this.success='Email verificado';
+                        if(response.data.data[0].bloqueado == 1){
+                            return this.errors.push("Esta cuenta se encuentra bloqueada.");
+                        }else{
+                            return this.success='Email verificado';
+                        }
                     }
                 }).catch(e => {
                     console.log(e);
+                    this.loading2 = false;
+                    return this.errors.push('Error de conección');
                 });
             }
         }
