@@ -189,7 +189,9 @@ export default {
   watch:{
     pedidos(){
        this.pedidos && this.getPedidosUsuario();
-       console.log("cambia")
+    },
+    pedidoSelect(){
+      console.log(this.pedidoSelect,"pedidoselect")
     }
   },
   computed: {
@@ -210,7 +212,7 @@ export default {
       let suma = 0;
       detalles.map(a => (a.cantidad = Math.floor(a.cantidad)));
       detalles.map((a,i) => (suma += this.checkValue(concepto[i].precio_a) * a.cantidad));
-      console.log(suma,detalles)
+     
       this.$emit("updatedState", {
         content: accounting.formatMoney(+suma, {
           symbol: "Bs ",
@@ -276,7 +278,8 @@ export default {
     seleccionarPedido(evt,i) {
       this.$emit("updatedState", { name: "pedidoSelect", content: evt });
       this.messagePendiente = "Pagar";
-      console.log(evt.detalles)
+      this.detalles = evt.detalles;
+      console.log(evt , "evt","pedidos", this.pedidos)
       this.calcularTotal(this.pedidos[i].conceptos,evt.detalles);
     },
     next() {
