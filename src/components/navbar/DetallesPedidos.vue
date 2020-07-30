@@ -119,11 +119,11 @@ import accounting from 'accounting';
         },
         watch: {
             detalles(){
-                this.detalles.filter(a => this.sales.push(accounting.formatMoney(+a.precio,{symbol:"Bs ",thousand:'.',decimal:','})));
+                this.detalles.filter(a => this.sales.push(accounting.formatMoney(+a.precio,{symbol:"$ ",thousand:',',decimal:'.'})));
             }
         },
         mounted() {
-            this.detalles.filter(a => this.sales.push(accounting.formatMoney(+a.precio,{symbol:"Bs ",thousand:'.',decimal:','})));
+            this.detalles.filter(a => this.sales.push(accounting.formatMoney(+a.precio,{symbol:"$ ",thousand:',',decimal:'.'})));
         },
         methods: {
             ...mapActions(['setSnackbar','updatePedidoStore','deleteDetalleStore','updateDetalleStore']),

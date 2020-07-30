@@ -50,11 +50,11 @@ import accounting from 'accounting';
         },
         watch: {
             total(){
-                this.sale = accounting.formatMoney(+this.total,{symbol:"Bs ",thousand:'.',decimal:','});
+                this.sale = accounting.formatMoney(+this.total,{symbol:"$ ",thousand:',',decimal:'.'});
             }
         },
         mounted() {
-            this.sale = accounting.formatMoney(+this.total,{symbol:"Bs ",thousand:'.',decimal:','});
+            this.sale = accounting.formatMoney(+this.total,{symbol:"$ ",thousand:',',decimal:'.'});
         },
         methods:{
             ...mapActions(['deletePedidoStore']),
@@ -83,7 +83,7 @@ import accounting from 'accounting';
                     this.success('Pedido eliminado exitosamente.');
                     this.deletePedidoStore(this.index);
                 }).catch(() => {
-                    this.error('Ooops, ocurrio un error.');
+                    this.error('Error al eliminar el pedido.');
                 });
             }
         }
