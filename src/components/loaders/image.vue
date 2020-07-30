@@ -1,12 +1,12 @@
 <template>
     <div>
         <v-img
-        contain
-        :width="$vuetify.breakpoint.smAndDown ? 100 : 200"
-        :height="$vuetify.breakpoint.smAndDown ? 80 : 180"
-        v-show="load"
-        :src="image + imagenViene"
-    />         
+            contain
+            :width="$vuetify.breakpoint.smAndDown ? 100 : 200"
+            :height="$vuetify.breakpoint.smAndDown ? 80 : 180"
+            v-show="load"
+            :src="image + imagenViene"
+        />         
         <v-card 
             elevation="0"
             v-if="!load"
@@ -24,7 +24,6 @@
 <script>
 import variables from "@/services/variables_globales";
 import router from "@/router";
-import Puntos from "./Puntos"
 
 export default {
     props: {
@@ -38,7 +37,7 @@ export default {
         }
     },
     components:{
-        Puntos
+        Puntos:() => import("./Puntos")
     },
     data() {
         return {
@@ -53,7 +52,6 @@ export default {
          check(event){
             let img = new Image();
             img.src = event.target.responseURL;
-
            return this.load=true;
         },
         preload(data) {

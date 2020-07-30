@@ -34,7 +34,6 @@
 <script>
 import {mapState,mapActions} from 'vuex';
 import router from '@/router';
-
     export default {
         data() {
             return {
@@ -56,7 +55,6 @@ import router from '@/router';
         },
         methods: {
             ...mapActions(['setCarrito','logout','setModalUbicacion']),
-
             modalCarrtio(){
                 this.carrito ?  this.setCarrito(false):this.setCarrito(true);
             },

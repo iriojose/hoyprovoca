@@ -56,7 +56,6 @@ import Empresa from '@/services/Empresa';
     export default {    
         computed:{
             ...mapState(['modalProducto','producto','user','pedidos']),
-
             productos:{
                 get(){ return this.modalProducto},
                 set(val){ this.setModalProducto(val)},
@@ -97,7 +96,7 @@ import Empresa from '@/services/Empresa';
         },
         methods: {
             ...mapActions(['setModalProducto','addPedidos','addDetalle','setModalSesion']),
-
+            
             close(){
                 this.setModalProducto(false);
             },
@@ -163,10 +162,9 @@ import Empresa from '@/services/Empresa';
                 this.data1[0].adm_conceptos_id = item.id;
                 this.data1[0].precio = item.precio_a;
                 this.data1[0].imagen = item.imagen;
-
                 Pedidos().post("/",{data: this.data , data1: this.data1 }).then((response) => {
                     response.data.data.conceptos = [];
-                    response.data.data.conceptos.push(this.concepto);
+                    response.data.data.conceptos.push(this.producto);
                     this.addPedidos(response.data.data);
                     this.success("Agregado exitosamente.");
                     this.close();
@@ -184,7 +182,8 @@ import Empresa from '@/services/Empresa';
                 Pedidos().post(`/${this.encontradoPedido}/detalles`,{data:data}).then((response) => {
                     this.pedidos.filter(a => a.id ==  this.encontradoPedido ?  a.conceptos.push(this.producto):null);
                     this.encontradoPedido = 0;
-                    this.addDetalle(response.data.data);
+                    let data2 = {detalle:response.data.data,concepto:this.producto};
+                    this.addDetalle(data2);
                     this.success("Agregado exitosamente.");
                     this.close();
                 }).catch(e => {

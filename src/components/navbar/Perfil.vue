@@ -1,11 +1,10 @@
 <template>
-    <div class="shadow"  v-if="user.loggedIn && !$vuetify.breakpoint.smAndDown">
+    <div v-if="user.loggedIn && !$vuetify.breakpoint.smAndDown">
         <v-menu
             :transition="transition()"
             bottom
             open-on-hover 
             offset-y
-            class="shadow"
         >
             <template v-slot:activator="{ on }">
                 <v-btn v-on="on" fab class="mx-3" elevation="0" small color="transparent">
@@ -15,7 +14,7 @@
                 </v-btn>
             </template>
             <!-- lista de opciones-->
-            <v-card outlined class="customized shadow">
+            <v-card class="customized">
                 <v-list width="250" elevation="0">
                     <v-list-item class="border">
                         <v-list-item-avatar size="70">
@@ -61,7 +60,6 @@
 import {mapActions,mapState} from 'vuex';
 import variables from '@/services/variables_globales';
 import router from '@/router';
-
     export default {
         data() {
             return {
@@ -88,17 +86,16 @@ import router from '@/router';
     .customized {
         margin-top: 10px;
     }
-   .shadow{
-     box-shadow: none!important;
-     border: none!important;
-   }
-    
+    .customized {
+        border: 1px solid #d5cec8;
+        display: block;
+        background: white;
+    }
     .customized:before,
     .customized:after {
         content: " ";
         height: 0;
         position: absolute;
-         box-shadow: none!important;
         width: 0;
         border: 11px solid transparent;
         /* arrow size */
@@ -106,19 +103,21 @@ import router from '@/router';
         transform: translateX(-100%);
     }
     .customized:before {
-      
+        border-bottom: 12px solid rgba(0, 0, 0, 0.1);
+        border-right: 12px solid rgba(0, 0, 0, 0);
+        border-top: 12px solid rgba(0, 0, 0, 0);
         content: "";
         display: inline-block;
         position: absolute;
-         box-shadow: none!important;
         top: -24px;
     }
     .customized:after {
         border-bottom: 12px solid #fff;
+        border-right: 12px solid rgba(0, 0, 0, 0);
+        border-top: 12px solid rgba(0, 0, 0, 0);
         content: "";
         display: inline-block;
         position: absolute;
-         box-shadow: none!important;
         top: -22px;
     }
 </style>

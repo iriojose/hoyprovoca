@@ -70,7 +70,7 @@
                         <template v-slot:activator="{ on }">
                             <v-text-field
                                 dense v-model="data.fecha_nac" :disabled="loading"
-                                label="Cumpleaños" color="#2950c3" append-icon="event" 
+                                label="Cumpleaños" color="#2950c3" append-icon="mdi-calendar" 
                                 filled v-on="on" rounded hint="Formato YYYY/MM/DD" 
                                 persistent-hint single-line @input="validEdit()"
                             ></v-text-field>
@@ -84,11 +84,11 @@
                         v-if="$vuetify.breakpoint.smAndDown"
                     ></v-switch>
 
-                    <v-switch 
+                    <!--v-switch 
                         v-model="notificaciones" :disabled="process"
                         class="ma-4" color="green" :label="label2"
                         v-if="$vuetify.breakpoint.smAndDown"
-                    ></v-switch>
+                    ></v-switch-->
                 </v-col>
             </v-row>
         </v-form>
@@ -156,7 +156,7 @@ import variables from '@/services/variables_globales';
         computed:{
             ...mapState(['user']),
         },
-        watch: {
+        /*watch: {
             notificaciones(){
                  if ("serviceWorker" in navigator && "PushManager" in window) {
                     navigator.serviceWorker.register('./../../NotificationListener.js').then((Registration) => {
@@ -182,6 +182,17 @@ import variables from '@/services/variables_globales';
                     console.warn("Push messaging is not supported");
                 }
             }
+        },*/
+        watch: {
+            user(){
+                this.data = Object.assign({},this.user.data);
+                this.data.fecha_nac = this.data.fecha_nac.substr(0, 10); 
+                if (this.data.verificado == 1) {
+                    this.email = true;
+                    this.label = "Correo electrónico verificado.";
+                    this.block = true;
+                }
+            }
         },
         mounted() {
             this.data = Object.assign({},this.user.data);
@@ -194,7 +205,7 @@ import variables from '@/services/variables_globales';
         },
         methods:{
             ...mapActions(['setData']),
-
+            
             respuesta(mensaje,type){
                 this.mensaje = mensaje;
                 this.type = type;
@@ -222,7 +233,6 @@ import variables from '@/services/variables_globales';
                 delete this.data.usuario_at;
                 delete this.data.recovery;
                 delete this.data.recoverydate;
-
                 this.showMessage = false;
                 this.loading = true;
                 Usuario().post(`/${this.data.id}`,{data:this.data}).then(() => {
@@ -246,8 +256,7 @@ import variables from '@/services/variables_globales';
                     this.respuesta2("Error al enviar correo de verificación.",'error');
                 });
             },
-
-            subscribeNotificaciones(id,response){
+            /*subscribeNotificaciones(id,response){
                         const applicationServerKey = this.urlB64ToUint8Array(this.key_notificaciones)
                         const checkSubsciption =  setInterval(()=>{
                             if(response.active) {
@@ -264,18 +273,15 @@ import variables from '@/services/variables_globales';
                                 });
                             }
                         },1000);
-            },
+            },*/
             //encriptar public key de nots
-            urlB64ToUint8Array(base64String) {
+            /*urlB64ToUint8Array(base64String) {
                 const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
                 const base64 = (base64String + padding)
                     .replace(/\-/g, "+")
                     .replace(/_/g, "/");
-
-
                 const rawData = window.atob(base64);
                 const outputArray = new Uint8Array(rawData.length);
-
                 for (let i = 0; i < rawData.length; ++i) {
                     outputArray[i] = rawData.charCodeAt(i);
                 }
@@ -298,7 +304,7 @@ import variables from '@/services/variables_globales';
                     this.notificaciones = false;
                     console.log(e);
                 });
-            },
+            },*/
         },
     }
 </script>

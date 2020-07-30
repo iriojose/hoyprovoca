@@ -1,111 +1,75 @@
-import Vue from "vue";
-import Vuex from "vuex";
+import Vue from 'vue'
+import Vuex from 'vuex'
 
-Vue.use(Vuex);
+Vue.use(Vuex)
 
 export default new Vuex.Store({
-    state:{
-        user:{//variabla de sesion
+	state: {
+        //aplicacion:true,//determina la sesion para poder renderizar los componentes
+		user:{//variabla de sesion
             token:null,
-            data:{},
-            cliente:{},
+            data:{imagen:"default.png",fecha_nac:new Date().toDateString()},
+            cliente:null,
             loggedIn:false
         },
-        foto: '',
-        fotoChanged: false,
-        fotoFile: null,
+        carrito:false,
+        modalcarrito:false,
+        modalsesion:false,
+        modalProducto:false,
         bloqueado:false,
         search:'',
-        foto: '',
-        fotoChanged:false,
-        fotoFile: null,
-        //banderas
-        drawer:false,
-        snackbar:false,
-        carrito:false,
-        modalsesion:false,
-        modalcarrito:false,
         bandera:false,
-        modalPago:false,
-        modalUbicacion:false,
-        modalProducto:false,
-        modalImagen:false,
-        //data global (grupos,subgrupos,empresas)
+		//data global (grupos,empresas)
         grupos:[],
-        //subgrupos:[],
         empresas:[],
+        ultimasOrdenes:[],
         //arrays
         pedidos:[],//guarda los pedidos
         agregados:[],//guarda ids de los conceptos agregados a pedidos
         totalPedidos:[],//guarda el total de cada pedido
+        municipios:[],
         producto:{
             existencias:[
                 {existencia:0}
             ]
         }//bandera para un producto seleccionado
-    },
-    getters: {
-        
-    },
-    mutations: {
+	},
+	mutations: {
         //data global
+        SET_MUNICIPIOS(state,val){
+            state.municipios = val;
+        },
+        SET_BANDERA(state,val){
+            state.bandera = val;
+        },
         SET_GRUPOS(state,val){
             state.grupos = val;
         },
         SET_EMPRESAS(state,val){
             state.empresas = val;
         },
-        //banderas
-        SET_FOTO(state, val) {
-            state.foto = val;
-        },
-        SET_FOTOFILE(state, val) {
-            state.fotoFile = val;
-        },
-        SET_CHANGEFOTO(state, val) {
-            state.fotoChanged = val;
-        },
-        SET_BANDERA(state,val){
-            state.bandera = val;
-        },
-        SET_DRAWER(state,val){
-            val ? state.drawer = true:state.drawer = false;
-        },
-        SET_MODAL_SESION(state,val){
-            val ? state.modalsesion = true:state.modalsesion = false;
-        },
-        SET_MODAL_PAGO(state,val){
-            val ? state.modalPago = true:state.modalPago = false;
-        },
-        SET_MODAL_BLOQUEADO(state,val){
-            val ? state.bloqueado = true:state.bloqueado = false;
-        },
-        SET_MODAL_UBICACION(state,val){
-            val ? state.modalUbicacion = true:state.modalUbicacion = false;
-        },
-        SET_MODAL_IMAGEN(state,val){
-            val ? state.modalImagen = true:state.modalImagen = false;
-        },
-        SET_MODAL_PRODUCTO(state,val){
-            val ? state.modalProducto = true:state.modalProducto = false;
+        SET_BUSCAR(state,val){
+            state.search = val;
         },
         SET_MODAL_CARRITO(state,val){
             val ? state.modalcarrito = true:state.modalcarrito = false;
         },
+        SET_MODAL_SESION(state,val){
+            val ? state.modalsesion = true:state.modalsesion = false;
+        },
+        SET_MODAL_BLOQUEADO(state,val){
+            val ? state.bloqueado = true:state.bloqueado = false;
+        },
+        SET_MODAL_PRODUCTO(state,val){
+            val ? state.modalProducto = true:state.modalProducto = false;
+        },
         SET_CARRITO(state,val){
             val ? state.carrito = true:state.carrito = false;
         },
-        SET_SNACKBAR(state,val){
-            val ? state.snackbar = true:state.snackbar = false;
+        SET_FOTO_PROFILE(state,val){
+            state.user.data.imagen = val;
         },
-        SET_BUSCAR(state,val){
-            state.search = val;
-        },
-        SET_PRODUCTO(state,val){
-            state.producto=val;
-        },
-
-        //autenticacion
+		//autenticacion
         SET_LOGGED(state,val){//logea al usuario
             let data = {//se hizo asi para que los watch puedan escuchar el cambio de la variable user al iniciar sesion
                 loggedIn:true,
@@ -125,10 +89,20 @@ export default new Vuex.Store({
             state.agregados = [];//se elemina los ids de los pedidos guardados
             state.totalPedidos = [];//se elimina los totales
             window.sessionStorage.clear();//se elimina la data de la sesion
-            window.localStorage.setItem("pedidos",undefined);//se elimina la data del localstorage
+            window.localStorage.setItem("pedidos","");//se elimina la data del localstorage
+            window.localStorage.setItem("ultimasOrdenes","");
+		},
+		SET_PRODUCTO(state,val){
+            state.producto=val;
+		},
+		SET_DATA(state,val){
+            state.user.data = val;
+        },
+        SET_ULTIMAS_ORDENES(state,val){
+            state.ultimasOrdenes = val;
         },
 
-        //pedidos
+		//pedidos
         CALCULATOR(state){//calcula segun los cambios que se aplican en los pedidos
             state.totalPedidos = [];
             for (let i = 0; i < state.pedidos.length; i++) {
@@ -151,7 +125,8 @@ export default new Vuex.Store({
         },
         ADD_DETALLE(state,val){//se añade un detalle a un pedido existente
             state.agregados.push(val.adm_conceptos_id);
-            state.pedidos.filter(a=> a.id == val.rest_pedidos_id ? a.detalles.push(val):null);
+            state.pedidos.filter(a=> a.id == val.detalle.rest_pedidos_id ? a.detalles.push(val):null);
+            state.pedidos.filter(a => a.id == val.detalle.rest_pedidos_id ? a.conceptos.push(val.concepto):null);
             window.localStorage.setItem("pedidos",JSON.stringify(state.pedidos));
         },
         DELETE_CARRITO(state){
@@ -182,57 +157,30 @@ export default new Vuex.Store({
             state.pedidos[data.indexPedido].detalles[data.indexDetalle].cantidad = data.cantidad;
             window.localStorage.setItem("pedidos",JSON.stringify(state.pedidos));
         },
-        SET_DATA(state,val){
-            state.user.data = val;
-        },
-        SET_FOTO_PROFILE(state,val){
-            state.user.data.imagen = val;
-        },
-    },
-    actions: {
-        setGrupos({commit},val){
-            commit('SET_GRUPOS',val);
-        },
-        setEmpresas({commit},val){
-            commit('SET_EMPRESAS',val);
-        },
-        setDrawer({commit},val){
-            commit('SET_DRAWER',val);
+	},
+	actions: {
+        setMunicipios({commit},val){
+            commit("SET_MUNICIPIOS",val);
         },
         setCarrito({commit},val){
             commit('SET_CARRITO',val);
         },
-        setModalPago({ commit }, val) {
-            commit("SET_MODAL_PAGO", val);
-          },
-        setBandera({commit},val){
-            commit('SET_BANDERA',val);
-        },
         setModalCarrito({commit},val){
             commit('SET_MODAL_CARRITO',val);
         },
-        setModalBloqueado({commit},val){
-            commit('SET_MODAL_BLOQUEADO',val);
-        },
-        setModalProducto({commit},val){
-            commit('SET_MODAL_PRODUCTO',val);
-        },
-        setModalImagen({commit},val){
-            commit('SET_MODAL_IMAGEN',val);
-        },
-        setModalSesion({commit},val){
-            commit('SET_MODAL_SESION',val);
-        },
-        setModalUbicacion({commit},val){
-            commit('SET_MODAL_UBICACION',val);
-        },
-        setSnackbar({commit},val){
-            commit('SET_SNACKBAR',val);
+        setBandera({commit},val){
+            commit('SET_BANDERA',val);
         },
         setBuscar({commit},val){
             commit('SET_BUSCAR',val);
         },
-        setProducto({commit},val){
+		setGrupos({commit},val){
+            commit('SET_GRUPOS',val);
+        },
+        setEmpresas({commit},val){
+            commit('SET_EMPRESAS',val);
+		},
+		setProducto({commit},val){
             commit('SET_PRODUCTO',val);
         },
         logged({commit},val){
@@ -267,21 +215,26 @@ export default new Vuex.Store({
         },
         deleteCarrito({commit}){
             commit('DELETE_CARRITO');
-        },
-        setFoto({ commit }, val) {
-            commit('SET_FOTO', val);
-        },
-        setFotoChanged({ commit }, val) {
-            commit('SET_CHANGEFOTO', val);
-        },
-        setFotoFile({ commit }, val) {
-            commit('SET_FOTOFILE', val);
-        },
-        setData({commit},val){
+		},
+		setData({commit},val){
             commit('SET_DATA',val);
         },
         setFotoProfile({commit},val){
             commit('SET_FOTO_PROFILE',val);
         },
-    }
+        setUltimasOrdenes({commit},val){
+            commit("SET_ULTIMAS_ORDENES",val);
+        },
+        setModalBloqueado({commit},val){
+            commit('SET_MODAL_BLOQUEADO',val);
+        },
+        setModalProducto({commit},val){
+            commit('SET_MODAL_PRODUCTO',val);
+        },
+        setModalSesion({commit},val){
+            commit('SET_MODAL_SESION',val);
+        },
+	},
+	modules: {
+	}
 });

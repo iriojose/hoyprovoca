@@ -86,7 +86,6 @@ const metodosDePago = [
     identificacion: "C.I: 17654976",
     cuenta: "Cuenta: 201800957218",
     detalle: "",
-
     monto: 0
   }
 ];
@@ -150,5 +149,4 @@ export default {
 .stepper-buttons {
   align-self: flex-end;
 }
-
 </style>

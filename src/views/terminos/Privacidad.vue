@@ -29,7 +29,6 @@
 <script>
 import Toolbar from './Toolbar';
 import List from './List';
-
     export default {
         components:{
             Toolbar,

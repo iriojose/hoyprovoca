@@ -4,7 +4,7 @@
             <v-row justify="center" class="py-4">
                 <v-col cols="12" md="8" sm="12" :class="$vuetify.breakpoint.smAndDown ? 'mx-4':null">
                     <v-row justify="center" class="pb-4">
-                        <v-img contain width="100" height="50" :src="require('@/assets/logo 6.png')"></v-img>
+                        <v-img transition="scale-transition" contain width="100" height="50" :src="require('@/assets/logo 6.png')"></v-img>
                     </v-row>
                     <v-card width="100%">
                         <v-row justify="center">
@@ -85,7 +85,6 @@ import router from '@/router';
 import validations from '@/validations/validations';
 import Auth from '@/services/Auth';
 import Usuario from '@/services/Usuario';
-
     export default {
         data() {
             return {

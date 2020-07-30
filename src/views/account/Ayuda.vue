@@ -58,7 +58,6 @@ export default {
                 role: 'Customer',
                 locale: 'es-ES'
         });
-
         window.talkSession = new Talk.Session({
             appId: process.env.VUE_APP_TALKJS_ID,
             me: this.me
@@ -84,7 +83,6 @@ export default {
                     appId: process.env.VUE_APP_TALKJS_ID,
                     me: this.me
                 });
-
                 let conversation = window.talkSession.getOrCreateConversation(Talk.oneOnOneId(this.me));
                 conversation.setParticipant(this.me);
                     

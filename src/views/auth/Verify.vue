@@ -1,5 +1,5 @@
 <template>
-    <v-card width="100%" elevation="0" color="#1f3b63" height="1200">
+    <v-card width="100%" elevation="0" color="#1f3b63" height="100%">
         <v-card-text>
             <v-row justify="center" class="py-4">
                 <v-col cols="12" md="8" sm="12" :class="$vuetify.breakpoint.smAndDown ? 'mx-4':null">
@@ -56,7 +56,6 @@
 import Auth from '@/services/Auth';
 import Usuario from '@/services/Usuario';
 import router from '@/router';
-
     export default {
         data(){
             return {
@@ -99,7 +98,8 @@ import router from '@/router';
                     else this.updateUser(response.data.user.id);
                 }).catch(e => {
                     console.log(e);
-                    this.respuesta('Error de conexion, intente Nuevamente.','mdi-alert-circle','red');
+                    if(e.response.status) this.respuesta("Token expirado","mdi-alert-circle","red");
+                    else this.respuesta('Error de conexion, intente Nuevamente.','mdi-alert-circle','red');
                 });
             },
             updateUser(id){

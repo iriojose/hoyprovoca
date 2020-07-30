@@ -18,12 +18,11 @@
 </template>
 
 <script>
-import PanelCarrito from './PanelCarrito';
 import {mapState,mapActions} from 'vuex';
 
     export default {
         components:{
-            PanelCarrito
+            PanelCarrito:() => import('./PanelCarrito')
         },
         computed: {
             ...mapState(['user','carrito','pedidos']),

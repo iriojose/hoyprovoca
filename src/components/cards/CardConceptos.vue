@@ -3,20 +3,20 @@
         <v-card 
             :width="$vuetify.breakpoint.smAndDown ? 150:200" 
             :height="$vuetify.breakpoint.smAndDown ? 200:250" 
-            class="pa-3" elevation="2"
+            class="hover" elevation="0"
             @click="modalDetalle"
+            active-class="active"
         >
             <v-img 
                 contain 
                 :width="$vuetify.breakpoint.smAndDown ? 150:200" 
                 :height="$vuetify.breakpoint.smAndDown ? 100:150" 
                 :src="typeof concepto.imagen === 'undefined'  || concepto.imagen === 'default.png' ? require('@/assets/box.svg') : image + concepto.imagen"
-                class="pb-3"
-            >   
+            >
                 <v-row class="mx-2" justify="end" v-if="parseExistencia(concepto) <= 0">
                     <v-img 
                         contain 
-                        :width="$vuetify.breakpoint.smAndDown ? 150:200" 
+                        :width="$vuetify.breakpoint.smAndDown ? 100:200" 
                         :height="$vuetify.breakpoint.smAndDown ? 100:150" 
                         :src="require('@/assets/agotado.png')"
                         class="pb-3"
@@ -36,8 +36,8 @@
                     </v-row>
                 </v-fade-transition>
             </v-img>
-            <div class="text-truncate body-1 font-weight-black text-capitalize">{{precioDolar}}</div>
-            <div class="text-truncate body-1 font-weight-black text-capitalize">{{precio}}</div>
+            <div class="text-truncate font-weight-black text-capitalize body-1">{{precioDolar}}</div>
+            <div class="text-truncate font-weight-black text-capitalize body-1">{{precio}}</div>
             <div class="text-truncate font-weight-medium text-capitalize">{{concepto.nombre}}</div>
         </v-card>
     </v-hover>
@@ -62,8 +62,6 @@ import accounting from 'accounting';
             return {
                 ...variables,
                 encontradoPedido:0,
-                precio:'',
-                precioDolar:'',
                 loading:false,
                 data:{
                     usuario_id:0,
@@ -85,22 +83,25 @@ import accounting from 'accounting';
                 ]
             }
         },
-        mounted() {
-            this.precioDolar = accounting.formatMoney(+this.concepto.precio_dolar,{symbol:"$ ",thousand:',',decimal:'.'});
-            this.precio = accounting.formatMoney(+this.concepto.precio_a,{symbol:"Bs ",thousand:'.',decimal:','});
-        },
         computed:{
-            ...mapState(['user','pedidos'])
+            ...mapState(['user','pedidos']),
+
+            precio(){
+                return accounting.formatMoney(+this.concepto.precio_a,{symbol:"Bs ",thousand:'.',decimal:','});
+            },
+            precioDolar(){
+                return accounting.formatMoney(+this.concepto.precio_dolar,{symbol:"$ ",thousand:',',decimal:'.'});
+            }
         },
         methods: {
             ...mapActions(['addPedidos','addDetalle','setModalSesion','setModalProducto','setProducto']),
-
+            
             success(mensaje){
                 this.$toasted.success(mensaje, { 
                     theme: "toasted-primary", 
                     position: "top-right", 
                     duration : 2000,
-                    icon : "done",
+                    //icon : "done",
                 });
                 this.loading = false;
             },
@@ -109,7 +110,7 @@ import accounting from 'accounting';
                     theme: "toasted-primary", 
                     position: "top-right", 
                     duration : 2000,
-                    icon : "error",
+                    //icon : "error",
                 });
                 this.loading = false;
             },
@@ -124,9 +125,9 @@ import accounting from 'accounting';
                 this.setProducto(this.concepto);
                 this.setModalProducto(true);
             },
-            async getExistencia(item){
+            getExistencia(item){
                 this.loading = true;
-                await Conceptos().get(`/${item.id}/depositos`).then((response) => {
+                Conceptos().get(`/${item.id}/depositos`).then((response) => {
                     if(this.parseExistencia(response.data.data) < 1){
                         this.error('Quedan '+this.parseExistencia(response.data.data)+' unidades en el stock.');
                     }else{
@@ -138,8 +139,8 @@ import accounting from 'accounting';
                 });
             },
             getEmpresa(item){
-                Empresa().get(`/${item.adm_empresa_id}/?fields=imagen`).then((response) => {
-                    this.data.imagen =response.data.data.imagen; 
+                Empresa().get(`/${item.adm_empresa_id}?fields=imagen`).then((response) => {
+                    this.data.imagen = response.data.data.imagen; 
                     this.data.adm_empresa_id = item.adm_empresa_id;
                     this.validacion(item);
                 }).catch(e => {
@@ -160,7 +161,6 @@ import accounting from 'accounting';
                 this.data1[0].adm_conceptos_id = item.id;
                 this.data1[0].precio = item.precio_a;
                 this.data1[0].imagen = item.imagen;
-
                 Pedidos().post("/",{data:this.data,data1:this.data1}).then((response) => {
                     response.data.data.conceptos = [];
                     response.data.data.conceptos.push(this.concepto);
@@ -168,7 +168,7 @@ import accounting from 'accounting';
                     this.success("Agregado exitosamente.");
                 }).catch(e => {
                     console.log(e);
-                    this.error("Error al crear pedido.");
+                    this.error("Error al procesar pedido.");
                 });
             },
             postPedidosDetalle(item){
@@ -180,11 +180,12 @@ import accounting from 'accounting';
                 Pedidos().post(`/${this.encontradoPedido}/detalles`,{data:data}).then((response) => {
                     this.pedidos.filter(a => a.id ==  this.encontradoPedido ?  a.conceptos.push(this.concepto):null);
                     this.encontradoPedido = 0;
-                    this.addDetalle(response.data.data);
+                    let data2 = {detalle:response.data.data,concepto:this.concepto};
+                    this.addDetalle(data2);
                     this.success("Agregado exitosamente.");
                 }).catch(e => {
                     console.log(e);
-                    this.error("Error al crear detalles del pedido.");
+                    this.error("Error al procesar detalles del pedido.");
                 });
             },
             parseExistencia(concepto){
@@ -193,3 +194,9 @@ import accounting from 'accounting';
         },
     }
 </script>
+
+<style lang="scss">
+    .active,.hover:hover{
+        background: #ECEFF1 !important;
+    }
+</style>

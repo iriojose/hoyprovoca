@@ -1,5 +1,5 @@
 <template>
-    <v-toolbar elevation="0">
+    <v-toolbar elevation="0" color="#EBDED1">
         <v-toolbar-title>
             <v-img 
                 contain 
@@ -14,13 +14,3 @@
         </v-btn>
     </v-toolbar>
 </template>
-
-<script>
-    export default {
-        
-    }
-</script>
-
-<style lang="scss" scoped>
-
-</style>

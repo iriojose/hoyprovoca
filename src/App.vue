@@ -1,28 +1,22 @@
 <template>
-    <v-app style="background-color:#f7f7f7;">
-        <AppBar v-show="ruta() && !loading" />
+	<v-app>
+		<Navbar v-if="ruta()" />
 
-        <v-card elevation="0" color="#fff" width="100%" height="100%" v-show="loading">
-            <v-row justify="center" class="fill-height" align="center">
-                <v-img width="500" height="500" contain :src="require('@/assets/loader.gif')"></v-img>
-            </v-row>
-        </v-card>
-        
-        <transition name="fade">
-            <router-view v-show="!loading" />
-        </transition> 
+		<v-main>
+            <transition name="fade">
+                <router-view />
+            </transition> 
+		</v-main>
 
-        <ModalBloqueado /> 
-        <ModalProducto />
+        <Footer v-if="ruta()" />
+
+        <ModalBloqueado />
         <ModalSesion />
-        <ModalImagen />
-
-        <Footer v-show="ruta() && !loading" class="margen" />
-    </v-app>
+        <ModalProducto />
+	</v-app>
 </template>
 
 <script>
-//services
 import Pedidos from '@/services/Pedidos';
 import Auth from '@/services/Auth';
 import Clientes from '@/services/Clientes';
@@ -30,47 +24,77 @@ import Empresa from "@/services/Empresa";
 import Grupos from "@/services/Grupos";
 import {mapActions,mapState} from 'vuex';
 
-    export default {
-        name: 'App',
-        components:{
-            AppBar:() => import('@/components/navbar/AppBar'),
-            ModalBloqueado:() => import('@/components/dialogs/ModalBloqueado'),
-            ModalProducto:() => import('@/components/dialogs/ModalProducto'),
-            ModalSesion:() => import('@/components/dialogs/ModalSesion'),
-            ModalImagen:() => import('@/components/dialogs/ModalImagen'),
-            Footer:() => import('@/components/footer/Footer'),
+	export default {
+		name: 'App',
+		components: {
+            Navbar:() => import('@/components/navbar/AppBar'),
+            Footer:() => import("@/components/footer/Footer"),
+            ModalBloqueado:() => import("@/components/dialogs/ModalBloqueado"),
+            ModalSesion:() => import("@/components/dialogs/ModalSesion"),
+            ModalProducto:() => import("@/components/dialogs/ModalProducto")
         },
-        data(){
+        data() {
             return {
-                loading:true,
+                loading:false,
                 aux:[]
             }
         },
-        computed: {
-            ...mapState(['user'])
+        computed:{
+            ...mapState(['user','bloqueado'])
         },
-        created() {
-            let token = JSON.parse(window.sessionStorage.getItem('token_client'));
-            if(token) this.sesion(token);
-            else this.loading = false;
-        },
-        mounted(){
+		created(){
+            let token = window.sessionStorage.getItem('token_client');
+            if(token !== "" || token) this.sesion(JSON.parse(token));
+            //else this.loading = false;
+
             let grupos = JSON.parse(window.localStorage.getItem("gruposMasVendidos"));
             if (!grupos) this.getGrupos();
-            else this.setGrupos(grupos);
-
+			else this.setGrupos(grupos);
+			
             let empresas = JSON.parse(window.localStorage.getItem("empresasMasVendidas"));
             if (!empresas) this.getEmpresas();
             else this.setEmpresas(empresas);
-        },
-        methods:{
+		},
+		methods:{
             ...mapActions(['logged','setModalBloqueado','setGrupos','setEmpresas','setPedidos']),
 
-            pedidosLocalStorage(){
-                let pedidos = JSON.parse(window.localStorage.getItem("pedidos"));
-                if(!pedidos) this.getPedidos();
-                else this.setPedidos(pedidos);//trae pedidos del cliente
+			ruta(){
+                if(
+                    this.$route.name == 'login' || 
+                    this.$route.name == 'forgot' ||
+                    this.$route.name == 'register' ||
+                    this.$route.name == 'notauthorized' ||
+                    this.$route.name == 'notfound' ||
+                    this.$route.name == 'checkout' ||
+                    this.$route.name == 'trabajar' ||
+                    this.$route.name == 'comopagar' || 
+                    this.$route.name == 'terminosycondiciones' ||
+                    this.$route.name == 'privacidad' ||
+                    this.$route.name == 'reset' ||
+                    this.$route.name == 'verify'
+                ){
+                    return false;
+                }else{
+                    return true;
+                }
             },
+			getEmpresas() {//trae las empreasa
+                Empresa().get("/?limit=8").then((response) => {
+                    window.localStorage.setItem("empresasMasVendidas",JSON.stringify(response.data.data));
+					this.setEmpresas(response.data.data);
+                }).catch((e) => {
+                    console.log(e);
+                });
+            },
+            getGrupos() {//trae los grupos de la aplicacion
+                Grupos().get("/mostsold/?limit=10").then((response) => {
+                    window.localStorage.setItem("gruposMasVendidos",JSON.stringify(response.data.data));
+                    this.setGrupos(response.data.data);
+                }).catch((e) => {
+                    console.log(e);
+                });
+            },
+            //sesion
             sesion(token){//valida el token
                 Auth().post("/sesion",{token:token}).then((response) => {
                     if(response.data.response.data.bloqueado == 1){
@@ -82,6 +106,7 @@ import {mapActions,mapState} from 'vuex';
                     }
                 }).catch(e => {
                     console.log(e);
+                    if(e && e.response.status == 401) window.sessionStorage.setItem("token_client","");
                     this.loading = false;
                 });
             },
@@ -93,6 +118,7 @@ import {mapActions,mapState} from 'vuex';
                     this.pedidosLocalStorage();//verifica los pedidos del localStorage
                 }).catch(e => {
                     console.log(e);
+                    if(e && e.response.status == 401) window.sessionStorage.setItem("token_client","");
                     this.loading = false;
                 });
             },
@@ -114,44 +140,14 @@ import {mapActions,mapState} from 'vuex';
                     console.log(e);
                 });
             },
-            getEmpresas() {//trae las empreasa
-                Empresa().get("/?limit=8").then((response) => {
-                    window.localStorage.setItem("empresasMasVendidas",JSON.stringify(response.data.data));
-                    this.setEmpresas(response.data.data);
-                }).catch((e) => {
-                    console.log(e);
-                });
+            pedidosLocalStorage(){
+                //let pedidos = JSON.parse(window.localStorage.getItem("pedidos"));
+                //if(!pedidos) this.getPedidos();
+                //else this.setPedidos(pedidos);//trae pedidos del cliente
+                this.getPedidos();
             },
-            getGrupos() {//trae los grupos de la aplicacion
-                Grupos().get("/mostsold/?limit=10").then((response) => {
-                    window.localStorage.setItem("gruposMasVendidos",JSON.stringify(response.data.data));
-                    this.setGrupos(response.data.data);
-                }).catch((e) => {
-                    console.log(e);
-                });
-            },
-            ruta(){
-                if(
-                    this.$route.name == 'login' || 
-                    this.$route.name == 'forgot' ||
-                    this.$route.name == 'register' ||
-                    this.$route.name == 'notauthorized' ||
-                    this.$route.name == 'notfound' ||
-                    this.$route.name == 'checkout' ||
-                    this.$route.name == 'prueba' ||
-                    this.$route.name == 'comopagar' || 
-                    this.$route.name == 'terminosycondiciones' ||
-                    this.$route.name == 'privacidad' ||
-                    this.$route.name == 'reset' ||
-                    this.$route.name == 'verify'
-                ){
-                    return false;
-                }else{
-                    return true;
-                }
-            },
-        }
-    }
+		}
+	};
 </script>
 
 <style>
