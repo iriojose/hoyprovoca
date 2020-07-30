@@ -32,7 +32,7 @@ import {mapState} from 'vuex';
 
     export default {
         components:{
-            loadImage:() => import("@/components/loaders/Image")
+            loadImage:() => import("@/components/loaders/image")
         },
         props: {
             title: {
