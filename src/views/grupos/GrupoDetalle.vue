@@ -110,7 +110,6 @@ import router from '@/router';
         },
         watch: {
             agregados(){
-                console.log("alo?");
                 this.revision();
             },
             '$route'(val){
