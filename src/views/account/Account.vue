@@ -85,7 +85,7 @@ import variables from '@/services/variables_globales';
                 items: [
                     {icon:'mdi-cogs', to:'/account/profile',title:'Ajustes de Cuenta'},
                     //{icon:'mdi-history',to:'/account/notificaciones',title:'Centro de Notificaciones'},
-                    {icon:'mdi-alert-circle',to:'/account/ordenes',title:'últimas Ordenes'},
+                    {icon:'mdi-alert-circle',to:'/account/ordenes',title:'Últimas Ordenes'},
                     {icon: 'mdi-help-circle',to:'/account/ayuda',title:'Atención al cliente'},
                 ],
                 dialog:false,
