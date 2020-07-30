@@ -1,15 +1,27 @@
 <template>
-  <div class="container" style="width:100%" justify="right">
-    <v-row justify="center"  v-if="stepper === 3">
+  <div class="list-container" style="width:100%" justify="right">
+    <v-row justify="center" v-if="stepper === 3">
       <v-col cols="12" md="6" sm="12" class="pa-5">
         <div class="font-weight-bold title">Subtotal a pagar</div>
         <div class="font-weight-bold subtitle-1">{{ total }}</div>
 
         <div class="text-center font-weight-bold title my-5">Datos de la cuenta</div>
-        <div><strong>Nombre :</strong>{{ pago.propietario }}</div>
-        <div><strong>C.I :</strong>{{ pago.identificacion }}</div>
-        <div><strong>Detalles :</strong>{{ pago.cuenta }}</div>
-        <div><strong>Metodo :</strong>{{ pago.nombre }}</div>
+        <div>
+          <strong>Nombre :</strong>
+          {{ pago.propietario }}
+        </div>
+        <div>
+          <strong>C.I :</strong>
+          {{ pago.identificacion }}
+        </div>
+        <div>
+          <strong>Detalles :</strong>
+          {{ pago.cuenta }}
+        </div>
+        <div>
+          <strong>Metodo :</strong>
+          {{ pago.nombre }}
+        </div>
         <div>
           <strong>{{ pago.detalle }}</strong>
         </div>
@@ -47,18 +59,19 @@
       </v-dialog>
     </v-row>
     <div class="stepper-buttons">
-      <v-btn 
-      :disabled="data.codigo_referencia === '' && loading"
-      color="#0f2441"
-      :loading="loading"
-      @click="checkPago"
-    >
-      <span style="color:white">Enviar</span>
-    </v-btn>
+      <v-btn
+        light
+        :disabled="data.codigo_referencia === '' && loading"
+        color="#0f2441"
+        class="lod"
+        :loading="loading"
+        @click="checkPago"
+      >
+        <span style="color:white">Enviar</span>
+      </v-btn>
 
-    <v-btn text @click="changeView('stepper', 2)">Atras</v-btn>
-  </div>
-    
+      <v-btn text @click="changeView('stepper', 2)">Atras</v-btn>
+    </div>
   </div>
 </template>
 <script>
@@ -89,7 +102,7 @@ const metodosDePago = [
     identificacion: " 17654976",
     cuenta: "movil : 04127955560",
     detalle: "",
-    monto: 0
+    monto: 0,
   },
   {
     id: 1,
@@ -99,7 +112,7 @@ const metodosDePago = [
     cuenta: "Corriente 01740112201124312701",
     detalle:
       "Recuerde!, Transferencias de diferentes bancos tardan al menos 1 dia en ser confirmadas",
-    monto: 0
+    monto: 0,
   },
   {
     id: 2,
@@ -109,7 +122,7 @@ const metodosDePago = [
     cuenta: "Ahorro 01340563895633049696",
     detalle:
       "Recuerde!, Transferencias de diferentes bancos tardan al menos 1 dia en ser confirmadas",
-    monto: 0
+    monto: 0,
   },
   {
     id: 3,
@@ -118,49 +131,49 @@ const metodosDePago = [
     identificacion: " 17654976",
     cuenta: "Cuentas 201800957218",
     detalle: "",
-    monto: 0
-  }
+    monto: 0,
+  },
 ];
 export default {
   props: {
     data: {
       type: Object,
-      default: function() {
+      default: function () {
         return {};
-      }
+      },
     },
     stepper: { type: Number, default: 0 },
     total: {
       default: 0,
-      type: Number | String
+      type: Number | String,
     },
     pagoId: {
-      defulta: function() {
+      defulta: function () {
         return { 0: 0, 1: 0 };
       },
-      type: Object
+      type: Object,
     },
     pago: {
-      default: function() {
+      default: function () {
         return metodosDePago[1];
       },
-      type: Object
+      type: Object,
     },
     pedidoSelect: {
-      default: function() {
+      default: function () {
         return {};
       },
-      type: Object
+      type: Object,
     },
     pedidos: {
-      default: function() {
+      default: function () {
         return [];
       },
-      type: Array
-    }
+      type: Array,
+    },
   },
   components: {
-    FilePond
+    FilePond,
   },
   data() {
     return {
@@ -171,7 +184,7 @@ export default {
       file: {},
       loading: false,
       takeFile: false,
-      valid: false
+      valid: false,
     };
   },
   watch: {},
@@ -183,27 +196,19 @@ export default {
       },
       set() {
         this.setModalPago(true);
-      }
-    }
+      },
+    },
   },
   methods: {
     ...mapActions(["setPedidos", "deletePedidoStore", "setModalPago"]),
     formatToNumber(mount) {
       return parseFloat(
-        mount
-          .split(" ")[1]
-          .split(".")
-          .join("")
-          .replace(",", ".")
+        mount.split(" ")[1].split(".").join("").replace(",", ".")
       );
     },
     verificarMonto() {
       const aCubrir = parseFloat(
-        this.total
-          .split(" ")[1]
-          .split(".")
-          .join("")
-          .replace(",", ".")
+        this.total.split(" ")[1].split(".").join("").replace(",", ".")
       );
       if (+this.montos[0] + +this.montos[1] > aCubrir) {
         this.alertNotifier = pagoExedido;
@@ -228,11 +233,7 @@ export default {
       const money = this.diferentes
         ? this.montos[this.stepper - 3]
         : parseFloat(
-            this.data.monto
-              .split(" ")[1]
-              .split(".")
-              .join("")
-              .replace(",", ".")
+            this.data.monto.split(" ")[1].split(".").join("").replace(",", ".")
           );
       this.postPago(money);
     },
@@ -246,10 +247,10 @@ export default {
           data: {
             ...this.data,
             adm_clientes_id: this.user.cliente.id,
-            monto: money
-          }
+            monto: money,
+          },
         })
-        .then(response => {
+        .then((response) => {
           this.alert = true;
           this.alertNotifier = empiezaPago;
           this.$emit("setLocal", "pedidoSelect", this.pedidoSelect);
@@ -258,31 +259,31 @@ export default {
           this.$emit("updateArray", {
             name: "pagoId",
             x: this.stepper - 3,
-            content: response.data.data.id
+            content: response.data.data.id,
           });
           this.$emit("setLocal", "pagoId", this.pagoId);
         })
-        .catch(e => {
+        .catch((e) => {
           console.log(e);
         });
     },
     actualizarEstadoPedido() {
       Pedidos()
         .post(`/${this.data.adm_pedidos_id}`, {
-          data: { rest_estatus_id: 2 }
+          data: { rest_estatus_id: 2 },
         })
         .then(() => {
           this.loading = false;
           this.$emit("updatedState", {
             name: "success",
-            content: true
+            content: true,
           });
           this.$emit("updatedState", { name: "view", content: 3 });
           setTimeout(() => {
             router.push("/");
           }, [9000]);
         })
-        .catch(e => {
+        .catch((e) => {
           console.log(e);
         });
     },
@@ -301,16 +302,12 @@ export default {
             const PagoObjetivo = this.stepper - 3;
             const inInt = parseFloat(this.montos[PagoObjetivo]);
             let parSedRestante = parseFloat(
-              this.restante
-                .split(" ")[1]
-                .split(".")
-                .join("")
-                .replace(",", ".")
+              this.restante.split(" ")[1].split(".").join("").replace(",", ".")
             );
             this.restante = accounting.formatMoney(parSedRestante - inInt, {
               symbol: "Bs ",
               thousand: ".",
-              decimal: ","
+              decimal: ",",
             });
             if (this.stepper === 3) {
               this.setModalPago(false);
@@ -343,7 +340,7 @@ export default {
             this.deletePedidoStore(indexPedido);
           }
         })
-        .catch(e => {
+        .catch((e) => {
           console.log(e);
         });
     },
@@ -353,17 +350,27 @@ export default {
     },
     initProcess() {
       this.loading = true;
-    }
-  }
+    },
+  },
 };
 </script>
-<style scoped lang="scss">
-.container{
-  width:100%;
+<style lang="scss">
+.list-container {
+  width: 100%;
   display: flex;
   flex-direction: column;
- 
-} .stepper-buttons{
-      align-self: flex-end;
+}
+.stepper-buttons {
+  align-self: flex-end;
+}
+.lod{
+  .v-progress-circular {
+  color: white !important;
+  fill: white;
+  svg {
+    color: white !important;
+    fill: white;
   }
+}
+}
 </style>

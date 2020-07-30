@@ -23,7 +23,7 @@
                 @updatedState="updateState"
                 @updatedSubState="updateSubState"
                 :total.sync="total"
-                :pedidos.sync="pedidos"
+                :pedidosLoads="pedidosLoads"
                 @updateSubStateArray="updateSubStateArray"
                 :pedidoSelect.sync="pedidoSelect"
                 @updateDetallePedido="updateDetallePedido"
@@ -245,7 +245,7 @@ const messageSend =
                 montos: ["0", "0"],
                 pago: {},
                 pagoId: { 0: 0, 1: 0 },
-                pedidos: [
+                pedidosLoads: [
                     {
                     id: 1,
                     adm_clientes_id: 7,
@@ -289,13 +289,7 @@ const messageSend =
         };
     },
     mounted() {
-        if (!this.user.data.verificado) {
-            this.view = 3;
-            this.NotVerified = true;
-            this.verifyMessage = notverified;
-            this.loading = false;
-        }
-        //  this.getPedidosUsuario();
+      
     },
     head: {
         title() {
@@ -324,6 +318,14 @@ const messageSend =
                 }
             }
         },
+        user(){
+           if (!this.user.data.verificado) {
+            this.view = 3;
+            this.NotVerified = true;
+            this.verifyMessage = notverified;
+            this.loading = false;
+        }
+        },
         view() {
             if (this.view === 2) {
                 if (this.pendiente === true) {
@@ -349,7 +351,7 @@ const messageSend =
         }
     },
     computed: {
-        ...mapState(["user", "modalPago"])
+       ...mapState(["user", "modalPago","pedidos"])
     },
     methods: {
         ...mapActions(["setPedidos", "deletePedidoStore", "setModalPago"]),

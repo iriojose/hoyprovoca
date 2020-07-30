@@ -63,7 +63,7 @@ const metodosDePago = [
     id: 1,
     nombre: "Transferencia Banco Nacional: Banplus",
     propietario: "Jesus Bellorin",
-    identificacion: "C.I: 17654976",
+    identificacion: " 17654976",
     cuenta: "Corriente : 01740112201124312701",
     detalle:
       "Recuerde!, Transferencias de diferentes bancos tardan al menos 1 dia en ser confirmadas",
@@ -73,7 +73,7 @@ const metodosDePago = [
     id: 2,
     nombre: "Transferencia Banco Nacional: Banesco",
     propietario: "Jesus Bellorin",
-    identificacion: "C.I: 17654976",
+    identificacion: "17654976",
     cuenta: "Ahorro : 01340563895633049696",
     detalle:
       "Recuerde!, Transferencias de diferentes bancos tardan al menos 1 dia en ser confirmadas",
@@ -83,7 +83,7 @@ const metodosDePago = [
     id: 3,
     nombre: "Banesco Panama",
     propietario: "Jesus Bellorin",
-    identificacion: "C.I: 17654976",
+    identificacion: " 17654976",
     cuenta: "Cuenta: 201800957218",
     detalle: "",
     monto: 0

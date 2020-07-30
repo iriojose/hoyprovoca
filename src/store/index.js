@@ -16,6 +16,7 @@ export default new Vuex.Store({
         modalcarrito:false,
         modalsesion:false,
         modalProducto:false,
+        modalPago:false,
         bloqueado:false,
         drawer:false,
         search:'',
@@ -58,6 +59,9 @@ export default new Vuex.Store({
         SET_MODAL_SESION(state,val){
             val ? state.modalsesion = true:state.modalsesion = false;
         },
+        SET_MODAL_PAGO(state,val){
+          val ? state.modalPago = true:state.modalPago = false;
+      },
         SET_DRAWER(state,val){
             val ? state.drawer = true:state.drawer = false;
         },
@@ -238,6 +242,9 @@ export default new Vuex.Store({
         setModalSesion({commit},val){
             commit('SET_MODAL_SESION',val);
         },
+        setModalPago({commit},val){
+          commit('SET_MODAL_PAGO',val);
+      },
         setDrawer({commit},val){
             commit("SET_DRAWER",val);
         }
