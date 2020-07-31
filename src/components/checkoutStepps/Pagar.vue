@@ -70,7 +70,7 @@
         <span style="color:white">Enviar</span>
       </v-btn>
 
-      <v-btn text @click="changeView('stepper', 2)">Atras</v-btn>
+      <v-btn text @click="changeView('stepper', 1)">Atras</v-btn>
     </div>
   </div>
 </template>

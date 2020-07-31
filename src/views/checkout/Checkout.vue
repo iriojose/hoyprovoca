@@ -23,7 +23,7 @@
                 @updatedState="updateState"
                 @updatedSubState="updateSubState"
                 :total.sync="total"
-                :pedidosLoads="pedidosLoads"
+                :totalUSD.sync="totalUSD"
                 @updateSubStateArray="updateSubStateArray"
                 :pedidoSelect.sync="pedidoSelect"
                 @updateDetallePedido="updateDetallePedido"
@@ -40,29 +40,16 @@
                 <v-stepper v-model="stepper">
                     <v-stepper-header>
                         <v-stepper-step color="#0f2441" :complete="stepper > 1" step="1">
-                            Existencia
-                        </v-stepper-step>
-                        <v-divider></v-divider>
-                        <v-stepper-step color="#0f2441" :complete="stepper > 2" step="2">
                             tipos de pago
                         </v-stepper-step>
                         <v-divider></v-divider>
-                        <v-stepper-step :complete="stepper > 3" step="3" color="#0f2441">
+                        <v-stepper-step :complete="stepper > 2" step="2" color="#0f2441">
                             Pagar
                         </v-stepper-step>
                     </v-stepper-header>
 
                     <v-stepper-items>
-                        <v-stepper-content step="1">
-                            <Existencia
-                                :total="total"
-                                :pedidoSelect.sync="pedidoSelect"
-                                @updatedState="updateState"
-                                :view.sync="view"
-                                @setLocal="setLocal"
-                            />
-                            </v-stepper-content>
-                            <v-stepper-content step="2">
+                            <v-stepper-content step="1">
                             <TipoPago
                                 :total="total"
                                 :pedidoSelect="pedidoSelect"
@@ -72,7 +59,7 @@
                                 @setLocal="setLocal"
                             />
                         </v-stepper-content>
-                        <v-stepper-content step="3">
+                        <v-stepper-content step="2">
                             <Pagar
                                 :pedidos.sync="pedidos"
                                 :pedidoSelect.sync="pedidoSelect"
@@ -209,6 +196,7 @@ const messageSend =
                 loading: true,
                 total: "0",
                 stepper: 1,
+                totalUSD:0,
                 state: {
                     stepper: 1,
                     total: 0,
@@ -245,7 +233,7 @@ const messageSend =
                 montos: ["0", "0"],
                 pago: {},
                 pagoId: { 0: 0, 1: 0 },
-                pedidosLoads: [
+                pedidoslol: [
                     {
                     id: 1,
                     adm_clientes_id: 7,

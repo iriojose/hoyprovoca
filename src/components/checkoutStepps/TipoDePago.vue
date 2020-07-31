@@ -28,10 +28,10 @@
       </v-col>
     </v-row>
     <div class="stepper-buttons">
-      <v-btn color="#0f2441" :disabled="bloqueo" @click="changeView('stepper', 3)">
+      <v-btn color="#0f2441" :disabled="bloqueo" @click="changeView('stepper', 2)">
         <span style="color:white">Continuar</span>
       </v-btn>
-      <v-btn text @click="changeView('stepper', 1)">Atras</v-btn>
+      <v-btn text @click="changeView('view', 1)">Atras</v-btn>
     </div>
   </div>
 </template>

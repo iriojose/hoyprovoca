@@ -198,7 +198,8 @@ export default {
       this.stockNotifier = checking;
       //empieza a cargar las existencias una vez temina la funcion  se modifica el total si faltan productos a la existencia
       this.getCheck().then(checked => {
-        this.loading = false;
+        this.loadingExistence = false;
+      //  this.$forceUpdate();
         if (this.disponibilidad === this.pedidoSelect.detalles.length) {
           this.stockNotifier = avaible;
           this.bloqueo = false;
