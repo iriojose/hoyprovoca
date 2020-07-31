@@ -110,6 +110,7 @@ import {mapState} from 'vuex';
             },
         },
         mounted() {
+            if(this.$vuetify.breakpoint.smAndDown) this.tipo = true;
             this.subgrupo = JSON.parse(window.localStorage.getItem('subgrupo'));
             this.getConceptos(this.subgrupo.id);
         },

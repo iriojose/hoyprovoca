@@ -133,6 +133,7 @@ import router from '@/router';
             },
         },
         mounted() {
+            if(this.$vuetify.breakpoint.smAndDown) this.tipo = true;
             this.grupo = JSON.parse(window.localStorage.getItem('grupo'));
             this.getSubgrupos(this.grupo.id);
             this.getConceptos(this.grupo.id);

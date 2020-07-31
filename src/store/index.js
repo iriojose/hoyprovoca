@@ -25,6 +25,7 @@ export default new Vuex.Store({
         grupos:[],
         empresas:[],
         ultimasOrdenes:[],
+        totales:[],
         //arrays
         pedidos:[],//guarda los pedidos
         agregados:[],//guarda ids de los conceptos agregados a pedidos
@@ -119,6 +120,17 @@ export default new Vuex.Store({
                     suma+= +state.pedidos[i].detalles[e].precio * +state.pedidos[i].detalles[e].cantidad;
                 }
                 state.totalPedidos.push(suma);
+            }
+        },
+        //calcula totales de ultimas ordenes
+        CALCULATOR_ORDENES(state){
+            state.totales = [];
+            for (let i = 0; i < state.ultimasOrdenes.length; i++) {
+                let suma = 0;
+                for (let e = 0; e < state.ultimasOrdenes[i].detalles.length; e++) {
+                    suma+= +state.ultimasOrdenes[i].detalles[e].precio * +state.ultimasOrdenes[i].detalles[e].cantidad;
+                }
+                state.totales.push(suma);
             }
         },
         SET_PEDIDOS(state,val){//añade todos los pedidos que vengan de la api
@@ -232,6 +244,7 @@ export default new Vuex.Store({
         },
         setUltimasOrdenes({commit},val){
             commit("SET_ULTIMAS_ORDENES",val);
+            commit('CALCULATOR_ORDENES');
         },
         setModalBloqueado({commit},val){
             commit('SET_MODAL_BLOQUEADO',val);
