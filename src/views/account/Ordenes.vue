@@ -114,6 +114,7 @@ import accounting from 'accounting';
                 return accounting.formatMoney(+precio,{symbol:"$ ",thousand:',',decimal:'.'});
             },
             getPedidos(){
+                this.loading = true;
                 Clientes().get(`/${this.user.cliente.id}/pedidos/?rest_estatus_id > 1`).then((response) => {
                     if(response.data.data){
                         response.data.data.filter(a => a.detalles.filter(b => b.precio = accounting.formatMoney(+b.precio,{symbol:"$ ",thousand:',',decimal:'.'})));
