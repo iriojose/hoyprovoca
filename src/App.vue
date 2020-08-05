@@ -47,7 +47,7 @@ import {mapActions,mapState} from 'vuex';
         },
 		created(){
             let token = window.sessionStorage.getItem('token_client');
-            if(token !== "" || token) this.sesion(JSON.parse(token));
+            if(token != null && token != "" && token != undefined) this.sesion(JSON.parse(token));
             //else this.loading = false;
 
             let grupos = JSON.parse(window.localStorage.getItem("gruposMasVendidos"));
@@ -100,6 +100,7 @@ import {mapActions,mapState} from 'vuex';
             //sesion
             sesion(token){//valida el token
                 Auth().post("/sesion",{token:token}).then((response) => {
+                    console.log(response);
                     if(response.data.response.data.bloqueado == 1){
                         this.setModalBloqueado(true);
                         this.loading = false;
@@ -109,7 +110,6 @@ import {mapActions,mapState} from 'vuex';
                     }
                 }).catch(e => {
                     console.log(e);
-                    if(e && e.response.status == 401) window.sessionStorage.setItem("token_client","");
                     this.loading = false;
                 });
             },
@@ -121,7 +121,6 @@ import {mapActions,mapState} from 'vuex';
                     this.pedidosLocalStorage();//verifica los pedidos del localStorage
                 }).catch(e => {
                     console.log(e);
-                    if(e && e.response.status == 401) window.sessionStorage.setItem("token_client","");
                     this.loading = false;
                 });
             },

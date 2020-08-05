@@ -25,8 +25,9 @@
 
         <v-text-field
             label="¿Que te provoca?..." hide-details
-            dense v-on:keyup.enter="push" solo-inverted
-            solo class="ml-10 hidden-sm-and-down" single-line
+            dense v-on:keyup.enter="push" light
+            class="ml-10 hidden-sm-and-down" single-line
+            solo
         >
             <v-btn slot="append" tile text small @click="push">
                 <v-icon color="#D32F2F">mdi-magnify</v-icon>
@@ -56,8 +57,8 @@
             v-if="$vuetify.breakpoint.smAndDown"
             class="mx-5 search" slot="extension"
             label="¿Que te provoca?..." hide-details
-            dense v-on:keyup.enter="push"
-            solo solo-inverted single-line
+            dense v-on:keyup.enter="push" light
+            solo single-line
         >
             <v-btn slot="append" tile @click="push" text small>
                 <v-icon color="#D32F2F">mdi-magnify</v-icon>
