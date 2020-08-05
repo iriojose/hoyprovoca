@@ -2,6 +2,7 @@
     <v-bottom-navigation
         color="#2950c3"
         horizontal
+        height="35"
         fixed
     >
         <v-btn to="/" active-class="#2950c3">

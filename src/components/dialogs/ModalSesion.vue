@@ -123,7 +123,7 @@ import Clientes from '@/services/Clientes';
                     }
                 }).catch(e => {
                     console.log(e);
-                    return this.errors.push('Error de conección');
+                    return this.errors.push('Error de conexión');
                 });
             },
             login(){
