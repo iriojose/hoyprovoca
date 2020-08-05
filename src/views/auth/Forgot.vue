@@ -169,7 +169,7 @@ import Usuario from '@/services/Usuario';
                 }).catch(e => {
                     console.log(e);
                     this.loading2 = false;
-                    return this.errors.push('Error de conección');
+                    return this.errors.push('Error de conexión');
                 });
             }
         }
