@@ -289,23 +289,6 @@ const messageSend =
         }
     },
     watch: {
-        pedidoSelect() {
-            if (this.view === 1) {
-                const savedData = localStorage.getItem("state");
-                if (savedData) {
-                    let toLoad = JSON.parse(savedData);
-                    if (toLoad.pedidoSelect == null) return;
-                    if (this.pedidoSelect.id === toLoad.pedidoSelect.id) {
-                        this.pendiente = true;
-                        this.messagePendiente = "Continuar Pago...";
-                        return;
-                    }
-                    this.pendiente = false;
-                } else {
-                    return (this.pendiente = false);
-                }
-            }
-        },
         user(){
            if (!this.user.data.verificado) {
             this.view = 3;
