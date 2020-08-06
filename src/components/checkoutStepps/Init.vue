@@ -270,30 +270,24 @@ export default {
             stock: null,
             pedido: {},
             promedio: 0,
+            solicitado:false,
             messagePendiente: "Pagar",
         };
     },
     mounted() {
         this.loading = true;
+        if(this.pedidos){
+          this.checkStorage();
+          this.getPedidosUsuario();
+          this.solicitado = true;
+        }
     },
     watch: {
         pedidos() {
             if (this.pedidos) {
                 this.getPedidosUsuario();
-                if (this.view === 1) {
-                    const savedData = localStorage.getItem("state");
-                    if (savedData) {
-                        let toLoad = JSON.parse(savedData);
-                        if (toLoad.pedidoSelect == null) return;
-                        if (this.pedidoSelect.id === toLoad.pedidoSelect.id) {
-                            this.pendiente = true;
-                            this.messagePendiente = "Continuar Pago...";
-                            return;
-                        }
-                        this.pendiente = false;
-                    } else {
-                        return (this.pendiente = false);
-                    }
+                if (this.view === 1 && !this.solicitado) {
+                    this.checkStorage();
                 }
             }
         },
@@ -329,6 +323,21 @@ export default {
                           .reduce((a, b) => a + b)
                     : 0
                 : concepto.existencias;
+        },
+        checkStorage(){
+    /*      const savedData = localStorage.getItem("state");
+                    if (savedData) {
+                        let toLoad = JSON.parse(savedData);
+                        if (toLoad.pedidoSelect == null) return;
+                        if (this.pedidoSelect.id === toLoad.pedidoSelect.id) {
+                            this.pendiente = true;
+                            this.messagePendiente = "Continuar Pago...";
+                            return;
+                        }
+                        this.pendiente = false;
+                    } else {
+                        return (this.pendiente = false);
+                    }*/
         },
         calcularTotal(concepto, detalles) {
             let suma = 0;
@@ -426,6 +435,7 @@ export default {
         },
         next() {
             this.$emit("updatedState", { name: "view", content: 2 });
+             this.$emit("updatedState", { name: "stepper", content: 1 });
         },
         async getCripto() {
             return Cripto()
@@ -543,6 +553,7 @@ export default {
                 }
             });
         },
+        
     },
 };
 </script>

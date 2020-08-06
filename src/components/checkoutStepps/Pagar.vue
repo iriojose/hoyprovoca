@@ -207,6 +207,7 @@ export default {
       );
     },
     verificarMonto() {
+      console.log(this.total)
       const aCubrir = parseFloat(
         this.total.split(" ")[1].split(".").join("").replace(",", ".")
       );
@@ -228,12 +229,13 @@ export default {
         if (isNotValidMount) return;
       }
       this.loading = true;
+      console.log(this.data , "data")
       this.data.adm_status_id = 2;
       this.data.adm_tipo_pago_id = this.pago.id;
       const money = this.diferentes
         ? this.montos[this.stepper - 3]
         : parseFloat(
-            this.data.monto.split(" ")[1].split(".").join("").replace(",", ".")
+            this.data.monto.split(".").join("").replace(",", ".")
           );
       this.postPago(money);
     },
