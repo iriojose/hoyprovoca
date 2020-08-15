@@ -1,89 +1,123 @@
 <template>
   <div>
     <Toolbar />
-    <v-divider></v-divider>
-    <v-card class="mx-2">
-      <v-card-title class="title my-10">1.- Acerca de Hoyprovoca</v-card-title>
-      <v-row class="py-10 rows" justify="center" align="center">
-        <v-col md="3">
-          <v-img class="mx-3 my-1" src="./../../assets/humanos.svg"></v-img>
-        </v-col>
-        <v-col md="8" class="align-self-center" justify="center">
-            <v-card-title
-                class="description-title wrap text-left font-weight-black"
-            >
-                Se parte del equipo que Transforma venezuela
-            </v-card-title>
-            <v-divider></v-divider>
-            <v-card-text class="font text-left">
-                HoyProvoca ha sido desarrollado por la empresa Somos
-                Sistemas C.A, operando en el Estado Nueva Esparta,
-                Venezuela. Nuestra misión es la de ofrecer una
-                plataforma de confianza donde se pueda virtualizar el
-                mercado venezolano, y donde cada empresa pueda ofrecer
-                diferentes bienes para el consumo final.
-            </v-card-text>
-            <v-card-text class="font text-left">
-                Nuestra plataforma es un sitio de consumo de alto crecimiento,
-                enfocada a la oferta de servicios que permitan conectar
-                a consumidores, transportistas y distribuidores en una
-                sitio que permita la oferta de productos
-                alimenticios, tecnológicos, y mucho más. Provenientes de
-                nuestros aliados locales.
-            </v-card-text>
-          
-          <v-card-text class="font text-left">¡No te pierdas de una experiencia inolvidable!</v-card-text>
-        </v-col>
-      </v-row>
+      <v-card-title class="title my-10">
+        1.
+        <span></span> Acerca de Hoyprovoca
+      </v-card-title>
 
-      <v-card-title class="title py-6">2.- Requisitos</v-card-title>
-      <v-row  sm="10" justify="center" class="align-md-center py-9 rows">
-        <v-col sm="10" md="5" justify="center">
-          <v-col md="4" class="circle" style="margin:auto!important" >
-            <v-img style="z-index:1;margin-left:20px" src="./../../assets/empresario.png"></v-img>
-          </v-col>
-          <v-card-text class="requisitos-text text-left font">
-            somos una empresa abierta a nuevas solicitudes si deseas
-            trabajar con nosotros envianos un correo a
-            <strong>SomosSistemas@gmail.com</strong> con los siguientes requisitos mostrados en la lista y estaremos en contacto
+      <div class="flex flex-center">
+        <div class="img-box">
+          <div class="img-container">
+            <div class="img" src="./../../assets/humanos.svg"></div>
+          </div>
+        </div>
+        <div class="description-container" justify="center">
+          <v-card-title class="description-title wrap text-left font-weight-black">
+            Se parte del equipo
+            <br />que Transforma venezuela
+          </v-card-title>
+          <v-card-text class="font text-left">
+            <strong>HoyProvoca</strong> ha sido desarrollado por la
+            empresa Somos Sistemas C.A, operando en el Estado
+            <strong>Nueva Esparta, Venezuela.</strong> Nuestra
+            misión es la de ofrecer una plataforma de confianza
+            donde se pueda virtualizar el mercado venezolano, y
+            donde cada empresa pueda ofrecer diferentes bienes para
+            el consumo final.
           </v-card-text>
-        </v-col>
+          <v-card-text class="font text-left">
+            Nuestra plataforma es un sitio de consumo de alto
+            crecimiento, enfocada a la oferta de servicios que
+            permitan conectar a consumidores, transportistas y
+            distribuidores en un sitio que permita la oferta de
+            <strong>
+              productos alimenticios, tecnológicos, y mucho
+              más.
+            </strong>
+            Provenientes de nuestros aliados locales.
+          </v-card-text>
+          <v-card-text class="font text-left">
+            <strong>
+              ¡No te pierdas de una experiencia
+              inolvidable!
+            </strong>
+          </v-card-text>
+        </div>
+      </div>
 
-        <v-col sm="10" md="6" justify="center">
-          <v-timeline :align-top="alignTop" :dense="dense" :reverse="reverse">
-            <v-timeline-item
-              v-for="requisito in requisitos"
-              :key="requisito"
-              :fill-dot="fillDot"
-              :hide-dot="hideDot"
-              :icon="icon ? 'mdi-check' : 'mdi-check'"
-              :icon-color=" iconColor ? 'deep-orange' : ''"
-              :left="left"
-              :right="right"
-              :small="small"
-            >
-              <template v-slot:icon>
-                <v-avatar >
-                  <img src="./../../assets/tick.png" />
-                </v-avatar>
-              </template>
-              <v-card class="elevation-2">
-                <v-card-text>{{requisito}}</v-card-text>
+      <div class="flex flex-center tiket">
+        <v-card-title class="tiket-letters wrap text-left font-weight-black">¡Estamos reclutando!</v-card-title>
+      </div>
+      <v-card-title class="title my-10">
+        2.
+        <span></span> Que Necesitas?
+      </v-card-title>
+      <div class="flex flex-center flex-row margin-bottom">
+        <div class="flex flex-center flex-column max">
+          <v-card-title class="display-1">Envianos tu Solicitud</v-card-title>
+          <v-card-text class="requisitos-text font text-left">
+            Si deseas unirte a nuestra red de repartidores para <strong>hoyprovoca.com</strong>, puedes enviarnos un correo a <strong>somossistemas@gmail.com,</strong>  con los siguientes requisitos.
+          </v-card-text>
+          <v-card-text class="requisitos-text font text-left">
+           <strong>¡Estaremos en contacto!</strong>
+          </v-card-text>
+        </div>
+
+        <div class="requisitos-timeline">
+          <v-timeline :dense="$vuetify.breakpoint.smAndDown">
+            
+
+            <v-timeline-item color="red lighten-1" hide-dot right small>
+              <v-card color="red">
+                <v-card-title class="red p-0 lighten-1">
+                  <v-icon dark class="mr-4 pl-2" size="20">mdi-home-outline</v-icon>
+                  <h2 class="title white--text font-weight-light">Direccion</h2>
+                </v-card-title>
+              </v-card>
+            </v-timeline-item>
+
+            <v-timeline-item color="cyan lighten-1" hide-dot right small>
+              <v-card color="red">
+                <v-card-title class="red p-0 lighten-1">
+                  <v-icon dark class="mr-4 pl-2" size="20">mdi-email-outline</v-icon>
+                  <h2 class="title white--text font-weight-light">Correo</h2>
+                </v-card-title>
+              </v-card>
+            </v-timeline-item>
+
+            <v-timeline-item color="red lighten-1" hide-dot right small>
+              <v-card color="red">
+                <v-card-title class="red li p-0 lighten-1">
+                  <v-icon dark class="mr-4 pl-2" size="20">mdi-account-multiple-outline</v-icon>
+                  <h2 class="title mr-4 white--text font-weight-light">Cedula</h2>
+                </v-card-title>
+              </v-card>
+            </v-timeline-item>
+
+            <v-timeline-item color="red lighten-1" hide-dot right small>
+              <v-card color="red">
+                <v-card-title class="red p-0 lighten-1">
+                  <v-icon class="mr-4 pl-2" dark size="20">mdi-phone-in-talk</v-icon>
+                  <h2 class="title white--text font-weight-light">Celular</h2>
+                </v-card-title>
               </v-card>
             </v-timeline-item>
           </v-timeline>
-        </v-col>
-      </v-row>
-    </v-card>
+        </div>
+      </div>
+      <Footer/>
   </div>
+  
 </template>
 
 <script>
 import Toolbar from "./../terminos/Toolbar";
-
+import Footer from "@/components/footer/Footer"
 export default {
   components: {
-    Toolbar
+    Toolbar,
+    Footer
   },
   data: () => {
     return {
@@ -104,10 +138,10 @@ export default {
         "Rif",
         "Curriculum",
         "Direccion",
-        "sus expectativas con la empresa"
-      ]
+        "sus expectativas con la empresa",
+      ],
     };
-  }
+  },
 };
 </script>
 
@@ -118,45 +152,181 @@ export default {
 .margen-movil {
   margin-top: 100px;
 }
-.container {
-  padding: 0 !important;
-}
-.circle{
+.relative {
   position: relative;
-  z-index: 2;
-  &:before{
-    position: absolute;
-    content:"";
-    width: 100%;
-    height: 100%;
-    top:0;
-    bottom:0;
-    left: 0;
+}
+.svg {
+  &-container {
+    top: 0;
     right: 0;
-    z-index: 0;
- //   margin-right: 10px;
-    border-radius: 50%;
-    background-color: #ebded1;
+    position: absolute;
+    width: 80%;
+    display: flex;
+    height: 80vh;
+    justify-content: flex-end;
+    align-items: center;
+    circle {
+      width: 60%;
+      fill: #c9242b;
+      opacity: 0.4;
+      stroke-width: 0;
+    }
   }
 }
-.imagen {
-  width: 10px;
-  height: 10px;
+.tiket {
+  text-align: center;
+  display: flex;
+  align-items: center;
+  background-color: #c9242b;
+  height: 40vh;
+  margin-top: 30vh;
+  margin-bottom: 30vh;
+  &-letters {
+    color: white;
+    font-size: 3rem;
+    letter-spacing: 0.1rem;
+    padding: 0;
+    line-height: 1.2;
+    max-height: 440px;
+    @media only screen and (max-width: 800px) {
+      flex-direction: column;
+      font-size: 2rem;
+    }
+  }
 }
-.wrap {
-  flex-wrap: wrap !important;
+.max {
+  max-width: 400px;
 }
-.description-title {
-  font-size: 3rem !important;
-  letter-spacing: 0.1rem;
+.requisitos {
+  max-width: 400px;
+  
+  &-text {
+    padding: 1vh !important;
+    width: 100%;
+  }
+  &-timeline {
+    flex-grow: 1 !important;
+    max-width: 300px;
+    //max-height: 40vh;
+    display: flex;
+    width: 20%;
+    justify-content: center;
+    .v-card {
+      width: 20vw;
+       @media only screen and (max-width: 800px) {
+     width: 50vw;
+    }
+    }
+  }
 }
-.requisito {
-  padding-top: 0 !important;
-  padding-bottom: 0 !important;
+.p-0 {
+  padding: 1px !important;
+}
+.margin-bottom{
+  margin-bottom:30vh;
+  
+}
+.flex {
+  display: flex;
+  &-center {
+    justify-content: center;
+    align-items: center;
+    @media only screen and (max-width: 800px) {
+      flex-direction: column;
+    }
+  }
+  &-space {
+    align-items: center;
+    justify-content: space-around;
+  }
+  &-column {
+    flex-direction: column;
+  }
+  &-row {
+    flex-direction: row;
+     @media only screen and (max-width: 800px) {
+      flex-direction: column!important;
+    }
+  }
+}
+.textred {
+  color: #c9242b;
+}
+.title {
+  display: flex;
+  position: relative;
+  span {
+    width: 4%;
+    background: black;
+    height: 2px;
+    margin-left: 3px;
+    margin-right: 3px;
+  }
+}
+.img {
+  &-container {
+    position: relative;
+    padding-top: 72%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  &-box {
+    flex-grow: 1;
+    width: 100%;
+    height: 80%;
+    padding: 1%;
+    padding-top: 8%;
+    flex-grow: 1;
+    position: relative;
+    @media only screen and (max-width: 800px) {
+      max-width: 300px !important;
+    }
+    &:before {
+      position: absolute;
+      width: 80%;
+      background-color: #c9242b;
+      height: 100%;
+      opacity: 0.4;
+      left: 8%;
+      top: 0;
+      content: "";
+    }
+  }
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("./../../assets/holi.svg");
+  top: 0;
+  background-size: cover !important;
+  background-position: center;
+}
+.description {
+  &-container {
+    flex-grow: 2;
+    padding: 5vh;
+  }
+  &-title {
+    font-size: 2.4rem;
+    letter-spacing: 0.1rem;
+    padding: 0;
+    line-height: 1.2;
+    margin-bottom: 8vh;
+    max-height: 440px;
+    @media only screen and (max-width: 800px) {
+      flex-direction: column;
+      font-size: 2rem;
+    }
+  }
 }
 .font {
-  font-size: 1rem !important;
-  letter-spacing: 0.1rem;
+  font-size: 18px;
+  letter-spacing: 1px;
+  padding: 0;
+  margin-bottom: 2vh;
+  text-align: justify !important;
 }
-
 </style>

@@ -22,8 +22,10 @@
                         </div>
 
                         <div v-if="i == 1">
-                            <div v-for="(interes,g) in intereses" :key="g" class="underline my-5 text-center font-weight-bold">
-                                {{interes.text}}
+                            <div v-for="(interes,g) in intereses" :key="g" class="link underline my-5 text-center font-weight-bold">
+                               <a @click="transfer('/trabajar')">
+                                  {{interes.text}}
+                               </a>
                             </div>
                         </div>
 
@@ -75,7 +77,7 @@ import router from '@/router';
                 ],
                 intereses:[
                     {text:'Terminos y condiciones'},
-                    {text:'Trabaja con nosotros'},
+                    {text:'Unete a la Red de repartidores', to:"/trabajar"},
                     {text:'Politica de tratamientos de datos personales'},
                     {text:'Preguntas frecuentes'}
                 ],
@@ -92,10 +94,13 @@ import router from '@/router';
         },
         methods: {
             push(item){
-                window.localStorage.setItem('grupo',item.id);
+                window.localStorage.setItem('grupo',item);
                 let nombre = item.text.toLowerCase(); 
                 router.push({name:'grupoDetalle', params:{text:nombre}});
             },
+            transfer(value){
+              router.push(value)
+            }
         },
     }
 </script>
@@ -110,5 +115,10 @@ import router from '@/router';
         cursor:pointer;
         text-decoration:underline;
         background:#fff;
+    }
+    .link{
+      a{
+        color:black
+      }
     }
 </style>
