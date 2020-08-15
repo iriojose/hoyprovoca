@@ -119,7 +119,7 @@
                                     <span class="price center center-text">
                                         {{
                                             pedidoSelect.conceptos[i]
-                                                .costo_dolar
+                                                .precio_dolar
                                         }}
                                         $
                                     </span>
@@ -277,6 +277,7 @@ export default {
     mounted() {
         this.loading = true;
         if(this.pedidos){
+          console.log(this.pedidos)
           this.checkStorage();
           this.getPedidosUsuario();
           this.solicitado = true;
@@ -292,6 +293,7 @@ export default {
             }
         },
         pedidoSelect() {
+          console.log(this);
             if (!this.pedidoSelect.detalles[0].stock) {
                 this.checkExistence();
             }
@@ -345,10 +347,10 @@ export default {
             detalles.map((a) => (a.cantidad = Math.floor(a.cantidad)));
             detalles.map((a, i) => {
                 suma +=
-                    this.checkValue(concepto[i].costo_dolar) *
+                    this.checkValue(concepto[i].precio_dolar) *
                     a.cantidad *
                     +this.dolar;
-                totalUSD += +concepto[i].costo_dolar;
+                totalUSD += +concepto[i].precio_dolar;
             });
 
             this.$emit("updatedState", {
@@ -402,16 +404,6 @@ export default {
                         content: this.pedidos[0],
                     });
                     this.detalles = this.pedidos[0].detalles;
-                    this.pedidos.filter((a) =>
-                        a.detalles.filter(
-                            (b) =>
-                                (b.precio = accounting.formatMoney(+b.precio, {
-                                    symbol: "Bs ",
-                                    thousand: ".",
-                                    decimal: ",",
-                                }))
-                        )
-                    );
                 })
                 .catch((e) => {
                     console.log(e);
