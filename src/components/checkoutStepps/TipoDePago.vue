@@ -54,59 +54,59 @@ const metodosDePago = [
     id: 0,
     nombre: "Pago Movil : Banesco",
     propietario: "Jesus Bellorin",
-    identificacion: "C.I: 17654976",
+    identificacion: "V-17654976",
     cuenta: "movil : 04127955560",
     detalle: "",
-    monto: 0
+    monto: 0,
   },
   {
     id: 1,
     nombre: "Transferencia Banco Nacional: Banplus",
     propietario: "Jesus Bellorin",
-    identificacion: " 17654976",
+    identificacion: "V-17654976",
     cuenta: "Corriente : 01740112201124312701",
     detalle:
       "Recuerde!, Transferencias de diferentes bancos tardan al menos 1 dia en ser confirmadas",
-    monto: 0
+    monto: 0,
   },
   {
     id: 2,
     nombre: "Transferencia Banco Nacional: Banesco",
     propietario: "Jesus Bellorin",
-    identificacion: "17654976",
+    identificacion: "V-17654976",
     cuenta: "Ahorro : 01340563895633049696",
     detalle:
       "Recuerde!, Transferencias de diferentes bancos tardan al menos 1 dia en ser confirmadas",
-    monto: 0
+    monto: 0,
   },
   {
     id: 3,
     nombre: "Banesco Panama",
     propietario: "Jesus Bellorin",
-    identificacion: " 17654976",
+    identificacion: "V-17654976",
     cuenta: "Cuenta: 201800957218",
     detalle: "",
-    monto: 0
-  }
+    monto: 0,
+  },
 ];
 export default {
   props: {
     pago: {
-      default: function() {
+      default: function () {
         return {};
       },
-      type: Object | Array
+      type: Object | Array,
     },
     pedidoSelect: {
-      default: function() {
+      default: function () {
         return {};
       },
-      type: Object
+      type: Object,
     },
     total: {
       default: 0,
-      type: Number | String
-    }
+      type: Number | String,
+    },
   },
   data() {
     return {
@@ -115,11 +115,16 @@ export default {
       alertNotifier: maxPago,
       bloqueo: true,
       tiposDePago: metodosDePago,
-      select: {}
+      select: {},
     };
   },
   mounted() {
-    //this.select = this.pago;
+    if (this.pendiente === true) {
+      this.setInitView();
+      return;
+    } else {
+      this.$emit("setUserData");
+    }
   },
   watch: {
     select(value) {
@@ -128,7 +133,7 @@ export default {
         this.bloqueo = false;
         return;
       }
-    }
+    },
   },
   methods: {
     changeView(model, value) {
@@ -136,8 +141,30 @@ export default {
       this.$emit("updatedState", { content: value, name: model });
       this.$emit("setLocal", model, value);
       this.$emit("setLocal", "pago", this.select);
-    }
-  }
+    },
+    setInitView() {
+      const savedData = localStorage.getItem("state");
+      if (savedData) {
+        let toLoad = JSON.parse(savedData);
+        this.state = toLoad;
+        [
+          "total",
+          "stepper",
+          "monto",
+          "restante",
+          "pago",
+          "pedidos",
+          "pedidoSelect",
+          "pagoId",
+          "data",
+        ].forEach((value) => {
+          if (toLoad[value]) {
+            this[value] = toLoad[value];
+          }
+        });
+      }
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>

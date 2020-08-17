@@ -1,6 +1,6 @@
 <template>
   <div class="list-container" style="width:100%" justify="right">
-    <v-row justify="center" v-if="stepper === 3">
+    <v-row justify="center" v-if="stepper === 2">
       <v-col cols="12" md="6" sm="12" class="pa-5">
         <div class="font-weight-bold title">Subtotal a pagar</div>
         <div class="font-weight-bold subtitle-1">{{ total }}</div>
@@ -207,6 +207,7 @@ export default {
       );
     },
     verificarMonto() {
+      console.log(this.total)
       const aCubrir = parseFloat(
         this.total.split(" ")[1].split(".").join("").replace(",", ".")
       );
@@ -228,12 +229,13 @@ export default {
         if (isNotValidMount) return;
       }
       this.loading = true;
+      console.log(this.data , "data")
       this.data.adm_status_id = 2;
       this.data.adm_tipo_pago_id = this.pago.id;
       const money = this.diferentes
         ? this.montos[this.stepper - 3]
         : parseFloat(
-            this.data.monto.split(" ")[1].split(".").join("").replace(",", ".")
+            this.data.monto.split(".").join("").replace(",", ".")
           );
       this.postPago(money);
     },
