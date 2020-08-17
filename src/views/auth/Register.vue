@@ -276,15 +276,12 @@ import variables from "@/services/variables_globales";
 				return this.errors.push(`Debe ingresar un email válido`);
 			this.loading2 = true;
 			await Usuario().get(`/?email=${email}`).then(response => {
+                console.log(response);
 				this.loading2 = false;
 				if (response.data.data) {
 					return this.errors.push("Este email ya fue registrado");
 				} else {
-                    if(response.data.data.bloqueado == 1){
-                        return this.errors.push("Esta cuenta se encuentra bloqueada.");
-                    }else{
-                        return this.success='Email verificado';
-                    }
+                    return this.success='Email verificado';
 				}
 			}).catch(e => {
                 console.log(e);
