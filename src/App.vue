@@ -100,25 +100,16 @@ import {mapActions,mapState} from 'vuex';
             //sesion
             sesion(token){//valida el token
                 Auth().post("/sesion",{token:token}).then((response) => {
-                    console.log(response);
                     if(response.data.response.data.bloqueado == 1){
                         this.setModalBloqueado(true);
                         this.loading = false;
                     }else {
                         response.data.response.token = token;
-                        this.getClient(response.data.response);
+                        response.data.response.cliente = response.data.response.data.cliente[0];
+                        this.logged(response.data.response);
+                        this.loading = false;
+                        this.pedidosLocalStorage();//verifica los pedidos del localStorage
                     }
-                }).catch(e => {
-                    console.log(e);
-                    this.loading = false;
-                });
-            },
-            getClient(data){//trae el cliente perteneciente a la cuenta
-                Clientes().get(`/?usuario_id=${data.data.id}`).then((response) => {
-                    data.cliente = response.data.data[0];
-                    this.logged(data);
-                    this.loading = false;
-                    this.pedidosLocalStorage();//verifica los pedidos del localStorage
                 }).catch(e => {
                     console.log(e);
                     this.loading = false;
