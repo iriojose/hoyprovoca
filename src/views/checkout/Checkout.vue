@@ -1,8 +1,8 @@
 <template>
   <v-card elevation="0" color="#f7f7f7">
     <v-toolbar elevation="2" color="#0f2441">
-      <v-toolbar-title>
-        <v-img contain height="100" width="150" src="@/assets/logo 6.png" />
+      <v-toolbar-title class="cursor" @click="push2">
+        <v-img contain height="100" width="150" src="@/assets/logo 6.png" transition="scale-transition" />
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn
@@ -137,6 +137,7 @@
   </v-card>
 </template>
 <script>
+import router from "@/router";
 import variables from "@/services/variables_globales";
 //import Pagos from '@/services/Pagos';
 import accounting from "accounting";
@@ -285,6 +286,9 @@ export default {
   },
   methods: {
     ...mapActions(["setPedidos", "deletePedidoStore", "setModalPago"]),
+    push2(){
+      router.push("/");
+    },
     sendEmail() {
       this.loading = true;
       this.block = true;
@@ -406,5 +410,8 @@ export default {
 }
 .v-dialog {
   width: 50%;
+}
+.cursor{
+  cursor:pointer;
 }
 </style>
