@@ -126,6 +126,7 @@ import {mapActions,mapState} from 'vuex';
                     }else {
                         response.data.response.token = token;
                         response.data.response.cliente = response.data.response.data.cliente[0];
+                        delete response.data.response.data.cliente;
                         this.logged(response.data.response);
                         this.loading = false;
                         this.pedidosLocalStorage();//verifica los pedidos del localStorage
