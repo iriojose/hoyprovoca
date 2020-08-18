@@ -194,6 +194,7 @@ export default {
       },
       file2: {},
       diferentes: false,
+      totalUSD:0,
       pedidoSelect: {
         id: 1,
         rest_pedidos_id: 1,

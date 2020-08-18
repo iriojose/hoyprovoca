@@ -2,7 +2,7 @@
 	<v-app>
 		<Navbar v-if="ruta()" />
 
-		<v-main>
+		<v-main :style="`background-color:${theme.background.light}`" >
             <transition name="fade">
                 <router-view />
             </transition> 
@@ -43,7 +43,7 @@ import {mapActions,mapState} from 'vuex';
             }
         },
         computed:{
-            ...mapState(['user','bloqueado'])
+            ...mapState(['user','bloqueado','theme'])
         },
 		created(){
             let token = window.sessionStorage.getItem('token_client');

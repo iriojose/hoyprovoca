@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-
+import theme from "@/themes/themes"
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -12,6 +12,7 @@ export default new Vuex.Store({
             cliente:null,
             loggedIn:false
         },
+        theme:theme["principal"],
         carrito:false,
         modalcarrito:false,
         modalsesion:false,

@@ -200,7 +200,7 @@
                             color="#0f2441"
                             class="text-capitalize subtitle-2 my-5 white--text font-weight-bold"
                             @click="next"
-                            :disabled="arrived < 2"
+                            :disabled="!(stock && priced)"
                             >{{ messagePendiente }}</v-btn
                         >
                     </v-col>
@@ -269,6 +269,7 @@ export default {
             stockNotifier: checking,
             stock: null,
             pedido: {},
+            priced:false,
             promedio: 0,
             solicitado:false,
             messagePendiente: "Pagar",
@@ -295,7 +296,10 @@ export default {
         pedidoSelect() {
           console.log(this);
             if (!this.pedidoSelect.detalles[0].stock) {
+              this.stock = false;
                 this.checkExistence();
+            }else{
+               this.stock = true
             }
         },
         arrived() {
@@ -304,11 +308,12 @@ export default {
                 let dolar = +this.promedio / +this.cripto.BTC.USD;
                 this.dolarAux = dolar;
                 this.dolar = dolar;
-
+                this.priced = false;
                 this.calcularTotal(
                     this.pedidos[0].conceptos,
                     this.pedidos[0].detalles
                 );
+                this.priced = true
             }
         },
     },
@@ -350,9 +355,9 @@ export default {
                     this.checkValue(concepto[i].precio_dolar) *
                     a.cantidad *
                     +this.dolar;
-                totalUSD += +concepto[i].precio_dolar;
+                totalUSD += (+concepto[i].precio_dolar) * a.cantidad;
             });
-
+            this.priced = true;
             this.$emit("updatedState", {
                 content: accounting.formatMoney(+suma, {
                     symbol: "",
@@ -375,7 +380,6 @@ export default {
                 pedidos = JSON.parse(localStorage.getItem("pedidos"));
                 this.setPedidos(pedidos);
             }
-
             this.getCripto();
             this.getDolar();
             this.checkExistence();
@@ -383,7 +387,6 @@ export default {
                 name: "pedidos",
                 content: this.pedidos,
             });
-
             this.pedidos.filter((a, i) =>
                 this.getEmpresas(a.adm_empresa_id, i)
             );
@@ -507,16 +510,17 @@ export default {
         },
         async checkExistence() {
             this.loadingExistencia = true;
-
+            this.stock = false;
             this.disponibilidad = 0;
             this.stockNotifier = checking;
             //empieza a cargar las existencias una vez temina la funcion  se modifica el total si faltan productos a la existencia
             this.getCheck().then((checked) => {
                 this.loadingExistence = false;
-
+                
                 if (this.disponibilidad === this.pedidoSelect.detalles.length) {
                     this.stockNotifier = avaible;
                     this.bloqueo = false;
+                     this.stock = true;
                 } else if (
                     this.disponibilidad > 0 &&
                     this.disponibilidad < this.pedidoSelect.detalles.length
@@ -525,6 +529,7 @@ export default {
                     this.stockNotifier = notComplete;
                     let suma = 0;
                     this.total = 0;
+                    this.stock = false;
                     this.pedidoSelect.detalles.map((a) => {
                         suma +=
                             a.cantidad < a.stock

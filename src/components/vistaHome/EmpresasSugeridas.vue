@@ -7,9 +7,9 @@
 
             <v-row justify="center">
                 <v-card 
-                    :elevation="0" 
-                    color="transparent"
-                    class="border mx-2 mb-4"
+                    :elevation="1" 
+                   
+                    class="border mx-2 mb-4 pa-4"
                     :width="$vuetify.breakpoint.smAndDown ? 100:200" 
                     :height="$vuetify.breakpoint.smAndDown ? 100:200" 
                     v-for="(empresa,i) in empresas" :key="i"
@@ -17,8 +17,8 @@
                 >
                     <v-img 
                         contain 
-                        :width="$vuetify.breakpoint.smAndDown ? 100:200" 
-                        :height="$vuetify.breakpoint.smAndDown ? 80:180"
+                        :width="$vuetify.breakpoint.smAndDown ? 100:180" 
+                        :height="$vuetify.breakpoint.smAndDown ? 80:150"
                         :src="image+empresa.imagen" 
                     /> 
                     <div class="mt-2 text-center subtitle-2 font-weight-black">{{empresa.nombre_comercial}}</div>
