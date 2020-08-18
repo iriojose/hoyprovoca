@@ -98,7 +98,6 @@ import router from '@/router';
             getGrupos(){
                 this.loading2 = true;
                 Grupos().get(`/?limit=20&offset=${this.after}`).then((response) => {
-                    console.log(response);
                     response.data.data.filter(a => this.grupos.push(a));
                     this.after +=20;
                     this.total = response.data.totalCount;

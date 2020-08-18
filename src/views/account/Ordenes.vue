@@ -57,7 +57,7 @@
                                             </v-img>
                                             <v-card-text class="text--primary">
                                                 <v-card-title class="body-1 font-weight-black">{{pedido.conceptos[e].nombre}}</v-card-title>
-                                                <div class="caption font-weight-black">Precio:{{detalle.precio}}</div>
+                                                <div class="caption font-weight-black">Precio:{{detalle.precio_view}}</div>
                                                 <div class="caption font-weight-black">Cantidad:{{+detalle.cantidad}}</div>
                                             </v-card-text>
                                         </v-card>
@@ -90,11 +90,6 @@ import accounting from 'accounting';
         computed: {
             ...mapState(['user','ultimasOrdenes','totales'])
         },
-        watch: {
-            user(){
-                this.getPedidos();
-            }
-        },
         head: {
             title() {
                 return {
@@ -105,7 +100,7 @@ import accounting from 'accounting';
             }
         },
         mounted() {
-            if(this.user.data.cliente && !this.ultimasOrdenes) this.getPedidos();
+            this.getPedidos();
         },
         methods:{
             ...mapActions(['setUltimasOrdenes']),
@@ -117,7 +112,7 @@ import accounting from 'accounting';
                 this.loading = true;
                 Clientes().get(`/${this.user.cliente.id}/pedidos/?rest_estatus_id > 1`).then((response) => {
                     if(response.data.data){
-                        response.data.data.filter(a => a.detalles.filter(b => b.precio = accounting.formatMoney(+b.precio,{symbol:"$ ",thousand:',',decimal:'.'})));
+                        response.data.data.filter(a => a.detalles.filter(b => b.precio_view = accounting.formatMoney(+b.precio,{symbol:"$ ",thousand:',',decimal:'.'})));
                         this.aux = response.data.data;
                         response.data.data.filter((a,i) => this.getConceptos(a,i));
                     }else this.loading = false;
