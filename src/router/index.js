@@ -208,7 +208,18 @@ const routes = [
 const router = new VueRouter({
 	mode: 'history',
 	base: "/",
-	routes
+	routes,
+	linkActiveClass: 'router-link-active', 
+    linkExactActiveClass: 'router-link-exact-active', 
+    scrollBehavior (to, from, savedPosition) {
+        if (savedPosition) {
+            return savedPosition
+        } else {
+            return { x: 0, y: 0 }
+        }
+    },
+    parseQuery: q => q,
+    fallback: true,
 });
 
 router.beforeEach((to,from,next) => {
