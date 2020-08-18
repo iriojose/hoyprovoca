@@ -17,9 +17,14 @@
         <v-spacer v-if="$vuetify.breakpoint.smAndDown"></v-spacer>
 
 		<div class="d-flex align-center">
-			<v-img
+			<v-img v-if="theme.dark"
 	            alt="Hoyprovoca logo" class="shrink mr-2 cursor" contain
-				src="@/assets/logo2.png" transition="scale-transition"
+				src='@/assets/logo2.png' transition="scale-transition"
+			    width="200" height="100" @click="push2"
+			/>
+      <v-img v-else
+	            alt="Hoyprovoca logo" class="shrink mr-2 cursor" contain
+				src='@/assets/logo6.png' transition="scale-transition"
 			    width="200" height="100" @click="push2"
 			/>
 		</div>
@@ -38,7 +43,7 @@
         <v-spacer></v-spacer>
 
         <div v-if="!user.loggedIn" class="hidden-sm-and-down">
-            <v-btn text to="/login" :style="`color:${theme.dark ? '#000' : '#fff'}!important`" class="mx-1 black--text font-weight-bold text-capitalize">
+            <v-btn text to="/login" :style="`color:${theme.background.dark ? '#000' : '#fff'}!important`" class="mx-1 black--text font-weight-bold text-capitalize">
                 Iniciar sesión
             </v-btn>
                 
@@ -57,6 +62,7 @@
         <v-text-field 
             v-if="$vuetify.breakpoint.smAndDown"
             class="mx-5 search" slot="extension"
+           :style="`color:${theme.background.dark ? '#000' : '#fff'}!important`"
             label="¿Que te provoca?..." hide-details
             dense v-on:keyup.enter="push" light
             solo single-line

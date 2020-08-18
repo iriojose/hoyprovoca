@@ -143,7 +143,10 @@ import {mapActions,mapState} from 'vuex';
 	};
 </script>
 
-<style>
+<style >
+/*@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300&display=swap');*/
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300&display=swap');
+
     html {
         scroll-behavior: smooth;
     }
