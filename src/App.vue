@@ -1,20 +1,40 @@
 <template>
 	<v-app>
-		<Navbar v-if="ruta()" />
+		<Navbar v-if="ruta() && !loading" />
 
+<<<<<<< HEAD
 		<v-main :style="`background-color:${theme.background.light}`" >
+=======
+		<v-main v-if="!loading">
+>>>>>>> 6335f313d0fb2e28e0ad9a5763387fa4a818c6d1
             <transition name="fade">
                 <router-view />
             </transition> 
 		</v-main>
 
-        <Footer v-if="ruta()" />
+        <v-card elevation="0" width="100%" height="100%" v-if="loading">
+            <v-card-text>
+                <v-row justify="center" align="center" class="fill-height margen">
+                    <div>
+                        <v-row justify="center">
+                            <v-img contain width="100" height="100" :src="require('@/assets/logo 3.png')"></v-img>
+                        </v-row>
+                        <v-btn v-show="error" color="#c9242b" @click="sesion(token)" rounded class=" my-4 text-capitalize subtitle-2 font-weight-bold white--text">
+                            Recargar
+                            <v-icon class="mx-2" color="#fff">mdi-reload</v-icon>
+                        </v-btn>
+                    </div>
+                </v-row>
+            </v-card-text>
+        </v-card>
+
+        <Footer v-if="ruta() && !loading" />
 
         <ModalBloqueado />
         <ModalSesion />
         <ModalProducto />
 
-        <BottomNavigation v-if="ruta() && $vuetify.breakpoint.smAndDown"  />
+        <BottomNavigation v-if="ruta() && $vuetify.breakpoint.smAndDown && !loading"  />
 	</v-app>
 </template>
 
@@ -39,6 +59,8 @@ import {mapActions,mapState} from 'vuex';
         data() {
             return {
                 loading:false,
+                error:false,
+                token:null,
                 aux:[]
             }
         },
@@ -46,9 +68,9 @@ import {mapActions,mapState} from 'vuex';
             ...mapState(['user','bloqueado','theme'])
         },
 		created(){
-            let token = window.sessionStorage.getItem('token_client');
-            if(token != null && token != "" && token != undefined) this.sesion(JSON.parse(token));
-            //else this.loading = false;
+            this.token = JSON.parse(window.sessionStorage.getItem('token_client'));
+            if(this.token != null && this.token != "" && this.token != undefined) this.sesion(this.token);
+            else this.loading = false;
 
             let grupos = JSON.parse(window.localStorage.getItem("gruposMasVendidos"));
             if (!grupos) this.getGrupos();
@@ -99,6 +121,8 @@ import {mapActions,mapState} from 'vuex';
             },
             //sesion
             sesion(token){//valida el token
+                this.loading = true;
+                this.error = false;
                 Auth().post("/sesion",{token:token}).then((response) => {
                     if(response.data.response.data.bloqueado == 1){
                         this.setModalBloqueado(true);
@@ -106,13 +130,14 @@ import {mapActions,mapState} from 'vuex';
                     }else {
                         response.data.response.token = token;
                         response.data.response.cliente = response.data.response.data.cliente[0];
+                        delete response.data.response.data.cliente;
                         this.logged(response.data.response);
                         this.loading = false;
                         this.pedidosLocalStorage();//verifica los pedidos del localStorage
                     }
                 }).catch(e => {
                     console.log(e);
-                    this.loading = false;
+                    this.error = true;
                 });
             },
             getPedidos(){

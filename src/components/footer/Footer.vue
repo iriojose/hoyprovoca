@@ -16,8 +16,8 @@
                 <v-row justify="center">
                     <v-col cols="12" md="4" sm="12" v-for="(n,i) in 4" :key="i">
                         <div v-if="i == 0">
-                            <div v-for="(categoria,e) in categorias" :key="e" @click="push(categoria)" class="underline my-5 text-center font-weight-bold">
-                                {{categoria.text}}
+                            <div v-for="(n,e) in 4" :key="e" @click="push(grupos[e])" class="underline my-5 text-center font-weight-bold">
+                                {{grupos[e].nombre}}
                             </div>
                         </div>
 
@@ -60,6 +60,7 @@
 
 <script>
 import router from '@/router';
+import {mapState} from 'vuex';
 
     export default {
         data() {
@@ -68,12 +69,6 @@ import router from '@/router';
                     {img:'pay.svg',text:'Pagos online'},
                     {img:'negocio.svg',text:'Compre en su tienda preferida'},
                     {img:'safe.svg',text:'Privacidad garantizada'},
-                ],
-                categorias:[
-                    {text:'Viveres',id:1},
-                    {text:'Salud',id:2},
-                    {text:'Bebidas',id:3},
-                    {text:'Snack',id:4}
                 ],
                 intereses:[
                     {text:'Terminos y condiciones'},
@@ -92,10 +87,13 @@ import router from '@/router';
                 ],*/
             }
         },
+        computed:{
+            ...mapState(['grupos'])
+        },
         methods: {
             push(item){
-                window.localStorage.setItem('grupo',item);
-                let nombre = item.text.toLowerCase(); 
+                window.localStorage.setItem('grupo',JSON.stringify(item));
+                let nombre = item.nombre.toLowerCase(); 
                 router.push({name:'grupoDetalle', params:{text:nombre}});
             },
             transfer(value){
