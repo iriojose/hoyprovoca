@@ -2,11 +2,7 @@
 	<v-app>
 		<Navbar v-if="ruta() && !loading" />
 
-<<<<<<< HEAD
-		<v-main :style="`background-color:${theme.background.light}`" >
-=======
-		<v-main v-if="!loading">
->>>>>>> 6335f313d0fb2e28e0ad9a5763387fa4a818c6d1
+		<v-main v-if="!loading" :style="`background-color:${theme.background.light}`" >
             <transition name="fade">
                 <router-view />
             </transition> 
