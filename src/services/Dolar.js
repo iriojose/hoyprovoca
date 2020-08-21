@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export default () => {
     return axios.create({
-        baseURL:`https://cors-anywhere.herokuapp.com/https://localbitcoins.com/buy-bitcoins-online`,
+        baseURL:`https://somossistemas.com/proxy/https://localbitcoins.com/buy-bitcoins-online`,
         withCredentials:false,
         headers:{
             'Access-Control-Allow-Origin': '*',

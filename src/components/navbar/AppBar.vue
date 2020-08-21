@@ -1,14 +1,15 @@
 <template>
     <v-app-bar 
-        app color="#EBDED1" dark 
+        v-if="theme"
+        app :color="theme.background.strong" dark 
         :elevation="$vuetify.breakpoint.smAndDown ? 0:null" 
         :elevate-on-scroll="$vuetify.breakpoint.smAndDown ? false:true"
         :extended="$vuetify.breakpoint.smAndDown && $route.name !== 'home' ? true:false"
     >
-        <v-app-bar-nav-icon  color="#000" class="mr-1" @click="change" v-if="dialog==false" />
+        <v-app-bar-nav-icon  :color="theme.dark ? '#000' : '#fff'" class="mr-1" @click="change" v-if="dialog==false" />
 
         <v-btn fab v-else  @click="change" icon depressed class="mr-1">
-            <v-icon color="#000">
+            <v-icon :color="theme.dark ? '#000' : '#fff'">
                 mdi-close
             </v-icon>
         </v-btn>
@@ -16,9 +17,14 @@
         <v-spacer v-if="$vuetify.breakpoint.smAndDown"></v-spacer>
 
 		<div class="d-flex align-center">
-			<v-img
+			<v-img v-if="theme.dark"
 	            alt="Hoyprovoca logo" class="shrink mr-2 cursor" contain
-				src="@/assets/logo2.png" transition="scale-transition"
+				src='@/assets/logo2.png' transition="scale-transition"
+			    width="200" height="100" @click="push2"
+			/>
+      <v-img v-else
+	            alt="Hoyprovoca logo" class="shrink mr-2 cursor" contain
+				src='@/assets/logo6.png' transition="scale-transition"
 			    width="200" height="100" @click="push2"
 			/>
 		</div>
@@ -37,7 +43,7 @@
         <v-spacer></v-spacer>
 
         <div v-if="!user.loggedIn" class="hidden-sm-and-down">
-            <v-btn text to="/login" class="mx-1 black--text font-weight-bold text-capitalize">
+            <v-btn text to="/login" :style="`color:${theme.background.dark ? '#000' : '#fff'}!important`" class="mx-1 black--text font-weight-bold text-capitalize">
                 Iniciar sesión
             </v-btn>
                 
@@ -56,6 +62,7 @@
         <v-text-field 
             v-if="$vuetify.breakpoint.smAndDown"
             class="mx-5 search" slot="extension"
+           :style="`color:${theme.background.dark ? '#000' : '#fff'}!important`"
             label="¿Que te provoca?..." hide-details
             dense v-on:keyup.enter="push" light
             solo single-line
@@ -86,8 +93,11 @@ import {mapState, mapActions} from 'vuex';
                 dialog:false,
             }
         },
+        mounted(){
+          console.log(this?.theme);
+        },
         computed:{
-            ...mapState(['user','search','bandera','drawer']),
+            ...mapState(['user','search','bandera','drawer','theme']),
 
             busquedas:{
                 get(){ return this.search},

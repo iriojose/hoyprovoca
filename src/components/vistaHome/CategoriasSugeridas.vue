@@ -1,6 +1,9 @@
 <template>
     <v-card color="transparent" elevation="0" width="100%">
         <v-card-text>
+            <div style="opacity:0.6" class="text-left px-5 my-4 black--text headline font-weight-black">
+                Encuentra lo que Buscas
+            </div>
             <div class="text-left px-5 my-4 black--text headline font-weight-black">
                 Categorías
             </div>

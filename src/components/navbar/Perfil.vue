@@ -5,10 +5,11 @@
             bottom
             open-on-hover 
             offset-y
+            style="box-shadow: 0 5px 5px -3px rgba(0,0,0,0), 0 8px 10px 1px rgba(0,0,0,0), 0 3px 14px 2px rgba(0,0,0,0);padding: 2px 12px;"
         >
             <template v-slot:activator="{ on }">
                 <v-btn v-on="on" fab class="mx-3" elevation="0" small color="transparent">
-                    <v-icon color="#000">
+                    <v-icon :color="theme.background.dark ? '#fff' : '#000'">
                         mdi-account-circle
                     </v-icon>
                 </v-btn>
@@ -67,7 +68,7 @@ import router from '@/router';
             }
         },
         computed: {
-            ...mapState(['user','fotoChanged','foto']),
+            ...mapState(['user','fotoChanged','foto','theme']),
         },
         methods: {
             ...mapActions(["logout","setFotoChanged","setFoto"]),

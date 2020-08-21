@@ -1,0 +1,50 @@
+const theme ={
+  principal:{
+      background:{
+        light:"#F2FAF0",
+        light_2:"white",
+        strong:"#1f3b63",
+        strong_2:"#E5EDF0",
+        dark:true
+      },
+      primary:{
+        default:"#1f3b63",
+        strong:"",
+        light:""
+    },
+      secondary:{
+        default:"#ED3237",
+        strong:"",
+        light:""
+      },
+      summary:{
+        default:"#222730"
+      },
+      other:{
+        default:"#31334D"
+      },
+      dark:false
+  },
+  inUse:{
+    background:{
+      strong:"#ebded1",
+      light:"#F2FAF0",
+      light_2:"white",
+      strong_2:"#E5EDF0",
+    },
+    secondary:{
+      default:"#ED3237",
+      strong:"",
+      light:""
+    },
+    summary:{
+      default:"#222730"
+    },
+    other:{
+      default:"#31334D"
+    },
+    dark:true
+  }
+}
+
+export default theme;

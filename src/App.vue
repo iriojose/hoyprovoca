@@ -2,7 +2,7 @@
 	<v-app>
 		<Navbar v-if="ruta() && !loading" />
 
-		<v-main v-if="!loading">
+		<v-main v-if="!loading" :style="`background-color:${theme.background.light}`" >
             <transition name="fade">
                 <router-view />
             </transition> 
@@ -61,7 +61,7 @@ import {mapActions,mapState} from 'vuex';
             }
         },
         computed:{
-            ...mapState(['user','bloqueado'])
+            ...mapState(['user','bloqueado','theme'])
         },
 		created(){
             this.token = JSON.parse(window.sessionStorage.getItem('token_client'));
@@ -164,10 +164,10 @@ import {mapActions,mapState} from 'vuex';
 	};
 </script>
 
-<style>
-    .margen{
-        margin-top:50%;
-    }
+<style >
+/*@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300&display=swap');*/
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300&display=swap');
+
     html {
         scroll-behavior: smooth;
     }

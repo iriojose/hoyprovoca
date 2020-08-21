@@ -9,7 +9,7 @@
                     fab class="mx-3" color="transparent"
                     elevation="0" small v-on="on"
                 >
-                    <v-icon color="#000">
+                    <v-icon :color="theme.background.dark ? '#fff' : '#000'">
                         mdi-bell
                     </v-icon>
                 </v-btn>
@@ -58,7 +58,7 @@ import {mapState,mapActions} from 'vuex';
             }
         },
         computed:{
-            ...mapState(['user']),
+            ...mapState(['user','theme']),
             items () {
                 return Array.from({ length: this.length }, (k, v) => v + 1)
             },

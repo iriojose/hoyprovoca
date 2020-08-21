@@ -81,7 +81,7 @@ import accounting from 'accounting';
             this.detalles.filter(a => this.sales.push(accounting.formatMoney(+a.precio,{symbol:"$ ",thousand:',',decimal:'.'})));
         },
         methods: {
-            ...mapActions(['setSnackbar','updatePedidoStore','deleteDetalleStore','updateDetalleStore']),
+            ...mapActions(['setSnackbar','updatePedidoStore','deleteDetalleStore','updateDetalleStore','themes']),
             success(mensaje){
                 this.$toasted.success(mensaje, { 
                     theme: "toasted-primary", 
