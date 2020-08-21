@@ -165,7 +165,6 @@ import {mapState,mapActions} from 'vuex';
 
             getConceptos(){
                 this.loading = true;
-                console.log(this.search);
                 Conceptos().get(`/?nombre=${this.search}&fields=direcciones,existencias&limit=150`).then((response) => {
                     if(response.data.data){
                         response.data.data.filter(a => a.agregado = false);
