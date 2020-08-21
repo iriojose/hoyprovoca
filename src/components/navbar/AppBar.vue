@@ -25,11 +25,11 @@
 
         <v-text-field
             label="¿Que te provoca?..." hide-details
-            dense v-on:keyup.enter="push" light
+            dense v-on:keyup.enter="push()" light
             class="ml-10 hidden-sm-and-down" single-line
-            solo
+            solo v-model="busquedas"
         >
-            <v-btn slot="append" tile text small @click="push">
+            <v-btn slot="append" tile text small @click="push()">
                 <v-icon color="#D32F2F">mdi-magnify</v-icon>
             </v-btn>
         </v-text-field>
@@ -37,7 +37,7 @@
         <v-spacer></v-spacer>
 
         <div v-if="!user.loggedIn" class="hidden-sm-and-down">
-            <v-btn text to="/login" class="mx-1 black--text font-weight-bold text-capitalize">
+            <v-btn text to="/login" class="mx-1 white--text font-weight-bold text-capitalize">
                 Iniciar sesión
             </v-btn>
                 
@@ -57,10 +57,11 @@
             v-if="$vuetify.breakpoint.smAndDown"
             class="mx-5 search" slot="extension"
             label="¿Que te provoca?..." hide-details
-            dense v-on:keyup.enter="push" light
+            dense v-on:keyup.enter="push()" light
             solo single-line
+            v-model="busquedas"
         >
-            <v-btn slot="append" tile @click="push" text small>
+            <v-btn slot="append" tile @click="push()" text small>
                 <v-icon color="#D32F2F">mdi-magnify</v-icon>
             </v-btn>
         </v-text-field>
@@ -97,7 +98,7 @@ import {mapState, mapActions} from 'vuex';
         methods:{
             ...mapActions(['setBuscar','setBandera','setDrawer']),
             
-             change(){
+            change(){
                 this.drawer ? this.setDrawer(false):this.setDrawer(true);
             },
             push(){ 

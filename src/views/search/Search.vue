@@ -139,7 +139,7 @@ import {mapState,mapActions} from 'vuex';
             }
         },
         computed:{
-            ...mapState(['agregados','municipios','search'])
+            ...mapState(['agregados','municipios','search','bandera'])
         },
         watch: {
             agregados(){
@@ -165,7 +165,8 @@ import {mapState,mapActions} from 'vuex';
 
             getConceptos(){
                 this.loading = true;
-                Conceptos().get(`/?limit=150&nombre=${this.search}&fields=direcciones,existencias`).then((response) => {
+                console.log(this.search);
+                Conceptos().get(`/?nombre=${this.search}&fields=direcciones,existencias&limit=150`).then((response) => {
                     if(response.data.data){
                         response.data.data.filter(a => a.agregado = false);
                         response.data.data.filter(a => this.agregados.filter(b => a.id == b ? a.agregado=true:null));
