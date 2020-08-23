@@ -30,7 +30,7 @@
 		</div>
 
         <v-text-field
-            label="¿Que te provoca?..." hide-details
+            label="¿Qué te provoca?" hide-details
             dense v-on:keyup.enter="push" light
             class="ml-10 hidden-sm-and-down" single-line
             solo v-model="busquedas"
@@ -43,7 +43,7 @@
         <v-spacer></v-spacer>
 
         <div v-if="!user.loggedIn" class="hidden-sm-and-down">
-            <v-btn text to="/login" :style="`color:${theme.background.dark ? '#000' : '#fff'}!important`" class="mx-1 black--text font-weight-bold text-capitalize">
+            <v-btn text to="/login" :style="`color:${!theme.background.dark ? '#000' : '#fff'}!important`" class="mx-1 black--text font-weight-bold text-capitalize">
                 Iniciar sesión
             </v-btn>
                 

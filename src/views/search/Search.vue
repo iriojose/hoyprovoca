@@ -169,6 +169,9 @@ import {mapState,mapActions} from 'vuex';
                     if(response.data.data){
                         response.data.data.filter(a => a.agregado = false);
                         response.data.data.filter(a => this.agregados.filter(b => a.id == b ? a.agregado=true:null));
+                        
+                        response.data.data = [...response.data.data].sort((a, b) => this.parseExistencia(b) > this.parseExistencia(a) ? 1 : -1);
+
                         this.conceptos = response.data.data;
                         this.aux = response.data.data;
                     }
@@ -217,6 +220,9 @@ import {mapState,mapActions} from 'vuex';
                 this.conceptos.filter(a => a.agregado=false);
                 this.conceptos.filter(a => this.agregados.filter(b => a.id == b ? a.agregado=true:null));
             },
+            parseExistencia(concepto){
+                return (Array.isArray(concepto.existencias) ? concepto.existencias.length > 0 ? concepto.existencias.map(a => Math.trunc(+a.existencia)).reduce((a, b) => a + b) : 0 : concepto.existencias)
+            }
         }
     }
 </script>
