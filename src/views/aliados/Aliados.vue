@@ -10,7 +10,7 @@
 
         <v-card elevation="0" color="#fff" width="100%" height="100%" v-else>
             <v-card-text v-if="empresas">
-                <div class="headline font-weight-black text-center mt-8">Todas los aliados</div>
+                <div class="headline font-weight-black text-center mt-8">Todos los aliados</div>
                 <v-row justify="center">
                     <v-col cols="12" sm="12" md="9">
                         <v-toolbar color="#fff" elevation="0" width="100%" class="pb-4 px-5" v-if="$vuetify.breakpoint.smAndDown">
