@@ -165,7 +165,10 @@ import {mapState} from 'vuex';
                         response.data.data.filter(a => this.agregados.filter(b => a.id == b ? a.agregado=true:null));
                         this.after +=20;
                         this.total = response.data.totalCount;
+
                         response.data.data.filter(a => this.conceptos.push(a));
+                        this.conceptos =  [...this.conceptos].sort((a, b) => this.parseExistencia(b) > this.parseExistencia(a) ? 1 : -1);
+
                         this.loadingConceptos = false;
                     }else this.loadingConceptos = false;
                 }).catch(e => {
@@ -180,6 +183,9 @@ import {mapState} from 'vuex';
                 window.localStorage.setItem("grupo",JSON.stringify(item));
                 let nombre = item.nombre.toLowerCase(); 
                 router.push({name:'grupoDetalle', params:{text:nombre}});
+            },
+            parseExistencia(concepto){
+                return (Array.isArray(concepto.existencias) ? concepto.existencias.length > 0 ? concepto.existencias.map(a => Math.trunc(+a.existencia)).reduce((a, b) => a + b) : 0 : concepto.existencias)
             }
         }
     }
