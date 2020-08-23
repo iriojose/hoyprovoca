@@ -5,10 +5,10 @@
                 <v-icon color="#fff">mdi-home</v-icon>
             </v-btn>
             <v-spacer class="hidden-sm-and-down"></v-spacer>
-            <v-img transition="scale-transition" class="hidden-sm-and-down" contain width="100" height="50" :src="require('@/assets/logo 6.png')"></v-img>
+            <v-img  @click="home" transition="scale-transition" class="hidden-sm-and-down" contain width="100" height="50" :src="require('@/assets/logo 6.png')"></v-img>
             <v-spacer></v-spacer>
-            <v-btn rounded color="#2950c3" class="text-capitalize white--text caption" @click="register">
-                Register
+            <v-btn style="font-weight:bold;padding: 0 15px" rounded color="#2950c3" class="text-capitalize white--text caption" @click="register">
+                Registrarme
             </v-btn>
         </v-card-actions>
 
@@ -20,7 +20,7 @@
                     </v-row>
                     <v-card width="100%">
                         <v-row justify="center">
-                            <v-col cols="12" md="6" class="hidden-sm-and-down">
+                            <v-col cols="12" md="6" class="hidden-sm-and-down" style="padding: 12px 40px">
                                 <v-img width="100%" height="400" contain :src="require('@/assets/forgot.svg')"></v-img>
                             </v-col>
                             <v-col cols="12" md="6" sm="12" class="pa-12">
@@ -76,7 +76,9 @@
 
                                 <v-divider class="my-10"></v-divider>
 
-                                <div class="subtitle-2 text-center color" @click="login">¿Ya tienes una cuenta? ¡Iniciar sesión!</div>
+                                <div 
+                                style="font-weight:bold; color:#262626"
+                                class="subtitle-2 text-center color" @click="login">Recordé mi contraseña</div>
                             </v-col>
                         </v-row>
                     </v-card>

@@ -5,7 +5,7 @@
                 <v-icon color="#fff">mdi-home</v-icon>
             </v-btn>
             <v-spacer class="hidden-sm-and-down"></v-spacer>
-            <v-img transition="scale-transition" class="hidden-sm-and-down" contain width="100" height="50" :src="require('@/assets/logo 6.png')"></v-img>
+            <v-img @click="home" transition="scale-transition" class="hidden-sm-and-down" contain width="100" height="50" :src="require('@/assets/logo 6.png')"></v-img>
             <v-spacer></v-spacer>
             <v-btn rounded color="#2950c3" class="text-capitalize white--text caption" @click="forgot">
                 ¿Olvido su contraseña?
@@ -18,12 +18,17 @@
                         <v-img transition="scale-transition" contain width="100" height="50" :src="require('@/assets/logo 6.png')"></v-img>
                     </v-row>
 
-                    <v-card width="100%" elevation="0">
+                    <v-card width="100%" elevation="0" style="padding: 0 15px 0 30px">
                         <v-row justify="center">
-                            <v-col cols="12" md="6" class="hidden-sm-and-down">
-                                <v-img width="100%" height="500" contain :src="require('@/assets/undrawregistro2.svg')"></v-img>
+                            <v-col cols="12" md="6" class="hidden-sm-and-down" style="padding: 0 20px">
+                                <v-img width="100%" height="400" contain :src="require('@/assets/undrawregistro2.svg')"></v-img>
+                                <v-divider></v-divider>
+                                <div
+                                    style="color:#262626; font-weight:bold"
+                                    class="subtitle-2 text-center color my-5" @click="login"
+                                >¿Ya tienes una cuenta? ¡Inicia sesión!</div>
                             </v-col>
-
+                            
                             <v-col cols="12" md="6" sm="12" class="pa-8">
                                 <div class="headline text-center mb-5">Registrate ahora!</div>
 
@@ -41,7 +46,7 @@
                                 <v-form v-model="valid" @submit.prevent class="my-5">
                                     <v-stepper v-model="e1" class="elevation-0" non-linear>
                                         <v-stepper-items>
-                                            <v-stepper-content step="1">
+                                            <v-stepper-content step="1"  style="padding: 16px">
                                                 <v-text-field
                                                     filled single-line label="Nombre"
                                                     dense rounded hint="Ejemplo: Manuel"
@@ -86,7 +91,7 @@
                                                 </v-menu>
                                             </v-stepper-content>
 
-                                            <v-stepper-content step="2">
+                                            <v-stepper-content step="2" style="padding: 16px">
                                                 <v-text-field filled rounded persistent-hint
                                                     dense :disabled="loading" v-model="data.login"
                                                     single-line type="text" color="#0f2441"
@@ -147,7 +152,7 @@
                                         </v-stepper-items>
                                     </v-stepper>
                                     
-                                    <v-card-actions>
+                                    <v-card-actions style="margin-top:-5px">
                                         <v-btn fab small color="#2950c3" @click="e1=1" v-if="e1==2" :disabled="loading">
                                             <v-icon color="#fff">mdi-chevron-left</v-icon>
                                         </v-btn>
@@ -162,10 +167,6 @@
                                         height="40" @click="e1=2" class="text-capitalize caption white--text"
                                     >Siguiente</v-btn>
                                 </v-form>
-
-                                <v-divider class="my-10"></v-divider>
-                                <div class="subtitle-2 text-center color" @click="login"
-                                >¿Ya tienes una cuenta? ¡Iniciar sesión!</div>
                             </v-col>
                         </v-row>
                     </v-card>
