@@ -25,11 +25,11 @@
                             <v-slide-item v-for="(grupo,i) in grupos" :key="i" class="mx-4 cursor" @click="push(subgrupo)">
                                 <div @click="push(grupo)">
                                     <v-row justify="center">
-                                        <v-avatar size="50">
+                                        <v-avatar size="60">
                                             <v-img :src="image+grupo.imagen"></v-img>
                                         </v-avatar>
                                     </v-row>
-                                    <div class="text-center font-weight-black text-truncate">
+                                    <div class="text-center font-weight-black text-truncate pt-1" style="color:#262626">
                                         {{grupo.nombre}}
                                     </div>
                                 </div>

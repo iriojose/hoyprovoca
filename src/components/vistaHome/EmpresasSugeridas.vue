@@ -1,7 +1,7 @@
 <template>
-    <v-card style="height:90vh " class="mt-8" color="transparent" elevation="0" width="100%">
+    <v-card  class="mb-8" color="transparent" elevation="0" width="100%">
         <v-card-text>
-            <div class="text-center font-weight-black headline mt-12 mb-4">
+            <div class="text-center font-weight-black headline mt-12 mb-12" style="color:#262626">
                 {{title}}
             </div>
 
