@@ -1,11 +1,27 @@
 const theme ={
   principal:{
       background:{
-        light:"#F2FAF0",
+        light:"rgb(252 238 239 / 63%)",
         light_2:"white",
-        strong:"#1f3b63",
-        strong_2:"#E5EDF0",
-        dark:true
+        strong:"white",
+        strong_2:"#F0E935",
+        font:"black",
+        font2:"white",
+        dark:false
+      },
+      buttons:{
+        primary:"",
+        secondary:"",
+        font:"white",
+        terceary:"#232323",
+        font2:"black"
+      },
+      sidebar:{
+        primary:"white",
+        secondary:"rgb(252 238 239 / 100%)",
+        dark:true,
+        font:"rgb(0 0 0 / 74%)",//
+        card:"white",
       },
       primary:{
         default:"#1f3b63",

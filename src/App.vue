@@ -67,11 +67,9 @@ import {mapActions,mapState} from 'vuex';
             this.token = JSON.parse(window.sessionStorage.getItem('token_client'));
             if(this.token != null && this.token != "" && this.token != undefined) this.sesion(this.token);
             else this.loading = false;
-
             let grupos = JSON.parse(window.localStorage.getItem("gruposMasVendidos"));
             if (!grupos) this.getGrupos();
 			else this.setGrupos(grupos);
-			
             let empresas = JSON.parse(window.localStorage.getItem("empresasMasVendidas"));
             if (!empresas) this.getEmpresas();
             else this.setEmpresas(empresas);
@@ -166,7 +164,8 @@ import {mapActions,mapState} from 'vuex';
 
 <style >
 /*@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300&display=swap');*/
-@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300&display=swap');
+/*@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300&display=swap');*/
+@import url('https://fonts.googleapis.com/css2?family=Alata&display=swap');
 
     html {
         scroll-behavior: smooth;

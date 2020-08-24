@@ -1,7 +1,7 @@
 <template>
-    <v-card style="height:90vh " class="mt-8" color="transparent" elevation="0" width="100%">
+    <v-card style="height:76vh " class="mt-8" color="transparent" elevation="0" width="100%">
         <v-card-text>
-            <div class="text-center font-weight-black headline mt-12 mb-4">
+            <div :style="`color:${theme.background.font}`" class="text-center font-weight-black headline mt-12 mb-4">
                 {{title}}
             </div>
 
@@ -21,7 +21,7 @@
                         :height="$vuetify.breakpoint.smAndDown ? 80:150"
                         :src="image+empresa.imagen" 
                     /> 
-                    <div class="mt-2 text-center subtitle-2 font-weight-black">{{empresa.nombre_comercial}}</div>
+                    <div :style="`color:${theme.background.font}`" class="mt-2 text-center subtitle-2 font-weight-black">{{empresa.nombre_comercial}}</div>
                 </v-card>
             </v-row>
         </v-card-text>
@@ -46,7 +46,7 @@ import {mapState} from 'vuex';
             }
         },
         computed: {
-            ...mapState(['empresas'])
+            ...mapState(['empresas','theme'])
         },
         methods: {
             push(empresa){

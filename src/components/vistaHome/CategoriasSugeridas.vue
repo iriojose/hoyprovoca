@@ -1,10 +1,10 @@
 <template>
     <v-card color="transparent" elevation="0" width="100%">
         <v-card-text>
-            <div style="opacity:0.6" class="text-left px-5 my-4 black--text headline font-weight-black">
+            <div  :style="`color:${theme.background.font};opacity:0.6`" class="text-left px-5 my-4 headline font-weight-black">
                 Encuentra lo que Buscas
             </div>
-            <div class="text-left px-5 my-4 black--text headline font-weight-black">
+            <div  :style="`color:${theme.background.font}`" class="text-left px-5 my-4 headline font-weight-black">
                 Categorías
             </div>
             <v-row justify="center">
@@ -19,7 +19,7 @@
                     @click="push(grupo)"
                 >
                     <loadImage :color="colores[i].color" :imagenViene=grupo.imagen />
-                    <div class="mt-2 text-center subtitle-2 font-weight-black">
+                    <div :style="`color:${theme.background.font}`" class="mt-2 text-center subtitle-2 font-weight-black">
                         {{ grupo.nombre }}
                     </div>
                 </v-card>
@@ -62,7 +62,7 @@ import {mapState} from 'vuex';
             };
         },
         computed: {
-            ...mapState(['grupos'])
+            ...mapState(['grupos','theme'])
         },
         methods: {
             push(item) {

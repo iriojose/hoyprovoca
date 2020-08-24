@@ -1,15 +1,15 @@
 <template>
-    <div>
-        <v-toolbar elevation="0" height="60" v-for="(detalle,i) in detalles" :key="i" color="#fff">
+    <div  >
+        <v-toolbar  elevation="0" height="60" v-for="(detalle,i) in detalles" :key="i" color="transparent">
             <v-avatar class="elevation-2" size="50">
                 <v-img width="50" height="50" contain 
                 :src="typeof detalle.imagen === 'undefined'  || detalle.imagen === 'default.png' ? require('@/assets/box.svg') : image + detalle.imagen" />
             </v-avatar>
             <v-spacer></v-spacer>
-            <div class="mx-2 caption font-weight-black black--text">{{conceptos[i].nombre}}</div>
+            <div :style="`color:${theme.sidebar.font}`" class="mx-2 caption font-weight-black">{{conceptos[i].nombre}}</div>
             <v-spacer></v-spacer>
             <v-spacer></v-spacer>
-            <div class="font-weight-black black--text caption">{{sales[i]}}</div>
+            <div  :style="`color:${theme.sidebar.font}`" class="font-weight-black  caption">{{sales[i]}}</div>
             <v-spacer></v-spacer>
             
             <v-btn 
@@ -19,7 +19,7 @@
                 :elevation="0" title="eliminar"
                 v-if="detalle.cantidad == 1"
             >
-                <v-icon small color="#232323">mdi-delete</v-icon>
+                <v-icon small :color="theme.sidebar.font" >mdi-delete</v-icon>
             </v-btn>
             
             <v-btn 
@@ -27,13 +27,13 @@
                 :loading="loading" :disabled="loading" width="40" height="40" 
                 tile icon :elevation="0" v-if="detalle.cantidad > 1"
             >
-                <v-icon small color="#232323">mdi-menu-left</v-icon>
+                <v-icon small :color="theme.sidebar.font">mdi-menu-left</v-icon>
             </v-btn>
            
-            <div class="mx-1 black--text font-weight-black">{{Number.parseInt(detalle.cantidad)}}</div>
+            <div :style="`color:${theme.sidebar.font}`" class="mx-1 font-weight-black">{{Number.parseInt(detalle.cantidad)}}</div>
         
             <v-btn title="agregar" light @click="suma(detalle,i)" :disabled="loading" :loading="loading" width="40" height="40" tile icon :elevation="0">
-                <v-icon small color="#000">mdi-plus</v-icon>
+                <v-icon small :color="theme.sidebar.font" >mdi-plus</v-icon>
             </v-btn>
         </v-toolbar>
     </div>
@@ -42,7 +42,7 @@
 <script>
 import variables from '@/services/variables_globales';
 import Pedidos from '@/services/Pedidos';
-import {mapActions} from 'vuex';
+import {mapActions, mapState} from 'vuex';
 import accounting from 'accounting';
 
     export default {
@@ -80,8 +80,11 @@ import accounting from 'accounting';
         mounted() {
             this.detalles.filter(a => this.sales.push(accounting.formatMoney(+a.precio,{symbol:"$ ",thousand:',',decimal:'.'})));
         },
+        computed:{
+          ...mapState(['theme'])
+        },
         methods: {
-            ...mapActions(['setSnackbar','updatePedidoStore','deleteDetalleStore','updateDetalleStore','themes']),
+            ...mapActions(['setSnackbar','updatePedidoStore','deleteDetalleStore','updateDetalleStore']),
             success(mensaje){
                 this.$toasted.success(mensaje, { 
                     theme: "toasted-primary", 

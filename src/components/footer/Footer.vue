@@ -5,7 +5,7 @@
                 <v-row justify="space-around" >
                     <v-col cols="12" md="4" sm="12" v-for="about in abouts" :key="about.text">
                         <v-img contain width="100%" height="150" :src="require('@/assets/'+about.img)"></v-img>
-                        <div class="text-center title font-weight-bold my-4">
+                        <div :style="`color:${theme.background.font}`" class="text-center title font-weight-bold my-4">
                             {{about.text}}
                         </div>
                     </v-col>
@@ -16,14 +16,14 @@
                 <v-row justify="center">
                     <v-col cols="12" md="4" sm="12" v-for="(n,i) in 4" :key="i">
                         <div v-if="i == 0">
-                            <div v-for="(n,e) in 4" :key="e" @click="push(grupos[e])" class="underline my-5 text-center font-weight-bold">
+                            <div :style="`color:${theme.background.font}`" v-for="(n,e) in 4" :key="e" @click="push(grupos[e])" class="underline my-5 text-center font-weight-bold">
                                 {{grupos[e].nombre}}
                             </div>
                         </div>
 
                         <div v-if="i == 1">
                             <div v-for="(interes,g) in intereses" :key="g" class="link underline my-5 text-center font-weight-bold">
-                               <a @click="transfer('/trabajar')">
+                               <a :style="`color:${theme.background.font}`" @click="transfer('/trabajar')">
                                   {{interes.text}}
                                </a>
                             </div>
@@ -31,7 +31,7 @@
 
                         <div v-if="i == 2">
                             <div v-for="(red,f) in redes" :key="f" class="my-5 text-center font-weight-bold">
-                                <a :href="red.to" class="underline">
+                                <a :style="`color:${theme.background.font}`" :href="red.to" class="underline">
                                     <v-avatar size="40" class="mx-2">
                                         <v-img :src="require('@/assets/'+red.img)"></v-img>
                                     </v-avatar>
@@ -49,8 +49,8 @@
                 </v-row>
             </v-sheet>
 
-            <v-footer class="font-weight-medium" elevation="0" color="#fff">
-                <v-col class="text-center" cols="12">
+            <v-footer   class="font-weight-medium" elevation="0" color="#fff">
+                <v-col :style="`color:${theme.background.font}`" class="text-center" cols="12">
                     {{ new Date().getFullYear() }} — <strong>Hoyprovoca</strong>
                 </v-col>
             </v-footer>
@@ -88,7 +88,7 @@ import {mapState} from 'vuex';
             }
         },
         computed:{
-            ...mapState(['grupos'])
+            ...mapState(['grupos','theme'])
         },
         methods: {
             push(item){

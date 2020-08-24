@@ -6,12 +6,13 @@
         hide-overlay
         v-model="carritos" 
         :width="$vuetify.breakpoint.smAndDonw ? '100%':500"
-        color="#f5f5f5"
+        :color="theme.sidebar.secondary"
         class="index"
     >
-        <v-toolbar width="100%" elevation="1" v-if="user.loggedIn" color="#fff">
+        <v-toolbar width="100%" elevation="1" v-if="user.loggedIn" :color="theme.sidebar.primary">
             <v-toolbar-title>
-                <v-img contain width="150" height="80" :src="require('@/assets/logo2.png')"></v-img>
+                <v-img v-if="theme.sidebar.dark" contain width="150" height="80" :src="require('@/assets/logo2.png')"></v-img>
+                <v-img v-else contain width="150" height="80" :src="require('@/assets/logo6.png')"></v-img>
             </v-toolbar-title>
             <v-spacer></v-spacer>
             <v-btn icon fab depressed @click="change" :elevation="0">
@@ -29,36 +30,38 @@
         <v-expansion-panels v-else class="my-1">
             <v-expansion-panel v-for="(pedido,i) in pedidos" :key="i">
 
-                <v-expansion-panel-header color="#fff">
+                <v-expansion-panel-header :color="theme.sidebar.card">
                     <EncabezadoPedido :index="i" :pedido="pedido" :total="totalPedidos[i]" />
                 </v-expansion-panel-header>
 
-                <v-expansion-panel-content color="#fff">
+                <v-expansion-panel-content :color="theme.sidebar.card">
                     <DetallesPedidos :conceptos="pedido.conceptos" :detalles="pedido.detalles" :indexPedido="i" />
                 </v-expansion-panel-content>
             </v-expansion-panel>
         </v-expansion-panels>
         
-        <v-footer absolute width="100%" height="60" color="#f5f5f5" class="pr-5 pl-5">
+        <v-footer absolute width="100%" height="60" :color="theme.sidebar.primary" class="pr-5 pl-5">
             <v-card-actions>
                 <v-btn 
-                    rounded color="#232323" @click="modal"
-                    class="white--text text-capitalize" 
+                    rounded  :color="theme.buttons.terceary" @click="modal"
+                    class="text-capitalize" :style="`color:${theme.buttons.font}`"
                     block :disabled="pedidos.length == 0 ? true:false"
                     :width="$vuetify.breakpoint.smAndDown ? 80:100"
+
                 >
                     Vaciar
-                    <v-icon class="mx-2" color="#fff">mdi-delete</v-icon>
+                    <v-icon class="mx-2" :color="theme.buttons.font" >mdi-delete</v-icon>
                 </v-btn>
                 <v-spacer class="mx-1"></v-spacer>
                 <v-btn 
-                    rounded color="#232323" @click="push()"
+                    rounded :color="theme.buttons.terceary" @click="push()"
                     class="white--text text-capitalize" 
+                    :style="`color:${theme.buttons.font}`"
                     block :disabled="pedidos.length == 0 ? true:false"
                     :width="$vuetify.breakpoint.smAndDown ? 80:100"
                 >
                     Checkout
-                    <v-icon class="mx-2" color="#fff">mdi-cash</v-icon>
+                    <v-icon class="mx-2" :color="theme.buttons.font">mdi-cash</v-icon>
                 </v-btn>
             </v-card-actions>
         </v-footer>
@@ -78,7 +81,7 @@ import router from '@/router';
             VaciarCarrito:() => import("@/components/dialogs/VaciarCarrito")
         },
         computed: {
-            ...mapState(['pedidos','carrito','user','totalPedidos']),
+            ...mapState(['pedidos','carrito','user','totalPedidos','theme']),
 
             carritos:{
                 get(){ return this.carrito},

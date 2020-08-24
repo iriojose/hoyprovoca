@@ -1,11 +1,11 @@
 <template>
-    <v-toolbar elevation="0" height="50" color="#fff">
+    <v-toolbar elevation="0" height="50" :color="theme.sidebar.card">
         <v-btn  
             :loading="loading" :disabled="loading" light
             @click.stop.prevent="deletePedido(pedido.id)" 
             icon title="Borrar" text :elevation="0"
         >
-            <v-icon color="#232323">mdi-delete</v-icon>
+            <v-icon :color="theme.sidebar.font">mdi-delete</v-icon>
         </v-btn>
 
         <v-spacer></v-spacer>
@@ -16,14 +16,14 @@
 
         <v-spacer></v-spacer>
 
-        <div class="font-weight-black black--text">{{sale}}</div>
+        <div  :style="`color:${theme.sidebar.font}`" class="font-weight-black ">{{sale}}</div>
     </v-toolbar>
 </template>
 
 <script>
 import variables from '@/services/variables_globales';
 import Pedidos from '@/services/Pedidos';
-import {mapActions} from 'vuex';
+import {mapActions, mapState} from 'vuex';
 import accounting from 'accounting';
 
     export default {
@@ -55,6 +55,9 @@ import accounting from 'accounting';
         },
         mounted() {
             this.sale = accounting.formatMoney(+this.total,{symbol:"$ ",thousand:',',decimal:'.'});
+        },
+        computed:{
+          ...mapState(["theme"])
         },
         methods:{
             ...mapActions(['deletePedidoStore']),
