@@ -262,9 +262,9 @@ export default {
   head: {
     title() {
       return {
-        inner: "Checkout",
-        separator: " ",
-        complement: " ",
+        inner: "Hoyprovoca",
+        separator: "|",
+        complement: "Pagar",
       };
     },
   },
@@ -327,7 +327,6 @@ export default {
       this.pendiente = true;
       this.setLocal("total", this.total);
       this.setLocal("data", this.data);
-      console.log(this.data)
     },
     //funcion que se utiliza para actualizar el estado desde los componentes hijos
     //gracias a estlo no se violan las normas de vue ya que el estado lo actualiza el mismo padre
