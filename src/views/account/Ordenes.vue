@@ -21,7 +21,7 @@
                 
                 <v-card v-else elevation="0" color="#fff" width="100%">
                     <v-expansion-panels flat>
-                        <v-expansion-panel v-for="(pedido,i) in ultimasOrdenes" :key="i" flat>
+                        <v-expansion-panel v-for="(pedido,i) in ultimasOrdenes" :key="pedido.id" flat>
                             <v-expansion-panel-header>
                                 <v-card elevation="0">
                                     <v-card-title>
@@ -56,7 +56,7 @@
                                             >
                                             </v-img>
                                             <v-card-text class="text--primary">
-                                                <v-card-title class="body-1 font-weight-black">{{pedido.conceptos[e].nombre}}</v-card-title>
+                                                <v-card-title class="body-1 font-weight-black">{{typeof pedido.conceptos[e] !== 'undefined' ? pedido.conceptos[e].nombre : ""}}</v-card-title>
                                                 <div class="caption font-weight-black">Precio:{{detalle.precio_view}}</div>
                                                 <div class="caption font-weight-black">Cantidad:{{+detalle.cantidad}}</div>
                                             </v-card-text>
@@ -110,26 +110,32 @@ import accounting from 'accounting';
             },
             getPedidos(){
                 this.loading = true;
-                Clientes().get(`/${this.user.cliente.id}/pedidos/?rest_estatus_id > 1`).then((response) => {
-                    if(response.data.data){
-                        response.data.data.filter(a => a.detalles.filter(b => b.precio_view = accounting.formatMoney(+b.precio,{symbol:"$ ",thousand:',',decimal:'.'})));
-                        this.aux = response.data.data;
-                        response.data.data.filter((a,i) => this.getConceptos(a,i));
+                Clientes().get(`/${this.user.cliente.id}/pedidos/?rest_estatus_id > 1`).then((pedidos) => {
+                    if(pedidos.data.data){
+                        pedidos.data.data.filter(a => a.detalles.filter(b => b.precio_view = accounting.formatMoney(+b.precio,{symbol:"$ ",thousand:',',decimal:'.'})));
+                        this.aux = pedidos.data.data;
+                        let count = 0;
+                        pedidos.data.data.forEach( (order, i) => {
+                            Pedidos().get(`/${order.id}/conceptos`).then((conceptos) => {
+                                count++;
+                                this.aux[i].conceptos = conceptos.data.data
+                                if(count === pedidos.data.data.length - 1) {
+                                    this.setUltimasOrdenes(this.aux);
+                                    setTimeout(() => this.loading = false, 1000)
+                                }
+                            }).catch(e => {
+                                console.error(e)
+                                this.loading = false;
+                            });
+                        })
+
                     }else this.loading = false;
                 }).catch(e => {
+                    console.error(e)
                     this.loading = false;
                 });
-            },
-            getConceptos(data,i){//trae los conceptos de un pedido
-                Pedidos().get(`/${data.id}/conceptos`).then((response) => {
-                    this.aux[i].conceptos = response.data.data;
-                    if(i == this.aux.length - 1) {
-                        this.loading = false;
-                        this.setUltimasOrdenes(this.aux);
-                    }
-                }).catch(e => {
-                    this.loading = false;
-                });
+
+                this.$forceUpdate();
             },
         }
     }
