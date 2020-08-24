@@ -1,6 +1,6 @@
 <template>
-    <v-card elevation="0">
-        <div class="font-weight-black title mb-5" style="padding-top:10px;text-align:center;">
+    <v-card elevation="0" :max-height="'572.5px'" class="orders-container">
+        <div class="font-weight-black title pt-8 mb-5" style="padding-top:10px;text-align:center;">
             Últimas Ordenes
         </div>
 
@@ -37,7 +37,7 @@
                                          <v-spacer></v-spacer>
                                         <div>
                                             <span class="c-title subtitle-2">Articulos</span>
-                                            <div class="subtitle-2">{{ pedido.detalles.length }}</div>
+                                            <div class="subtitle-1">{{ pedido.detalles.length }}</div>
                                         </div>
                                         <v-spacer></v-spacer>
                                         <v-chip
@@ -206,5 +206,9 @@ import accounting from 'accounting';
         .v-card.detalle  {
             background: #eceff1!important;
         }
+    }
+
+    .orders-container {
+        overflow: auto;
     }
 </style>
