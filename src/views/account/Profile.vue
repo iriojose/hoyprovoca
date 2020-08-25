@@ -93,7 +93,7 @@
             </v-row>
         </v-form>
 
-        <v-card-actions>
+        <v-card-actions style="position:relative">
             <v-card elevation="0" height="50">
                 <v-fade-transition>
                     <v-alert border="left" colored-border elevation="2"  dense :type="type" v-show="showMessage">
@@ -103,11 +103,12 @@
             </v-card>
             <v-spacer></v-spacer>
             <v-btn 
-                color="#2950c3" class="text-capitalize white--text" 
+                style="padding: 0 20px;"
+                color="#2950c3" class="text-capitalize white--text center-abs" 
                 @click="updateUsuario()" :loading="loading"
                 :disabled="valid && editable ? false:true"
             >
-                Editar
+                Actualizar
             </v-btn>
         </v-card-actions>
     </v-card>
@@ -233,6 +234,8 @@ import variables from '@/services/variables_globales';
                 delete this.data.usuario_at;
                 delete this.data.recovery;
                 delete this.data.recoverydate;
+                delete this.data.usuario_in;
+                delete this.data.client;
                 this.showMessage = false;
                 this.loading = true;
                 Usuario().post(`/${this.data.id}`,{data:this.data}).then(() => {
@@ -308,3 +311,13 @@ import variables from '@/services/variables_globales';
         },
     }
 </script>
+
+<style lang="scss">
+    .center-abs {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+</style>

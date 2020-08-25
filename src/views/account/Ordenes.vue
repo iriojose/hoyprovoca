@@ -1,6 +1,6 @@
 <template>
-    <v-card elevation="0">
-        <div class="font-weight-black title mb-5" style="padding-top:10px;text-align:center;">
+    <v-card elevation="0" :max-height="'572.5px'" class="orders-container">
+        <div class="font-weight-black title pt-8 mb-5" style="padding-top:10px;text-align:center;">
             Últimas Ordenes
         </div>
 
@@ -21,26 +21,31 @@
                 
                 <v-card v-else elevation="0" color="#fff" width="100%">
                     <v-expansion-panels flat>
-                        <v-expansion-panel v-for="(pedido,i) in ultimasOrdenes" :key="i" flat>
+                        <v-expansion-panel class="pedido" v-for="(pedido,i) in ultimasOrdenes" :key="pedido.id" flat>
                             <v-expansion-panel-header>
-                                <v-card elevation="0">
-                                    <v-card-title>
-                                        <v-avatar size="50">
+                                <v-card elevation="0" class="internal">
+                                    <v-card-title style="position:relative;">
+                                        <span class="c-title subtitle-2">Proveedor</span>
+                                        <v-avatar size="60" style="transform:translateY(12px)">
                                             <v-img :src="image+pedido.imagen"></v-img>
                                         </v-avatar>
                                         <v-spacer></v-spacer>
-                                        <div class="font-weight-black">{{price(totales[i])}}</div>
+                                        <div>
+                                            <span class="c-title subtitle-2">Total</span>
+                                            <div class="subtitle-1" style="font-weight:bold;">{{price(totales[i])}}</div>
+                                        </div>
+                                         <v-spacer></v-spacer>
+                                        <div>
+                                            <span class="c-title subtitle-2">Articulos</span>
+                                            <div class="subtitle-1">{{ pedido.detalles.length }}</div>
+                                        </div>
                                         <v-spacer></v-spacer>
                                         <v-chip
                                             class="ma-1"
                                             color="green"
                                             text-color="white"
                                         >
-                                            <div class="font-weight-black overline text-capitalize" v-if="pedido.rest_estatus_id == 2">Por verificar</div>
-                                            <div class="font-weight-black overline text-capitalize" v-if="pedido.rest_estatus_id == 3">Verificado</div>
-                                            <div class="font-weight-black overline text-capitalize" v-if="pedido.rest_estatus_id == 4">Por entregar</div>
-                                            <div class="font-weight-black overline text-capitalize" v-if="pedido.rest_estatus_id == 5">En camino</div>
-                                            <div class="font-weight-black overline text-capitalize" v-if="pedido.rest_estatus_id == 6">Completado</div>
+                                            <div class="font-weight-black overline text-capitalize">{{ getEstado(pedido.rest_estatus_id) }}</div>
                                         </v-chip>
                                         
                                     </v-card-title>
@@ -49,14 +54,14 @@
                             <v-expansion-panel-content>
                                 <v-row justify="start">
                                     <v-col :cols="$vuetify.breakpoint.smAndDown ? 6:12" md="3" v-for="(detalle,e) in pedido.detalles" :key="e">
-                                        <v-card class="mx-auto" :max-width="'100%'">
+                                        <v-card class="mx-auto detalle" :max-width="'100%'" elevation="3">
                                             <v-img 
                                                 class="align-end" height="150px" contain
                                                 :src="typeof detalle.imagen === 'undefined'  || detalle.imagen === 'default.png' ? require('@/assets/box.svg') : image + detalle.imagen"
                                             >
                                             </v-img>
                                             <v-card-text class="text--primary">
-                                                <v-card-title class="body-1 font-weight-black">{{pedido.conceptos[e].nombre}}</v-card-title>
+                                                <v-card-title class="body-1 font-weight-black">{{typeof pedido.conceptos[e] !== 'undefined' ? pedido.conceptos[e].nombre : ""}}</v-card-title>
                                                 <div class="caption font-weight-black">Precio:{{detalle.precio_view}}</div>
                                                 <div class="caption font-weight-black">Cantidad:{{+detalle.cantidad}}</div>
                                             </v-card-text>
@@ -85,6 +90,40 @@ import accounting from 'accounting';
                 aux:[],
                 ...variables,
                 loading:true,
+                estados: [
+                    {
+                        id: 1,
+                        slug: "Nuevo"
+                    },
+                    {
+                        id: 2,
+                        slug: "Por Verificar"
+                    },
+                    {
+                        id: 3,
+                        slug: "Pagado"
+                    },
+                    {
+                        id: 4,
+                        slug: "En Espera"
+                    },
+                    {
+                        id: 5,
+                        slug: "En Camino"
+                    },
+                    {
+                        id: 6,
+                        slug: "Entregado"
+                    },
+                    {
+                        id: 7,
+                        slug: "Completado"
+                    },
+                    {
+                        id: 8,
+                        slug: "Pago Rechazado"
+                    },
+                ]
             }
         },
         computed: {
@@ -108,29 +147,68 @@ import accounting from 'accounting';
             price(precio){
                 return accounting.formatMoney(+precio,{symbol:"$ ",thousand:',',decimal:'.'});
             },
+            getEstado(id) {
+                return this.estados.find(i => i.id === id).slug || "Error"
+            },
             getPedidos(){
                 this.loading = true;
-                Clientes().get(`/${this.user.cliente.id}/pedidos/?rest_estatus_id > 1`).then((response) => {
-                    if(response.data.data){
-                        response.data.data.filter(a => a.detalles.filter(b => b.precio_view = accounting.formatMoney(+b.precio,{symbol:"$ ",thousand:',',decimal:'.'})));
-                        this.aux = response.data.data;
-                        response.data.data.filter((a,i) => this.getConceptos(a,i));
+                Clientes().get(`/${this.user.cliente.id}/pedidos/?rest_estatus_id > 1`).then((pedidos) => {
+                    if(pedidos.data.data){
+                        pedidos.data.data.filter(a => a.detalles.filter(b => b.precio_view = accounting.formatMoney(+b.precio,{symbol:"$ ",thousand:',',decimal:'.'})));
+                        this.aux = pedidos.data.data;
+                        let count = 0;
+                        pedidos.data.data.forEach( (order, i) => {
+                            Pedidos().get(`/${order.id}/conceptos`).then((conceptos) => {
+                                count++;
+                                this.aux[i].conceptos = conceptos.data.data
+                                if(count === pedidos.data.data.length - 1) {
+                                    this.setUltimasOrdenes(this.aux);
+                                    setTimeout(() => this.loading = false, 1000)
+                                }
+                            }).catch(e => {
+                                console.error(e)
+                                this.loading = false;
+                            });
+                        })
+
                     }else this.loading = false;
                 }).catch(e => {
+                    console.error(e)
                     this.loading = false;
                 });
-            },
-            getConceptos(data,i){//trae los conceptos de un pedido
-                Pedidos().get(`/${data.id}/conceptos`).then((response) => {
-                    this.aux[i].conceptos = response.data.data;
-                    if(i == this.aux.length - 1) {
-                        this.loading = false;
-                        this.setUltimasOrdenes(this.aux);
-                    }
-                }).catch(e => {
-                    this.loading = false;
-                });
+
+                this.$forceUpdate();
             },
         }
     }
 </script>
+
+<style lang="scss">
+    .c-title {
+        position: absolute;
+        top: 0px;
+        font-weight:bold!important;
+    }
+
+    .pedido {
+        border: 1px solid #eceff1
+    }
+
+    .pedido:nth-child(odd) {
+        background: #eceff1!important;
+
+        .v-card.internal {
+            background: #eceff1!important;
+        }
+    }
+
+    .pedido:nth-child(even) {
+        .v-card.detalle  {
+            background: #eceff1!important;
+        }
+    }
+
+    .orders-container {
+        overflow: auto;
+    }
+</style>

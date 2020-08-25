@@ -10,7 +10,7 @@
                                     <v-list-item-avatar size="115">
                                         <v-img :src="user.data.imagen === 'default.png' ? require('@/assets/user.jpg'):image+user.data.imagen"></v-img>
                                     </v-list-item-avatar>
-                                    <v-avatar @click="dialog = !dialog" class="abs_center" size="35" style="z-index:2;" color="#F5F5F5">
+                                    <v-avatar v-if="$route.name === 'profile'" @click="dialog = !dialog" class="abs_center" size="35" style="z-index:2;" color="#F5F5F5">
                                         <v-icon style="font-size:21px;">mdi-camera</v-icon>
                                     </v-avatar>
                                     <v-list-item-content class="white--text font-weight-bold">

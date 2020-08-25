@@ -67,7 +67,7 @@ export default {
         if(this.user.data.id !== 2){
             // Cambiar teamlead por cualquier otro correo de soporte
             this.other = new Talk.User({
-                id: "teamlead@somossiste.com",
+                id: "teamlead@somossistemas.com",
                 name: "Soporte SOMOS SISTEMAS C.A",
                 email: "teamlead@somossistemas.com",
                 photoUrl: require('@/assets/AFTIM.png'),

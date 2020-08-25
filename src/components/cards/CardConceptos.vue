@@ -13,10 +13,11 @@
             <v-row class="mx-2" justify="end" v-if="parseExistencia(concepto) <= 0">
                 <v-img 
                     contain 
-                    :width="$vuetify.breakpoint.smAndDown ? 100:200" 
-                    :height="$vuetify.breakpoint.smAndDown ? 100:150" 
+                    :width="$vuetify.breakpoint.smAndDown ? 50:135" 
+                    :height="$vuetify.breakpoint.smAndDown ? 50:100" 
                     :src="require('@/assets/agotado.png')"
                     class="pb-3"
+                    style="position: absolute;top: 50%;left: 50%;transform: translate(-50%,-52%);"
                 />   
             </v-row>
             <v-row justify="center" align="end" class="fill-height px-5">

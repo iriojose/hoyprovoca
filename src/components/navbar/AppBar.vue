@@ -30,10 +30,10 @@
 		</div>
 
         <v-text-field
-            label="¿Que te provoca?..." hide-details
+            label="¿Qué te provoca?" hide-details
             dense v-on:keyup.enter="push" light
             class="ml-10 hidden-sm-and-down" single-line
-            solo
+            solo v-model="busquedas"
         >
             <v-btn slot="append" tile text small @click="push">
                 <v-icon color="#D32F2F">mdi-magnify</v-icon>
@@ -65,7 +65,7 @@
            :style="`color:${theme.background.font}!important`"
             label="¿Que te provoca?..." hide-details
             dense v-on:keyup.enter="push" light
-            solo single-line
+            solo single-line v-model="busquedas"
         >
             <v-btn slot="append" tile @click="push" text small>
                 <v-icon color="#D32F2F">mdi-magnify</v-icon>
@@ -107,7 +107,7 @@ import {mapState, mapActions} from 'vuex';
         methods:{
             ...mapActions(['setBuscar','setBandera','setDrawer']),
             
-             change(){
+            change(){
                 this.drawer ? this.setDrawer(false):this.setDrawer(true);
             },
             push(){ 
