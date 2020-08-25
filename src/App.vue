@@ -13,7 +13,7 @@
                 <v-row justify="center" align="center" class="fill-height margen">
                     <div>
                         <v-row justify="center">
-                            <v-img contain width="100" height="100" :src="require('@/assets/logo 3.png')"></v-img>
+                            <Loading />
                         </v-row>
                         <v-btn v-show="error" color="#c9242b" @click="sesion(token)" rounded class=" my-4 text-capitalize subtitle-2 font-weight-bold white--text">
                             Recargar
@@ -50,7 +50,8 @@ import {mapActions,mapState} from 'vuex';
             ModalBloqueado:() => import("@/components/dialogs/ModalBloqueado"),
             ModalSesion:() => import("@/components/dialogs/ModalSesion"),
             ModalProducto:() => import("@/components/dialogs/ModalProducto"),
-            BottomNavigation:() => import("@/components/footer/BottomNavigation")
+            BottomNavigation:() => import("@/components/footer/BottomNavigation"),
+            Loading:() => import("@/components/loaders/Loading")
         },
         data() {
             return {
