@@ -1,12 +1,10 @@
 <template>
     <div>
-        <v-card elevation="0" color="#fff" width="100%" height="100%" v-if="loading">
-            <v-card-text>
-                <v-row justify="center" class="fill-height" align="center">
-                    <v-img width="500" height="500" contain :src="require('@/assets/loader.gif')"></v-img>
-                </v-row>
-            </v-card-text>
-        </v-card>
+        <v-container fluid v-if="loading">
+            <v-row justify="center" class="fill-height" align="center" style="height:500px;">
+                <Loading />
+            </v-row>
+        </v-container>
 
         <v-card elevation="0" color="#fff" width="100%" height="100%" v-else>
             <v-card-text v-if="grupos">
@@ -56,6 +54,9 @@ import variables from '@/services/variables_globales';
 import router from '@/router';
 
     export default {
+        components:{
+            Loading: () => import('@/components/loaders/Loading')
+        },
         data() {
             return {
                 tipo:false,

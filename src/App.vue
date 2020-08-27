@@ -20,12 +20,16 @@
                 >
                     <div>
                         <v-row justify="center">
+<<<<<<< HEAD
                             <v-img
                                 contain
                                 width="100"
                                 height="100"
                                 :src="require('@/assets/logo 3.png')"
                             ></v-img>
+=======
+                            <Loading />
+>>>>>>> 25f910a3d555e5c3833f2c5965c0467d81f583da
                         </v-row>
                         <v-btn
                             v-show="error"

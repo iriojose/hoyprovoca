@@ -73,8 +73,6 @@ export default {
     align-items: flex-start;
     text-align: center;
     .line {
-        &-1 {
-        }
         &-2 {
             font-size: 2.925rem !important;
         }

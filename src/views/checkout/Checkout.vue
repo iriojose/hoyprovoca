@@ -156,7 +156,11 @@ import accounting from "accounting";
 //servicios
 import { mapState, mapActions } from "vuex";
 import Auth from "@/services/Auth";
+<<<<<<< HEAD
 import {pedido,checkdata,pedidoSelect,state} from "@/store/default"
+=======
+import defaultVar from "@/store/default"
+>>>>>>> 25f910a3d555e5c3833f2c5965c0467d81f583da
 // for alerts snackbar
 //const pagoFinalizado = "el proceso de pago ha finalizado exitosamente!";
 const maxPago = "Solo puede escojer dos metodos de Pago";
@@ -180,6 +184,7 @@ export default {
   },
   data() {
     return {
+      ...defaultVar,
       ...variables,
       view: 1,
       verifyMessage: "",

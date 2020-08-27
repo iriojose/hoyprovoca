@@ -1,13 +1,11 @@
 <template>
     <div>
-        <v-card elevation="0" color="#fff" width="100%" height="100%" v-if="loading">
-            <v-card-text>
-                <v-row justify="center" class="fill-height" align="center">
-                    <v-img width="500" height="500" contain :src="require('@/assets/loader.gif')"></v-img>
-                </v-row>
-            </v-card-text>
-        </v-card>
-
+        <v-container fluid v-if="loading">
+            <v-row justify="center" class="fill-height" align="center" style="height:500px;">
+                <Loading />
+            </v-row>
+        </v-container>
+        
         <v-card elevation="0" color="#fff" width="100%" height="100%" v-else>
             <transition name="fade">
                 <v-card-text v-show="conceptos">
@@ -115,7 +113,8 @@ import {mapState,mapActions} from 'vuex';
     export default {
         components:{
             CardConceptos: () => import("@/components/cards/CardConceptos"),
-            CardConceptos2:() => import("@/components/cards/CardConceptos2")
+            CardConceptos2:() => import("@/components/cards/CardConceptos2"),
+            Loading:() => import("@/components/loaders/Loading")
         },
         data() {
             return {
@@ -226,3 +225,10 @@ import {mapState,mapActions} from 'vuex';
         }
     }
 </script>
+
+<style lang="scss" scope>
+    .grid{
+        width:100%;
+        height:100%;
+    }
+</style>

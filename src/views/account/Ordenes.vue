@@ -5,13 +5,11 @@
         </div>
 
         <v-card-text>
-            <v-card elevation="0" color="#fff" width="100%" height="100%" v-if="loading">
-                <v-card-text>
-                    <v-row justify="center" class="fill-height" align="center">
-                        <v-img width="250" height="250" contain :src="require('@/assets/loader.gif')"></v-img>
-                    </v-row>
-                </v-card-text>
-            </v-card>
+            <v-container fluid v-if="loading">
+                <v-row justify="center" class="fill-height" align="center" style="height:500px;">
+                    <Loading />
+                </v-row>
+            </v-container>
 
             <v-card elevation="0" color="#fff" width="100%" height="100%" v-else>
                 <v-row justify="center" v-if="!ultimasOrdenes" class="mt-5">
@@ -85,6 +83,9 @@ import variables from '@/services/variables_globales';
 import accounting from 'accounting';
 
     export default {
+        components:{
+            Loading:() => import("@/components/loaders/Loading")
+        },
         data() {
             return {
                 aux:[],
