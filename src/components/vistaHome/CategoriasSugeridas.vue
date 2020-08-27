@@ -1,10 +1,10 @@
 <template>
     <v-card color="transparent" elevation="0" width="100%">
         <v-card-text>
-            <div  :style="`color:${theme.background.font};opacity:0.6`" class="text-left px-5 my-4 headline font-weight-black">
-                Encuentra lo que Buscas
+            <div  :style="`color:${theme.background.font};opacity:0.6`" class=" description-1 text-left px-5 my-4 headline font-weight-black">
+                Encuentra lo que te Provoca
             </div>
-            <div  :style="`color:${theme.background.font}`" class="text-left px-5 my-4 headline font-weight-black">
+            <div  :style="`color:${theme.background.font}`" class=" description text-left px-5 mb-6 headline font-weight-black">
                 Categorías
             </div>
             <v-row justify="center">
@@ -95,6 +95,20 @@ import {mapState} from 'vuex';
 </script>
 
 <style lang="scss" scoped>
+.description{
+  font-size:2.8rem!important;
+    font-weight: 900!important;
+    margin-top:0!important;
+    margin-bottom: 5vh!important;
+  &-1{
+    margin:0!important;
+    font-size:1rem!important;
+    font-weight: 900!important;
+    display: flex;
+    align-items: flex-end;
+    line-height: initial;
+  }
+}
     .border {
         border-radius: 30px !important;
     }

@@ -1,5 +1,5 @@
 <template>
-    <v-row justify="center" v-if="!$vuetify.breakpoint.smAndDown">
+    <v-row class="content-movil" justify="center" v-if="!$vuetify.breakpoint.smAndDown">
         <v-col cols="6" md="6">
             <div
                 :style="`color:${theme.background.font}`"
@@ -17,6 +17,13 @@
         <v-col cols="12" md="5">
             <v-img :src="require('@/assets/bannerweb1.png')"> </v-img>
         </v-col>
+         <v-img
+                class="App"
+                :width="200"
+                :height="50"
+                contain="true"
+                :src="require('@/assets/Googleplay.jpeg')"
+            ></v-img>
     </v-row>
 
     <v-row justify="start" v-else>
@@ -40,6 +47,13 @@
                 :src="require('@/assets/bannerMovil1.png')"
             >
             </v-img>
+            <v-img
+                class="App"
+                :width="170"
+                :height="30"
+                contain="true"
+                :src="require('@/assets/Googleplay.jpeg')"
+            ></v-img>
         </v-col>
     </v-row>
 </template>
@@ -63,6 +77,14 @@ export default {
 }
 .imagen {
     z-index: 1;
+}
+.App{
+  position: absolute;
+  bottom: 0;
+  left:0;
+  padding-left: 5vh;
+  margin-bottom: 3vh;
+  cursor: pointer;
 }
 .slogan {
     display: flex;
@@ -88,7 +110,9 @@ export default {
         right: 0;
         display: flex;
         padding-top:5vw;
-        padding-right: 12vw;
+        padding-right: 10vw;
+        font-size:1.2rem;
+        font-weight: 900;
         justify-content: flex-start;
         flex-direction: column;
         align-items: flex-end;
