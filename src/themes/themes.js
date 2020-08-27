@@ -1,26 +1,42 @@
 const theme ={
   principal:{
       background:{
-        light:"rgb(252 238 239 / 63%)",
-        light_2:"white",
-        strong:"white",
-        strong_2:"#F0E935",
-        font:"black",
+        light:"#272B2B",
+        light_2:"#1D2020",
+        primary:"#131416",
+        strong:"#131416",
+        secondary:"#fddb3a",
+        font:"white",
         font2:"white",
-        dark:false
+        dark:true,
+        navIconDark:true
+      },
+      navBar:{
+        light:"#272B2B",
+        light_2:"#1D2020",
+        primary:"#131416",
+        strong:"#131416",
+        secondary:"#fddb3a",
+        font:"white",
+        font2:"white",
+        dark:false,
+        navIconDark:true
       },
       buttons:{
-        primary:"",
-        secondary:"",
-        font:"white",
-        terceary:"#232323",
+        primary:"#fddb3a",
+        secondary:"#FAE890",
+        font:"black",
+        font2:"white",
+        terceary:"#fddb3a",
+        dark:false,
         font2:"black"
       },
       sidebar:{
-        primary:"white",
-        secondary:"rgb(252 238 239 / 100%)",
-        dark:true,
+        primary:"#41444b",
+        secondary:"#F4F5F5",
+        dark:false,
         font:"rgb(0 0 0 / 74%)",//
+        font2:"white",
         card:"white",
       },
       primary:{
@@ -41,12 +57,70 @@ const theme ={
       },
       dark:false
   },
+  production:{
+    background:{
+      light:"#F5F5F5",
+      light_2:"#FFFFFF",
+      primary:"#E6E6E6",
+      strong:"#FFFFFF",
+      secondary:"#fddb3a",
+      font:"black",
+      font2:"white",
+      dark:false,
+      navIconDark:false
+    },
+    navBar:{
+      light:"#E6E6E6",
+      light_2:"#1D2020",
+      primary:"#131416",
+      strong:"#FFFFFF",
+      secondary:"#c1272a",
+      font:"black",
+      font2:"white",
+      dark:true,
+      navIconDark:false
+    },
+    buttons:{
+      primary:"#c1272a",
+      secondary:"#c1272a",
+      font:"white",
+      font2:"white",
+      terceary:"#1C3144",
+      dark:false,
+    },
+    sidebar:{
+      primary:"#FFFFFF",
+      secondary:"#E6E6E6",
+      dark:true,
+      font:"rgb(0 0 0 / 74%)",//
+      font2:"white",
+      card:"white",
+    },
+    primary:{
+      default:"#C",
+      strong:"",
+      light:""
+  },
+    secondary:{
+      default:"#ED3237",
+      strong:"",
+      light:""
+    },
+    summary:{
+      default:"#222730"
+    },
+    other:{
+      default:"#31334D"
+    },
+    dark:false
+},
   inUse:{
     background:{
       strong:"#ebded1",
       light:"#F2FAF0",
       light_2:"white",
-      strong_2:"#E5EDF0",
+      primary:"#ebded1",
+      strong:"#E5EDF0",
     },
     secondary:{
       default:"#ED3237",

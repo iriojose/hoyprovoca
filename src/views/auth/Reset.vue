@@ -1,19 +1,20 @@
 <template>
-    <div class="fondo">
-        <v-card color="transparent" elevation="0" width="100%">
+    <div :style="`background:${theme.background.strong}`">
+        <v-card :color="theme.background.light" elevation="0" width="100%">
             <v-card-text>
                 <v-row justify="center" class="py-4">
                     <v-col cols="12" md="8" sm="12" :class="$vuetify.breakpoint.smAndDown ? 'mx-4':null">
                         <v-row justify="center" class="pb-4">
-                            <v-img transition="scale-transition" contain width="100" height="50" :src="require('@/assets/logo 6.png')"></v-img>
+                            <v-img v-if="theme.background.dark" contain width="100" @click="push2" height="50" :src="require('@/assets/logo2.png')"></v-img>
+                            <v-img v-else contain width="100" height="50" @click="push2" :src="require('@/assets/logo6.png')"></v-img>
                         </v-row>
-                        <v-card width="100%">
+                        <v-card width="100%" :color="theme.background.light_2">
                             <v-row justify="center">
                                 <v-col cols="12" md="6" class="hidden-sm-and-down">
                                     <v-img width="100%" height="400" contain :src="require('@/assets/forgot.svg')"></v-img>
                                 </v-col>
                                 <v-col cols="12" md="6" sm="12" class="pa-12">
-                                    <div class="headline text-center mb-5">Resetear contraseña</div>
+                                    <div :style="`color:${theme.background.strong}`" class="headline text-center mb-5">Resetear contraseña</div>
                                     
                                     <v-card elevation="0" height="50">
                                         <v-fade-transition>
@@ -34,7 +35,7 @@
                                     </v-row>
                                     
                                     <v-row justify="center" class="my-5" v-if="error">
-                                        <v-icon size="70" :color="color">
+                                        <v-icon size="70" :color="theme.background.font">
                                             {{icon}}
                                         </v-icon>
                                     </v-row>
@@ -45,14 +46,14 @@
                                     
                                     <v-scroll-x-transition>
                                         <v-form v-model="valid" v-show="cambiarPassword">
-                                            <v-text-field
+                                            <v-text-field :dark="theme.background.dark"
                                                 filled rounded :disabled="loading" dense
                                                 v-model="contraseña" single-line type="password"
                                                 color="#0f2441" :rules="[required('Contraseña'),minLength('Contraseña',8)]"
                                                 label="Nueva contraseña" append-icon="mdi-lock"
                                             ></v-text-field>
 
-                                            <v-text-field
+                                            <v-text-field :dark="theme.background.dark"
                                                 filled rounded :disabled="loading"
                                                 v-model="contraseña2" single-line
                                                 type="password" color="#0f2441"
@@ -61,10 +62,11 @@
                                             ></v-text-field>
 
                                             <v-btn
-                                                rounded color="#2950c3" block
+                                                rounded :color="theme.buttons.primary" block
                                                 :disabled="!valid" :loading="loading"
                                                 height="40" @click="reset" 
-                                                class="text-capitalize caption white--text"
+                                                :style="theme.buttons.font"
+                                                class="text-capitalize caption "
                                             >
                                                 Resetear contraseña
                                             </v-btn>
@@ -78,7 +80,7 @@
             </v-card-text>
         </v-card>
 
-        <v-footer fixed class="font-weight-medium" elevation="0" color="#1f3b63">
+        <v-footer fixed class="font-weight-medium" elevation="0" :color="theme.background.light_2">
             <v-col class="text-center white--text" cols="12">
                 {{ new Date().getFullYear() }} — <strong>Hoyprovoca</strong> 
             </v-col>
@@ -90,7 +92,7 @@
 import Auth from '@/services/Auth';
 import validations from '@/validations/validations';
 import router from '@/router';
-
+import {mapState} from "vuex";
     export default {
         data(){
             return {
@@ -124,6 +126,7 @@ import router from '@/router';
             this.validCode();
         },
         computed: {
+          ...mapState(['theme']),
             passwordConfirmationRule() {
                 return () => (this.contraseña === this.contraseña2) || 'Las contraseñas no coinciden.';
             },

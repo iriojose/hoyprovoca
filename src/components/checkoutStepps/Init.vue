@@ -1,5 +1,5 @@
 <template>
-    <v-row justify="center" v-if="loading">
+    <v-row justify="center" v-if="loading" >
         <v-card
             :class="
                 $vuetify.breakpoint.smAndDown
@@ -19,7 +19,7 @@
             </v-card-text>
         </v-card>
     </v-row>
-    <div v-else v-show="view == 1">
+    <div v-else v-show="view == 1" >
         <v-slide-group
             v-if="pedidos"
             multiple
@@ -43,6 +43,7 @@
         </v-slide-group>
 
         <v-card
+        :color="theme.background.light"
             :class="$vuetify.breakpoint.smAndDown ? 'my-5 mx-2' : 'mx-10 my-5'"
             v-if="pedidoSelect"
         >
@@ -58,33 +59,34 @@
                                 : 'pa-5 products'
                         "
                     >
-                        <div class="font-weight-bold title titles">
+                        <div class="font-weight-bold title titles" :style="` color:${theme.background.font}`">
                             Tus productos
                         </div>
                         <div
+                        :style="` color:${theme.background.font}`"
                             v-if="detalles"
                             class="font-weight-bold titles subtitle-1"
                         >
                             {{ detalles.length + " " }}
                             item
                         </div>
-                        <v-list>
+                        <v-list :style="`background-color:${theme.background.light}; color:${theme.background.font}`">
                             <v-list-item class="products-row products line">
-                                <v-list-item-title class="imag">
+                                <v-list-item-title :style="` color:${theme.background.font}`"  class="imag">
                                     <p class="center-text">Imagen</p>
                                 </v-list-item-title>
-                                <v-list-item-title
+                                <v-list-item-title :style="` color:${theme.background.font}`"
                                     v-if="!$vuetify.breakpoint.smAndDown"
                                 >
                                     <p class="center-text">Nombre</p>
                                 </v-list-item-title>
-                                <v-list-item-title>
+                                <v-list-item-title :style="` color:${theme.background.font}`">
                                     <p class="center-text">Precio</p>
                                 </v-list-item-title>
-                                <v-list-item-title>
+                                <v-list-item-title :style="` color:${theme.background.font}`">
                                     <p class="center-text">Cantidad</p>
                                 </v-list-item-title>
-                                <v-list-item-title>
+                                <v-list-item-title :style="` color:${theme.background.font}`">
                                     <p class="center-text">En Stock</p>
                                 </v-list-item-title>
                             </v-list-item>
@@ -93,14 +95,14 @@
                                 v-for="(detalle, i) in detalles"
                                 :key="i"
                             >
-                                <v-list-item-title class="center">
+                                <v-list-item-title :style="` color:${theme.background.font}`" class="center">
                                     <v-list-item-avatar>
                                         <v-img
                                             :src="image + detalle.imagen"
                                         ></v-img>
                                     </v-list-item-avatar>
                                 </v-list-item-title>
-                                <v-list-item-title
+                                <v-list-item-title :style="` color:${theme.background.font}`"
                                     v-if="!$vuetify.breakpoint.smAndDown"
                                     class="product-text"
                                 >
@@ -113,7 +115,7 @@
                                         }}
                                     </p>
                                 </v-list-item-title>
-                                <v-list-item-title
+                                <v-list-item-title :style="` color:${theme.background.font}`"
                                     class="product-text caption font-weight-medium"
                                 >
                                     <span class="price center center-text">
@@ -124,7 +126,7 @@
                                         $
                                     </span>
                                 </v-list-item-title>
-                                <v-list-item-title class="product-text center">
+                                <v-list-item-title :style="` color:${theme.background.font}`" class="product-text center">
                                     <v-btn
                                         class=" onlyShow white--text"
                                         :loading="loadingExistence"
@@ -138,10 +140,11 @@
                                                     : 'red'
                                                 : 'green lighten-1'
                                         "
+                                        :style="` color:${theme.background.font}`"
                                         >{{ parseInt(detalle.cantidad) }}</v-btn
                                     >
                                 </v-list-item-title>
-                                <v-list-item-title class="product-text center">
+                                <v-list-item-title :style="` color:${theme.background.font}`" class="product-text center">
                                     <v-btn
                                         class="onlyShow white--text"
                                         :loading="loadingExistence"
@@ -161,15 +164,16 @@
                     <v-col cols="6" md="4" sm="12">
                         <v-row sm="12">
                             <v-col cols="12" md="6" sm="12">
-                                <div class="font-weight-bold title">
+                                <div class="font-weight-bold title" :style="` color:${theme.background.font}`">
                                     Subtotal a pagar
                                 </div>
                             </v-col>
                             <v-col cols="12" md="6" sm="12">
-                                <div class="font-weight-bold title">
+                                <div class="font-weight-bold title" :style="` color:${theme.background.font}`">
                                     Empresa
                                 </div>
                                 <div
+                                :style="` color:${theme.background.font}`"
                                     v-if="pedidoSelect.empresa"
                                     class="font-weight-bold subtitle-1"
                                 >
@@ -177,30 +181,32 @@
                                 </div>
                             </v-col>
                         </v-row>
-                        <div class="font-weight-bold subtitle-1">BS:</div>
+                        <div class="font-weight-bold subtitle-1" :style="` color:${theme.background.font}`">BS:</div>
                         <v-btn
                             :loading="dolar ? false : true"
                             color="secondary"
+                            
                             class="font-weight-bold subtitle-1 onlyShow"
                             ><span>{{ total }}</span></v-btn
                         >
-                        <div class="font-weight-bold subtitle-1">USD :</div>
+                        <div  :style="` color:${theme.background.font}`" class="font-weight-bold subtitle-1">USD :</div>
                         <v-btn
                             :loading="dolar ? false : true"
                             color="secondary"
                             class="my-2 font-weight-bold subtitle-1 onlyShow"
-                            ><span>${{ totalUSD }}</span></v-btn
+                            ><span>${{ parseFloat(totalUSD).toFixed(2) }}</span></v-btn
                         >
-                        <div class="font-weight-bold subtitle-2">
+                        <div :style="` color:${theme.background.font}`" class="font-weight-bold subtitle-2">
                             Cantidad de Personas :
                             {{ pedidoSelect.cant_personas }}
                         </div>
                         <v-btn
                             block
-                            color="#0f2441"
-                            class="text-capitalize subtitle-2 my-5 white--text font-weight-bold"
+                            :color="theme.buttons.primary"
+                            class="text-capitalize subtitle-2 my-5 font-weight-bold"
                             @click="next"
-                            :disabled="!(stock && priced)"
+                            :style="` color:${theme.buttons.font}!important`"
+                            :disabled="bloqueo || !priced"
                             >{{ messagePendiente }}</v-btn
                         >
                     </v-col>
@@ -294,12 +300,11 @@ export default {
             }
         },
         pedidoSelect() {
-          console.log(this);
+          
             if (!this.pedidoSelect.detalles[0].stock) {
-              this.stock = false;
                 this.checkExistence();
             }else{
-               this.stock = true
+               
             }
         },
         arrived() {
@@ -318,7 +323,7 @@ export default {
         },
     },
     computed: {
-        ...mapState(["user", "modalPago", "pedidos"]),
+        ...mapState(["user", "modalPago", "pedidos",'theme']),
     },
     methods: {
         ...mapActions(["setPedidos", "deletePedidoStore", "setModalPago"]),
@@ -423,10 +428,19 @@ export default {
         },
         seleccionarPedido(evt, i) {
             this.$emit("updatedState", { name: "pedidoSelect", content: evt });
+            this.checkStock(evt)
             this.messagePendiente = "Pagar";
             this.detalles = evt.detalles;
             this.dolar && (this.arrived = (!evt.detalles?.stock) ? 1 : 2);
             this.calcularTotal(this.pedidos[i].conceptos, evt.detalles);
+        },
+
+        checkStock(pedido){
+
+          pedido.detalles.map(element =>{
+            console.log(element.cantidad > element?.stock,element.cantidad,element.stock,this.priced)
+             this.bloqueo = element.cantidad > element?.stock
+          })
         },
         next() {
             this.$emit("updatedState", { name: "view", content: 2 });
@@ -510,7 +524,7 @@ export default {
         },
         async checkExistence() {
             this.loadingExistencia = true;
-            this.stock = false;
+            this.bloqueo = true;
             this.disponibilidad = 0;
             this.stockNotifier = checking;
             //empieza a cargar las existencias una vez temina la funcion  se modifica el total si faltan productos a la existencia
@@ -520,7 +534,6 @@ export default {
                 if (this.disponibilidad === this.pedidoSelect.detalles.length) {
                     this.stockNotifier = avaible;
                     this.bloqueo = false;
-                     this.stock = true;
                 } else if (
                     this.disponibilidad > 0 &&
                     this.disponibilidad < this.pedidoSelect.detalles.length
@@ -528,8 +541,9 @@ export default {
                     //en este caso no todos los productos estan disponibles asi que se procede a modificar el total con los disponibles
                     this.stockNotifier = notComplete;
                     let suma = 0;
+                    console.log("pasa")
                     this.total = 0;
-                    this.stock = false;
+                    this.boqueo = true;
                     this.pedidoSelect.detalles.map((a) => {
                         suma +=
                             a.cantidad < a.stock
@@ -544,8 +558,9 @@ export default {
                         }),
                         name: "total",
                     });
-                    this.bloqueo = false;
+                    
                 } else {
+                  this.bloqueo = true;
                     this.stockNotifier = isOut;
                 }
             });

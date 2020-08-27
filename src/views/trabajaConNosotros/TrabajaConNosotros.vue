@@ -1,23 +1,23 @@
 <template>
-  <div>
+  <div  >
     <Toolbar />
-      <v-card-title class="title my-10">
+      <v-card-title :style="`color:${theme.background.font}`"  class="title my-10">
         1.
-        <span></span> Acerca de Hoyprovoca
+        <span :style="`background:${theme.background.font}`"></span> Acerca de Hoyprovoca
       </v-card-title>
 
-      <div class="flex flex-center">
+      <div :style="`background:${theme.background.light_2}`" class="flex flex-center" >
         <div class="img-box">
           <div class="img-container">
             <div class="img" src="./../../assets/humanos.svg"></div>
           </div>
         </div>
         <div class="description-container" justify="center">
-          <v-card-title class="description-title wrap text-left font-weight-black">
+          <v-card-title :style="`color:${theme.background.font}`"  class="description-title wrap text-left font-weight-black">
             Se parte del equipo
             <br />que Transforma venezuela
           </v-card-title>
-          <v-card-text class="font text-left">
+          <v-card-text :style="`color:${theme.background.font}`" class="font text-left">
             <strong>HoyProvoca</strong> ha sido desarrollado por la
             empresa Somos Sistemas C.A, operando en el Estado
             <strong>Nueva Esparta, Venezuela.</strong> Nuestra
@@ -26,7 +26,7 @@
             donde cada empresa pueda ofrecer diferentes bienes para
             el consumo final.
           </v-card-text>
-          <v-card-text class="font text-left">
+          <v-card-text :style="`color:${theme.background.font}`" class="font text-left">
             Nuestra plataforma es un sitio de consumo de alto
             crecimiento, enfocada a la oferta de servicios que
             permitan conectar a consumidores, transportistas y
@@ -37,7 +37,7 @@
             </strong>
             Provenientes de nuestros aliados locales.
           </v-card-text>
-          <v-card-text class="font text-left">
+          <v-card-text :style="`color:${theme.background.font}`" class="font text-left">
             <strong>
               ¡No te pierdas de una experiencia
               inolvidable!
@@ -47,30 +47,28 @@
       </div>
 
       <div class="flex flex-center tiket">
-        <v-card-title class="tiket-letters wrap text-left font-weight-black">¡Estamos reclutando!</v-card-title>
+        <v-card-title :style="`color:${theme.background.font}`"  class="tiket-letters wrap text-left font-weight-black">¡Estamos reclutando!</v-card-title>
       </div>
-      <v-card-title class="title my-10">
+      <v-card-title :style="`color:${theme.background.font}`"  class="title my-10">
         2.
-        <span></span> Que Necesitas?
+        <span :style="`background:${theme.background.font}`"></span> Que Necesitas?
       </v-card-title>
-      <div class="flex flex-center flex-row margin-bottom">
+      <div :style="`background:${theme.background.light_2}`" class="flex flex-center flex-row margin-bottom">
         <div class="flex flex-center flex-column max">
-          <v-card-title class="display-1">Envianos tu Solicitud</v-card-title>
-          <v-card-text class="requisitos-text font text-left">
+          <v-card-title :style="`color:${theme.background.font}`"  class="display-1">Envianos tu Solicitud</v-card-title>
+          <v-card-text :style="`color:${theme.background.font}`" class="requisitos-text font text-left">
             Si deseas unirte a nuestra red de repartidores para <strong>hoyprovoca.com</strong>, puedes enviarnos un correo a <strong>somossistemas@gmail.com,</strong>  con los siguientes requisitos.
           </v-card-text>
-          <v-card-text class="requisitos-text font text-left">
+          <v-card-text :style="`color:${theme.background.font}`" class="requisitos-text font text-left">
            <strong>¡Estaremos en contacto!</strong>
           </v-card-text>
         </div>
 
         <div class="requisitos-timeline">
           <v-timeline :dense="$vuetify.breakpoint.smAndDown">
-            
-
             <v-timeline-item color="red lighten-1" hide-dot right small>
               <v-card color="red">
-                <v-card-title class="red p-0 lighten-1">
+                <v-card-title :style="`color:${theme.background.font}`"  class="red p-0 lighten-1">
                   <v-icon dark class="mr-4 pl-2" size="20">mdi-home-outline</v-icon>
                   <h2 class="title white--text font-weight-light">Direccion</h2>
                 </v-card-title>
@@ -79,7 +77,7 @@
 
             <v-timeline-item color="cyan lighten-1" hide-dot right small>
               <v-card color="red">
-                <v-card-title class="red p-0 lighten-1">
+                <v-card-title :style="`color:${theme.background.font}`"  class="red p-0 lighten-1">
                   <v-icon dark class="mr-4 pl-2" size="20">mdi-email-outline</v-icon>
                   <h2 class="title white--text font-weight-light">Correo</h2>
                 </v-card-title>
@@ -88,7 +86,7 @@
 
             <v-timeline-item color="red lighten-1" hide-dot right small>
               <v-card color="red">
-                <v-card-title class="red li p-0 lighten-1">
+                <v-card-title :style="`color:${theme.background.font}`"  class="red li p-0 lighten-1">
                   <v-icon dark class="mr-4 pl-2" size="20">mdi-account-multiple-outline</v-icon>
                   <h2 class="title mr-4 white--text font-weight-light">Cedula</h2>
                 </v-card-title>
@@ -97,7 +95,7 @@
 
             <v-timeline-item color="red lighten-1" hide-dot right small>
               <v-card color="red">
-                <v-card-title class="red p-0 lighten-1">
+                <v-card-title :style="`color:${theme.background.font}`"  class="red p-0 lighten-1">
                   <v-icon class="mr-4 pl-2" dark size="20">mdi-phone-in-talk</v-icon>
                   <h2 class="title white--text font-weight-light">Celular</h2>
                 </v-card-title>
@@ -113,7 +111,8 @@
 
 <script>
 import Toolbar from "./../terminos/Toolbar";
-import Footer from "@/components/footer/Footer"
+import Footer from "@/components/footer/Footer";
+import {mapState} from "vuex";
 export default {
   components: {
     Toolbar,
@@ -142,6 +141,9 @@ export default {
       ],
     };
   },
+  computed:{
+    ...mapState(['theme'])
+  }
 };
 </script>
 
@@ -257,7 +259,6 @@ export default {
   position: relative;
   span {
     width: 4%;
-    background: black;
     height: 2px;
     margin-left: 3px;
     margin-right: 3px;
@@ -287,7 +288,7 @@ export default {
       width: 80%;
       background-color: #c9242b;
       height: 100%;
-      opacity: 0.4;
+      opacity: 0.2;
       left: 8%;
       top: 0;
       content: "";

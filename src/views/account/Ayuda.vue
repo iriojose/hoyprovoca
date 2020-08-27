@@ -1,5 +1,5 @@
 <template>
-    <v-card class="fixHeight"  style="background:transparent;border: none;padding:25px;" outlined>
+    <v-card :color="theme.background.strong" class="fixHeight"  style="border: none;padding:25px;" outlined>
         <div class="font-weight-black title" style="padding-top:10px;text-align:center;">Atención al cliente</div>
         <v-row justify="center" align="center" class="mt-3" style="padding-top:15px;">
             <v-scroll-x-transition>
@@ -40,7 +40,7 @@ export default {
         }
     },
     computed:{
-        ...mapState(['user']),
+        ...mapState(['user',"theme"]),
     },
     methods:{
         ...mapActions(['setSnackbar','setFoto','setFotoChanged']),

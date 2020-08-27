@@ -14,7 +14,7 @@
                     </v-icon>
                 </v-btn>
             </template>
-            <v-card class="customized" width="300" height="300">
+            <v-card :color="theme.background.light_2"  class="customized" width="300" height="300">
                 <v-virtual-scroll
                     :bench="benched"
                     :items="items"
@@ -24,19 +24,19 @@
                     <template v-slot="{ item }">
                     <v-list-item :key="item">
                         <v-list-item-action>
-                        <v-btn fab small depressed color="primary">
+                        <v-btn fab small depressed :style="`color:${theme.buttons.font};`" :color="theme.buttons.primary">
                             {{ item }}
                         </v-btn>
                         </v-list-item-action>
 
                         <v-list-item-content>
-                        <v-list-item-title>
+                        <v-list-item-title :style="`color:${theme.background.font2};`" >
                             User Database Record <strong>ID {{ }}</strong>
                         </v-list-item-title>
                         </v-list-item-content>
 
-                        <v-list-item-action>
-                        <v-icon small>mdi-open-in-new</v-icon>
+                        <v-list-item-action  >
+                        <v-icon :color="theme.background.font" small>mdi-open-in-new</v-icon>
                         </v-list-item-action>
                     </v-list-item>
 

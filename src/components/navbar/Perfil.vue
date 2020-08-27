@@ -15,8 +15,8 @@
                 </v-btn>
             </template>
             <!-- lista de opciones-->
-            <v-card class="customized">
-                <v-list width="250" elevation="0">
+            <v-card  :color="theme.background.primary" class="customized">
+                <v-list :style="`background-color:${theme.background.light_2}`" width="250" elevation="0">
                     <v-list-item class="border">
                         <v-list-item-avatar size="70">
                             <v-img
@@ -24,19 +24,19 @@
                             ></v-img>
                         </v-list-item-avatar>
                         <v-list-item-content>
-                            <v-list-item-title v-text="user.data.nombre+' '+user.data.apellido"></v-list-item-title>
-                            <v-list-item-subtitle>Cliente</v-list-item-subtitle>
+                            <v-list-item-title :style="`color:${theme.background.font}`" v-text="user.data.nombre+' '+user.data.apellido"></v-list-item-title>
+                            <v-list-item-subtitle :style="`color:${theme.background.font}`">Cliente</v-list-item-subtitle>
                         </v-list-item-content>
                     </v-list-item>
                 </v-list>
                 <v-divider></v-divider>
-                <v-list dense>
+                <v-list dense :style="`background-color:${theme.background.light_2}`">
                     <v-hover v-slot:default="{hover}">
                         <v-list-item to="/account/profile">   
                             <v-list-item-icon>
-                                <v-icon :color="hover ? '#232323':null">mdi-cogs</v-icon>
+                                <v-icon :color="hover ? theme.background.font:null">mdi-cogs</v-icon>
                             </v-list-item-icon>
-                            <v-list-item-title>
+                            <v-list-item-title :style="`color:${theme.background.font}`">
                                 Ajustes
                             </v-list-item-title>        
                         </v-list-item>
@@ -44,9 +44,9 @@
                     <v-hover v-slot:default="{hover}">
                         <v-list-item @click="logOut()">   
                             <v-list-item-icon>
-                                <v-icon :color="hover ? '#232323':null">mdi-exit-to-app</v-icon>
+                                <v-icon :color="hover ? theme.background.font:null">mdi-exit-to-app</v-icon>
                             </v-list-item-icon>
-                            <v-list-item-title>
+                            <v-list-item-title :style="`color:${theme.background.font}`">
                                 Cerrar sesíon
                             </v-list-item-title>        
                         </v-list-item>

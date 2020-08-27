@@ -10,6 +10,7 @@
         <div class="font-weight-bold pa-2 title">Subtotal a pagar</div>
         <div class="font-weight-bold px-2 subtitle-1">{{ total }}</div>
         <v-select
+        :dark="theme.background.dark"
           :items="tiposDePago"
           dense
           color="#0f2441"
@@ -28,8 +29,8 @@
       </v-col>
     </v-row>
     <div class="stepper-buttons">
-      <v-btn color="#0f2441" :disabled="bloqueo" @click="changeView('stepper', 2)">
-        <span style="color:white">Continuar</span>
+      <v-btn :color="theme.buttons.primary" :style="`color:${theme.buttons.font}`" :disabled="bloqueo" @click="changeView('stepper', 2)">
+        <span  >Continuar</span>
       </v-btn>
       <v-btn text @click="changeView('view', 1)">Atras</v-btn>
     </div>
@@ -37,6 +38,7 @@
 </template>
 <script>
 import variables from "@/services/variables_globales";
+import {mapState} from "vuex";
 // for alerts snackbar
 //eslint-disable-next-line
 const maxPago = "Solo puede escojer dos metodos de Pago";
@@ -125,6 +127,9 @@ export default {
     } else {
       this.$emit("setUserData");
     }
+  },
+  computed:{
+    ...mapState(['theme'])
   },
   watch: {
     select(value) {

@@ -1,13 +1,22 @@
 <template>
-    <v-card width="100%" elevation="0" color="#1f3b63" height="100%">
+    <v-card width="100%" elevation="0" :color="theme.background.primary" height="100%">
         <v-card-actions>
-            <v-btn fab small color="#2950c3" @click="home">
-                <v-icon color="#fff">mdi-home</v-icon>
+            <v-btn fab small :color="theme.buttons.secondary" @click="home">
+                <v-icon :color="theme.buttons.font">mdi-home</v-icon>
             </v-btn>
             <v-spacer class="hidden-sm-and-down"></v-spacer>
-            <v-img @click="home" transition="scale-transition" class="hidden-sm-and-down" contain width="100" height="50" :src="require('@/assets/logo 6.png')"></v-img>
+            <v-img v-if="theme.background.dark"
+	            alt="Hoyprovoca logo" class="shrink mr-2 cursor" contain
+              src='@/assets/logo6.png' transition="scale-transition"
+                width="200" height="100" @click="push2"
+            />
+            <v-img v-else
+                    alt="Hoyprovoca logo" class="shrink mr-2 cursor" contain
+              src='@/assets/logo2.png' transition="scale-transition"
+                width="200" height="100" @click="push2"
+            />
             <v-spacer></v-spacer>
-            <v-btn rounded color="#2950c3" class="text-capitalize white--text caption" @click="forgot">
+            <v-btn rounded :color="theme.buttons.secondary" class="text-capitalize  caption" @click="forgot">
                 ¿Olvido su contraseña?
             </v-btn>
         </v-card-actions>
@@ -18,18 +27,18 @@
                         <v-img transition="scale-transition" contain width="100" height="50" :src="require('@/assets/logo 6.png')"></v-img>
                     </v-row>
 
-                    <v-card width="100%" elevation="0" style="padding: 0 15px 0 30px">
+                    <v-card width="100%" :style="`background-color:${theme.background.light};color:${theme.background.font}!important`"  elevation="0" style="padding: 0 15px 0 30px">
                         <v-row justify="center">
                             <v-col cols="12" md="6" class="hidden-sm-and-down" style="padding: 0 20px">
                                 <v-img width="100%" height="400" contain :src="require('@/assets/undrawregistro2.svg')"></v-img>
                                 <v-divider></v-divider>
                                 <div
-                                    style="color:#262626; font-weight:bold"
+                                :style="`background:transparent;color:${theme.background.font2}!important;font-weight:bold`"
                                     class="subtitle-2 text-center color my-5" @click="login"
                                 >¿Ya tienes una cuenta? ¡Inicia sesión!</div>
                             </v-col>
                             
-                            <v-col cols="12" md="6" sm="12" class="pa-8">
+                            <v-col cols="12" md="6" sm="12" class="pa-8" :style="`background:${theme.background.light_2}`">
                                 <div class="headline text-center mb-5">Registrate ahora!</div>
 
                                 <v-card elevation="0" height="50" v-if="showMessage">
@@ -43,11 +52,12 @@
                                     </v-fade-transition>
                                 </v-card>
 
-                                <v-form v-model="valid" @submit.prevent class="my-5">
-                                    <v-stepper v-model="e1" class="elevation-0" non-linear>
+                                <v-form :style="`background-color:${theme.background.light_2}`" v-model="valid" @submit.prevent class="my-5" >
+                                    <v-stepper  v-model="e1" class="elevation-0" non-linear>
                                         <v-stepper-items>
-                                            <v-stepper-content step="1"  style="padding: 16px">
+                                            <v-stepper-content :style="`background-color:${theme.background.light_2}`"   step="1"  style="padding: 16px">
                                                 <v-text-field
+                                                :dark="theme.background.dark"
                                                     filled single-line label="Nombre"
                                                     dense rounded hint="Ejemplo: Manuel"
                                                     :rules="[required('Nombre')]" v-model="data.nombre"
@@ -56,13 +66,16 @@
                                                 ></v-text-field>
 
                                                 <v-text-field
+                                                :dark="theme.background.dark"
+                                                  
                                                     filled single-line label="Apellido" dense
                                                     rounded hint="Ejemplo: Gómez" :rules="[required('Apellido')]"
-                                                    v-model="data.apellido" persistent-hint color="#2950c3"
+                                                    v-model="data.apellido" persistent-hint :color="theme.background.light_2"
                                                     :disabled="loading" append-icon="mdi-account"
                                                 ></v-text-field>
 
                                                 <v-text-field
+                                                :dark="theme.background.dark"
                                                     filled single-line label="Telefono"
                                                     dense rounded hint="format: +58-000-000-0000" prefix="+58"
                                                     @input="changeNumber()" :rules="[required('Telefono'),telefonoFormat()]"
@@ -78,6 +91,7 @@
                                                 >
                                                     <template v-slot:activator="{ on }">
                                                         <v-text-field
+                                                        :dark="theme.background.dark"
                                                             dense v-model="data.fecha_nac" label="Cumpleaños"
                                                             color="#2950c3" append-icon="mdi-calendar" filled
                                                             v-on="on" rounded hint="Formato YYYY/MM/DD"
@@ -92,7 +106,8 @@
                                             </v-stepper-content>
 
                                             <v-stepper-content step="2" style="padding: 16px">
-                                                <v-text-field filled rounded persistent-hint
+                                                <v-text-field
+                                                :dark="theme.background.dark" filled rounded persistent-hint
                                                     dense :disabled="loading" v-model="data.login"
                                                     single-line type="text" color="#0f2441"
                                                     :rules="[required('Nombre de usuario'),minLength('Nombre de usuario',6)]"
@@ -101,6 +116,7 @@
                                                 ></v-text-field>
 
                                                 <v-text-field
+                                                :dark="theme.background.dark"
                                                     filled rounded :disabled="loading"
                                                     v-model="data.email" single-line dense
                                                     color="#2950c3" :success-messages="success"
@@ -127,6 +143,7 @@
                                                 </v-text-field>
 
                                                 <v-text-field
+                                                :dark="theme.background.dark"
                                                     filled rounded hint="Contraseña" persistent-hint
                                                     dense :disabled="loading" v-model="data.password"
                                                     single-line type="password" color="#0f2441"
@@ -135,6 +152,7 @@
                                                 ></v-text-field>
 
                                                 <v-text-field
+                                                :dark="theme.background.dark"
                                                     filled rounded dense hint="Confirmar contraseña"
                                                     persistent-hint :disabled="loading" v-model="password2"
                                                     single-line type="password" color="#0f2441"
@@ -153,18 +171,19 @@
                                     </v-stepper>
                                     
                                     <v-card-actions style="margin-top:-5px">
-                                        <v-btn fab small color="#2950c3" @click="e1=1" v-if="e1==2" :disabled="loading">
-                                            <v-icon color="#fff">mdi-chevron-left</v-icon>
+                                        <v-btn fab small :color="theme.background.secondary" @click="e1=1" v-if="e1==2" :disabled="loading">
+                                            <v-icon :color="theme.background.font">mdi-chevron-left</v-icon>
                                         </v-btn>
                                         <v-spacer></v-spacer>
-                                        <v-btn v-if="e1==2" rounded color="#2950c3" :loading="loading" 
+                                        <v-btn v-if="e1==2" rounded :color="theme.background.secondary" :loading="loading" 
                                             height="40" :disabled="valid && success !== '' ? false:true"
-                                            @click="postUsuario()" class="text-capitalize caption white--text"
+                                            :style="`color:${valid && success !== '' ? theme.background.font : ''}!important`"
+                                            @click="postUsuario()" class="text-capitalize caption"
                                         >Registrarse</v-btn>
                                     </v-card-actions>
                                     
-                                    <v-btn v-if="e1==1" rounded color="#2950c3" block 
-                                        height="40" @click="e1=2" class="text-capitalize caption white--text"
+                                    <v-btn v-if="e1==1" rounded :color="theme.buttons.secondary" block 
+                                        height="40" @click="e1=2" :style="`color:${theme.background.font}!important`" class="text-capitalize caption"
                                     >Siguiente</v-btn>
                                 </v-form>
                             </v-col>
@@ -173,7 +192,7 @@
                 </v-col>
             </v-row>
 
-            <v-footer fixed class="font-weight-medium" elevation="0" color="#1f3b63">
+            <v-footer fixed class="font-weight-medium" elevation="0" :color="theme.background.primary">
                 <v-col class="text-center white--text" cols="12">
                     {{ new Date().getFullYear() }} — <strong>Hoyprovoca</strong> 
                 </v-col>
@@ -188,7 +207,7 @@ import validations from "@/validations/validations";
 import Auth from "@/services/Auth";
 import Usuario from "@/services/Usuario";
 import Clientes from "@/services/Clientes";
-import { mapActions } from "vuex";
+import { mapActions,mapState } from "vuex";
 import variables from "@/services/variables_globales";
 
 	export default {
@@ -235,13 +254,16 @@ import variables from "@/services/variables_globales";
 		}
 	},
 	computed: {
+    ...mapState(["theme"]),
 		passwordConfirmationRule() {
 			return () => this.data.password === this.password2 || "Las contraseñas no coinciden.";
 		}
 	},
 	methods: {
 		...mapActions(["logged"]),
-
+    push2(){
+      router.push("/");
+    },
 		login() {
 			router.push("/login");
         },

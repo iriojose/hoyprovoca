@@ -16,7 +16,7 @@
             </v-toolbar-title>
             <v-spacer></v-spacer>
             <v-btn icon fab depressed @click="change" :elevation="0">
-                <v-icon color="#232323">mdi-close</v-icon>
+                <v-icon :color="theme.sidebar.font">mdi-close</v-icon>
             </v-btn>
         </v-toolbar>
 
@@ -55,7 +55,7 @@
                 <v-spacer class="mx-1"></v-spacer>
                 <v-btn 
                     rounded :color="theme.buttons.terceary" @click="push()"
-                    class="white--text text-capitalize" 
+                    class=" text-capitalize" 
                     :style="`color:${theme.buttons.font}`"
                     block :disabled="pedidos.length == 0 ? true:false"
                     :width="$vuetify.breakpoint.smAndDown ? 80:100"

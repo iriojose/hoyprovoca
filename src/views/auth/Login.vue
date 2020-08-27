@@ -1,74 +1,181 @@
 <template>
-    <div class="fondo">
+    <div :style="`background-color:${theme.background.primary}`">
         <v-card-actions>
-            <v-btn fab small color="#2950c3" @click="home">
-                <v-icon color="#fff">mdi-home</v-icon>
+            <v-btn fab small :color="theme.buttons.secondary" @click="home">
+                <v-icon :color="theme.buttons.font">mdi-home</v-icon>
             </v-btn>
             <v-spacer class="hidden-sm-and-down"></v-spacer>
-            <v-img @click="home" transition="scale-transition" class="hidden-sm-and-down" contain width="100" height="50" :src="require('@/assets/logo 6.png')"></v-img>
+            <v-img v-if="theme.background.dark"
+	            alt="Hoyprovoca logo" class="shrink mr-2 cursor" contain
+              src='@/assets/logo6.png' transition="scale-transition"
+                width="200" height="100" @click="push2"
+            />
+            <v-img v-else
+                    alt="Hoyprovoca logo" class="shrink mr-2 cursor" contain
+              src='@/assets/logo2.png' transition="scale-transition"
+                width="200" height="100" @click="push2"
+            />
             <v-spacer></v-spacer>
-            <v-btn rounded color="#2950c3" class="text-capitalize white--text caption" @click="forgot">
+            <v-btn
+                rounded
+                :style="`color:${theme.buttons.font}!important`"
+                :color="theme.buttons.secondary"
+                class="text-capitalize caption"
+                @click="forgot"
+            >
                 ¿Olvido su contraseña?
             </v-btn>
         </v-card-actions>
 
-        <v-card color="transparent" elevation="0" width="100%">
+        <v-card color="transparent" elevation="0" width="100%" :style="`background:${theme.background.light}`">
             <v-card-text>
                 <v-row justify="center" class="hidden-sm-and-up">
-                    <v-img transition="scale-transition" contain width="100" height="50" :src="require('@/assets/logo 6.png')"></v-img>
+                    <v-img
+                        transition="scale-transition"
+                        contain
+                        width="100"
+                        height="50"
+                        :src="require('@/assets/logo 6.png')"
+                    ></v-img>
                 </v-row>
             </v-card-text>
 
             <v-card-text>
                 <v-row justify="center" class="py-2">
                     <v-col cols="12" md="9" sm="12">
-                        <v-card width="100%" elevation="0"  style="padding: 0 15px">
+                        <v-card
+                            :color="theme.background.light"
+                            :style="`color:${theme.background.font}!important`"
+                            width="100%"
+                            elevation="0"
+                            style="padding: 0 15px"
+                        >
                             <v-row justify="center">
-                                <v-col cols="12" md="6" class="hidden-sm-and-down">
-                                    <v-img width="100%" height="400" contain :src="require('@/assets/undrawlogin.svg')"></v-img>
+                                <v-col
+                                    cols="12"
+                                    md="6"
+                                    class="hidden-sm-and-down"
+
+                                >
+                                    <v-img
+                                        width="100%"
+                                        height="400"
+                                        contain
+                                        :src="
+                                            require('@/assets/undrawlogin.svg')
+                                        "
+                                    ></v-img>
                                 </v-col>
-                                <v-col cols="12" md="6" sm="12" class="px-8 py-12">
-                                    <div class="headline text-center mb-5">Inicia sesión ahora!</div>
-                                        
-                                    <v-card elevation="0" height="50">
+                                <v-col
+                                    cols="12"
+                                    md="6"
+                                    sm="12"
+                                    class="px-8 py-12"
+                                    :style="`background:${theme.background.light_2}`"
+                                >
+                                    <div class="headline text-center mb-5">
+                                        Inicia sesión ahora!
+                                    </div>
+
+                                    <v-card
+                                        elevation="0"
+                                        height="50"
+                                        :color="theme.background.light_2"
+                                    >
                                         <v-fade-transition>
-                                            <v-alert border="left" colored-border elevation="2"  dense :type="type" v-show="showMessage">
-                                                {{mensaje}}
+                                            <v-alert
+                                                border="left"
+                                                colored-border
+                                                elevation="2"
+                                                dense
+                                                :type="type"
+                                                v-show="showMessage"
+                                            >
+                                                {{ mensaje }}
                                             </v-alert>
-                                        </v-fade-transition> 
+                                        </v-fade-transition>
                                     </v-card>
 
-                                    <v-form v-model="valid" @submit.prevent="">
+                                    <v-form
+                                        :style="
+                                            `background-color:${theme.background.light_2}`
+                                        "
+                                        :color="theme.background.light"
+                                        v-model="valid"
+                                        @submit.prevent=""
+                                    >
                                         <v-text-field
-                                            filled rounded :disabled="loading" v-model="data.user"
-                                            single-line dense color="#0f2441"
-                                            :success-messages="success" :error-messages="errors"
-                                            @input="getUser(data.user)" label="Ingrese correo electrónico"
+                                            :dark="theme.background.dark"
+                                            filled
+                                            rounded
+                                            :disabled="loading"
+                                            v-model="data.user"
+                                            single-line
+                                            dense
+                                            :color="theme.background.light_2"
+                                            :success-messages="success"
+                                            :error-messages="errors"
+                                            @input="getUser(data.user)"
+                                            label="Ingrese correo electrónico"
                                         >
                                             <template v-slot:append>
-                                                <v-fade-transition leave-absolute>
+                                                <v-fade-transition
+                                                    leave-absolute
+                                                >
                                                     <v-progress-circular
-                                                        v-if="loading2" size="24"
-                                                        color="#0f2441" indeterminate
+                                                        v-if="loading2"
+                                                        size="24"
+                                                        :color="
+                                                            theme.background
+                                                                .secondary
+                                                        "
+                                                        indeterminate
                                                     ></v-progress-circular>
-                                                    <img v-else width="24" height="24" :src="require('@/assets/logo 3.png')">
+                                                    <img
+                                                        v-else
+                                                        width="24"
+                                                        height="24"
+                                                        :src="
+                                                            require('@/assets/logo 3.png')
+                                                        "
+                                                    />
                                                 </v-fade-transition>
                                             </template>
                                         </v-text-field>
 
                                         <v-text-field
-                                            filled rounded dense
-                                            :disabled="loading" v-model="data.password"
-                                            single-line type="password" color="#0f2441"
-                                            :rules="[required('Contraseña'),minLength('Contraseña',6)]"
+                                            :dark="theme.background.dark"
+                                            filled
+                                            rounded
+                                            dense
+                                            :color="theme.background.light_2"
+                                            :disabled="loading"
+                                            v-model="data.password"
+                                            single-line
+                                            type="password"
+                                            :rules="[
+                                                required('Contraseña'),
+                                                minLength('Contraseña', 6),
+                                            ]"
                                             label="Contraseña"
                                         ></v-text-field>
 
                                         <v-btn
-                                            rounded color="#2950c3" block
-                                            :loading="loading" height="40"
-                                            :disabled="valid && success !== '' ? false:true"
-                                            @click="login()" class="text-capitalize caption white--text"
+                                            rounded
+                                            :color="theme.buttons.secondary"
+                                            block
+                                            :loading="loading"
+                                            height="40"
+                                            :disabled="
+                                                valid && success !== ''
+                                                    ? false
+                                                    : true
+                                            "
+                                            @click="login()"
+                                            :style="
+                                                `color:${theme.buttons.font}!important`
+                                            "
+                                            class="text-capitalize caption "
                                         >
                                             Iniciar sesión
                                         </v-btn>
@@ -76,7 +183,15 @@
 
                                     <v-divider class="my-5"></v-divider>
 
-                                    <div style="color:#262626;font-weight:bold;" class="subtitle-2 text-center color" @click="register">¿No tienes una cuenta? ¡Registrate!</div>
+                                    <div
+                                        :style="
+                                            `background-color:${theme.background.light_2} ;color:${theme.background.font}!important;font-weight:bold; `
+                                        "
+                                        class="subtitle-2 text-center color"
+                                        @click="register"
+                                    >
+                                        ¿No tienes una cuenta? ¡Registrate!
+                                    </div>
                                 </v-col>
                             </v-row>
                         </v-card>
@@ -85,157 +200,198 @@
             </v-card-text>
         </v-card>
 
-        <v-footer fixed class="font-weight-medium" elevation="0" color="#1f3b63">
+        <v-footer
+            fixed
+            class="font-weight-medium"
+            elevation="0"
+            :color="theme.background.primary"
+        >
             <v-col class="text-center white--text" cols="12">
-                {{ new Date().getFullYear() }} — <strong>Hoyprovoca</strong> 
+                {{ new Date().getFullYear() }} — <strong>Hoyprovoca</strong>
             </v-col>
         </v-footer>
     </div>
 </template>
 
 <script>
-import router from '@/router';
-import validations from '@/validations/validations';
-import Auth from '@/services/Auth';
-import Usuario from '@/services/Usuario';
-import Clientes from '@/services/Clientes';
-import Pedidos from '@/services/Pedidos';
-import {mapActions} from 'vuex';
+import router from "@/router";
+import validations from "@/validations/validations";
+import Auth from "@/services/Auth";
+import Usuario from "@/services/Usuario";
+import Clientes from "@/services/Clientes";
+import Pedidos from "@/services/Pedidos";
+import { mapActions, mapState } from "vuex";
 
-    export default {
-        data() {
+export default {
+    data() {
+        return {
+            ...validations,
+            mensaje: "",
+            type: "error",
+            showMessage: false,
+            loading: false,
+            loading2: false,
+            valid: false,
+            success: "",
+            errors: [],
+            aux: [],
+            data: {
+                user: "",
+                password: "",
+            },
+        };
+    },
+    head: {
+        title() {
             return {
-                ...validations,
-                mensaje:'',
-                type:'error',
-                showMessage:false,
-                loading:false,
-                loading2:false,
-                valid:false,
-                success:'',
-                errors:[],
-                aux:[],
-                data:{
-                    user:'',
-                    password:''
-                },
-            }
+                inner: "Iniciar sesión",
+                separator: " ",
+                complement: " ",
+            };
         },
-        head:{
-            title(){
-                return {
-                    inner:'Iniciar sesión',
-                    separator:' ',
-                    complement: ' '
-                }
-            }
+    },
+    computed: {
+        ...mapState(["theme"]),
+    },
+    methods: {
+        ...mapActions(["logged", "setModalBloqueado", "setPedidos"]),
+         push2(){
+      router.push("/");
+    },
+        register() {
+            router.push("/register");
         },
-        methods:{
-            ...mapActions(['logged','setModalBloqueado','setPedidos']),
-            
-            register(){
-                router.push('/register');
-            },
-            home(){
-                router.push('/');
-            },
-            forgot(){
-                router.push('/forgot');
-            },
-            respuesta(mensaje,type){
-                this.mensaje = mensaje;
-                this.type = type
-                this.loading = false;
-                this.showMessage = true;
-                setTimeout(() => {this.showMessage = false}, 2000);
-            },
-            async getUser(email){
-                this.errors = [];
-                this.success = '';
-                if(email.length <= 0) return this.errors.push('Debe ingresar un email');
-                // eslint-disable-next-line
-                let regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/ 
-                if (!regex.test(email)) return this.errors.push(`Debe ingresar un email válido`);
-                this.loading2 = true;
-                await Usuario().get(`/?email=${email}`).then((response) => {
+        home() {
+            router.push("/");
+        },
+        forgot() {
+            router.push("/forgot");
+        },
+        respuesta(mensaje, type) {
+            this.mensaje = mensaje;
+            this.type = type;
+            this.loading = false;
+            this.showMessage = true;
+            setTimeout(() => {
+                this.showMessage = false;
+            }, 2000);
+        },
+        async getUser(email) {
+            this.errors = [];
+            this.success = "";
+            if (email.length <= 0)
+                return this.errors.push("Debe ingresar un email");
+            // eslint-disable-next-line
+            let regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/;
+            if (!regex.test(email))
+                return this.errors.push(`Debe ingresar un email válido`);
+            this.loading2 = true;
+            await Usuario()
+                .get(`/?email=${email}`)
+                .then((response) => {
                     this.loading2 = false;
-                    if(!response.data.data) {
-                        return this.errors.push('Este email no esta registrado');
-                    }else{
-                        if(response.data.data[0].bloqueado == 1){
-                            return this.errors.push("Esta cuenta se encuentra bloqueada.");
-                        }else{
-                            return this.success='Email verificado';
+                    if (!response.data.data) {
+                        return this.errors.push(
+                            "Este email no esta registrado"
+                        );
+                    } else {
+                        if (response.data.data[0].bloqueado == 1) {
+                            return this.errors.push(
+                                "Esta cuenta se encuentra bloqueada."
+                            );
+                        } else {
+                            return (this.success = "Email verificado");
                         }
                     }
-                }).catch(e => {
+                })
+                .catch((e) => {
                     console.log(e);
                     this.loading2 = false;
-                    return this.errors.push('Error de conexión');
+                    return this.errors.push("Error de conexión");
                 });
-            },
-            login(){
-                this.loading = true;
-                Auth().post("/login",{data:this.data}).then((response) =>{
-                    if(response.data.data.bloqueado == 1){
+        },
+        login() {
+            this.loading = true;
+            Auth()
+                .post("/login", { data: this.data })
+                .then((response) => {
+                    if (response.data.data.bloqueado == 1) {
                         this.setModalBloqueado(true);
                         this.loading = false;
-                    }else if(response.data.data.perfil_id == 3){
+                    } else if (response.data.data.perfil_id == 3) {
                         this.getCliente(response.data);
-                    }else{
-                        this.respuesta("Este usuario no es un cliente.","error");
+                    } else {
+                        this.respuesta(
+                            "Este usuario no es un cliente.",
+                            "error"
+                        );
                     }
-                }).catch((e) => {
+                })
+                .catch((e) => {
                     console.log(e);
-                    this.respuesta("Contraseña incorrecta.","error");
+                    this.respuesta("Contraseña incorrecta.", "error");
                 });
-            },
-            getCliente(data){
-                Clientes().get(`/?usuario_id=${data.data.id}`).then((response) => {
+        },
+        getCliente(data) {
+            Clientes()
+                .get(`/?usuario_id=${data.data.id}`)
+                .then((response) => {
                     data.cliente = response.data.data[0];
                     this.logged(data);
-                    this.respuesta("Bienvenido.","success");
-                    setTimeout(() => { this.home()},1000);
+                    this.respuesta("Bienvenido.", "success");
+                    setTimeout(() => {
+                        this.home();
+                    }, 1000);
                     this.getPedidos(data.cliente.id);
-                }).catch((e) => {
+                })
+                .catch((e) => {
                     console.log(e);
-                    this.respuesta("Contraseña incorrecta.","error");
+                    this.respuesta("Contraseña incorrecta.", "error");
                 });
-            },
-            getPedidos(id){
-                Clientes().get(`/${id}/pedidos/?rest_estatus_id=1`).then((response) => {
-                    if(response.data.data){
+        },
+        getPedidos(id) {
+            Clientes()
+                .get(`/${id}/pedidos/?rest_estatus_id=1`)
+                .then((response) => {
+                    if (response.data.data) {
                         this.aux = response.data.data;
-                        response.data.data.filter((a,i) => this.getConceptos(a,i));
+                        response.data.data.filter((a, i) =>
+                            this.getConceptos(a, i)
+                        );
                     }
-                }).catch(e => {
+                })
+                .catch((e) => {
                     console.log(e);
                 });
-            },
-            getConceptos(data,i){//trae los conceptos de un pedido
-                Pedidos().get(`/${data.id}/conceptos`).then((response) => {
+        },
+        getConceptos(data, i) {
+            //trae los conceptos de un pedido
+            Pedidos()
+                .get(`/${data.id}/conceptos`)
+                .then((response) => {
                     this.aux[i].conceptos = response.data.data;
-                    if(i == this.aux.length - 1) this.setPedidos(this.aux);
-                }).catch(e => {
+                    if (i == this.aux.length - 1) this.setPedidos(this.aux);
+                })
+                .catch((e) => {
                     console.log(e);
                 });
-            },
-        }
-    }
+        },
+    },
+};
 </script>
 
 <style lang="scss" scoped>
-    .fondo{
-        background:#1f3b63;
-        height: 100%;
-    }   
-    .color{
-        color:#000;
-        background:#fff;
-    }
-    .color:hover{
-        cursor:pointer;
-        text-decoration:underline;
-        background:#fff;
-    }
+.fondo {
+    background: #1f3b63;
+    height: 100%;
+}
+.color {
+    color: #000;
+    background: #fff;
+}
+.color:hover {
+    cursor: pointer;
+    text-decoration: underline;
+    background: #fff;
+}
 </style>

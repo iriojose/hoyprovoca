@@ -1,13 +1,22 @@
 <template>
-    <v-card width="100%" elevation="0" color="#1f3b63" height="100%">
+    <v-card width="100%" elevation="0" :color="theme.background.light" height="100%">
         <v-card-actions>
-            <v-btn fab small color="#2950c3" @click="home">
-                <v-icon color="#fff">mdi-home</v-icon>
+            <v-btn fab small :color="theme.buttons.primary" @click="home">
+                <v-icon :color="theme.buttons.font">mdi-home</v-icon>
             </v-btn>
             <v-spacer class="hidden-sm-and-down"></v-spacer>
-            <v-img  @click="home" transition="scale-transition" class="hidden-sm-and-down" contain width="100" height="50" :src="require('@/assets/logo 6.png')"></v-img>
+            <v-img v-if="theme.background.dark"
+	            alt="Hoyprovoca logo" class="shrink mr-2 cursor" contain
+              src='@/assets/logo6.png' transition="scale-transition"
+                width="200" height="100" @click="push2"
+            />
+            <v-img v-else
+                    alt="Hoyprovoca logo" class="shrink mr-2 cursor" contain
+              src='@/assets/logo2.png' transition="scale-transition"
+                width="200" height="100" @click="push2"
+            />
             <v-spacer></v-spacer>
-            <v-btn style="font-weight:bold;padding: 0 15px" rounded color="#2950c3" class="text-capitalize white--text caption" @click="register">
+            <v-btn   :style="`color:${theme.buttons.font};font-weight:bold;padding: 0 15px`" rounded :color="theme.buttons.primary" class="text-capitalize caption" @click="register">
                 Registrarme
             </v-btn>
         </v-card-actions>
@@ -18,17 +27,17 @@
                     <v-row justify="center" class="pb-4 hidden-sm-and-up">
                         <v-img transition="scale-transition" contain width="100" height="50" :src="require('@/assets/logo 6.png')"></v-img>
                     </v-row>
-                    <v-card width="100%">
-                        <v-row justify="center">
-                            <v-col cols="12" md="6" class="hidden-sm-and-down" style="padding: 12px 40px">
+                    <v-card :color="theme.background.strong" width="100%">
+                        <v-row  justify="center">
+                            <v-col :style="`background-color:${theme.background.light_2}`" cols="12" md="6" class="hidden-sm-and-down" style="padding: 12px 40px">
                                 <v-img width="100%" height="400" contain :src="require('@/assets/forgot.svg')"></v-img>
                             </v-col>
-                            <v-col cols="12" md="6" sm="12" class="pa-12">
-                                <div class="headline text-center mb-5">¿Olvido su contraseña?</div>
+                            <v-col  cols="12" md="6" sm="12" class="pa-12">
+                                <div  :style="`color:${theme.background.font}`" class="headline text-center mb-5">¿Olvido su contraseña?</div>
 
-                                <v-card elevation="0" height="50">
+                                <v-card :color="theme.background.strong" elevation="0" height="50">
                                     <v-fade-transition>
-                                        <v-alert border="left" colored-border elevation="2"  dense :type="type" v-show="showMessage">
+                                        <v-alert  border="left" colored-border elevation="2"  dense :type="type" v-show="showMessage">
                                             {{mensaje}}
                                         </v-alert>
                                     </v-fade-transition> 
@@ -36,6 +45,7 @@
 
                                 <v-form v-model="valid" @submit.prevent="">
                                     <v-text-field
+                                    :dark="theme.background.dark"
                                         filled
                                         rounded
                                         :disabled="loading"
@@ -62,13 +72,14 @@
 
                                     <v-btn
                                         rounded
-                                        color="#2950c3"
+                                        :color="theme.buttons.primary"
                                         block
                                         :disabled="success == '' ? true:false "
                                         :loading="loading"
                                         height="40"
                                         @click="sendMail"
-                                        class="text-capitalize caption white--text"
+                                        :style="`color:${theme.buttons.font}`"
+                                        class="text-capitalize caption"
                                     >
                                         Enviar email
                                     </v-btn>
@@ -77,7 +88,7 @@
                                 <v-divider class="my-10"></v-divider>
 
                                 <div 
-                                style="font-weight:bold; color:#262626"
+                                :style="`font-weight:bold; background-color:${theme.background.strong};color:${theme.background.font}`"
                                 class="subtitle-2 text-center color" @click="login">Recordé mi contraseña</div>
                             </v-col>
                         </v-row>
@@ -86,7 +97,7 @@
             </v-row>
         </v-card-text>
 
-        <v-footer fixed class="font-weight-medium" elevation="0" color="#1f3b63">
+        <v-footer fixed class="font-weight-medium" elevation="0" :color="theme.background.strong">
             <v-col class="text-center white--text" cols="12">
                 {{ new Date().getFullYear() }} — <strong>Hoyprovoca</strong> 
             </v-col>
@@ -99,6 +110,7 @@ import router from '@/router';
 import validations from '@/validations/validations';
 import Auth from '@/services/Auth';
 import Usuario from '@/services/Usuario';
+import {mapState} from "vuex";
     export default {
         data() {
             return {
@@ -123,7 +135,13 @@ import Usuario from '@/services/Usuario';
                 }
             }
         },
+        computed:{
+          ...mapState(["theme"])
+        },
         methods:{
+          push2(){
+      router.push("/");
+    },
             login(){
                 router.push('/login');
             },

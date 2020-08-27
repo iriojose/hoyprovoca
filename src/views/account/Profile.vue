@@ -1,5 +1,5 @@
 <template>
-    <v-card elevation="0">
+    <v-card elevation="0" :color="theme.background.light_2">
         <div class="font-weight-black title mb-5" style="padding-top:10px;text-align:center;">
             Información de tu cuenta
         </div>
@@ -8,14 +8,18 @@
             <v-row justify="center">
                 <v-col cols="12" md="6" sm="12" class="px-12">
                     <v-text-field
+                    :dark="theme.background.dark"
+                  
                         filled rounded disabled
                         v-model="data.email" single-line
                         dense color="#2950c3" 
                         label="Ingrese correo electrónico"
                         hint="Email" persistent-hint
-                    ></v-text-field>
+                    ></v-text-field
+                    :dark="theme.background.dark">
 
                     <v-text-field
+                    :dark="theme.background.dark"
                         filled single-line
                         label="Nombre" dense
                         rounded hint="Nombre"
@@ -23,9 +27,11 @@
                         v-model="data.nombre" persistent-hint
                         color="#2950c3" :disabled="loading"
                         @input="validEdit()"
-                    ></v-text-field>
+                    ></v-text-field
+                    :dark="theme.background.dark">
 
                     <v-text-field
+                    :dark="theme.background.dark"
                         filled single-line
                         label="Apellido" dense
                         rounded hint="Apellido"
@@ -33,7 +39,8 @@
                         v-model="data.apellido" persistent-hint
                         color="#2950c3" :disabled="loading"
                         @input="validEdit()"
-                    ></v-text-field>
+                    ></v-text-field
+                    :dark="theme.background.dark">
 
                     <v-switch 
                         v-model="email" class="ma-4" color="green" @change="sendEmail()"
@@ -49,14 +56,17 @@
                 </v-col>
                 <v-col cols="12" md="6" sm="12" class="px-10">
                     <v-text-field
+                    :dark="theme.background.dark"
                         filled rounded persistent-hint
                         dense :disabled="loading" v-model="data.login" single-line
                         type="text" color="#0f2441" @input="validEdit()"
                         :rules="[required('Nombre de usuario'),minLength('Nombre de usuario',4)]"
                         label="Nombre de usuario" hint="Usuario" 
-                    ></v-text-field>
+                    ></v-text-field
+                    :dark="theme.background.dark">
 
                     <v-text-field
+                    :dark="theme.background.dark"
                         filled single-line prefix="+58"
                         label="Telefono" dense
                         rounded hint="format: +58-000-000-0000"
@@ -64,16 +74,19 @@
                         :rules="[required('Telefono'),telefonoFormat()]"
                         v-model="data.telefono" persistent-hint
                         color="#2950c3" :disabled="loading"
-                    ></v-text-field>
+                    ></v-text-field
+                    :dark="theme.background.dark">
 
                     <v-menu :close-on-content-click="false" transition="scale-transition" max-width="100%" offset-overflow>
                         <template v-slot:activator="{ on }">
                             <v-text-field
+                            :dark="theme.background.dark"
                                 dense v-model="data.fecha_nac" :disabled="loading"
                                 label="Cumpleaños" color="#2950c3" append-icon="mdi-calendar" 
                                 filled v-on="on" rounded hint="Formato YYYY/MM/DD" 
                                 persistent-hint single-line @input="validEdit()"
-                            ></v-text-field>
+                            ></v-text-field
+                            :dark="theme.background.dark">
                         </template>
                         <v-date-picker v-model="data.fecha_nac" :landscape="!$vuetify.breakpoint.smAndDown" show-current  header-color="#2950c3" color="#2950c3"  locale="es"/>
                     </v-menu>
@@ -155,7 +168,7 @@ import variables from '@/services/variables_globales';
             }
         },
         computed:{
-            ...mapState(['user']),
+            ...mapState(['user','theme']),
         },
         /*watch: {
             notificaciones(){

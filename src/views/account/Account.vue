@@ -1,6 +1,6 @@
 <template>
    <div>
-       <v-card color="transparent" elevation="0" width="100%">
+       <v-card :color="theme.background.light" elevation="0" width="100%">
             <v-card-text>
                 <v-row justify="center">
                     <v-col cols="12" md="3">
@@ -93,7 +93,7 @@ import variables from '@/services/variables_globales';
             }
         },
         computed:{
-            ...mapState(['user']),
+            ...mapState(['user','theme']),
         },
         created() {
             window.addEventListener('resize', this.onResize);

@@ -12,7 +12,7 @@ export default new Vuex.Store({
             cliente:null,
             loggedIn:false
         },
-        theme:theme["principal"],
+        theme:theme["production"],
         carrito:false,
         modalcarrito:false,
         modalsesion:false,

@@ -1,18 +1,28 @@
 <template>
-  <v-card elevation="0" color="#f7f7f7">
-    <v-toolbar elevation="2" color="#0f2441">
+  <v-card elevation="0" :color="theme.background.light_2">
+    <v-toolbar elevation="2" :color="theme.background.strong">
       <v-toolbar-title class="cursor" @click="push2">
-        <v-img contain height="100" width="150" src="@/assets/logo 6.png" transition="scale-transition" />
+        <v-img v-if="!theme.navBar.navIconDark"
+	            alt="Hoyprovoca logo" class="shrink mr-2 cursor" contain
+				src='@/assets/logo2.png' transition="scale-transition"
+			    width="200" height="100" @click="push2"
+			/>
+      <v-img v-else
+	            alt="Hoyprovoca logo" class="shrink mr-2 cursor" contain
+				src='@/assets/logo6.png' transition="scale-transition"
+			    width="200" height="100" @click="push2"
+			/>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn
         elevation="2"
-        color="#fff"
+        :color="theme.buttons.primary"
         to="/"
-        class="text-capitalize body-2 font-weight-bold black--text"
+        :style="`color:${theme.buttons.font}`"
+        class="text-capitalize body-2 font-weight-bold"
       >Seguir comprando</v-btn>
     </v-toolbar>
-    <div class="text-center my-5 display-1 font-weight-bold">Checkout</div>
+    <div :style="` color:${theme.background.font}`" class="text-center my-5 display-1 font-weight-bold">Checkout</div>
     <v-scroll-x-transition>
       <Init
       v-if="view==1"
@@ -29,19 +39,21 @@
 
     <v-scroll-x-transition>
       <v-card
+        :color="theme.background.light"
         :class="$vuetify.breakpoint.smAndDown ? 'my-5 mx-2' : 'mx-10 my-5'"
         class="center"
+        :style="`color:${theme.background.font2}!important`"
         v-show="view == 2"
       >
-        <v-stepper v-model="stepper">
-          <v-stepper-header>
-            <v-stepper-step color="#0f2441" :complete="stepper > 1" step="1">tipos de pago</v-stepper-step>
+        <v-stepper :style="` background-color:${theme.background.light}`" :color="theme.background.light" v-model="stepper">
+          <v-stepper-header >
+            <v-stepper-step :color="theme.buttons.secondary" :style="`color:${theme.background.font2}!important`"  :complete="stepper > 1" step="1"><span :style="`color:${theme.background.font2}`">tipos de pago</span></v-stepper-step>
             <v-divider></v-divider>
-            <v-stepper-step :complete="stepper > 2" step="2" color="#0f2441">Pagar</v-stepper-step>
+            <v-stepper-step :color="theme.buttons.secondary" :style="`color:${theme.background.font2}!important`" :complete="stepper > 2" step="2"  ><span :style="`color:${theme.background}`">Pagar</span></v-stepper-step>
           </v-stepper-header>
 
           <v-stepper-items>
-            <v-stepper-content step="1">
+            <v-stepper-content  step="1">
               <TipoPago
                 v-if="stepper == 1"
                 :total="total"
@@ -53,7 +65,7 @@
                 @setUserData="setUserData"
               />
             </v-stepper-content>
-            <v-stepper-content step="2">
+            <v-stepper-content  step="2">
               <Pagar
                 :pedidos.sync="pedidos"
                 :pedidoSelect.sync="pedidoSelect"
@@ -144,7 +156,7 @@ import accounting from "accounting";
 //servicios
 import { mapState, mapActions } from "vuex";
 import Auth from "@/services/Auth";
-import {pedidom,checkdata,pedidoSelect,state} from "@/store/default"
+import {pedido,checkdata,pedidoSelect,state} from "@/store/default"
 // for alerts snackbar
 //const pagoFinalizado = "el proceso de pago ha finalizado exitosamente!";
 const maxPago = "Solo puede escojer dos metodos de Pago";
@@ -219,7 +231,7 @@ export default {
     },
   },
   computed: {
-    ...mapState(["user", "modalPago", "pedidos"]),
+    ...mapState(["user", "modalPago", "pedidos",'theme']),
   },
   methods: {
     ...mapActions(["setPedidos", "deletePedidoStore", "setModalPago"]),

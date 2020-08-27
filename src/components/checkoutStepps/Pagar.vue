@@ -28,6 +28,7 @@
 
         <v-form v-if="data" v-model="valid" class="my-5">
           <v-text-field
+          :dark="theme.background.dark"
             v-model="data.codigo_referencia"
             filled
             dense
@@ -62,12 +63,13 @@
       <v-btn
         light
         :disabled="data.codigo_referencia === '' && loading"
-        color="#0f2441"
+        :color="theme.buttons.primary"
         class="lod"
+        :style="`color:${theme.buttons.font}`"
         :loading="loading"
         @click="checkPago"
       >
-        <span style="color:white">Enviar</span>
+        <span >Enviar</span>
       </v-btn>
 
       <v-btn text @click="changeView('stepper', 1)">Atras</v-btn>
@@ -189,7 +191,7 @@ export default {
   },
   watch: {},
   computed: {
-    ...mapState(["user", "modalPago"]),
+    ...mapState(["user", "modalPago",'theme']),
     Imagen: {
       get() {
         return this.modalPago;

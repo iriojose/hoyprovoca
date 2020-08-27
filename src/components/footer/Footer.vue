@@ -1,7 +1,7 @@
 <template>
-    <v-card elevation="0" color="transparent" width="100%">
+    <v-card elevation="0" :style="`background-color:${theme.background.light_2}`" :color="theme.background.light_2" width="100%">
         <v-card-text class="mt-12">
-            <v-sheet elevation="0">
+            <v-sheet elevation="0" :style="`background-color:${theme.background.light_2}`">
                 <v-row justify="space-around" >
                     <v-col cols="12" md="4" sm="12" v-for="about in abouts" :key="about.text">
                         <v-img contain width="100%" height="150" :src="require('@/assets/'+about.img)"></v-img>
@@ -12,27 +12,27 @@
                 </v-row>
             </v-sheet>
 
-            <v-sheet elevation="0">
-                <v-row justify="center">
+            <v-sheet  :style="`background-color:${theme.background.light_2}`" :color="theme.background.light_2" elevation="0">
+                <v-row justify="center" :style="`background-color:${theme.background.light_2}`">
                     <v-col cols="12" md="4" sm="12" v-for="(n,i) in 4" :key="i">
-                        <div v-if="i == 0">
-                            <div :style="`color:${theme.background.font}`" v-for="(n,e) in 4" :key="e" @click="push(grupos[e])" class="underline my-5 text-center font-weight-bold">
+                        <div v-if="i == 0" :style="`background-color:${theme.background.light_2}`">
+                            <div  :style="`color:${theme.background.font};background-color:${theme.background.light_2}`" v-for="(n,e) in 4" :key="e" @click="push(grupos[e])" class="underline my-5 text-center font-weight-bold">
                                 {{grupos[e].nombre}}
                             </div>
                         </div>
 
-                        <div v-if="i == 1">
-                            <div v-for="(interes,g) in intereses" :key="g" class="link underline my-5 text-center font-weight-bold">
+                        <div v-if="i == 1" :style="`background-color:${theme.background.light_2}`">
+                            <div :style="`background-color:${theme.background.light_2}`" v-for="(interes,g) in intereses" :key="g" class="link underline my-5 text-center font-weight-bold">
                                <a :style="`color:${theme.background.font}`" @click="transfer('/trabajar')">
                                   {{interes.text}}
                                </a>
                             </div>
                         </div>
 
-                        <div v-if="i == 2">
-                            <div v-for="(red,f) in redes" :key="f" class="my-5 text-center font-weight-bold">
-                                <a :style="`color:${theme.background.font}`" :href="red.to" class="underline">
-                                    <v-avatar size="40" class="mx-2">
+                        <div v-if="i == 2" :style="`background-color:${theme.background.light_2}`">
+                            <div :style="`background-color:${theme.background.light_2}`" v-for="(red,f) in redes" :key="f" class="my-5 text-center font-weight-bold">
+                                <a :style="`color:${theme.background.font};background-color:${theme.background.light_2}`" :href="red.to" class="underline">
+                                    <v-avatar  size="40" class="mx-2">
                                         <v-img :src="require('@/assets/'+red.img)"></v-img>
                                     </v-avatar>
                                     {{red.text}}
@@ -49,7 +49,7 @@
                 </v-row>
             </v-sheet>
 
-            <v-footer   class="font-weight-medium" elevation="0" color="#fff">
+            <v-footer   class="font-weight-medium" elevation="0" :color="theme.background.light_2">
                 <v-col :style="`color:${theme.background.font}`" class="text-center" cols="12">
                     {{ new Date().getFullYear() }} — <strong>Hoyprovoca</strong>
                 </v-col>

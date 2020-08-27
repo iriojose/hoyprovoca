@@ -1,5 +1,4 @@
-export const pedido = 
-  [
+export const pedido = [
     {
       id: 1,
       adm_clientes_id: 7,
@@ -28,10 +27,9 @@ export const pedido =
         },
       ],
     },
-  ],
+  ];
 
-export const checkdata = 
-  {
+export const checkdata = {
     emisor: "",
     receptor: "Jesus Bellorin",
     adm_pedidos_id: "",
@@ -41,10 +39,9 @@ export const checkdata =
     codigo_referencia: "",
     imagen: "",
     adm_clientes_id: "",
-  },
+  };
 
-export const pedidoSelect = 
-  {
+export const pedidoSelect = {
     id: 1,
     rest_pedidos_id: 1,
     adm_conceptos_id: 2,
@@ -57,10 +54,9 @@ export const pedidoSelect =
     rest_estatus_id: 1,
     stock: 3,
     estado: "0",
-  },
+  };
 
-export const state = 
-  {
+export const state = {
     stepper: 1,
     total: 0,
     view: 1,
@@ -73,4 +69,4 @@ export const state =
     pedidos: null,
     data: null,
     pagoId: {},
-  },
+  };
