@@ -232,9 +232,7 @@ html {
     scroll-behavior: smooth;
 }
  $body-font-family :"century",sans-serif!important;
-*,body,html,*:before,*:after,.title{
-  font-family: "century",sans-serif!important;
-}
+
 .v-application .display-2 {
   font-family: "century",sans-serif!important!important;
 }
