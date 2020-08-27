@@ -39,23 +39,6 @@ const theme ={
         font2:"white",
         card:"white",
       },
-      primary:{
-        default:"#1f3b63",
-        strong:"",
-        light:""
-    },
-      secondary:{
-        default:"#ED3237",
-        strong:"",
-        light:""
-      },
-      summary:{
-        default:"#222730"
-      },
-      other:{
-        default:"#31334D"
-      },
-      dark:false
   },
   production:{
     background:{
@@ -96,45 +79,7 @@ const theme ={
       font2:"white",
       card:"white",
     },
-    primary:{
-      default:"#C",
-      strong:"",
-      light:""
-  },
-    secondary:{
-      default:"#ED3237",
-      strong:"",
-      light:""
-    },
-    summary:{
-      default:"#222730"
-    },
-    other:{
-      default:"#31334D"
-    },
-    dark:false
 },
-  inUse:{
-    background:{
-      strong:"#ebded1",
-      light:"#F2FAF0",
-      light_2:"white",
-      primary:"#ebded1",
-      strong:"#E5EDF0",
-    },
-    secondary:{
-      default:"#ED3237",
-      strong:"",
-      light:""
-    },
-    summary:{
-      default:"#222730"
-    },
-    other:{
-      default:"#31334D"
-    },
-    dark:true
-  }
 }
 
 export default theme;
