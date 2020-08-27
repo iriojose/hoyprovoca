@@ -65,7 +65,7 @@ const theme ={
       strong:"#FFFFFF",
       secondary:"#fddb3a",
       font:"black",
-      font2:"white",
+      font2:"black",
       dark:false,
       navIconDark:false
     },

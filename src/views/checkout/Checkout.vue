@@ -1,5 +1,5 @@
 <template>
-  <v-card elevation="0" :color="theme.background.light_2">
+  <v-card elevation="0" :color="theme.background.light">
     <v-toolbar elevation="2" :color="theme.background.strong">
       <v-toolbar-title class="cursor" @click="push2">
         <v-img v-if="!theme.navBar.navIconDark"
@@ -39,13 +39,13 @@
 
     <v-scroll-x-transition>
       <v-card
-        :color="theme.background.light"
+        :color="theme.background.light_2"
         :class="$vuetify.breakpoint.smAndDown ? 'my-5 mx-2' : 'mx-10 my-5'"
         class="center"
         :style="`color:${theme.background.font2}!important`"
         v-show="view == 2"
       >
-        <v-stepper :style="` background-color:${theme.background.light}`" :color="theme.background.light" v-model="stepper">
+        <v-stepper :style="` background-color:${theme.background.light_2}`" :color="theme.background.light" v-model="stepper">
           <v-stepper-header >
             <v-stepper-step :color="theme.buttons.secondary" :style="`color:${theme.background.font2}!important`"  :complete="stepper > 1" step="1"><span :style="`color:${theme.background.font2}`">tipos de pago</span></v-stepper-step>
             <v-divider></v-divider>

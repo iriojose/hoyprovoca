@@ -6,6 +6,7 @@
                     ? 'my-5 mx-2 center-progress'
                     : 'mx-10 my-5 center-progress'
             "
+            :color="theme.background.light_2"
             justify="center"
         >
             <v-card-text>
@@ -43,7 +44,7 @@
         </v-slide-group>
 
         <v-card
-        :color="theme.background.light"
+        :color="theme.background.light_2"
             :class="$vuetify.breakpoint.smAndDown ? 'my-5 mx-2' : 'mx-10 my-5'"
             v-if="pedidoSelect"
         >
@@ -70,7 +71,7 @@
                             {{ detalles.length + " " }}
                             item
                         </div>
-                        <v-list :style="`background-color:${theme.background.light}; color:${theme.background.font}`">
+                        <v-list :style="`background-color:${theme.background.light_2}; color:${theme.background.font}`">
                             <v-list-item class="products-row products line">
                                 <v-list-item-title :style="` color:${theme.background.font}`"  class="imag">
                                     <p class="center-text">Imagen</p>
