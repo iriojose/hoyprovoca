@@ -121,7 +121,11 @@
                                 >
                                     <span class="price center center-text">
                                         {{
-                                            pedidoSelect.conceptos[i]
+                                           pedidoSelect.conceptos[i]
+                                                .descuento ?pedidoSelect.conceptos[i]
+                                                .precio_dolar - (pedidoSelect.conceptos[i]
+                                                .precio_dolar * pedidoSelect.conceptos[i]
+                                                .decuento ) : pedidoSelect.conceptos[i]
                                                 .precio_dolar
                                         }}
                                         $
@@ -355,13 +359,16 @@ export default {
         calcularTotal(concepto, detalles) {
             let suma = 0;
             let totalUSD = 0;
+            console.log(concepto,"concepto");
             detalles.map((a) => (a.cantidad = Math.floor(a.cantidad)));
             detalles.map((a, i) => {
+              let costo = concepto[i].precio_dolar;
+              let precio = concepto[i].descuento ? costo - (costo *+concepto[i].descuento)  : costo;
                 suma +=
                     this.checkValue(concepto[i].precio_dolar) *
                     a.cantidad *
                     +this.dolar;
-                totalUSD += (+concepto[i].precio_dolar) * a.cantidad;
+                totalUSD += (precio) * a.cantidad;
             });
             this.priced = true;
             this.$emit("updatedState", {
@@ -429,7 +436,7 @@ export default {
         },
         seleccionarPedido(evt, i) {
             this.$emit("updatedState", { name: "pedidoSelect", content: evt });
-            this.checkStock(evt)
+            this.checkStock(evt);
             this.messagePendiente = "Pagar";
             this.detalles = evt.detalles;
             this.dolar && (this.arrived = (!evt.detalles?.stock) ? 1 : 2);

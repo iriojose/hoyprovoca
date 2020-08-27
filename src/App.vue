@@ -223,18 +223,9 @@ export default {
 /*@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300&display=swap');*/
 @import url("https://fonts.googleapis.com/css2?family=Alata&display=swap");
 
-@font-face {
-    font-family: "century";
-    src: url("assets/font/CenturyGothic.ttf");
-}
 
 html {
     scroll-behavior: smooth;
-}
- $body-font-family :"century",sans-serif!important;
-
-.v-application .display-2 {
-  font-family: "century",sans-serif!important!important;
 }
 .margen {
     margin-top: 150px;

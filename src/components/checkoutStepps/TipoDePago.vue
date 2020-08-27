@@ -10,7 +10,7 @@
         <div class="font-weight-bold pa-2 title">Subtotal a pagar</div>
         <div class="font-weight-bold px-2 subtitle-1">{{ total }}</div>
         <v-select
-        :dark="theme.background.dark"
+          :dark="theme.background.dark"
           :items="tiposDePago"
           dense
           color="#0f2441"

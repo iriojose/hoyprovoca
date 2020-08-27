@@ -25,7 +25,6 @@
                 :src="require('@/assets/Googleplay.jpeg')"
             ></v-img>
     </v-row>
-
     <v-row justify="start" v-else>
         <v-col
             class="content-movil"
@@ -57,7 +56,6 @@
         </v-col>
     </v-row>
 </template>
-
 <script>
 import { mapState } from "vuex";
 export default {
