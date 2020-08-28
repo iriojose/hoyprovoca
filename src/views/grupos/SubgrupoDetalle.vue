@@ -76,7 +76,7 @@ import {mapState} from 'vuex';
                 ...variables,
                 loading:true,
                 loading2:false,
-                tipo:false,
+                tipo:true,
                 conceptos:[],
                 total:0,
                 after:0,
@@ -109,7 +109,6 @@ import {mapState} from 'vuex';
             },
         },
         mounted() {
-            if(this.$vuetify.breakpoint.smAndDown) this.tipo = true;
             this.subgrupo = JSON.parse(window.localStorage.getItem('subgrupo'));
             this.getConceptos(this.subgrupo.id);
         },

@@ -2,8 +2,8 @@
 	<div>
 		<Banner />
 		<CategoriasSugeridas />
-        <v-divider class="mt-6"></v-divider>
-		<ProductoMasVendido />
+        <!--v-divider class="mt-6"></v-divider>
+		<ProductoMasVendido /-->
 		<v-divider class="mt-6"></v-divider>
         <EmpresasSugeridas title="Nuestros Aliados" />
 	</div>

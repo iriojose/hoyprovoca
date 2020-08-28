@@ -59,7 +59,7 @@ import router from '@/router';
         },
         data() {
             return {
-                tipo:false,
+                tipo:true,
                 loading:true,
                 loading2:false,
                 after:0,

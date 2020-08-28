@@ -101,7 +101,7 @@ import {mapState} from 'vuex';
                 conceptos:[],
                 loadingConceptos:true,
                 loadingGrupos:true,
-                tipo:false,
+                tipo:true,
                 total:0,
                 after:0
             }
@@ -133,7 +133,6 @@ import {mapState} from 'vuex';
             },
         },
         mounted() {
-            if(this.$vuetify.breakpoint.smAndDown) this.tipo = true;
             let empresa = JSON.parse(window.localStorage.getItem("aliado"));
 
             if(empresa){

@@ -119,7 +119,7 @@ import {mapState,mapActions} from 'vuex';
         data() {
             return {
                 loading:true,
-                tipo:false,
+                tipo:true,
                 conceptos:[],
                 radioGroup:-1,
                 radio:null,
@@ -150,8 +150,6 @@ import {mapState,mapActions} from 'vuex';
             },
         },
         mounted() {
-            if(this.$vuetify.breakpoint.smAndDown) this.tipo = true;
-
             let municipios = JSON.parse(window.localStorage.getItem('municipios'));
 
             if(municipios) this.setMunicipios(municipios);
