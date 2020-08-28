@@ -110,7 +110,7 @@ const routes = [
 	{
 		path:"/offers",
 		name:"offers",
-		component:=> import("@/views/offers/Offers"),
+		component:() => import("@/views/offers/Offers"),
 		meta:{
 			auth:false
 		}

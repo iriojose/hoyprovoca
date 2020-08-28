@@ -16,7 +16,8 @@
 			Banner:() => import("@/components/vistaHome/Banner"),
             EmpresasSugeridas:() => import("@/components/vistaHome/EmpresasSugeridas"),
             CategoriasSugeridas:() => import("@/components/vistaHome/CategoriasSugeridas"),
-			ProductoMasVendido:() => import("@/components/vistaHome/ProductoMasVendido")
+			ProductoMasVendido:() => import("@/components/vistaHome/ProductoMasVendido"),
+			Ofertas:() => import("@/components/vistaHome/Ofertas")
 		},
 		head: {
             title() {
