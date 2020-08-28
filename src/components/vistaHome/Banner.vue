@@ -6,10 +6,9 @@
                 class="no-margin display-1 my-12 "
             >
                 <p class="slogan">
-                    <span class="line-1"> Te llevamos el Mercado o </span>
-                    <span class="line-2">lo que te provoque... </span>
+                    <span class="line-1"> Lo que te provoque </span>
                     <span class="line-3"
-                        ><strong> a la puerta de tu casa.</strong></span
+                        ><strong> al alcance de tus manos.</strong></span
                     >
                 </p>
             </div>
@@ -18,11 +17,12 @@
             <v-img :src="require('@/assets/bannerweb1.png')"> </v-img>
         </v-col>
          <v-img
+                style="margin-left:50px"
                 class="App"
                 :width="200"
                 :height="50"
                 :contain="true"
-                :src="require('@/assets/Googleplay.jpeg')"
+                :src="require('@/assets/Googleplay.png')"
             ></v-img>
     </v-row>
     <v-row justify="start" v-else>
