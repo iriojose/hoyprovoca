@@ -1,29 +1,74 @@
 <template>
-    <v-row class="content-movil" justify="center" v-if="!$vuetify.breakpoint.smAndDown" style="background: #EEF21E;">
-        <v-col cols="6" md="6">
+    <v-row class="content-movil" justify="center" v-if="!$vuetify.breakpoint.smAndDown" style="height:90vh">
+        <v-col cols="12" md="12" style="position:relative;">
+            <v-img
+                class="absolute a-center movement"
+                style="top: 60px;margin-left:-20px"
+                :width="100"
+                :contain="true"
+                :src="require('@/assets/avocado.png')"
+            ></v-img>
+            <v-img
+                class="absolute movement"
+                :width="130"
+                style="top: 100px;left: 140px;"
+                :contain="true"
+                :src="require('@/assets/burguer.png')"
+            ></v-img>
+            <v-img 
+                class="absolute movement"
+                style="bottom: 70px;left: 150px;"
+                :width="130"
+                :contain="true"
+                :src="require('@/assets/medicine.png')"
+            ></v-img>
+            <v-img
+                class="absolute h-center movement"
+                style="bottom: 40px;;margin-left:-40px"
+                :width="130"
+                :contain="true"
+                :src="require('@/assets/dessert.png')"
+            ></v-img>
+            <v-img
+                class="absolute movement"
+                style="bottom: 80px; right: 140px"
+                :width="120"
+                :contain="true"
+                :src="require('@/assets/gamepad.png')"
+            ></v-img>
+            <v-img
+                class="absolute movement"
+                style="top: 110px; right: 140px"
+                :width="140"
+                :contain="true"
+                :src="require('@/assets/phones.png')"
+            ></v-img>
             <div
-                :style="`color:${theme.background.font}`"
-                class="no-margin display-1 my-12 "
+                :style="`color:${theme.background.font};margin: 0 auto; display:block;`"
+                class=" display-1"
             >
-                <p class="slogan">
-                    <span class="line-1"> Lo que te provoque </span>
-                    <span class="line-3"
-                        ><strong> al alcance de tus manos.</strong></span
+                <p class="slogan absolute a-center">
+                    <span class="line-1" style="text-align:center;"> Lo que te provoca justo al 
+                        <span class="line-3" style="text-align:center;"
+                        ><strong> alcance de tus manos.</strong></span
                     >
+                    </span>
+                   <span style="position:relative;width:100%;padding: 0 50px">
+                        <v-text-field
+                            style="display:block;"
+                            label="¿Qué te provoca?" hide-details
+                            v-on:keyup.enter="push" light
+                            class=" ml-10 my-6 hidden-sm-and-down" single-line
+                            solo v-model="busquedas"
+                        >
+                            <v-btn slot="append" tile text small @click="push">
+                                <v-icon color="#D32F2F">mdi-magnify</v-icon>
+                            </v-btn>
+                        </v-text-field>
+                   </span>
                 </p>
             </div>
         </v-col>
-        <v-col cols="12" md="5">
-            <v-img :src="require('@/assets/bannerweb1.png')"> </v-img>
-        </v-col>
-         <v-img
-                style="margin-left:50px"
-                class="App"
-                :width="200"
-                :height="50"
-                :contain="true"
-                :src="require('@/assets/Googleplay.png')"
-            ></v-img>
     </v-row>
     <v-row justify="start" v-else>
         <v-col
@@ -57,11 +102,34 @@
     </v-row>
 </template>
 <script>
-import { mapState } from "vuex";
+import router from '@/router';
+
+import {mapState, mapActions} from 'vuex';
 export default {
-    computed: {
-        ...mapState(["theme"]),
+    computed:{
+            ...mapState(['theme', 'user','search','bandera','drawer','theme']),
+
+            busquedas:{
+                get(){ return this.search},
+                set(val){ this.setBuscar(val)}
+            },
     },
+    methods:{
+            ...mapActions(['setBuscar','setBandera','setDrawer']),
+            
+            change(){
+                this.drawer ? this.setDrawer(false):this.setDrawer(true);
+            },
+            push(){ 
+                if(this.bandera){
+                    this.setBandera(false);
+                }else{
+                    this.setBandera(true);
+                }
+                if (this.$route.name !== 'search') router.push("/search");
+            },
+            push2(){ router.push('/')}
+        }
 };
 </script>
 
@@ -97,7 +165,7 @@ export default {
             font-size: 2.925rem !important;
         }
         &-3 {
-            font-size: 2.8rem !important;
+            font-size: 2.3rem !important;
             line-height: 1;
         }
     }
@@ -116,5 +184,39 @@ export default {
         align-items: flex-end;
         z-index: 2;
     }
+}
+
+@keyframes move {
+    0% {
+        transform: translateY(-10%)
+    }
+
+    50% {
+        transform: translateY(10%)
+    }
+
+    100% {
+        transform: translateY(-10%)
+    }
+}
+
+.movement {
+    animation: move 10s ease-in-out infinite;
+
+}
+
+.absolute {
+    position: absolute;
+}
+
+.h-center {
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.a-center {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 </style>
