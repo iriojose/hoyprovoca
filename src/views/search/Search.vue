@@ -169,7 +169,7 @@ import {mapState,mapActions} from 'vuex';
                         response.data.data.filter(a => a.agregado = false);
                         response.data.data.filter(a => this.agregados.filter(b => a.id == b ? a.agregado=true:null));
                         
-                        response.data.data = [...response.data.data].filter((a, b) => this.parseExistencia(b) <= 0);
+                        response.data.data = [...response.data.data].filter((a) => this.parseExistencia(a) <= 0);
 
                         this.conceptos = response.data.data;
                         this.aux = response.data.data;
