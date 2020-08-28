@@ -1,5 +1,5 @@
 <template>
-    <v-row class="content-movil" justify="center" v-if="!$vuetify.breakpoint.smAndDown">
+    <v-row class="content-movil" justify="center" v-if="!$vuetify.breakpoint.smAndDown" style="background: #EEF21E;">
         <v-col cols="6" md="6">
             <div
                 :style="`color:${theme.background.font}`"
