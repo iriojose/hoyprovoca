@@ -50,7 +50,7 @@
                 class="App"
                 :width="170"
                 :height="30"
-                contain="true"
+                :contain="true"
                 :src="require('@/assets/Googleplay.jpeg')"
             ></v-img>
         </v-col>

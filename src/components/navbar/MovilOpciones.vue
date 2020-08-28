@@ -51,7 +51,7 @@ import router from '@/router';
             }
         },
         computed:{
-            ...mapState(['user','carrito','modalUbicacion'])
+            ...mapState(['user','carrito','modalUbicacion','theme'])
         },
         methods: {
             ...mapActions(['setCarrito','logout','setModalUbicacion']),

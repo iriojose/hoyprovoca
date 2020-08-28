@@ -227,6 +227,12 @@ export default {
 html {
     scroll-behavior: smooth;
 }
+
+
+  body {
+   overflow-x: hidden!important;
+  }
+
 .margen {
     margin-top: 150px;
 }
