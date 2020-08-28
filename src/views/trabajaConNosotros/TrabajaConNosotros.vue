@@ -47,7 +47,7 @@
       </div>
 
       <div class="flex flex-center tiket">
-        <v-card-title :style="`color:${theme.background.font}`"  class="tiket-letters wrap text-left font-weight-black">¡Estamos reclutando!</v-card-title>
+        <v-card-title :style="`color:white`"  class="tiket-letters wrap text-left font-weight-black">¡Estamos reclutando!</v-card-title>
       </div>
       <v-card-title :style="`color:${theme.background.font}`"  class="title my-10">
         2.

@@ -267,4 +267,13 @@ html {
 ::-webkit-scrollbar-track:active {
     background: #fff;
 }
+.v-application {
+    font-family: "Spartan", sans-serif!important;
+}
+.v-application .headline, .v-application .title {
+    font-family: "Spartan", sans-serif!important;
+    padding:1px
+}
+
+
 </style>

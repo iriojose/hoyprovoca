@@ -5,15 +5,27 @@
                 <v-icon :color="theme.buttons.font">mdi-home</v-icon>
             </v-btn>
             <v-spacer class="hidden-sm-and-down"></v-spacer>
-            <v-img v-if="theme.background.dark"
-	            alt="Hoyprovoca logo" class="shrink mr-2 cursor" contain
-              src='@/assets/logo6.png' transition="scale-transition"
-                width="200" height="100" @click="push2"
+            <v-img
+                v-if="theme.background.dark"
+                alt="Hoyprovoca logo"
+                class="shrink mr-2 cursor hidden-sm-and-down"
+                contain
+                src="@/assets/logo6.png"
+                transition="scale-transition"
+                width="200"
+                height="100"
+                @click="push2"
             />
-            <v-img v-else
-                    alt="Hoyprovoca logo" class="shrink mr-2 cursor" contain
-              src='@/assets/logo2.png' transition="scale-transition"
-                width="200" height="100" @click="push2"
+            <v-img
+                v-else
+                alt="Hoyprovoca logo"
+                class="shrink mr-2 cursor hidden-sm-and-down"
+                contain
+                src="@/assets/logo2.png"
+                transition="scale-transition"
+                width="200"
+                height="100"
+                @click="push2"
             />
             <v-spacer></v-spacer>
             <v-btn
@@ -27,16 +39,32 @@
             </v-btn>
         </v-card-actions>
 
-        <v-card color="transparent" elevation="0" width="100%" :style="`background:${theme.background.light}`">
+        <v-card
+            color="transparent"
+            elevation="0"
+            width="100%"
+            :style="`background:${theme.background.light}`"
+        >
             <v-card-text>
                 <v-row justify="center" class="hidden-sm-and-up">
-                    <v-img
+                  <v-img
+                        v-if="theme.background.dark"
+                        alt="Hoyprovoca logo"
+                        contain
+                        src="@/assets/logo6.png"
+                        transition="scale-transition"
+                        width="100"
+                        height="50"
+                        @click="push2"
+                    />
+                    <v-img v-else
                         transition="scale-transition"
                         contain
                         width="100"
                         height="50"
-                        :src="require('@/assets/logo 6.png')"
+                        :src="require('@/assets/logo2.png')"
                     ></v-img>
+                    
                 </v-row>
             </v-card-text>
 
@@ -55,7 +83,6 @@
                                     cols="12"
                                     md="6"
                                     class="hidden-sm-and-down"
-
                                 >
                                     <v-img
                                         width="100%"
@@ -71,7 +98,9 @@
                                     md="6"
                                     sm="12"
                                     class="px-8 py-12"
-                                    :style="`background:${theme.background.light_2}`"
+                                    :style="
+                                        `background:${theme.background.light_2}`
+                                    "
                                 >
                                     <div class="headline text-center mb-5">
                                         Inicia sesión ahora!
@@ -255,9 +284,9 @@ export default {
     },
     methods: {
         ...mapActions(["logged", "setModalBloqueado", "setPedidos"]),
-         push2(){
-      router.push("/");
-    },
+        push2() {
+            router.push("/");
+        },
         register() {
             router.push("/register");
         },

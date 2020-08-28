@@ -21,7 +21,7 @@
                 class="App"
                 :width="200"
                 :height="50"
-                contain="true"
+                :contain="true"
                 :src="require('@/assets/Googleplay.jpeg')"
             ></v-img>
     </v-row>

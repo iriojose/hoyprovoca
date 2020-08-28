@@ -6,17 +6,17 @@
             </v-btn>
             <v-spacer class="hidden-sm-and-down"></v-spacer>
             <v-img v-if="theme.background.dark"
-	            alt="Hoyprovoca logo" class="shrink mr-2 cursor" contain
+	            alt="Hoyprovoca logo" class="shrink mr-2 cursor hidden-sm-and-down" contain
               src='@/assets/logo6.png' transition="scale-transition"
                 width="200" height="100" @click="push2"
             />
             <v-img v-else
-                    alt="Hoyprovoca logo" class="shrink mr-2 cursor" contain
+                    alt="Hoyprovoca logo" class="shrink mr-2 cursor hidden-sm-and-down" contain
               src='@/assets/logo2.png' transition="scale-transition"
                 width="200" height="100" @click="push2"
             />
             <v-spacer></v-spacer>
-            <v-btn rounded :color="theme.buttons.secondary" class="text-capitalize  caption" @click="forgot">
+            <v-btn rounded :style="`color:${theme.buttons.font}`" :color="theme.buttons.secondary" class="text-capitalize  caption" @click="forgot">
                 ¿Olvido su contraseña?
             </v-btn>
         </v-card-actions>
@@ -24,7 +24,23 @@
             <v-row justify="center"> 
                 <v-col cols="12" md="9" sm="12">
                     <v-row justify="center" class="pb-4 hidden-sm-and-up">
-                        <v-img transition="scale-transition" contain width="100" height="50" :src="require('@/assets/logo 6.png')"></v-img>
+                         <v-img
+                        v-if="theme.background.dark"
+                        alt="Hoyprovoca logo"
+                        contain
+                        src="@/assets/logo6.png"
+                        transition="scale-transition"
+                        width="100"
+                        height="50"
+                        @click="push2"
+                    />
+                    <v-img v-else
+                        transition="scale-transition"
+                        contain
+                        width="100"
+                        height="50"
+                        :src="require('@/assets/logo2.png')"
+                    ></v-img>
                     </v-row>
 
                     <v-card width="100%" :style="`background-color:${theme.background.light};color:${theme.background.font}!important`"  elevation="0" style="padding: 0 15px 0 30px">
@@ -171,11 +187,11 @@
                                     </v-stepper>
                                     
                                     <v-card-actions style="margin-top:-5px">
-                                        <v-btn fab small :color="theme.background.secondary" @click="e1=1" v-if="e1==2" :disabled="loading">
-                                            <v-icon :color="theme.background.font">mdi-chevron-left</v-icon>
+                                        <v-btn fab small :color="theme.buttons.terceary" @click="e1=1" v-if="e1==2" :disabled="loading">
+                                            <v-icon :color="theme.buttons.font2">mdi-chevron-left</v-icon>
                                         </v-btn>
                                         <v-spacer></v-spacer>
-                                        <v-btn v-if="e1==2" rounded :color="theme.background.secondary" :loading="loading" 
+                                        <v-btn v-if="e1==2" rounded :color="theme.buttons.secondary" :loading="loading" 
                                             height="40" :disabled="valid && success !== '' ? false:true"
                                             :style="`color:${valid && success !== '' ? theme.background.font : ''}!important`"
                                             @click="postUsuario()" class="text-capitalize caption"
@@ -183,7 +199,7 @@
                                     </v-card-actions>
                                     
                                     <v-btn v-if="e1==1" rounded :color="theme.buttons.secondary" block 
-                                        height="40" @click="e1=2" :style="`color:${theme.background.font}!important`" class="text-capitalize caption"
+                                        height="40" @click="e1=2" :style="`color:${theme.buttons.font}!important`" class="text-capitalize caption"
                                     >Siguiente</v-btn>
                                 </v-form>
                             </v-col>

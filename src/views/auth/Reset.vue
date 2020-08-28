@@ -11,7 +11,23 @@
                         <v-card width="100%" :color="theme.background.light_2">
                             <v-row justify="center">
                                 <v-col cols="12" md="6" class="hidden-sm-and-down">
-                                    <v-img width="100%" height="400" contain :src="require('@/assets/forgot.svg')"></v-img>
+                                     <v-img
+                        v-if="theme.background.dark"
+                        alt="Hoyprovoca logo"
+                        contain
+                        src="@/assets/logo2.png"
+                        transition="scale-transition"
+                        width="100"
+                        height="50"
+                        @click="push2"
+                    />
+                    <v-img v-else
+                        transition="scale-transition"
+                        contain
+                        width="100"
+                        height="50"
+                        :src="require('@/assets/logo 6.png')"
+                    ></v-img>
                                 </v-col>
                                 <v-col cols="12" md="6" sm="12" class="pa-12">
                                     <div :style="`color:${theme.background.strong}`" class="headline text-center mb-5">Resetear contraseña</div>
@@ -132,6 +148,9 @@ import {mapState} from "vuex";
             },
         },
         methods:{
+           push2(){
+      router.push("/");
+    },
             login(){
                 router.push('/login');
             },
