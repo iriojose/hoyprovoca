@@ -68,6 +68,7 @@ export default {
         ModalSesion: () => import("@/components/dialogs/ModalSesion"),
         ModalProducto: () => import("@/components/dialogs/ModalProducto"),
         BottomNavigation: () => import("@/components/footer/BottomNavigation"),
+        Loading:() => import("@/components/loaders/Loading")
     },
     data() {
         return {

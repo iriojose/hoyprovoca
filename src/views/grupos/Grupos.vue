@@ -1,8 +1,19 @@
 <template>
     <div>
         <v-container fluid v-if="loading">
-            <v-row justify="center" class="fill-height" align="center" style="height:500px;">
+            <v-row justify="center" class="fill-height" align="center" style="height:500px;" v-if="!error">
                 <Loading />
+            </v-row>
+            <v-row justify="center" class="fill-height" align="center" v-else style="height:500px;">
+                <div>
+                    <div class="title font-weight-black text-center">Algo salió mal</div>
+                    <v-row>
+                        <v-btn color="#232323" rounded class="white--text text-capitalize caption">
+                            Recargar 
+                            <v-icon class="mx-1" color="#fff">mdi-reload</v-icon>
+                        </v-btn>
+                    </v-row>
+                </div>
             </v-row>
         </v-container>
 
@@ -59,6 +70,7 @@ import router from '@/router';
         },
         data() {
             return {
+                error:false,
                 tipo:false,
                 loading:true,
                 loading2:false,
@@ -104,10 +116,10 @@ import router from '@/router';
                     this.total = response.data.totalCount;
                     this.loading = false;
                     this.loading2 = false;
+                    this.error = false;
                     window.localStorage.setItem("cache",JSON.stringify({total:this.total,after:this.after,grupos:this.grupos,path:this.$route.path}));
                 }).catch(e => {
-                    console.log(e);
-                    this.loading = false;
+                    this.error = true;
                     this.loading2 = false;
                 });
             }

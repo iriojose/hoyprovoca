@@ -119,7 +119,7 @@ import {mapState,mapActions} from 'vuex';
         data() {
             return {
                 loading:true,
-                tipo:false,
+                tipo:true,
                 conceptos:[],
                 radioGroup:-1,
                 radio:null,
@@ -150,8 +150,6 @@ import {mapState,mapActions} from 'vuex';
             },
         },
         mounted() {
-            if(this.$vuetify.breakpoint.smAndDown) this.tipo = true;
-
             let municipios = JSON.parse(window.localStorage.getItem('municipios'));
 
             if(municipios) this.setMunicipios(municipios);
@@ -169,7 +167,7 @@ import {mapState,mapActions} from 'vuex';
                         response.data.data.filter(a => a.agregado = false);
                         response.data.data.filter(a => this.agregados.filter(b => a.id == b ? a.agregado=true:null));
                         
-                        response.data.data = [...response.data.data].sort((a, b) => this.parseExistencia(b) > this.parseExistencia(a) ? 1 : -1);
+                        response.data.data = [...response.data.data].filter((a) => this.parseExistencia(a) > 0);
 
                         this.conceptos = response.data.data;
                         this.aux = response.data.data;

@@ -16,6 +16,21 @@
                 </v-list-item-content>
             </v-list-item>
         </v-list>
+        <v-divider></v-divider>
+
+        <v-list dark>
+            <div class="text-center font-weight-bold my-2 black--text">Ver más</div>
+            <v-divider light></v-divider>
+
+            <v-list-item :to="item.to" class="mx-2 move" v-for="item in vistas" :key="item.id">
+                <v-list-item-icon>
+                    <v-icon>{{item.text}}</v-icon>
+                </v-list-item-icon>
+                <v-list-item-content>
+                    <v-list-item-title class="text-capitalize font-weight-bold black--text body-1">{{ item.nombre }}</v-list-item-title>
+                </v-list-item-content>
+            </v-list-item>
+        </v-list>
     </v-navigation-drawer>
 </template>
 
@@ -27,7 +42,13 @@ import variables from '@/services/variables_globales';
     export default {
         data() {
             return {
-                ...variables
+                ...variables,
+                vistas:[
+                    {nombre:"Ofertas",icon:"mdi-reload",to:"/offers"},
+                    {nombre:"Más vendidos",icon:"mdi-reload",to:"/mostsold"},
+                    {nombre:"Categorías",icon:"mdi-reload",to:"/grupos"},
+                    {nombre:"Aliados",icon:"mdi-reload",to:"/aliados"},
+                ]
             }
         },
         computed:{

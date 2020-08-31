@@ -97,6 +97,24 @@ const routes = [
 			auth:false
 		},
 	},
+	//ruta mas vendidos
+	{
+		path:"/mostsold",
+		name:"mostsold",
+		component:() => import("@/views/mostsold/MostSold"),
+		meta:{
+			auth:false
+		}
+	},
+	//ruta Ofertas
+	{
+		path:"/offers",
+		name:"offers",
+		component:() => import("@/views/offers/Offers"),
+		meta:{
+			auth:false
+		}
+	},
 	//ruta search
 	{
 		path: "/search",

@@ -76,7 +76,7 @@ import {mapState} from 'vuex';
                 ...variables,
                 loading:true,
                 loading2:false,
-                tipo:false,
+                tipo:true,
                 conceptos:[],
                 total:0,
                 after:0,
@@ -109,7 +109,6 @@ import {mapState} from 'vuex';
             },
         },
         mounted() {
-            if(this.$vuetify.breakpoint.smAndDown) this.tipo = true;
             this.subgrupo = JSON.parse(window.localStorage.getItem('subgrupo'));
             this.getConceptos(this.subgrupo.id);
         },
@@ -120,6 +119,7 @@ import {mapState} from 'vuex';
                     if(response.data.data){
                         response.data.data.filter(a => a.agregado=false);
                         response.data.data.filter(a => this.agregados.filter(b => a.id == b ? a.agregado=true:null));
+                        response.data.data = [...response.data.data].filter((a) => this.parseExistencia(a) > 0);
                         this.after +=20;
                         this.total = response.data.totalCount;
                         response.data.data.filter(a => this.conceptos.push(a));
@@ -135,6 +135,9 @@ import {mapState} from 'vuex';
                 this.conceptos.filter(a => a.agregado=false);
                 this.conceptos.filter(a => this.agregados.filter(b => a.id == b ? a.agregado=true:null));
             },
+            parseExistencia(concepto){
+                return (Array.isArray(concepto.existencias) ? concepto.existencias.length > 0 ? concepto.existencias.map(a => Math.trunc(+a.existencia)).reduce((a, b) => a + b) : 0 : concepto.existencias)
+            }
         }
     }
 </script>

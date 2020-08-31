@@ -25,6 +25,7 @@ export default new Vuex.Store({
 		//data global (grupos,empresas)
         grupos:[],
         empresas:[],
+        masVendidos:[],
         ultimasOrdenes:[],
         totales:[],
         //arrays
@@ -40,6 +41,9 @@ export default new Vuex.Store({
 	},
 	mutations: {
         //data global
+        SET_MAS_VENDIDOS(state,val){
+            state.masVendidos = val;
+        },
         SET_MUNICIPIOS(state,val){
             state.municipios = val;
         },
@@ -180,6 +184,9 @@ export default new Vuex.Store({
         },
 	},
 	actions: {
+        setMasVendidos({commit},val){
+            commit("SET_MAS_VENDIDOS",val);
+        },
         setMunicipios({commit},val){
             commit("SET_MUNICIPIOS",val);
         },

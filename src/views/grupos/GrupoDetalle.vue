@@ -97,7 +97,7 @@ import router from '@/router';
                 ...variables,
                 loadingConceptos:true,
                 loadingSubgrupos:true,
-                tipo:false,
+                tipo:true,
                 subgrupos:[],
                 conceptos:[],
                 after:0,
@@ -132,7 +132,6 @@ import router from '@/router';
             },
         },
         mounted() {
-            if(this.$vuetify.breakpoint.smAndDown) this.tipo = true;
             this.grupo = JSON.parse(window.localStorage.getItem('grupo'));
             this.getSubgrupos(this.grupo.id);
             this.getConceptos(this.grupo.id);
@@ -160,6 +159,7 @@ import router from '@/router';
                     if(response.data.data){
                         response.data.data.filter(a => a.agregado=false);
                         response.data.data.filter(a => this.agregados.filter(b => a.id == b ? a.agregado=true:null));
+                        response.data.data = [...response.data.data].filter((a) => this.parseExistencia(a) > 0);
                         this.after +=20;
                         this.total = response.data.totalCount;
                         response.data.data.filter(a => this.conceptos.push(a));
@@ -177,6 +177,9 @@ import router from '@/router';
                 window.localStorage.setItem('subgrupo',JSON.stringify(item));
                 let nombre = item.nombre.toLowerCase(); 
                 router.push({name:'subgrupoDetalle', params:{text:nombre}});
+            },
+            parseExistencia(concepto){
+                return (Array.isArray(concepto.existencias) ? concepto.existencias.length > 0 ? concepto.existencias.map(a => Math.trunc(+a.existencia)).reduce((a, b) => a + b) : 0 : concepto.existencias)
             }
         }
     }
