@@ -209,7 +209,7 @@
             </v-row>
 
             <v-footer fixed class="font-weight-medium" elevation="0" :color="theme.background.primary">
-                <v-col class="text-center white--text" cols="12">
+                <v-col class="text-center" :style="`color:${theme.background.font}`" cols="12">
                     {{ new Date().getFullYear() }} — <strong>Hoyprovoca</strong> 
                 </v-col>
             </v-footer>

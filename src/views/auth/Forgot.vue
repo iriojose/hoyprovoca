@@ -27,12 +27,12 @@
                     <v-row justify="center" class="pb-4 hidden-sm-and-up">
                         <v-img transition="scale-transition" contain width="100" height="50" :src="require('@/assets/logo 6.png')"></v-img>
                     </v-row>
-                    <v-card :color="theme.background.strong" width="100%">
+                    <v-card :color="theme.background.light" width="100%">
                         <v-row  justify="center">
-                            <v-col :style="`background-color:${theme.background.light_2}`" cols="12" md="6" class="hidden-sm-and-down" style="padding: 12px 40px">
+                            <v-col  cols="12" md="6" class="hidden-sm-and-down" style="padding: 12px 40px">
                                 <v-img width="100%" height="400" contain :src="require('@/assets/forgot.svg')"></v-img>
                             </v-col>
-                            <v-col  cols="12" md="6" sm="12" class="pa-12">
+                            <v-col  cols="12" md="6" sm="12" class="pa-12" :style="`background-color:${theme.background.strong}`">
                                 <div  :style="`color:${theme.background.font}`" class="headline text-center mb-5">¿Olvido su contraseña?</div>
 
                                 <v-card :color="theme.background.strong" elevation="0" height="50">
