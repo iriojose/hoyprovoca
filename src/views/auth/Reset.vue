@@ -1,33 +1,17 @@
 <template>
-    <div :style="`background:${theme.background.strong}`">
+    <div :style="`background:${theme.background.primary}`">
         <v-card :color="theme.background.light" elevation="0" width="100%">
             <v-card-text>
                 <v-row justify="center" class="py-4">
                     <v-col cols="12" md="8" sm="12" :class="$vuetify.breakpoint.smAndDown ? 'mx-4':null">
                         <v-row justify="center" class="pb-4">
                             <v-img v-if="theme.background.dark" contain width="100" @click="push2" height="50" :src="require('@/assets/logo2.png')"></v-img>
-                            <v-img v-else contain width="100" height="50" @click="push2" :src="require('@/assets/logo6.png')"></v-img>
+                            <v-img v-else contain width="100" height="50" @click="push2" :src="require('@/assets/logo2.png')"></v-img>
                         </v-row>
                         <v-card width="100%" :color="theme.background.light_2">
                             <v-row justify="center">
-                                <v-col cols="12" md="6" class="hidden-sm-and-down">
-                                     <v-img
-                        v-if="theme.background.dark"
-                        alt="Hoyprovoca logo"
-                        contain
-                        src="@/assets/logo2.png"
-                        transition="scale-transition"
-                        width="100"
-                        height="50"
-                        @click="push2"
-                    />
-                    <v-img v-else
-                        transition="scale-transition"
-                        contain
-                        width="100"
-                        height="50"
-                        :src="require('@/assets/logo 6.png')"
-                    ></v-img>
+                                <v-col  cols="12" md="6" class="hidden-sm-and-down" style="padding: 12px 40px">
+                                    <v-img width="100%" height="400" contain :src="require('@/assets/forgot.svg')"></v-img>
                                 </v-col>
                                 <v-col cols="12" md="6" sm="12" class="pa-12">
                                     <div :style="`color:${theme.background.strong}`" class="headline text-center mb-5">Resetear contraseña</div>
@@ -96,9 +80,12 @@
             </v-card-text>
         </v-card>
 
-        <v-footer fixed class="font-weight-medium" elevation="0" :color="theme.background.light_2">
-            <v-col class="text-center white--text" cols="12">
-                {{ new Date().getFullYear() }} — <strong>Hoyprovoca</strong> 
+        <v-footer
+            fixed elevation="0"
+            :color="theme.background.primary"
+        >
+            <v-col class="text-center black--text font-weight-black" cols="12">
+                {{ new Date().getFullYear() }} — <strong>Hoyprovoca</strong>
             </v-col>
         </v-footer>
     </div>

@@ -24,7 +24,7 @@
 
             <v-list-item :to="item.to" class="mx-2 move" v-for="item in vistas" :key="item.id">
                 <v-list-item-icon>
-                    <v-icon>{{item.text}}</v-icon>
+                    <v-icon color="#232323">{{item.icon}}</v-icon>
                 </v-list-item-icon>
                 <v-list-item-content>
                     <v-list-item-title class="text-capitalize font-weight-bold black--text body-1">{{ item.nombre }}</v-list-item-title>
@@ -44,10 +44,10 @@ import variables from '@/services/variables_globales';
             return {
                 ...variables,
                 vistas:[
-                    {nombre:"Ofertas",icon:"mdi-reload",to:"/offers"},
-                    {nombre:"Más vendidos",icon:"mdi-reload",to:"/mostsold"},
-                    {nombre:"Categorías",icon:"mdi-reload",to:"/grupos"},
-                    {nombre:"Aliados",icon:"mdi-reload",to:"/aliados"},
+                    {nombre:"Ofertas",icon:"mdi-decagram",to:"/offers"},
+                    {nombre:"Más vendidos",icon:"mdi-chart-timeline-variant",to:"/mostsold"},
+                    {nombre:"Categorías",icon:"mdi-hexagon",to:"/grupos"},
+                    {nombre:"Aliados",icon:"mdi-city",to:"/aliados"},
                 ]
             }
         },

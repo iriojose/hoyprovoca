@@ -52,10 +52,10 @@ export default {
         Talk.ready.then(async () => {
         this.me = new Talk.User({
                 id: this.user.data.id !== 2 ? this.user.data.email : "teamlead@somossistemas.com",
-                name: this.user.data.id !== 2 ? this.user.data.nombre + " " + this.user.data.apellido: "Soporte SOMOS SISTEMAS C.A",
+                name: this.user.data.id !== 2 ? this.user.data.nombre + " " + this.user.data.apellido: "Soporte Hoyprovoca",
                 email: this.user.data.id !== 2 ? this.user.data.email !== "" ? this.user.data.email : null : "teamlead@somossistemas.com", 
                 photoUrl: this.user.data.id !== 2 ? this.user.data.imagen === 'default.png' ? require('@/assets/user.jpg') : this.image+this.user.data.imagen : require('@/assets/AFTIM.png'),
-                welcomeMessage: this.user.data.id !== 2 ?  "Hola, soy "+this.user.data.nombre : "En Somos Sistemas C.A, estamos encantados de ayudarte a solventar tus problemas. Déjanos un mensaje!",
+                welcomeMessage: this.user.data.id !== 2 ?  "Hola, soy "+this.user.data.nombre : "En Hoyprovoca, estamos encantados de ayudarte a solventar tus problemas. Déjanos un mensaje!",
                 role: 'Customer',
                 locale: 'es-ES'
         });
@@ -68,10 +68,10 @@ export default {
             // Cambiar teamlead por cualquier otro correo de soporte
             this.other = new Talk.User({
                 id: "teamlead@somossistemas.com",
-                name: "Soporte SOMOS SISTEMAS C.A",
+                name: "Soporte Hoyprovoca",
                 email: "teamlead@somossistemas.com",
                 photoUrl: require('@/assets/AFTIM.png'),
-                welcomeMessage: "En Somos Sistemas C.A, estamos encantados de ayudarte a solventar tus problemas. Déjanos un mensaje!",
+                welcomeMessage: "En Hoyprovoca, estamos encantados de ayudarte a solventar tus problemas. Déjanos un mensaje!",
                     role:'Support',
                     locale: 'es-ES'
                 });

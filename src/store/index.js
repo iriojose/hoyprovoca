@@ -103,8 +103,7 @@ export default new Vuex.Store({
             state.agregados = [];//se elemina los ids de los pedidos guardados
             state.totalPedidos = [];//se elimina los totales
             window.sessionStorage.clear();//se elimina la data de la sesion
-            window.localStorage.setItem("pedidos","");//se elimina la data del localstorage
-            window.localStorage.setItem("ultimasOrdenes","");
+            window.localStorage.clear();
 		},
 		SET_PRODUCTO(state,val){
             state.producto=val;

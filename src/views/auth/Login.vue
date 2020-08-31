@@ -1,31 +1,20 @@
 <template>
-    <div :style="`background-color:${theme.background.primary}`">
+    <div :style="`background-color:${theme.background.primary};height:100%;width:100%;`">
         <v-card-actions>
             <v-btn fab small :color="theme.buttons.secondary" @click="home">
                 <v-icon :color="theme.buttons.font">mdi-home</v-icon>
             </v-btn>
             <v-spacer class="hidden-sm-and-down"></v-spacer>
             <v-img
-                v-if="theme.background.dark"
-                alt="Hoyprovoca logo"
+                v-if="theme.background.dark" alt="Hoyprovoca logo"
                 class="shrink mr-2 cursor hidden-sm-and-down"
-                contain
-                src="@/assets/logo6.png"
-                transition="scale-transition"
-                width="200"
-                height="100"
-                @click="push2"
+                contain src="@/assets/logo6.png" transition="scale-transition"
+                width="200" height="100" @click="push2"
             />
             <v-img
-                v-else
-                alt="Hoyprovoca logo"
-                class="shrink mr-2 cursor hidden-sm-and-down"
-                contain
-                src="@/assets/logo2.png"
-                transition="scale-transition"
-                width="200"
-                height="100"
-                @click="push2"
+                v-else alt="Hoyprovoca logo" class="shrink mr-2 cursor hidden-sm-and-down"
+                contain src="@/assets/logo2.png" transition="scale-transition"
+                width="200" height="100" @click="push2"
             />
             <v-spacer></v-spacer>
             <v-btn
@@ -40,14 +29,12 @@
         </v-card-actions>
 
         <v-card
-            color="transparent"
-            elevation="0"
-            width="100%"
-            :style="`background:${theme.background.light}`"
+            color="transparent" elevation="0"
+            width="100%" :style="`background:${theme.background.light}`"
         >
-            <v-card-text>
-                <v-row justify="center" class="hidden-sm-and-up">
-                  <v-img
+            <v-card-text class="hidden-sm-and-up">
+                <v-row justify="center">
+                    <v-img
                         v-if="theme.background.dark"
                         alt="Hoyprovoca logo"
                         contain
@@ -64,7 +51,6 @@
                         height="50"
                         :src="require('@/assets/logo2.png')"
                     ></v-img>
-                    
                 </v-row>
             </v-card-text>
 
@@ -154,19 +140,14 @@
                                                     <v-progress-circular
                                                         v-if="loading2"
                                                         size="24"
-                                                        :color="
-                                                            theme.background
-                                                                .secondary
-                                                        "
+                                                        :color="theme.background.secondary"
                                                         indeterminate
                                                     ></v-progress-circular>
                                                     <img
                                                         v-else
                                                         width="24"
                                                         height="24"
-                                                        :src="
-                                                            require('@/assets/logo 3.png')
-                                                        "
+                                                        :src="require('@/assets/2.png')"
                                                     />
                                                 </v-fade-transition>
                                             </template>
@@ -195,15 +176,9 @@
                                             block
                                             :loading="loading"
                                             height="40"
-                                            :disabled="
-                                                valid && success !== ''
-                                                    ? false
-                                                    : true
-                                            "
+                                            :disabled="valid && success !== '' ? false: true"
                                             @click="login()"
-                                            :style="
-                                                `color:${theme.buttons.font}!important`
-                                            "
+                                            :style="`color:${theme.buttons.font}!important`"
                                             class="text-capitalize caption "
                                         >
                                             Iniciar sesión
@@ -230,12 +205,10 @@
         </v-card>
 
         <v-footer
-            fixed
-            class="font-weight-medium"
-            elevation="0"
+            fixed elevation="0"
             :color="theme.background.primary"
         >
-            <v-col class="text-center white--text" cols="12">
+            <v-col class="text-center black--text font-weight-black" cols="12">
                 {{ new Date().getFullYear() }} — <strong>Hoyprovoca</strong>
             </v-col>
         </v-footer>
@@ -362,65 +335,55 @@ export default {
                 });
         },
         getCliente(data) {
-            Clientes()
-                .get(`/?usuario_id=${data.data.id}`)
-                .then((response) => {
-                    data.cliente = response.data.data[0];
-                    this.logged(data);
-                    this.respuesta("Bienvenido.", "success");
-                    setTimeout(() => {
-                        this.home();
-                    }, 1000);
-                    this.getPedidos(data.cliente.id);
-                })
-                .catch((e) => {
-                    console.log(e);
-                    this.respuesta("Contraseña incorrecta.", "error");
-                });
+            Clientes().get(`/?usuario_id=${data.data.id}`).then((response) => {
+                data.cliente = response.data.data[0];
+                this.logged(data);
+                this.respuesta("Bienvenido.", "success");
+                setTimeout(() => {
+                    this.home();
+                }, 1000);
+                this.getPedidos(data.cliente.id);
+            }).catch((e) => {
+                this.respuesta("Contraseña incorrecta.", "error");
+            });
         },
         getPedidos(id) {
-            Clientes()
-                .get(`/${id}/pedidos/?rest_estatus_id=1`)
-                .then((response) => {
-                    if (response.data.data) {
-                        this.aux = response.data.data;
-                        response.data.data.filter((a, i) =>
-                            this.getConceptos(a, i)
-                        );
-                    }
-                })
-                .catch((e) => {
-                    console.log(e);
-                });
+            Clientes().get(`/${id}/pedidos/?rest_estatus_id=1`).then((response) => {
+                if (response.data.data) {
+                    this.aux = response.data.data;
+                    response.data.data.filter((a, i) =>
+                        this.getConceptos(a, i)
+                    );
+                }
+            }).catch((e) => {
+                console.log(e);
+            });
         },
         getConceptos(data, i) {
             //trae los conceptos de un pedido
-            Pedidos()
-                .get(`/${data.id}/conceptos`)
-                .then((response) => {
-                    this.aux[i].conceptos = response.data.data;
-                    if (i == this.aux.length - 1) this.setPedidos(this.aux);
-                })
-                .catch((e) => {
-                    console.log(e);
-                });
+            Pedidos().get(`/${data.id}/conceptos`).then((response) => {
+                this.aux[i].conceptos = response.data.data;
+                if (i == this.aux.length - 1) this.setPedidos(this.aux);
+            }).catch((e) => {
+                console.log(e);
+            });
         },
     },
 };
 </script>
 
 <style lang="scss" scoped>
-.fondo {
-    background: #1f3b63;
-    height: 100%;
-}
-.color {
-    color: #000;
-    background: #fff;
-}
-.color:hover {
-    cursor: pointer;
-    text-decoration: underline;
-    background: #fff;
-}
+    .fondo {
+        background: #1f3b63;
+        height: 100%;
+    }
+    .color {
+        color: #000;
+        background: #fff;
+    }
+    .color:hover {
+        cursor: pointer;
+        text-decoration: underline;
+        background: #fff;
+    }
 </style>

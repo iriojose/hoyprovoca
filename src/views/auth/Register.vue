@@ -44,7 +44,7 @@
                     </v-row>
 
                     <v-card width="100%" :style="`background-color:${theme.background.light};color:${theme.background.font}!important`"  elevation="0" style="padding: 0 15px 0 30px">
-                        <v-row justify="center">
+                        <v-row justify="center" class="mt-5">
                             <v-col cols="12" md="6" class="hidden-sm-and-down" style="padding: 0 20px">
                                 <v-img width="100%" height="400" contain :src="require('@/assets/undrawregistro2.svg')"></v-img>
                                 <v-divider></v-divider>
@@ -71,9 +71,9 @@
                                 <v-form :style="`background-color:${theme.background.light_2}`" v-model="valid" @submit.prevent class="my-5" >
                                     <v-stepper  v-model="e1" class="elevation-0" non-linear>
                                         <v-stepper-items>
-                                            <v-stepper-content :style="`background-color:${theme.background.light_2}`"   step="1"  style="padding: 16px">
+                                            <v-stepper-content :style="`background-color:${theme.background.light_2}`"   step="1"  style="padding: 0px">
                                                 <v-text-field
-                                                :dark="theme.background.dark"
+                                                    :dark="theme.background.dark"
                                                     filled single-line label="Nombre"
                                                     dense rounded hint="Ejemplo: Manuel"
                                                     :rules="[required('Nombre')]" v-model="data.nombre"
@@ -82,8 +82,7 @@
                                                 ></v-text-field>
 
                                                 <v-text-field
-                                                :dark="theme.background.dark"
-                                                  
+                                                    :dark="theme.background.dark"
                                                     filled single-line label="Apellido" dense
                                                     rounded hint="Ejemplo: Gómez" :rules="[required('Apellido')]"
                                                     v-model="data.apellido" persistent-hint :color="theme.background.light_2"
@@ -110,7 +109,7 @@
                                                         :dark="theme.background.dark"
                                                             dense v-model="data.fecha_nac" label="Cumpleaños"
                                                             color="#2950c3" append-icon="mdi-calendar" filled
-                                                            v-on="on" rounded hint="Formato YYYY/MM/DD"
+                                                            v-on="on" rounded hint="Fecha de nacimiento:YYYY/MM/DD"
                                                             persistent-hint single-line 
                                                         ></v-text-field>
                                                     </template>
@@ -121,9 +120,9 @@
                                                 </v-menu>
                                             </v-stepper-content>
 
-                                            <v-stepper-content step="2" style="padding: 16px">
+                                            <v-stepper-content step="2" style="padding:0px">
                                                 <v-text-field
-                                                :dark="theme.background.dark" filled rounded persistent-hint
+                                                    :dark="theme.background.dark" filled rounded persistent-hint
                                                     dense :disabled="loading" v-model="data.login"
                                                     single-line type="text" color="#0f2441"
                                                     :rules="[required('Nombre de usuario'),minLength('Nombre de usuario',6)]"
@@ -132,7 +131,7 @@
                                                 ></v-text-field>
 
                                                 <v-text-field
-                                                :dark="theme.background.dark"
+                                                    :dark="theme.background.dark"
                                                     filled rounded :disabled="loading"
                                                     v-model="data.email" single-line dense
                                                     color="#2950c3" :success-messages="success"
@@ -152,7 +151,7 @@
                                                                 v-else
                                                                 width="24"
                                                                 height="24"
-                                                                :src="require('@/assets/logo 3.png')"
+                                                                :src="require('@/assets/2.png')"
                                                             />
                                                         </v-fade-transition>
                                                     </template>
@@ -194,7 +193,7 @@
                                         <v-btn v-if="e1==2" rounded :color="theme.buttons.secondary" :loading="loading" 
                                             height="40" :disabled="valid && success !== '' ? false:true"
                                             :style="`color:${valid && success !== '' ? theme.background.font : ''}!important`"
-                                            @click="postUsuario()" class="text-capitalize caption"
+                                            @click="postUsuario()" class="text-capitalize caption white--text"
                                         >Registrarse</v-btn>
                                     </v-card-actions>
                                     
@@ -202,13 +201,19 @@
                                         height="40" @click="e1=2" :style="`color:${theme.buttons.font}!important`" class="text-capitalize caption"
                                     >Siguiente</v-btn>
                                 </v-form>
+
+                                <v-divider class="hidden-sm-and-up"></v-divider>
+                                <div
+                                :style="`background:transparent;color:${theme.background.font2}!important;font-weight:bold`"
+                                    class="subtitle-2 text-center color my-5 hidden-sm-and-up" @click="login"
+                                >¿Ya tienes una cuenta? ¡Inicia sesión!</div>
                             </v-col>
                         </v-row>
                     </v-card>
                 </v-col>
             </v-row>
 
-            <v-footer fixed class="font-weight-medium" elevation="0" :color="theme.background.primary">
+            <v-footer :fixed="$vuetify.breakpoint.smAndDown" class="font-weight-medium" elevation="0" :color="theme.background.primary">
                 <v-col class="text-center" :style="`color:${theme.background.font}`" cols="12">
                     {{ new Date().getFullYear() }} — <strong>Hoyprovoca</strong> 
                 </v-col>

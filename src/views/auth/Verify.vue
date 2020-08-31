@@ -60,9 +60,12 @@
             </v-row>
         </v-card-text>
 
-        <v-footer fixed class="font-weight-medium" elevation="0" :color="theme.background.light">
-            <v-col class="text-center white--text" cols="12">
-                {{ new Date().getFullYear() }} — <strong>Hoyprovoca</strong> 
+        <v-footer
+            fixed elevation="0"
+            :color="theme.background.primary"
+        >
+            <v-col class="text-center black--text font-weight-black" cols="12">
+                {{ new Date().getFullYear() }} — <strong>Hoyprovoca</strong>
             </v-col>
         </v-footer>
     </v-card>
