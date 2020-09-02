@@ -11,8 +11,7 @@
     >
         <v-toolbar width="100%" elevation="1" v-if="user.loggedIn" :color="theme.sidebar.primary">
             <v-toolbar-title>
-                <v-img v-if="theme.sidebar.dark" contain width="150" height="80" :src="require('@/assets/logo2.png')"></v-img>
-                <v-img v-else contain width="150" height="80" :src="require('@/assets/logo6.png')"></v-img>
+                <v-img contain width="50" height="50" :src="require('@/assets/2.png')"></v-img>
             </v-toolbar-title>
             <v-spacer></v-spacer>
             <v-btn icon fab depressed @click="change" :elevation="0">

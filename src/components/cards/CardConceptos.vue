@@ -25,7 +25,8 @@
             </v-row>
         </v-img>
         <div class="text-center font-weight-black text-capitalize body-1">{{precioDolar}}</div>
-        <div class="text-center font-weight-bold text-capitalize">{{concepto.nombre}}</div>
+        <div class="text-center font-weight-bold text-capitalize caption">{{concepto.nombre}}</div>
+        <div v-if="parseExistencia(concepto) > 0" class="text-center font-weight-bold text-capitalize green--text">Disponible: {{+concepto.existencias[0].existencia}}</div>
     </v-card>
 </template>
 

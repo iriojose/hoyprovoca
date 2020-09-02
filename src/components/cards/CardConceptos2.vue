@@ -21,8 +21,9 @@
                 </v-col>
                 <v-col cols="12" sm="6">
                     <div class="text-center subtitle-1 font-weight-black">{{precioDolar}}</div>
-                    <div class="text-center font-weight-bold text-capitalize">{{concepto.nombre}}</div>
-                    
+                    <div class="text-center font-weight-bold text-capitalize caption">{{concepto.nombre}}</div>
+                    <div v-if="parseExistencia(concepto) > 0" class="text-center font-weight-bold text-capitalize green--text">Disponible: {{+concepto.existencias[0].existencia}}</div>
+
                     <v-row justify="center" align="center" class="mt-5" v-if="!$vuetify.breakpoint.smAndDown">
                         <AgregarButton :concepto="concepto" />
                     </v-row>
