@@ -52,7 +52,7 @@ export default {
         check(event){
             let img = new Image();
             img.src = event.target.responseURL;
-           return this.load=true;
+            return this.load=true;
         },
         preload(data) {
             return new Promise((done) => {

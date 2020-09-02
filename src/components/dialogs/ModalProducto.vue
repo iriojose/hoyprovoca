@@ -27,6 +27,7 @@
                 <div class="text-truncate text-center title font-weight-black text-capitalize">{{precioDolar}}</div>
                 <div class="text-truncate text-center font-weight-bold text-capitalize">{{producto.nombre}}</div>
                 <div class="text-truncate body-2 text-center grey--text text-capitalize">{{producto.descripcion}}</div>
+                <div v-if="parseExistencia(producto) > 0" class="text-center font-weight-bold text-capitalize green--text">Disponible: {{+producto.existencias[0].existencia}}</div>
             </v-card-text>
             <v-card-actions class="mx-10">
                 <AgregarButton :concepto="producto" />

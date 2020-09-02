@@ -51,8 +51,12 @@ import accounting from 'accounting';
         data(){
             return {
                 ...variables,
+                load:false,
             }
         }, 
+        async mounted(){
+            await this.preload(this.image + this.concepto.imagen);
+        },
         computed:{
             precioDolar(){
                 return accounting.formatMoney(+this.concepto.precio_dolar,{symbol:"$ ",thousand:',',decimal:'.'});
@@ -67,7 +71,29 @@ import accounting from 'accounting';
             },
             parseExistencia(concepto){
                 return (Array.isArray(concepto.existencias) ? concepto.existencias.length > 0 ? concepto.existencias.map(a => Math.trunc(+a.existencia)).reduce((a, b) => a + b) : 0 : concepto.existencias)
-            }
+            },
+            check(event){
+                let img = new Image();
+                img.src = event.target.responseURL;
+                return this.load=true;
+            },
+            preload(data) {
+                return new Promise((done) => {
+                    try {
+                        let load = (url) => {
+                            let req = new XMLHttpRequest();
+                            req.open("GET", url, true);
+                            req.responseType = "blob";
+                            req.onload = async (event) => done( this.check(event));
+                            req.onerror = (event) => done(this.check(event));
+                            req.send();
+                        };
+                        load(data);
+                    } catch (error) {
+                        console.log("error :", error);
+                    }
+                });
+            },
         }       
     }
 </script>
