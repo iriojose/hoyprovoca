@@ -77,6 +77,7 @@
                 :pago.sync="pago"
                 :total.sync="total"
                 :data="data"
+                :totalUSD.sync="totalUSD"
               />
             </v-stepper-content>
           </v-stepper-items>
@@ -195,7 +196,6 @@ export default {
       totalUSD: 0,
       file2: {},
       diferentes: false,
-      totalUSD:0,
       success: false,
       bloqueo:true,
       restante: 0,
