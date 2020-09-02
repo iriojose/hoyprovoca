@@ -244,21 +244,21 @@ router.beforeEach((to,from,next) => {
 	let user =  window.sessionStorage.getItem('token_client');//store.state.user.loggedIn;
 
 	if(to.meta.auth){
-		if(user !== "" || user){
+		if(user !== null){
 			next();
 		}else{
 			next({name: 'notauthorized'});
 		}
 	}else{
-		if(to.name == 'login' && user){
+		if(to.name == 'login' && user !== null){
 			next({name:'home'});
-		}else if(to.name == 'login' && user){
+		}else if(to.name == 'login' && user !== null){
 			next({name:'home'});
-		}else if(to.name == 'register' && user){
+		}else if(to.name == 'register' && user !== null){
 			next({name:'home'});
-		}else if(to.name == 'reset' && user){
+		}else if(to.name == 'reset' && user !== null){
 			next({name:'home'});
-		}else if(to.name == 'forgot' && user){
+		}else if(to.name == 'forgot' && user !== null){
 			next({name:'home'});
 		}else{
 			next();
