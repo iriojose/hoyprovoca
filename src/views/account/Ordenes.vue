@@ -12,10 +12,10 @@
             </v-container>
 
             <v-card elevation="0" color="#fff" width="100%" height="100%" v-else>
-                <v-row justify="center" v-if="!ultimasOrdenes" class="mt-5">
+                <v-row justify="center" v-if="ultimasOrdenes.length == 0" class="mt-5">
                     <v-img contain width="250" height="250" src="@/assets/empty.svg"></v-img>
                 </v-row>
-                <div v-if="!ultimasOrdenes" class="text-center title font-weight-black">No tienes pedidos pendientes.</div>
+                <div v-if="ultimasOrdenes.length == 0" class="text-center title font-weight-black">No tienes pedidos pendientes.</div>
                 
                 <v-card v-else elevation="0" color="#fff" width="100%">
                     <v-expansion-panels flat>
@@ -164,17 +164,15 @@ import accounting from 'accounting';
                                 this.aux[i].conceptos = conceptos.data.data
                                 if(count === pedidos.data.data.length - 1) {
                                     this.setUltimasOrdenes(this.aux);
-                                    setTimeout(() => this.loading = false, 1000)
+                                    setTimeout(() => this.loading = false, 1000);
                                 }
                             }).catch(e => {
-                                console.error(e)
                                 this.loading = false;
                             });
                         })
 
                     }else this.loading = false;
                 }).catch(e => {
-                    console.error(e)
                     this.loading = false;
                 });
 

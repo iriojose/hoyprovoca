@@ -1,17 +1,17 @@
 <template>
-    <v-card width="100%" elevation="0" :color="theme.background.light" height="100%">
+    <v-card width="100%" elevation="0" :color="theme.background.primary" height="100%">
         <v-card-actions>
             <v-btn fab small :color="theme.buttons.primary" @click="home">
                 <v-icon :color="theme.buttons.font">mdi-home</v-icon>
             </v-btn>
             <v-spacer class="hidden-sm-and-down"></v-spacer>
             <v-img v-if="theme.background.dark"
-	            alt="Hoyprovoca logo" class="shrink mr-2 cursor" contain
+	            alt="Hoyprovoca logo" class="shrink mr-2 cursor hidden-sm-and-down" contain
               src='@/assets/logo6.png' transition="scale-transition"
                 width="200" height="100" @click="push2"
             />
             <v-img v-else
-                    alt="Hoyprovoca logo" class="shrink mr-2 cursor" contain
+                    alt="Hoyprovoca logo" class="shrink mr-2 cursor hidden-sm-and-down" contain
               src='@/assets/logo2.png' transition="scale-transition"
                 width="200" height="100" @click="push2"
             />
@@ -25,14 +25,14 @@
             <v-row justify="center" class="py-4">
                 <v-col cols="12" md="9" sm="12" :class="$vuetify.breakpoint.smAndDown ? 'mx-4':null">
                     <v-row justify="center" class="pb-4 hidden-sm-and-up">
-                        <v-img transition="scale-transition" contain width="100" height="50" :src="require('@/assets/logo 6.png')"></v-img>
+                        <v-img transition="scale-transition" contain width="100" height="50" :src="require('@/assets/logo2.png')"></v-img>
                     </v-row>
-                    <v-card :color="theme.background.light" width="100%">
+                    <v-card :color="theme.background.light" width="100%" style="padding: 0 15px">
                         <v-row  justify="center">
                             <v-col  cols="12" md="6" class="hidden-sm-and-down" style="padding: 12px 40px">
                                 <v-img width="100%" height="400" contain :src="require('@/assets/forgot.svg')"></v-img>
                             </v-col>
-                            <v-col  cols="12" md="6" sm="12" class="pa-12" :style="`background-color:${theme.background.strong}`">
+                            <v-col  cols="12" md="6" sm="12" class="py-12" :style="`background-color:${theme.background.strong}`">
                                 <div  :style="`color:${theme.background.font}`" class="headline text-center mb-5">¿Olvido su contraseña?</div>
 
                                 <v-card :color="theme.background.strong" elevation="0" height="50">
@@ -65,7 +65,7 @@
                                                     color="#0f2441"
                                                     indeterminate
                                                 ></v-progress-circular>
-                                                <img v-else width="24" height="24" :src="require('@/assets/logo 3.png')">
+                                                <img v-else width="24" height="24" :src="require('@/assets/2.png')">
                                             </v-fade-transition>
                                         </template>
                                     </v-text-field>
@@ -97,9 +97,12 @@
             </v-row>
         </v-card-text>
 
-        <v-footer fixed class="font-weight-medium" elevation="0" :color="theme.background.strong">
-            <v-col class="text-center white--text" cols="12">
-                {{ new Date().getFullYear() }} — <strong>Hoyprovoca</strong> 
+        <v-footer
+            fixed elevation="0"
+            :color="theme.background.primary"
+        >
+            <v-col class="text-center black--text font-weight-black" cols="12">
+                {{ new Date().getFullYear() }} — <strong>Hoyprovoca</strong>
             </v-col>
         </v-footer>
     </v-card>

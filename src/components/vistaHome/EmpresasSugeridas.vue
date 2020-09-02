@@ -8,8 +8,7 @@
             <v-row justify="center">
                 <v-card 
                     :elevation="1" 
-                   
-                    class="border mx-2 mb-4 pa-4"
+                    class="border mx-2 mb-8 pa-4"
                     :width="$vuetify.breakpoint.smAndDown ? 100:200" 
                     :height="$vuetify.breakpoint.smAndDown ? 100:200" 
                     v-for="(empresa,i) in empresas" :key="i"
@@ -21,7 +20,7 @@
                         :height="$vuetify.breakpoint.smAndDown ? 80:150"
                         :src="image+empresa.imagen" 
                     /> 
-                    <div :style="`color:${theme.background.font}`" class="mt-2 text-center subtitle-2 font-weight-black">{{empresa.nombre_comercial}}</div>
+                    <div :style="`color:${theme.background.font}`" class="mt-2 px-2 text-center text-truncate caption text-capitalize font-weight-black">{{empresa.nombre_comercial}}</div>
                 </v-card>
             </v-row>
         </v-card-text>

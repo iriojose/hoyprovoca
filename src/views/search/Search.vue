@@ -9,7 +9,6 @@
         <v-card elevation="0" color="#fff" width="100%" height="100%" v-else>
             <transition name="fade">
                 <v-card-text v-show="conceptos">
-                    <!--div class="headline font-weight-black text-center mt-8">Todas las Categorías</div-->
                     <v-row>
                         <v-col cols="12" sm="12" md="9">
                             <v-toolbar color="#fff" elevation="0" width="100%" class="pb-4 px-5">
@@ -138,7 +137,7 @@ import {mapState,mapActions} from 'vuex';
             }
         },
         computed:{
-            ...mapState(['agregados','municipios','search','bandera'])
+            ...mapState(['agregados','municipios','search','bandera','empresas'])
         },
         watch: {
             agregados(){

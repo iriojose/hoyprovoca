@@ -42,6 +42,16 @@
                         </v-list-item>
                     </v-hover>
                     <v-hover v-slot:default="{hover}">
+                        <v-list-item to="/account/ordenes">   
+                            <v-list-item-icon>
+                                <v-icon :color="hover ? theme.background.font:null">mdi-arrow-down-bold-box</v-icon>
+                            </v-list-item-icon>
+                            <v-list-item-title :style="`color:${theme.background.font}`">
+                                Últimas ordenes
+                            </v-list-item-title>        
+                        </v-list-item>
+                    </v-hover>
+                    <v-hover v-slot:default="{hover}">
                         <v-list-item @click="logOut()">   
                             <v-list-item-icon>
                                 <v-icon :color="hover ? theme.background.font:null">mdi-exit-to-app</v-icon>
