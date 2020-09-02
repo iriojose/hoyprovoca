@@ -15,8 +15,7 @@
                         dense color="#2950c3" 
                         label="Ingrese correo electrónico"
                         hint="Email" persistent-hint
-                    ></v-text-field
-                    :dark="theme.background.dark">
+                    ></v-text-field>
 
                     <v-text-field
                     :dark="theme.background.dark"
@@ -27,8 +26,7 @@
                         v-model="data.nombre" persistent-hint
                         color="#2950c3" :disabled="loading"
                         @input="validEdit()"
-                    ></v-text-field
-                    :dark="theme.background.dark">
+                    ></v-text-field>
 
                     <v-text-field
                     :dark="theme.background.dark"
@@ -39,8 +37,7 @@
                         v-model="data.apellido" persistent-hint
                         color="#2950c3" :disabled="loading"
                         @input="validEdit()"
-                    ></v-text-field
-                    :dark="theme.background.dark">
+                    ></v-text-field>
 
                     <v-switch 
                         v-model="email" class="ma-4" color="green" @change="sendEmail()"
@@ -74,8 +71,7 @@
                         :rules="[required('Telefono'),telefonoFormat()]"
                         v-model="data.telefono" persistent-hint
                         color="#2950c3" :disabled="loading"
-                    ></v-text-field
-                    :dark="theme.background.dark">
+                    ></v-text-field>
 
                     <v-menu :close-on-content-click="false" transition="scale-transition" max-width="100%" offset-overflow>
                         <template v-slot:activator="{ on }">

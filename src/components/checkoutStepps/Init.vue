@@ -87,9 +87,9 @@
                                 <v-list-item-title :style="` color:${theme.background.font}`">
                                     <p class="center-text">Cantidad</p>
                                 </v-list-item-title>
-                                <v-list-item-title :style="` color:${theme.background.font}`">
+                              <!--  <v-list-item-title :style="` color:${theme.background.font}`">
                                     <p class="center-text">En Stock</p>
-                                </v-list-item-title>
+                                </v-list-item-title>-->
                             </v-list-item>
                             <v-list-item
                                 class="products-row products line"
@@ -134,22 +134,14 @@
                                 <v-list-item-title :style="` color:${theme.background.font}`" class="product-text center">
                                     <v-btn
                                         class=" onlyShow white--text"
-                                        :loading="loadingExistence"
                                         small
                                         v-if="detalle"
-                                        :color="
-                                            detalle.stock
-                                                ? detalle.stock >=
-                                                  detalle.cantidad
-                                                    ? 'green'
-                                                    : 'red'
-                                                : 'green lighten-1'
-                                        "
+                                        :color="'green'"
                                         :style="` color:${theme.background.font}`"
                                         >{{ parseInt(detalle.cantidad) }}</v-btn
                                     >
                                 </v-list-item-title>
-                                <v-list-item-title :style="` color:${theme.background.font}`" class="product-text center">
+                              <!--  <v-list-item-title :style="` color:${theme.background.font}`" class="product-text center">
                                     <v-btn
                                         class="onlyShow white--text"
                                         :loading="loadingExistence"
@@ -162,7 +154,7 @@
                                         "
                                         >{{ detalle.stock }}</v-btn
                                     >
-                                </v-list-item-title>
+                                </v-list-item-title>-->
                             </v-list-item>
                         </v-list>
                     </v-col>
@@ -211,7 +203,7 @@
                             class="text-capitalize subtitle-2 my-5 font-weight-bold"
                             @click="next"
                             :style="` color:${theme.buttons.font}!important`"
-                            :disabled="bloqueo || !priced"
+                            :disabled="!priced"
                             >{{ messagePendiente }}</v-btn
                         >
                     </v-col>
@@ -395,7 +387,7 @@ export default {
             }
             this.getCripto();
             this.getDolar();
-            this.checkExistence();
+           // this.checkExistence();
             this.$emit("updatedState", {
                 name: "pedidos",
                 content: this.pedidos,
@@ -436,10 +428,10 @@ export default {
         },
         seleccionarPedido(evt, i) {
             this.$emit("updatedState", { name: "pedidoSelect", content: evt });
-            this.checkStock(evt);
+        //    this.checkStock(evt);
             this.messagePendiente = "Pagar";
             this.detalles = evt.detalles;
-            this.dolar && (this.arrived = (!evt.detalles?.stock) ? 1 : 2);
+      //      this.dolar && (this.arrived = (!evt.detalles?.stock) ? 1 : 2);
             this.calcularTotal(this.pedidos[i].conceptos, evt.detalles);
         },
 

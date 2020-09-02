@@ -4,7 +4,7 @@
       <v-col cols="12" md="6" sm="12" class="pa-5">
         <div class="font-weight-bold title">Subtotal a pagar</div>
         <div class="font-weight-bold subtitle-1">{{ total }}</div>
-
+        <div class="font-weight-bold subtitle-1">{{ totalUSD }} $</div>
         <div class="text-center font-weight-bold title my-5">Datos de la cuenta</div>
         <div>
           <strong>Nombre :</strong>
@@ -143,6 +143,10 @@ export default {
       default: function () {
         return {};
       },
+    },
+    totalUSD:{
+      type:Number | String,
+      default:0
     },
     stepper: { type: Number, default: 0 },
     total: {
