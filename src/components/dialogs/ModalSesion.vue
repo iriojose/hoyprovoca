@@ -53,6 +53,12 @@
                             Iniciar sesión
                         </v-btn>
                     </v-form>
+
+                    <v-divider class="my-5"></v-divider>
+
+                    <div class="subtitle-2 text-center color" @click="register">
+                        ¿No tienes una cuenta? ¡Registrate!
+                    </div>
                 </v-col>
             </v-row>
         </v-card>
@@ -65,6 +71,8 @@ import validations from '@/validations/validations';
 import Auth from '@/services/Auth';
 import Usuario from '@/services/Usuario';
 import Clientes from '@/services/Clientes';
+import router from '@/router';
+
     export default {
         data() {
             return {
@@ -94,6 +102,10 @@ import Clientes from '@/services/Clientes';
             ...mapActions(['setModalSesion','logged','setModalBloqueado']),
             close(){
                 this.setModalSesion(false);
+            },
+            register(){
+                this.cloese();
+                router.push("/register");
             },
             respuesta(mensaje,type){
                 this.mensaje = mensaje;
