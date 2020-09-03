@@ -29,7 +29,7 @@
                                         v-if="loading2" size="24"
                                         color="#0f2441" indeterminate
                                     ></v-progress-circular>
-                                    <img v-else width="24" height="24" :src="require('@/assets/logo 3.png')">
+                                    <img v-else width="24" height="24" :src="require('@/assets/2.png')">
                                 </v-fade-transition>
                             </template>
                         </v-text-field>
@@ -159,8 +159,8 @@ import router from '@/router';
                     data.cliente = response.data.data[0];
                     this.logged(data);
                     this.respuesta("Bienvenido.","success");
-                    setTimeout(() => { this.home()},500);
                     this.getPedidos(data.cliente.id);
+                    this.close();
                 }).catch((e) => {
                     console.log(e);
                     this.respuesta("Contraseña incorrecta.","error");
