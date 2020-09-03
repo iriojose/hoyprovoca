@@ -44,7 +44,7 @@
                     <v-btn 
                         color="#232323" tile dark
                         :loading="loading2" @click="paginar(subgrupo.id)"
-                        :disabled="total == conceptos.length ? true:false"
+                        :disabled="conceptos.length !== paginador ? true:false"
                     >Ver más
                     </v-btn>
                 </v-row>

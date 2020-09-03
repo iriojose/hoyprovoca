@@ -57,8 +57,8 @@
                 <v-row justify="center" class="my-10">
                     <v-btn 
                         color="#232323" tile dark
-                        :loading="loadingConceptos" @click="paginar(grupo.id)"
-                        :disabled="total == conceptos.length ? true:false"
+                        :loading="loading2" @click="paginar(grupo.id)"
+                        :disabled="conceptos.length !== paginador ? true:false"
                     >Ver más
                     </v-btn>
                 </v-row>
@@ -97,6 +97,7 @@ import router from '@/router';
                 ...variables,
                 loadingConceptos:true,
                 loadingSubgrupos:true,
+                loading2:false,
                 tipo:true,
                 subgrupos:[],
                 conceptos:[],
@@ -125,6 +126,7 @@ import router from '@/router';
             },
             '$route'(val){
                 this.grupo = JSON.parse(window.localStorage.getItem('grupo'));
+                this.loadingConceptos = true;
                 this.conceptos = [];
                 this.subgrupos = [];
                 if(this.grupo){
@@ -160,7 +162,7 @@ import router from '@/router';
                 this.getConceptos(id);
             },
             getConceptos(id){
-                this.loadingConceptos = true;
+                this.loading2 = true;
                 Grupos().get(`/${id}/conceptos/?limit=20&offset=${this.after}`).then((response)=> {
                     if(response.data.data.length == 20) {
                         this.validacion(response.data.data);
@@ -172,11 +174,14 @@ import router from '@/router';
                         this.after +=20;
                         this.total = response.data.totalCount;
                         this.loadingConceptos = false;
+                        this.loading2 = false;
                     }else{
                         this.loadingConceptos = false;
+                        this.loading2 = false;
                     }
                 }).catch(e => {
                     this.loadingConceptos = false;
+                    this.loading2 = false;
                 });
             },
             validacion(conceptos){
