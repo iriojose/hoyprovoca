@@ -43,8 +43,8 @@
                 <v-row justify="center" class="my-10">
                     <v-btn 
                         color="#232323" tile dark
-                        :loading="loading2" @click="getConceptos(subgrupo.id)"
-                        :disabled="total == conceptos.length ? true:false"
+                        :loading="loading2" @click="paginar(subgrupo.id)"
+                        :disabled="conceptos.length !== paginador ? true:false"
                     >Ver más
                     </v-btn>
                 </v-row>
@@ -80,6 +80,7 @@ import {mapState} from 'vuex';
                 conceptos:[],
                 total:0,
                 after:0,
+                paginador:20,
                 subgrupo:{imagen:"default.png"}
             }
         },
@@ -113,23 +114,38 @@ import {mapState} from 'vuex';
             this.getConceptos(this.subgrupo.id);
         },
         methods:{
+            paginar(id){
+                this.paginador+=20;
+                this.getConceptos(id);
+            },
             getConceptos(id){
                 this.loading2 = true; 
                 SubGrupos().get(`/${id}/conceptos/?limit=20&offset=${this.after}`).then((response) => {
-                    if(response.data.data){
-                        response.data.data.filter(a => a.agregado=false);
-                        response.data.data.filter(a => this.agregados.filter(b => a.id == b ? a.agregado=true:null));
-                        response.data.data = [...response.data.data].filter((a) => this.parseExistencia(a) > 0);
+                    if(response.data.data.length == 20) {
+                        this.validacion(response.data.data);
                         this.after +=20;
                         this.total = response.data.totalCount;
-                        response.data.data.filter(a => this.conceptos.push(a));
+                        if(this.conceptos.length !== this.paginador) this.getConceptos(id);
+                    }else if(response.data.data.length !== 20){
+                        this.validacion(response.data.data);
+                        this.after +=20;
+                        this.total = response.data.totalCount;
                         this.loading = false;
                         this.loading2 = false;
-                    }else this.loading = false;
+                    }else{
+                        this.loading = false;
+                        this.loading2 = false;
+                    }
                 }).catch(e => {
                     this.loading = false;
                     this.loading2 = false;
                 });
+            },
+            validacion(conceptos){
+                conceptos.filter(a => a.agregado=false);
+                conceptos.filter(a => this.agregados.filter(b => a.id == b ? a.agregado=true:null));
+                conceptos = [...conceptos].filter((a) => this.parseExistencia(a) > 0);
+                conceptos.filter(a => this.conceptos.push(a));
             },
             revision(){
                 this.conceptos.filter(a => a.agregado=false);

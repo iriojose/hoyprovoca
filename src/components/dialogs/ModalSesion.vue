@@ -50,12 +50,7 @@
                                         color="#0f2441"
                                         indeterminate
                                     ></v-progress-circular>
-                                    <img
-                                        v-else
-                                        width="24"
-                                        height="24"
-                                        :src="require('@/assets/logo 3.png')"
-                                    />
+                                    <img v-else width="24" height="24" :src="require('@/assets/2.png')">
                                 </v-fade-transition>
                             </template>
                         </v-text-field>
@@ -97,6 +92,12 @@
                             Iniciar sesión
                         </v-btn>
                     </v-form>
+
+                    <v-divider class="my-5"></v-divider>
+
+                    <div class="subtitle-2 text-center color" @click="register">
+                        ¿No tienes una cuenta? ¡Registrate!
+                    </div>
                 </v-col>
             </v-row>
         </v-card>
@@ -219,13 +220,10 @@ export default {
                 .then((response) => {
                     data.cliente = response.data.data[0];
                     this.logged(data);
-                    this.respuesta("Bienvenido.", "success");
-                    setTimeout(() => {
-                        this.home();
-                    }, 500);
+                    this.respuesta("Bienvenido.","success");
                     this.getPedidos(data.cliente.id);
-                })
-                .catch((e) => {
+                    this.close();
+                }).catch((e) => {
                     console.log(e);
                     this.respuesta("Contraseña incorrecta.", "error");
                 });

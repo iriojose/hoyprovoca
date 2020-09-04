@@ -21,8 +21,9 @@
                 </v-col>
                 <v-col cols="12" sm="6">
                     <div class="text-center subtitle-1 font-weight-black">{{precioDolar}}</div>
-                    <div class="text-center font-weight-bold text-capitalize">{{concepto.nombre}}</div>
-                    
+                    <div class="text-center font-weight-bold text-capitalize caption">{{concepto.nombre}}</div>
+                    <div v-if="parseExistencia(concepto) > 0" class="text-center font-weight-bold text-capitalize green--text">Disponible: {{+concepto.existencias[0].existencia}}</div>
+
                     <v-row justify="center" align="center" class="mt-5" v-if="!$vuetify.breakpoint.smAndDown">
                         <AgregarButton :concepto="concepto" />
                     </v-row>
@@ -50,8 +51,12 @@ import accounting from 'accounting';
         data(){
             return {
                 ...variables,
+                load:false,
             }
         }, 
+        async mounted(){
+            await this.preload(this.image + this.concepto.imagen);
+        },
         computed:{
             precioDolar(){
                 return accounting.formatMoney(+this.concepto.precio_dolar,{symbol:"$ ",thousand:',',decimal:'.'});
@@ -66,7 +71,29 @@ import accounting from 'accounting';
             },
             parseExistencia(concepto){
                 return (Array.isArray(concepto.existencias) ? concepto.existencias.length > 0 ? concepto.existencias.map(a => Math.trunc(+a.existencia)).reduce((a, b) => a + b) : 0 : concepto.existencias)
-            }
+            },
+            check(event){
+                let img = new Image();
+                img.src = event.target.responseURL;
+                return this.load=true;
+            },
+            preload(data) {
+                return new Promise((done) => {
+                    try {
+                        let load = (url) => {
+                            let req = new XMLHttpRequest();
+                            req.open("GET", url, true);
+                            req.responseType = "blob";
+                            req.onload = async (event) => done( this.check(event));
+                            req.onerror = (event) => done(this.check(event));
+                            req.send();
+                        };
+                        load(data);
+                    } catch (error) {
+                        console.log("error :", error);
+                    }
+                });
+            },
         }       
     }
 </script>
