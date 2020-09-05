@@ -20,7 +20,7 @@
             </v-list-item>
         </v-list>
 
-        <v-list dense flat v-else>
+        <v-list dense flat v-if="!user.loggedIn">
             <v-list-item v-for="(item,i) in items2" :key="i" :to="item.to">
                 <v-list-item-icon>
                     <v-icon>{{item.icon}}</v-icon>

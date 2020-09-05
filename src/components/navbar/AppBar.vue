@@ -6,7 +6,7 @@
         :elevate-on-scroll="$vuetify.breakpoint.smAndDown ? false:true"
         :extended="$vuetify.breakpoint.smAndDown && $route.name !== 'home' ? true:false"
     >
-        <v-app-bar-nav-icon  :color="theme.navBar.font" class="mr-1" @click="change" v-if="dialog==false" />
+        <v-app-bar-nav-icon :color="theme.navBar.font" class="mr-1" @click="change" v-if="dialog==false" />
 
         <v-btn fab v-else  @click="change" icon depressed class="mr-1">
             <v-icon :color="theme.navBar.font">
@@ -17,16 +17,21 @@
         <v-spacer v-if="$vuetify.breakpoint.smAndDown"></v-spacer>
 
 		<div class="d-flex align-center">
-			<v-img v-if="!theme.navBar.navIconDark"
+			<!--v-img v-if="!theme.navBar.navIconDark"
 	            alt="Hoyprovoca logo" class="shrink mr-2 cursor" contain
 				src='@/assets/logo2.png' transition="scale-transition"
 			    width="200" height="100" @click="push2"
 			/>
-      <v-img v-else
+            <v-img v-else
 	            alt="Hoyprovoca logo" class="shrink mr-2 cursor" contain
 				src='@/assets/logo6.png' transition="scale-transition"
 			    width="200" height="100" @click="push2"
-			/>
+			/-->
+            <v-img contain width="50" height="50" src="@/assets/2.png" 
+                alt="Hoyprovoca logo" class="shrink mr-2 cursor" transition="scale-transition"
+                @click="push2"
+            >
+            </v-img>
 		</div>
 
         <v-text-field
@@ -94,7 +99,7 @@ import {mapState, mapActions} from 'vuex';
             }
         },
         mounted(){
-          console.log(this?.theme);
+          console.log(this.drawer);
         },
         computed:{
             ...mapState(['user','search','bandera','drawer','theme']),
