@@ -41,6 +41,7 @@ import router from '@/router';
                     {text:'Pedidos',icon:'mdi-basket',to:() => this.modalCarrtio()},
                     //{text:'Dirección',icon:'gps_fixed',to:() => this.modalDireccion()},
                     {text:'Notificaciones',icon:'mdi-bell',to:() => this.notificaciones()},
+                    {text:'Atencion al cliente',icon:'mdi-help-circle',to:() => this.chat()},
                     {text:'Perfil',icon:'mdi-account-circle',to:() => this.perfil()},
                     {text:'Cerrar sesión',icon:'mdi-exit-to-app',to:() => this.cerrar()},
                 ],
@@ -66,6 +67,9 @@ import router from '@/router';
             },
             perfil(){
                 router.push('/account/profile');
+            },
+            chat(){
+                router.push('/account/ayuda');
             },
             cerrar(){
                 this.logout();
