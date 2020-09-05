@@ -17,7 +17,7 @@
         <v-spacer v-if="$vuetify.breakpoint.smAndDown"></v-spacer>
 
 		<div class="d-flex align-center">
-			<!--v-img v-if="!theme.navBar.navIconDark"
+			<v-img v-if="!$vuetify.breakpoint.smAndDown && !theme.navBar.navIconDark"
 	            alt="Hoyprovoca logo" class="shrink mr-2 cursor" contain
 				src='@/assets/logo2.png' transition="scale-transition"
 			    width="200" height="100" @click="push2"
@@ -26,10 +26,10 @@
 	            alt="Hoyprovoca logo" class="shrink mr-2 cursor" contain
 				src='@/assets/logo6.png' transition="scale-transition"
 			    width="200" height="100" @click="push2"
-			/-->
+			/>
             <v-img contain width="50" height="50" src="@/assets/2.png" 
-                alt="Hoyprovoca logo" class="shrink mr-2 cursor" transition="scale-transition"
-                @click="push2"
+                alt="Hoyprovoca logo" class="shrink mr-2 cursor " transition="scale-transition"
+                @click="push2" v-if="$vuetify.breakpoint.smAndDown"
             >
             </v-img>
 		</div>
