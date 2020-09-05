@@ -7,6 +7,25 @@
         </v-container>
 
         <v-card elevation="0" color="#fff" width="100%" height="100%" v-else>
+
+            <v-card-text v-if="empresas.length!==0">
+                <div class="text-center font-weight-black title my-2">Resultados</div>
+                <v-row justify="center">
+                    <v-slide-group multiple :show-arrows="$vuetify.breakpoint.smAndDown ? false:true">
+                        <v-slide-item v-for="(empresa,i) in aliados" :key="i" class="mx-4 cursor" @click="push(empresa)">
+                            <div @click="push(empresa)" class="text-center font-weight-black col-3 text-truncate">
+                                <v-row justify="center">
+                                    <v-avatar size="50">
+                                        <v-img :src="image+empresa.imagen"></v-img>
+                                    </v-avatar>
+                                </v-row>
+                                {{empresa.nombre_comercial}}
+                            </div>
+                        </v-slide-item>
+                    </v-slide-group>
+                </v-row>
+            </v-card-text>
+
             <transition name="fade">
                 <v-card-text v-show="conceptos.length > 0">
                     <v-row>
@@ -106,6 +125,8 @@
 
 <script>
 import Conceptos from '@/services/Conceptos';
+import variables from '@/services/variables_globales';
+import router from '@/router';
 import {mapState} from 'vuex';
 
     export default {
@@ -116,6 +137,7 @@ import {mapState} from 'vuex';
         },
         data() {
             return {
+                ...variables,
                 loading:true,
                 tipo:true,
                 conceptos:[],
@@ -123,6 +145,7 @@ import {mapState} from 'vuex';
                 radio:null,
                 municipio:null,
                 drawer:false,
+                aliados:[],
                 aux:[]
             }
         },
@@ -157,13 +180,12 @@ import {mapState} from 'vuex';
                     if(response.data.data){
                         response.data.data.filter(a => a.agregado = false);
                         response.data.data.filter(a => this.agregados.filter(b => a.id == b ? a.agregado=true:null));
-                        
                         response.data.data = [...response.data.data].filter((a) => this.parseExistencia(a) > 0);
-
                         this.conceptos = response.data.data;
                         this.aux = response.data.data;
                     }
                     this.loading = false;
+                    this.revisionEmpresas();
                     if(this.radioGroup == 2){
                         this.mayorPrecio();
                     }else if(this.radioGroup == 1){
@@ -196,13 +218,22 @@ import {mapState} from 'vuex';
                 this.radioGroup = -1;
                 this.conceptos = this.aux;
             },
+            revisionEmpresas(){
+                this.conceptos.filter(a => this.empresas.filter(b => a.adm_empresa_id == b.id ? this.aliados.push(b):null));
+                this.aliados = [...new Set(this.aliados)];
+            },
             revision(){
                 this.conceptos.filter(a => a.agregado=false);
                 this.conceptos.filter(a => this.agregados.filter(b => a.id == b ? a.agregado=true:null));
             },
             parseExistencia(concepto){
                 return (Array.isArray(concepto.existencias) ? concepto.existencias.length > 0 ? concepto.existencias.map(a => Math.trunc(+a.existencia)).reduce((a, b) => a + b) : 0 : concepto.existencias)
-            }
+            },
+            push(empresa){
+                window.localStorage.setItem('aliado',JSON.stringify(empresa));
+                let nombre = empresa.nombre_comercial.toLowerCase(); 
+                router.push({name:'aliadoDetalle', params:{text:nombre}});
+            },
         }
     }
 </script>
