@@ -156,7 +156,7 @@ import accounting from 'accounting';
                 Clientes().get(`/${this.user.cliente.id}/pedidos/?rest_estatus_id > 1`).then((pedidos) => {
                     if(pedidos.data.data){
                         pedidos.data.data.filter(a => a.detalles.filter(b => b.precio_view = accounting.formatMoney(+b.precio,{symbol:"$ ",thousand:',',decimal:'.'})));
-                        this.aux = pedidos.data.data;
+                        this.aux = (pedidos.data.data || []).reverse();
                         let count = 0;
                         pedidos.data.data.forEach( (order, i) => {
                             Pedidos().get(`/${order.id}/conceptos`).then((conceptos) => {

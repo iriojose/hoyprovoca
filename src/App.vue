@@ -1,5 +1,7 @@
 <template>
     <v-app>
+        <div v-show="false" id="talkjs-chat-global" style="width: 100%;; height: 450px"><i><v-spacer></v-spacer><v-spacer></v-spacer></i></div>
+
         <Navbar v-if="ruta() && !loading" />
 
         <v-main
@@ -81,6 +83,11 @@ export default {
     computed: {
         ...mapState(["user", "bloqueado", "theme"]),
     },
+    watch: {
+        user() {
+            this.setChatSession()
+        }
+    },
     created() {
         this.token = JSON.parse(window.sessionStorage.getItem("token_client"));
         if (this.token != null && this.token != "" && this.token != undefined)
@@ -104,6 +111,7 @@ export default {
             "setGrupos",
             "setEmpresas",
             "setPedidos",
+            "setChatSession",
         ]),
 
         ruta() {
@@ -201,6 +209,12 @@ export default {
             this.getPedidos();
         },
     },
+    mounted() {
+        this.setChatSession("talkjs-chat-global")
+    },
+    beforeUpdated(){
+        this.setChatSession("talkjs-chat-global")
+    }
 };
 </script>
 

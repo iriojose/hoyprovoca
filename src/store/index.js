@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import theme from "@/themes/themes"
+import Talk from 'talkjs';
+
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -37,7 +39,10 @@ export default new Vuex.Store({
             existencias:[
                 {existencia:0}
             ]
-        }//bandera para un producto seleccionado
+        },//bandera para un producto seleccionado
+        me: null,
+        other: null,
+        image: process.env.VUE_APP_SERVICIO_IMAGES,
 	},
 	mutations: {
         //data global
@@ -181,6 +186,64 @@ export default new Vuex.Store({
             state.pedidos[data.indexPedido].detalles[data.indexDetalle].cantidad = data.cantidad;
             window.localStorage.setItem("pedidos",JSON.stringify(state.pedidos));
         },
+        SET_CHAT_CONNECTION (state, val) {
+            try {
+                Talk.ready.then(async () => {
+                    let inbox;
+                    const iAmNotSupport = (state.user.data.id !== 2)
+                    state.me = new Talk.User({
+                            id: iAmNotSupport ? state.user.data.email : "teamlead@somossistemas.com",
+                            name: iAmNotSupport ? state.user.data.nombre + " " + state.user.data.apellido: "Soporte Hoyprovoca",
+                            email: iAmNotSupport ? state.user.data.email !== "" ? state.user.data.email : null : "teamlead@somossistemas.com", 
+                            photoUrl: iAmNotSupport ? state.user.data.imagen === 'default.png' ? require('@/assets/user.jpg') : state.image+state.user.data.imagen : require('@/assets/2.png'),
+                            welcomeMessage: iAmNotSupport ?  "Hola, soy "+state.user.data.nombre : "En Hoyprovoca, estamos encantados de ayudarte a solventar tus problemas. Déjanos un mensaje!",
+                            role: 'Customer',
+                            locale: 'es-ES'
+                    });
+                    
+                    window.talkSession = new Talk.Session({
+                        appId: process.env.VUE_APP_TALKJS_ID,
+                        me: state.me
+                    }); 
+                            
+                    if(iAmNotSupport){
+                        // Cambiar teamlead por cualquier otro correo de soporte
+                        state.other = new Talk.User({
+                            id: "teamlead@somossistemas.com",
+                            name: "Soporte Hoyprovoca",
+                            email: "teamlead@somossistemas.com",
+                            photoUrl: require('@/assets/2.png'),
+                            welcomeMessage: "En Hoyprovoca, estamos encantados de ayudarte a solventar tus problemas. Déjanos un mensaje!",
+                                role:'Support',
+                                locale: 'es-ES'
+                            });
+                            let conversation = window.talkSession.getOrCreateConversation(Talk.oneOnOneId(state.me, state.other));
+                            conversation.setParticipant(state.me);
+                            conversation.setParticipant(state.other);
+                            inbox = window.talkSession.createInbox({selected: conversation});
+                        }else{
+                            window.talkSession = new Talk.Session({
+                                appId: process.env.VUE_APP_TALKJS_ID,
+                                me: state.me
+                            });
+                            let conversation = window.talkSession.getOrCreateConversation(Talk.oneOnOneId(state.me));
+                            conversation.setParticipant(state.me);
+                                
+                            inbox = window.talkSession.createInbox({selected: conversation});
+                        }
+                        
+                    inbox.mount(document.getElementById(val));
+                    
+                    inbox.setPresence(true)
+
+                    inbox.on("sendMessage", function() {
+                        // CODIGO PARA ENVIAR NOTIFICACIONES
+                    })
+                });
+            } catch (error) {
+                null;
+            }
+        }
 	},
 	actions: {
         setMasVendidos({commit},val){
@@ -264,9 +327,12 @@ export default new Vuex.Store({
         },
         setModalPago({commit},val){
           commit('SET_MODAL_PAGO',val);
-      },
+        },
         setDrawer({commit},val){
             commit("SET_DRAWER",val);
+        },
+        setChatSession({commit},val){
+            commit("SET_CHAT_CONNECTION",val);
         }
 	},
 	modules: {
