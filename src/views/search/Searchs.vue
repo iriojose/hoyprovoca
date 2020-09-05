@@ -5,10 +5,10 @@
                 <Loading />
             </v-row>
         </v-container>
-
+        
         <v-card elevation="0" color="#fff" width="100%" height="100%" v-else>
             <transition name="fade">
-                <v-card-text v-show="conceptos.length > 0">
+                <v-card-text v-show="conceptos">
                     <v-row>
                         <v-col cols="12" sm="12" md="9">
                             <v-toolbar color="#fff" elevation="0" width="100%" class="pb-4 px-5">
@@ -106,7 +106,8 @@
 
 <script>
 import Conceptos from '@/services/Conceptos';
-import {mapState} from 'vuex';
+import Direcciones from '@/services/Direcciones';
+import {mapState,mapActions} from 'vuex';
 
     export default {
         components:{
@@ -148,9 +149,16 @@ import {mapState} from 'vuex';
             },
         },
         mounted() {
+            let municipios = JSON.parse(window.localStorage.getItem('municipios'));
+
+            if(municipios) this.setMunicipios(municipios);
+            else this.getUbicaciones();
+           
            this.getConceptos();
         },
         methods:{
+            ...mapActions(['setMunicipios']),
+
             getConceptos(){
                 this.loading = true;
                 Conceptos().get(`/?nombre=${this.search}&fields=direcciones,existencias&limit=150`).then((response) => {
@@ -174,6 +182,14 @@ import {mapState} from 'vuex';
                     if(this.municipio){
                         this.filtroMunicipios(this.municipio);
                     }
+                }).catch(e => {
+                    console.log(e);
+                });
+            },
+            getUbicaciones(){
+                Direcciones().get("/16").then((response) => {
+                    this.setMunicipios(response.data.data.detalles);
+                    window.localStorage.setItem("municipios",JSON.stringify(response.data.data.detalles));
                 }).catch(e => {
                     console.log(e);
                 });
@@ -207,6 +223,9 @@ import {mapState} from 'vuex';
     }
 </script>
 
-<style lang="scss" scoped>
-
+<style lang="scss" scope>
+    .grid{
+        width:100%;
+        height:100%;
+    }
 </style>
