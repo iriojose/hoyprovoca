@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import theme from "@/themes/themes"
+import theme from "@/themes/themes";
 import Talk from 'talkjs';
 
 Vue.use(Vuex)
@@ -145,23 +145,23 @@ export default new Vuex.Store({
         SET_PEDIDOS(state,val){//añade todos los pedidos que vengan de la api
             state.pedidos = val;
             state.pedidos.filter(a => a.detalles.filter(b => state.agregados.push(b.adm_conceptos_id)));
-            window.localStorage.setItem("pedidos",JSON.stringify(state.pedidos));
+            //window.localStorage.setItem("pedidos",JSON.stringify(state.pedidos));
         },
         ADD_PEDIDOS(state,val){//añade un pedido (solo cuando se crea el pedido se usa)
             state.agregados.push(val.detalles[0].adm_conceptos_id);//se añade el id del producto
             state.pedidos.push(val);
-            window.localStorage.setItem("pedidos",JSON.stringify(state.pedidos));
+            //window.localStorage.setItem("pedidos",JSON.stringify(state.pedidos));
         },
         ADD_DETALLE(state,val){//se añade un detalle a un pedido existente
             state.agregados.push(val.detalle.adm_conceptos_id);
             state.pedidos.filter(a=> a.id == val.detalle.rest_pedidos_id ? a.detalles.push(val.detalle):null);
             state.pedidos.filter(a => a.id == val.detalle.rest_pedidos_id ? a.conceptos.push(val.concepto):null);
-            window.localStorage.setItem("pedidos",JSON.stringify(state.pedidos));
+            //window.localStorage.setItem("pedidos",JSON.stringify(state.pedidos));
         },
         DELETE_CARRITO(state){
             state.pedidos = [];
             state.agregados = [];
-            window.localStorage.setItem("pedidos",JSON.stringify(state.pedidos));
+            //window.localStorage.setItem("pedidos",JSON.stringify(state.pedidos));
         },
         DELETE_PEDIDO(state,index){//se elimina un pedido
             let aux=[],aux2=[];
@@ -171,7 +171,7 @@ export default new Vuex.Store({
             state.agregados.filter(a => aux.filter(b => !a == b ? aux2.push(a):null));
             state.agregados = aux2;//se asigna los ids que quedan
             state.pedidos.splice(index,1);//se elimna el pedido
-            window.localStorage.setItem("pedidos",JSON.stringify(state.pedidos));
+            //window.localStorage.setItem("pedidos",JSON.stringify(state.pedidos));
         },
         DELETE_DETALLE(state,data){//se elimina el detalle de un pedido
             //se consigue el concepto a eliminar
@@ -180,11 +180,11 @@ export default new Vuex.Store({
             state.agregados.splice(state.agregados.indexOf(val),1);
             //se elimina del array de detalles del pedido
             state.pedidos[data.indexPedido].detalles.splice(data.indexDetalle,1);
-            window.localStorage.setItem("pedidos",JSON.stringify(state.pedidos));
+            //window.localStorage.setItem("pedidos",JSON.stringify(state.pedidos));
         },
         UPDATE_DETALLE(state,data){//actualiza la cantidad de un detalle
             state.pedidos[data.indexPedido].detalles[data.indexDetalle].cantidad = data.cantidad;
-            window.localStorage.setItem("pedidos",JSON.stringify(state.pedidos));
+            //window.localStorage.setItem("pedidos",JSON.stringify(state.pedidos));
         },
         SET_CHAT_CONNECTION (state, val) {
             try {
