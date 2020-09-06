@@ -26,11 +26,15 @@
             <div class="subtitle-1 font-weight-bold mt-4 black--text">Su carrito esta vacio</div>
         </v-row>
 
-        <v-expansion-panels v-else class="my-1">
+        <v-expansion-panels v-else class="my-1" v-model="panel">
             <v-expansion-panel v-for="(pedido,i) in pedidos" :key="i">
 
                 <v-expansion-panel-header :color="theme.sidebar.card">
                     <EncabezadoPedido :index="i" :pedido="pedido" :total="totalPedidos[i]" />
+
+                    <template v-slot:actions>
+                        <v-icon color="#000">mdi-menu-down</v-icon>
+                    </template>
                 </v-expansion-panel-header>
 
                 <v-expansion-panel-content :color="theme.sidebar.card">
@@ -59,7 +63,7 @@
                     block :disabled="pedidos.length == 0 ? true:false"
                     :width="$vuetify.breakpoint.smAndDown ? 80:100"
                 >
-                    Checkout
+                    Pagar
                     <v-icon class="mx-2" :color="theme.buttons.font">mdi-cash</v-icon>
                 </v-btn>
             </v-card-actions>
@@ -78,6 +82,11 @@ import router from '@/router';
             EncabezadoPedido:() => import('./EncabezadoPedido'),
             DetallesPedidos:() => import('./DetallesPedidos'),
             VaciarCarrito:() => import("@/components/dialogs/VaciarCarrito")
+        },
+        data(){
+            return {
+                panel:0
+            }
         },
         computed: {
             ...mapState(['pedidos','carrito','user','totalPedidos','theme']),

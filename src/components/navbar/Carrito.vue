@@ -4,7 +4,7 @@
             fab class="mx-3" 
             color="transparent"
             elevation="0"
-            small @click="change" v-if="user.loggedIn && !$vuetify.breakpoint.smAndDown"
+            small @click="change" v-if="user.loggedIn"
         >
             <v-badge dot overlap color="#D32F2F" v-if="pedidos.length > 0">
                 <v-icon :color="theme.background.font">mdi-basket</v-icon>

@@ -59,6 +59,7 @@ import Auth from "@/services/Auth";
 import Clientes from "@/services/Clientes";
 import Empresa from "@/services/Empresa";
 import Grupos from "@/services/Grupos";
+import Direcciones from '@/services/Direcciones';
 import { mapActions, mapState } from "vuex";
 
 export default {
@@ -90,19 +91,20 @@ export default {
     },
     created() {
         this.token = JSON.parse(window.sessionStorage.getItem("token_client"));
-        if (this.token != null && this.token != "" && this.token != undefined)
-            this.sesion(this.token);
+        if (this.token != null && this.token != "" && this.token != undefined) this.sesion(this.token);
         else this.loading = false;
-        let grupos = JSON.parse(
-            window.localStorage.getItem("gruposMasVendidos")
-        );
+
+        let grupos = JSON.parse(window.localStorage.getItem("gruposMasVendidos"));
         if (!grupos) this.getGrupos();
         else this.setGrupos(grupos);
-        let empresas = JSON.parse(
-            window.localStorage.getItem("empresasMasVendidas")
-        );
+
+        let empresas = JSON.parse(window.localStorage.getItem("empresasMasVendidas"));
         if (!empresas) this.getEmpresas();
         else this.setEmpresas(empresas);
+
+        let municipios = JSON.parse(window.localStorage.getItem('municipios'));
+        if(municipios) this.setMunicipios(municipios);
+        else this.getUbicaciones();
     },
     methods: {
         ...mapActions([
@@ -112,6 +114,7 @@ export default {
             "setEmpresas",
             "setPedidos",
             "setChatSession",
+            "setMunicipios"
         ]),
 
         ruta() {
@@ -149,6 +152,14 @@ export default {
                 window.localStorage.setItem("gruposMasVendidos",JSON.stringify(response.data.data));
                 this.setGrupos(response.data.data);
             }).catch((e) => {
+                console.log(e);
+            });
+        },
+        getUbicaciones(){
+            Direcciones().get("/16").then((response) => {
+                this.setMunicipios(response.data.data.detalles);
+                window.localStorage.setItem("municipios",JSON.stringify(response.data.data.detalles));
+            }).catch(e => {
                 console.log(e);
             });
         },

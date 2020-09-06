@@ -104,7 +104,7 @@ import router from '@/router';
                 this.setModalSesion(false);
             },
             register(){
-                this.cloese();
+                this.close();
                 router.push("/register");
             },
             respuesta(mensaje,type){

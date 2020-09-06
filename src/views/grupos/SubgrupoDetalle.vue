@@ -16,7 +16,7 @@
                 </v-row>
             </v-card-title>
 
-            <v-card-text v-if="conceptos">
+            <v-card-text v-if="conceptos.length > 0">
                 <!--div class="headline font-weight-black text-center mt-8">Todas las Categorías</div-->
                 <v-row justify="center">
                     <v-col cols="12" sm="12" md="9">
@@ -50,7 +50,7 @@
                 </v-row>
             </v-card-text>
 
-            <v-card-text v-else>
+            <v-card-text v-if="!loading && conceptos.length==0">
                 <div class="text-center font-weight-black headline mt-8">No se encontraron resultados.</div>
                 <v-row justify="center">
                     <v-img width="500" height="500" contain :src="require('@/assets/cancel.svg')"></v-img>
