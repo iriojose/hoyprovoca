@@ -20,12 +20,17 @@ ___
 ***(Español)*** Index principal de la plataforma en donde se muestran las categorías mas relevantes en el sistemas, ademas de las opciones de iniciar sesión y registrarse.
 
 ![1](capturas/index.png) 
+![2](capturas/indexMovil.png)
 
-![2](capturas/index2.png)
+![3](capturas/index2.png)
+![4](capturas/indexMovil2.png)
 
-![3](capturas/footer.png)
+![5](capturas/index3.png)
+![6](capturas/indexMovil3.png)
 
-## Auth / Login / Register / Password Recover (Inicio de Sesion, Registrarse y Recuperar contraseña)
+![7](capturas/footer.png)
+
+## Auth / Login / Register / Password Recover / Reset Password / Email verify (Inicio de Sesion, Registrarse, Recuperar contraseña, Resetear contraseña y verificar email)
 
 ### Login / Inicio de Sesion
 
@@ -35,15 +40,13 @@ ___
 
 ***(Español)*** Since it is a system, it will always be necessary to log in, although in this type of system, it is not necessary to log in to navigate certain views of the platform.
 
-![4](capturas/login.png) 
+![8](capturas/login.png) 
 
-![5](capturas/login movil.png)
+![9](capturas/loginMovil.png)
 
 ### Login with dialog / Inicio de sesion con modal
 
-![6](capturas/modal sesion.png) 
-
-![7](capturas/modal sesion movil.png)
+![10](capturas/modalSesion.png) 
 
 ### Register / Registrarse
 
@@ -53,9 +56,9 @@ ___
 
 ***(Español)*** En caso de querer iniciar sesión es requerido que se registre para obtener la informacion necesaria y asi poder acceder al servicio de hoyprovoca.
 
-![8](capturas/register.png) 
+![11](capturas/register.png) 
 
-![9](capturas/register movil.png)
+![12](capturas/registerMovil.png)
 
 ### Password Recover / Recuperar contraseña
 
@@ -65,9 +68,9 @@ ___
 
 ***(Español)*** En el caso de que el usuario haya olvidado su contraseña y piense que el sistema es inaccesible, entonces no tiene que preocuparse, se puede recuperar la contraseña, ya que la cuenta tiene un correo electronico enlazado para estos casos.
 
-![10](capturas/forgot.png) 
+![13](capturas/forgot.png) 
 
-![11](capturas/forgot movil.png)
+![14](capturas/forgotMovil.png)
 
 ### View for all categories / Vista para todas las categorías
 
@@ -77,7 +80,7 @@ ___
 
 ***(Español)*** En esta vista se muestran todas las categorias que se encuentran registradas en la plataforma.
 
-![12](capturas/grupos.png)
+![15](capturas/grupos.png)
 
 ### View for a company and categories / Vista para una empresa y categorías
 
@@ -87,9 +90,8 @@ ___
 
 ***(Español)*** En esta vista todos los productos y servicos que ofrece la empresa, asi mismo se muestran las categorías a las que pertenecen, ademas si se selecciona una categoría apareceran todos los productos de esa categoria perteneciente a esa empresa.
 
-![13](capturas/empresa.png)
+![16](capturas/empresas.png)
 
-![14](capturas/empresa select.png)
 
 ### view Search / Vista Buscar
 
@@ -98,4 +100,6 @@ ___
 
 ***(Español)*** En esta vista apareceran todos los productos segun la busqueda ingresada por los usuarios, ademas apareceran las empresas a las que pertenecen esos productos
 
-![15](capturas/search.png)
+![17](capturas/search.png)
+
+![18](capturas/searchMovil.png)
