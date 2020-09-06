@@ -219,6 +219,7 @@ import {mapState} from 'vuex';
                 this.conceptos = this.aux;
             },
             revisionEmpresas(){
+                this.aliados = [];
                 this.conceptos.filter(a => this.empresas.filter(b => a.adm_empresa_id == b.id ? this.aliados.push(b):null));
                 this.aliados = [...new Set(this.aliados)];
             },
