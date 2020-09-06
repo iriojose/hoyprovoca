@@ -1,54 +1,36 @@
 <template>
     <div class="loader-container">
-        <div class="spinner yellow">
-        </div>
-        <v-img width="80" height="80" src="@/assets/2.png" class="abs-center blink"></v-img>
+        <img src="@/assets/loading.svg" width="125px" height="125px" class="spinner">
+
+        <img src="@/assets/2.png" width="80px" height="80px" class="abs-center blink">
     </div>
 </template>
 
-<style lang="scss" scoped>
-    .loader-container {
-        width: 100px;
-        height: 100px;
-        position: relative;
-    }
-    @keyframes spinner {
-        to {transform: rotate(360deg);}
-    }
-    @keyframes blink {
-        from {opacity: 0;}
-        to {opacity: 1;}
-    }
-    .spinner {
-        content: '';
-        box-sizing: border-box;
-        width: 100px;
-        height: 100px;
-        border-radius: 50%;
-        border: 4px solid #f6f6f7;
-        border-top-color: #02AE5A;
-        animation: spinner 1s linear infinite;
-    }
-    .spinner.white {
-        border: 4px solid #fff;
-        border-top-color: #02AE5A;
-    }
-        
-    .spinner.black {
-        border: 4px solid #262626;
-        border-top-color: #262626;
-    }
-    .spinner.yellow {
-        border: 4px solid #FFC107;
-        border-top-color: #fff;
-    }
-    .abs-center {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
-    .blink {
-        animation: blink 1.5s linear infinite;
-    }
+<style lang="css">
+        .loader-container {
+            width: 110px;
+            height: 110px;
+            position: relative;
+            border-radius: 50%;
+        }
+
+        @keyframes blink {
+            from {opacity: .4;}
+            to {opacity: 1;}
+        }
+
+        .abs-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(calc(-50% + 8px), calc(-50% + 8px));
+        }
+
+        .blink {
+            animation: blink 1.5s ease-in-out infinite;
+        }
+
+        .spinner {
+            padding: 5px;
+        }
 </style>

@@ -22,7 +22,7 @@
         class="text-capitalize body-2 font-weight-bold"
       >Seguir comprando</v-btn>
     </v-toolbar>
-    <div :style="` color:${theme.background.font}`" class="text-center my-5 display-1 font-weight-bold">Checkout</div>
+    <div :style="` color:${theme.background.font}`" class="text-center my-5 display-1 font-weight-bold">Pagar</div>
     <v-scroll-x-transition>
       <Init
       v-if="view==1"
