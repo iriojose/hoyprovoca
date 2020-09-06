@@ -19,14 +19,11 @@ ___
 
 ***(Español)*** Index principal de la plataforma en donde se muestran las categorías mas relevantes en el sistemas, ademas de las opciones de iniciar sesión y registrarse.
 
-![1](capturas/index.png) 
-![2](capturas/indexMovil.png)
+![1](capturas/index.png) ![2](capturas/indexMovil.png)
 
-![3](capturas/index2.png)
-![4](capturas/indexMovil2.png)
+![3](capturas/index2.png) ![4](capturas/indexMovil2.png)
 
-![5](capturas/index3.png)
-![6](capturas/indexMovil3.png)
+![5](capturas/index3.png) ![6](capturas/indexMovil3.png)
 
 ![7](capturas/footer.png)
 
