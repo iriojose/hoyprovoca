@@ -27,7 +27,7 @@ ___
 
 ![7](capturas/footer.png)
 
-## Auth / Login / Register / Password Recover / Reset Password / Email verify (Inicio de Sesion, Registrarse, Recuperar contraseña, Resetear contraseña y verificar email)
+## Auth / Login / Register / Password Recover / Reset Password / Verify Email (Inicio de Sesion, Registrarse, Recuperar contraseña, Resetear contraseña y verificar email)
 
 ### Login / Inicio de Sesion
 
@@ -69,6 +69,26 @@ ___
 
 ![14](capturas/forgotMovil.png)
 
+### Reset Password / Resetear Contraseña
+
+***(English)*** Once the email to recover the password has been sent, you will be redirected to this view to reset your password.
+
+___
+
+***(Español)*** Una vez enviado el correo para recuperar la contraseña , sera redireccionado a esta vista para el reseteo de su contraseña.
+
+![15](capturas/resetpassword.png) 
+
+### Verify Email / Verficar Email
+
+***(English)***You will be redirected to this page after having verified your email once you have requested it.
+
+___
+
+***(Español)*** Sera redireccionado a esta pagina luego de haber verificado su correo una vez lo haya solicitada.
+
+![16](capturas/verify.png) 
+
 ### View for all categories / Vista para todas las categorías
 
 ***(English)*** in this view all the categories that are registered in the platform are shown.
@@ -77,7 +97,41 @@ ___
 
 ***(Español)*** En esta vista se muestran todas las categorias que se encuentran registradas en la plataforma.
 
-![15](capturas/grupos.png)
+![17](capturas/gruposComplete.png)
+![18](capturas/gruposCompleteMovil.png)
+
+### View for the products of a category / Vista para los productos de una categoria
+
+***(English)*** This view shows all the products belonging to this category and the subcategories that belong to this category.
+
+___
+
+***(Español)*** En esta vista se muestran todos los productos pertenecientes a esta categoria y las subcategorias que pertenecen a esta categoria.
+
+![19](capturas/grupos.png)
+![20](capturas/gruposMovil.png)
+
+### View for the products of a subcategory / Vista para los productos de una subcategoria
+
+***(English)*** This view shows all the products belonging to this subcategory.
+
+___
+
+***(Español)*** En esta vista se muestran todos los productos pertenecientes a esta subcategoria.
+
+![21](capturas/subgrupo.png)
+![22](capturas/subgrupoMovil.png)
+
+### View for all allies / Vista para todas los aliados
+
+***(English)*** in this view all the allies that are registered in the platform are shown.
+
+___
+
+***(Español)*** En esta vista se muestran todas los aliados que se encuentran registradas en la plataforma.
+
+![23](capturas/aliados.png)
+![24](capturas/aliadosMovil.png)
 
 ### View for a company and categories / Vista para una empresa y categorías
 
@@ -87,8 +141,8 @@ ___
 
 ***(Español)*** En esta vista todos los productos y servicos que ofrece la empresa, asi mismo se muestran las categorías a las que pertenecen, ademas si se selecciona una categoría apareceran todos los productos de esa categoria perteneciente a esa empresa.
 
-![16](capturas/empresas.png)
-
+![25](capturas/aliado.png)
+![26](capturas/aliadoMovil.png)
 
 ### view Search / Vista Buscar
 
@@ -97,6 +151,5 @@ ___
 
 ***(Español)*** En esta vista apareceran todos los productos segun la busqueda ingresada por los usuarios, ademas apareceran las empresas a las que pertenecen esos productos
 
-![17](capturas/search.png)
-
-![18](capturas/searchMovil.png)
+![27](capturas/search.png)
+![28](capturas/searchMovil.png)
