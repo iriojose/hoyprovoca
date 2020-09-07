@@ -3,8 +3,8 @@
     <v-row justify="center" v-if="stepper === 2">
       <v-col cols="12" md="6" sm="12" class="pa-5">
         <div class="font-weight-bold title">Subtotal a pagar</div>
-        <div class="font-weight-bold subtitle-1">{{ total }}</div>
-        <div class="font-weight-bold subtitle-1">{{ totalUSD }} $</div>
+        <div v-if="pago.moneda === 'BS'"  class="font-weight-bold subtitle-1">Bs.{{ total }}</div>
+        <div v-if="pago.moneda === 'USD'" class="font-weight-bold subtitle-1">USD.{{ parseFloat(totalUSD).toFixed(2) }}</div>
         <div class="text-center font-weight-bold title my-5">Datos de la cuenta</div>
         <div>
           <strong>Nombre :</strong>
@@ -101,10 +101,11 @@ const metodosDePago = [
     id: 0,
     nombre: "Pago Movil  Banesco",
     propietario: "Jesus Bellorin",
-    identificacion: " 17654976",
+    identificacion: "17654976",
     cuenta: "movil : 04127955560",
     detalle: "",
     monto: 0,
+    moneda: "BS"
   },
   {
     id: 1,
@@ -113,8 +114,9 @@ const metodosDePago = [
     identificacion: " 17654976",
     cuenta: "Corriente 01740112201124312701",
     detalle:
-      "Recuerde!, Transferencias de diferentes bancos tardan al menos 1 dia en ser confirmadas",
+      "<br>Recuerde!, Transferencias de diferentes bancos tardan al menos 1 dia en ser confirmadas",
     monto: 0,
+    moneda: "BS"
   },
   {
     id: 2,
@@ -123,8 +125,9 @@ const metodosDePago = [
     identificacion: " 17654976",
     cuenta: "Ahorro 01340563895633049696",
     detalle:
-      "Recuerde!, Transferencias de diferentes bancos tardan al menos 1 dia en ser confirmadas",
+      "<br>Recuerde!, Transferencias de diferentes bancos tardan al menos 1 dia en ser confirmadas",
     monto: 0,
+    moneda: "BS"
   },
   {
     id: 3,
@@ -134,6 +137,7 @@ const metodosDePago = [
     cuenta: "Cuentas 201800957218",
     detalle: "",
     monto: 0,
+    moneda: "USD"
   },
 ];
 export default {
@@ -213,7 +217,6 @@ export default {
       );
     },
     verificarMonto() {
-      console.log(this.total)
       const aCubrir = parseFloat(
         this.total.split(" ")[1].split(".").join("").replace(",", ".")
       );
@@ -230,12 +233,13 @@ export default {
       return false;
     },
     checkPago() {
+      if (this.data.codigo_referencia === "") return;
+
       if (this.diferentes) {
         const isNotValidMount = this.verificarMonto();
         if (isNotValidMount) return;
       }
       this.loading = true;
-      console.log(this.data , "data")
       this.data.adm_status_id = 2;
       this.data.adm_tipo_pago_id = this.pago.id;
       const money = this.diferentes
@@ -300,7 +304,6 @@ export default {
       this.loading = true;
       formdata.append("image", file);
       abort();
-      console.log(this.pagoId);
       Images()
         .post(`/main/pagos/${this.pagoId[this.stepper - 3]}`, formdata)
         .then(() => {

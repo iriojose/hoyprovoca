@@ -2,13 +2,10 @@
   <div class="container">
     <v-row justify="center" v-if="pedidoSelect">
       <v-col cols="12" md="6" sm="12">
-        <div class="font-weight-bold title">Tus productos</div>
-        <div v-if="pedidoSelect.detalles" class="font-weight-bold subtitle-1">
-          {{ pedidoSelect.detalles.length + " " }}
-          item
-        </div>
-        <div class="font-weight-bold pa-2 title">Subtotal a pagar</div>
-        <div class="font-weight-bold px-2 subtitle-1">{{ total }}</div>
+        <div class="font-weight-bold pa-2 title">Subtotal a pagar (Bolívares)</div>
+        <div class="font-weight-bold px-2 subtitle-1 indigo--text">Bs.{{ total }}</div>
+        <div class="font-weight-bold pa-2 title">Subtotal a pagar (Dólares)</div>
+        <div class="font-weight-bold px-2 subtitle-1 indigo--text">$.{{ parseFloat(totalUSD).toFixed(2) }}</div>
         <v-select
           :dark="theme.background.dark"
           :items="tiposDePago"
@@ -54,41 +51,45 @@ const pagoInsuficiente = "el monto ingresado es insuficiente";
 const metodosDePago = [
   {
     id: 0,
-    nombre: "Pago Movil : Banesco",
+    nombre: "Pago Movil Banesco",
     propietario: "Jesus Bellorin",
-    identificacion: "V-17654976",
-    cuenta: "movil : 04127955560",
+    identificacion: "17.654.976",
+    cuenta: "04127955560 (Móvil)",
     detalle: "",
     monto: 0,
+    moneda: "BS"
   },
   {
     id: 1,
-    nombre: "Transferencia Banco Nacional: Banplus",
+    nombre: "Transferencia Banco Nacional Banplus",
     propietario: "Jesus Bellorin",
-    identificacion: "V-17654976",
-    cuenta: "Corriente : 01740112201124312701",
+    identificacion: " 17.654.976",
+    cuenta: "01740112201124312701 (Corriente)",
     detalle:
-      "Recuerde!, Transferencias de diferentes bancos tardan al menos 1 dia en ser confirmadas",
+      "<br>Recuerde!, Transferencias de diferentes bancos tardan al menos 1 dia en ser confirmadas",
     monto: 0,
+    moneda: "BS"
   },
   {
     id: 2,
-    nombre: "Transferencia Banco Nacional: Banesco",
+    nombre: "Transferencia Banco Nacional Banesco",
     propietario: "Jesus Bellorin",
-    identificacion: "V-17654976",
-    cuenta: "Ahorro : 01340563895633049696",
+    identificacion: " 17.654.976",
+    cuenta: "01340563895633049696 (Ahorro)",
     detalle:
-      "Recuerde!, Transferencias de diferentes bancos tardan al menos 1 dia en ser confirmadas",
+      "<br>Recuerde!, Transferencias de diferentes bancos tardan al menos 1 dia en ser confirmadas",
     monto: 0,
+    moneda: "BS"
   },
   {
     id: 3,
     nombre: "Banesco Panama",
     propietario: "Jesus Bellorin",
-    identificacion: "V-17654976",
-    cuenta: "Cuenta: 201800957218",
+    identificacion: " 17.654.976",
+    cuenta: "201800957218",
     detalle: "",
     monto: 0,
+    moneda: "USD"
   },
 ];
 export default {
@@ -106,6 +107,10 @@ export default {
       type: Object,
     },
     total: {
+      default: 0,
+      type: Number | String,
+    },
+    totalUSD: {
       default: 0,
       type: Number | String,
     },

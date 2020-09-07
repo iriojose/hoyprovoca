@@ -1,24 +1,6 @@
 <template>
     <v-row justify="center" v-if="loading" >
-        <v-card
-            :class="
-                $vuetify.breakpoint.smAndDown
-                    ? 'my-5 mx-2 center-progress'
-                    : 'mx-10 my-5 center-progress'
-            "
-            :color="theme.background.light_2"
-            justify="center"
-        >
-            <v-card-text>
-                <v-progress-circular
-                    indeterminate
-                    size="100"
-                    class="load"
-                    color="#0f2441"
-                    :width="4"
-                ></v-progress-circular>
-            </v-card-text>
-        </v-card>
+        <loader style="margin-top: 20vh" />
     </v-row>
     <div v-else v-show="view == 1" >
         <v-slide-group
@@ -69,7 +51,7 @@
                             class="font-weight-bold titles subtitle-1"
                         >
                             {{ detalles.length + " " }}
-                            item
+                            Unidad(es)
                         </div>
                         <v-list :style="`background-color:${theme.background.light_2}; color:${theme.background.font}`">
                             <v-list-item class="products-row products line">
@@ -162,7 +144,7 @@
                         <v-row sm="12">
                             <v-col cols="12" md="6" sm="12">
                                 <div class="font-weight-bold title" :style="` color:${theme.background.font}`">
-                                    Subtotal a pagar
+                                    Subtotal
                                 </div>
                             </v-col>
                             <v-col cols="12" md="6" sm="12">
@@ -178,24 +160,22 @@
                                 </div>
                             </v-col>
                         </v-row>
-                        <div class="font-weight-bold subtitle-1" :style="` color:${theme.background.font}`">BS:</div>
-                        <v-btn
+                        <div class="font-weight-bold subtitle-1" :style="` color:${theme.background.font}`">Bolívares:</div>
+                        <div
                             :loading="dolar ? false : true"
                             color="secondary"
                             
-                            class="font-weight-bold subtitle-1 onlyShow"
-                            ><span>{{ total }}</span></v-btn
-                        >
-                        <div  :style="` color:${theme.background.font}`" class="font-weight-bold subtitle-1">USD :</div>
-                        <v-btn
+                            class="font-weight-bold subtitle-1 onlyShow indigo--text"
+                            ><span>Bs. {{ total }}</span>
+                        </div>
+                        <div style="margin: 10px 0;"> </div>
+                        <div  :style="` color:${theme.background.font}`" class="font-weight-bold subtitle-1">Dólares:</div>
+                        <div
                             :loading="dolar ? false : true"
                             color="secondary"
-                            class="my-2 font-weight-bold subtitle-1 onlyShow"
-                            ><span>${{ parseFloat(totalUSD).toFixed(2) }}</span></v-btn
-                        >
-                        <div :style="` color:${theme.background.font}`" class="font-weight-bold subtitle-2">
-                            Cantidad de Personas :
-                            {{ pedidoSelect.cant_personas }}
+                            
+                            class="font-weight-bold subtitle-1 onlyShow indigo--text"
+                            ><span>USD. {{ parseFloat(totalUSD).toFixed(2) }}</span>
                         </div>
                         <v-btn
                             block
@@ -213,6 +193,7 @@
     </div>
 </template>
 <script>
+import loader from "@/components/loaders/Loading";
 import variables from "@/services/variables_globales";
 import Pedidos from "@/services/Pedidos";
 import accounting from "accounting";
@@ -241,6 +222,9 @@ const notComplete = {
 const checking = { message: "Checkeando existencias...", color: "gray" };
 
 export default {
+    components: {
+        loader
+    },
     props: {
         pedidosLoads: {
             type: Array,
@@ -281,7 +265,6 @@ export default {
     mounted() {
         this.loading = true;
         if(this.pedidos){
-          console.log(this.pedidos)
           this.checkStorage();
           this.getPedidosUsuario();
           this.solicitado = true;
@@ -305,7 +288,6 @@ export default {
             }
         },
         arrived() {
-          console.log(this.arrived);
             if (this.arrived >= 2) {
                 let dolar = +this.promedio / +this.cripto.BTC.USD;
                 this.dolarAux = dolar;
@@ -351,7 +333,6 @@ export default {
         calcularTotal(concepto, detalles) {
             let suma = 0;
             let totalUSD = 0;
-            console.log(concepto,"concepto");
             detalles.map((a) => (a.cantidad = Math.floor(a.cantidad)));
             detalles.map((a, i) => {
               let costo = concepto[i].precio_dolar;
@@ -438,7 +419,6 @@ export default {
         checkStock(pedido){
 
           pedido.detalles.map(element =>{
-            console.log(element.cantidad > element?.stock,element.cantidad,element.stock,this.priced)
              this.bloqueo = element.cantidad > element?.stock
           })
         },
@@ -541,7 +521,6 @@ export default {
                     //en este caso no todos los productos estan disponibles asi que se procede a modificar el total con los disponibles
                     this.stockNotifier = notComplete;
                     let suma = 0;
-                    console.log("pasa")
                     this.total = 0;
                     this.boqueo = true;
                     this.pedidoSelect.detalles.map((a) => {
