@@ -68,7 +68,7 @@
             v-if="$vuetify.breakpoint.smAndDown"
             class="mx-5 search" slot="extension"
            :style="`color:${theme.navBar.font}!important`"
-            label="¿Que te provoca?..." hide-details
+            label="¿Qué te provoca?" hide-details
             dense v-on:keyup.enter="push" light
             solo single-line v-model="busquedas"
         >
