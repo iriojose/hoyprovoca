@@ -50,6 +50,8 @@
         <BottomNavigation
             v-if="ruta() && $vuetify.breakpoint.smAndDown && !loading"
         />
+
+        <BottomNavigationOff v-if="!ruta() && !loading" />
     </v-app>
 </template>
 
@@ -71,7 +73,8 @@ export default {
         ModalSesion: () => import("@/components/dialogs/ModalSesion"),
         ModalProducto: () => import("@/components/dialogs/ModalProducto"),
         BottomNavigation: () => import("@/components/footer/BottomNavigation"),
-        Loading:() => import("@/components/loaders/Loading")
+        Loading:() => import("@/components/loaders/Loading"),
+        BottomNavigationOff:() => import("@/components/footer/FooterOff")
     },
     data() {
         return {
