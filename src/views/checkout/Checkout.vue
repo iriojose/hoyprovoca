@@ -47,9 +47,12 @@
       >
         <v-stepper :style="` background-color:${theme.background.light_2}`" :color="theme.background.light" v-model="stepper">
           <v-stepper-header >
+            <v-divider></v-divider>
             <v-stepper-step :color="theme.buttons.secondary" :style="`color:${theme.background.font2}!important`"  :complete="stepper > 1" step="1"><span :style="`color:${theme.background.font2}`">tipos de pago</span></v-stepper-step>
             <v-divider></v-divider>
+            <v-divider></v-divider>
             <v-stepper-step :color="theme.buttons.secondary" :style="`color:${theme.background.font2}!important`" :complete="stepper > 2" step="2"  ><span :style="`color:${theme.background}`">Pagar</span></v-stepper-step>
+            <v-divider></v-divider>
           </v-stepper-header>
 
           <v-stepper-items>
@@ -60,6 +63,7 @@
                 :pedidoSelect="pedidoSelect"
                 :stepper="stepper"
                 :pago="pago"
+                :totalUSD.sync="totalUSD"
                 @updatedState="updateState"
                 @setLocal="setLocal"
                 @setUserData="setUserData"
@@ -107,9 +111,10 @@
           </v-card-text>
           <v-card-subtitle class="containersub">
             <p class="success-description">
-              proceso de pago terminado se le notificara por correo electronico
-              si su pago fue verificado y como sera el proceso de entrega;
-              <strong>sera redigido en unos segundos</strong>
+              Proceso de pago finalizado. 
+              <br> <br>  
+              Recibirá una notificación por correo cuando su pago sea aprobado.
+              <strong>Será redigido en unos segundos...</strong>
             </p>
           </v-card-subtitle>
         </v-card>
