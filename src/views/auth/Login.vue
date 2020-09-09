@@ -118,7 +118,7 @@
                                                     <v-progress-circular
                                                         v-if="loading2"
                                                         size="24"
-                                                        :color="theme.background.secondary"
+                                                        :color="theme.background.primary"
                                                         indeterminate
                                                     ></v-progress-circular>
                                                     <img
@@ -136,11 +136,12 @@
                                             filled
                                             rounded
                                             dense
-                                            :color="theme.background.light_2"
+                                            @click:append="showPassword = !showPassword"
+                                            :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                                             :disabled="loading"
                                             v-model="data.password"
                                             single-line
-                                            type="password"
+                                            :type="showPassword ? 'text':'password'"
                                             :rules="[
                                                 required('Contraseña'),
                                                 minLength('Contraseña', 6),
@@ -209,6 +210,7 @@ export default {
             mensaje: "",
             type: "error",
             showMessage: false,
+            showPassword:false,
             loading: false,
             loading2: false,
             valid: false,
@@ -259,58 +261,43 @@ export default {
         async getUser(email) {
             this.errors = [];
             this.success = "";
-            if (email.length <= 0)
-                return this.errors.push("Debe ingresar un email");
+            if (email.length <= 0) return this.errors.push("Debe ingresar un email");
             // eslint-disable-next-line
             let regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/;
-            if (!regex.test(email))
-                return this.errors.push(`Debe ingresar un email válido`);
+            if (!regex.test(email)) return this.errors.push(`Debe ingresar un email válido`);
             this.loading2 = true;
-            await Usuario()
-                .get(`/?email=${email}`)
-                .then((response) => {
-                    this.loading2 = false;
-                    if (!response.data.data) {
-                        return this.errors.push(
-                            "Este email no esta registrado"
-                        );
+            await Usuario().get(`/?email=${email}`).then((response) => {
+                this.loading2 = false;
+                if (!response.data.data) {
+                    return this.errors.push("Este email no esta registrado");
+                } else {
+                    if (response.data.data[0].bloqueado == 1) {
+                        return this.errors.push("Esta cuenta se encuentra bloqueada.");
                     } else {
-                        if (response.data.data[0].bloqueado == 1) {
-                            return this.errors.push(
-                                "Esta cuenta se encuentra bloqueada."
-                            );
-                        } else {
-                            return (this.success = "Email verificado");
-                        }
+                        return (this.success = "Email verificado");
                     }
-                })
-                .catch((e) => {
-                    console.log(e);
-                    this.loading2 = false;
-                    return this.errors.push("Error de conexión");
-                });
+                }
+            }).catch((e) => {
+                console.log(e);
+                this.loading2 = false;
+                return this.errors.push("Error de conexión");
+            });
         },
         login() {
             this.loading = true;
-            Auth()
-                .post("/login", { data: this.data })
-                .then((response) => {
-                    if (response.data.data.bloqueado == 1) {
-                        this.setModalBloqueado(true);
-                        this.loading = false;
-                    } else if (response.data.data.perfil_id == 3) {
-                        this.getCliente(response.data);
-                    } else {
-                        this.respuesta(
-                            "Este usuario no es un cliente.",
-                            "error"
-                        );
-                    }
-                })
-                .catch((e) => {
-                    console.log(e);
-                    this.respuesta("Contraseña incorrecta.", "error");
-                });
+            Auth().post("/login", { data: this.data }).then((response) => {
+                if (response.data.data.bloqueado == 1) {
+                    this.setModalBloqueado(true);
+                    this.loading = false;
+                 } else if (response.data.data.perfil_id == 3) {
+                    this.getCliente(response.data);
+                } else {
+                    this.respuesta("Este usuario no es un cliente.","error");
+                }
+            }).catch((e) => {
+                console.log(e);
+                this.respuesta("Contraseña incorrecta.", "error");
+            });
         },
         getCliente(data) {
             Clientes().get(`/?usuario_id=${data.data.id}`).then((response) => {
