@@ -71,8 +71,6 @@
                 <v-icon color="#D32F2F">mdi-magnify</v-icon>
             </v-btn>
         </v-text-field>
-
-        <BarraLateral />
     </v-app-bar>
 </template>
 
@@ -82,7 +80,7 @@ import {mapState, mapActions} from 'vuex';
 
     export default {
         components:{
-            BarraLateral:() => import("@/components/navbar/BarraLateral"),
+            
             Carrito:() => import("./Carrito"),
             Perfil:() => import("./Perfil"),
             MovilOpciones:() => import("./MovilOpciones"),

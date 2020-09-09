@@ -3,7 +3,7 @@
         <div v-show="false" id="talkjs-chat-global" style="width: 100%;; height: 450px"><i><v-spacer></v-spacer><v-spacer></v-spacer></i></div>
 
         <Navbar v-if="ruta() && !loading" />
-
+        <BarraLateral style="z-index:4;" />
         <v-main
             v-if="!loading"
             :style="`background-color:${theme.background.light}`"
@@ -74,7 +74,8 @@ export default {
         ModalProducto: () => import("@/components/dialogs/ModalProducto"),
         BottomNavigation: () => import("@/components/footer/BottomNavigation"),
         Loading:() => import("@/components/loaders/Loading"),
-        BottomNavigationOff:() => import("@/components/footer/FooterOff")
+        BottomNavigationOff:() => import("@/components/footer/FooterOff"),
+        BarraLateral:() => import("@/components/navbar/BarraLateral"),
     },
     data() {
         return {

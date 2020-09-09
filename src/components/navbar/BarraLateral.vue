@@ -1,7 +1,6 @@
 <template>
     <v-navigation-drawer 
-        app v-model="drawers" temporary hide-overlay width="270" color="#fff"
-        :style="$vuetify.breakpoint.smAndDown ? 'margin-top:102px;':'margin-top:63px'"
+        v-model="drawers" hide-overlay width="270" color="#fff" absolute clipped
     >
         <v-list dark>
             <div class="text-center font-weight-bold my-2 black--text">Categorías</div>
