@@ -10,13 +10,19 @@
 
         <v-spacer></v-spacer>
 
-        <v-avatar class="elevation-2" color="#eee" size="50">
-            <v-img :src="image+pedido.imagen"></v-img>
+        <v-avatar class="elevation-2 mx-2" color="#eee" size="50">
+            <v-img :src="image+empresa.imagen"></v-img>
         </v-avatar>
 
         <v-spacer></v-spacer>
 
-        <div  :style="`color:${theme.sidebar.font}`" class="font-weight-black ">{{sale}}</div>
+        <div class="text-truncate col-5 black--text font-weight-bold">
+            {{empresa.nombre_comercial}}
+        </div>
+
+        <v-spacer></v-spacer>
+
+        <div :style="`color:${theme.sidebar.font}`" class="font-weight-black ">{{sale}}</div>
     </v-toolbar>
 </template>
 
@@ -46,6 +52,10 @@ import accounting from 'accounting';
                 ...variables,
                 loading:false,
                 sale:'',
+                empresa:{
+                    imagen:"default.png",
+                    nombre_comercial:""
+                }
             }
         },
         watch: {
@@ -54,10 +64,11 @@ import accounting from 'accounting';
             }
         },
         mounted() {
+            this.empresas.filter(a => a.id == this.pedido.adm_empresa_id ? this.empresa=a:null);
             this.sale = accounting.formatMoney(+this.total,{symbol:"$ ",thousand:',',decimal:'.'});
         },
         computed:{
-          ...mapState(["theme"])
+          ...mapState(["theme","empresas"])
         },
         methods:{
             ...mapActions(['deletePedidoStore']),
