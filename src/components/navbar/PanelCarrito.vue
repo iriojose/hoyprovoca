@@ -33,7 +33,7 @@
         <v-expansion-panels v-else class="my-1" v-model="panel">
             <v-expansion-panel v-for="(pedido,i) in pedidos" :key="i">
 
-                <v-expansion-panel-header :color="theme.sidebar.card">
+                <v-expansion-panel-header :color="theme.sidebar.card" style="padding-right:0px;padding-left:0px;">
                     <EncabezadoPedido :index="i" :pedido="pedido" :total="totalPedidos[i]" />
 
                     <template v-slot:actions>

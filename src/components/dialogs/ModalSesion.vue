@@ -111,6 +111,7 @@ export default {
             mensaje: "",
             type: "error",
             showMessage: false,
+            showPassword:false,
             loading: false,
             loading2: false,
             valid: false,
