@@ -23,12 +23,6 @@
           v-model="select"
           class="my-5"
         >
-         <template slot="item" slot-scope="{ item }">
-                    <v-avatar size="20" class="mr-5 mb-1">
-                        <v-img :src="item.img"></v-img>
-                    </v-avatar>  
-                    {{ item.nombre }} 
-                </template>
         </v-select>
       </v-col>
     </v-row>
@@ -65,7 +59,7 @@ const metodosDePago = [
     detalle: "",
      to:"https://www.banesco.com/",
     monto: 0,
-    img:`@/assets/checkout/banesco.png`,
+    img:`checkout/banesco.png`,
     acuerdo:false,
   },
   {
@@ -76,9 +70,9 @@ const metodosDePago = [
      to:"https://www.banplus.com/site/p_contenido.php",
     cuenta: "Corriente : 01740112201124312701",
     detalle:
-      "<br>Recuerde!, Transferencias de diferentes bancos tardan al menos 1 dia en ser confirmadas",
+      "Recuerde!, Transferencias de diferentes bancos tardan al menos 1 dia en ser confirmadas",
     monto: 0,
-     img:`@/assets/checkout/banplus.jpg`,
+     img:`checkout/banplus.jpg`,
     acuerdo:false,
   },
   {
@@ -87,10 +81,10 @@ const metodosDePago = [
     propietario: "Jesus Bellorin",
     identificacion: "V-17654976",
      to:"https://www.banesco.com/",
-      img:`@/assets/checkout/banesco.png`,
+      img:`checkout/banesco.png`,
     cuenta: "Ahorro : 01340563895633049696",
     detalle:
-      "<br>Recuerde!, Transferencias de diferentes bancos tardan al menos 1 dia en ser confirmadas",
+      "Recuerde!, Transferencias de diferentes bancos tardan al menos 1 dia en ser confirmadas",
     monto: 0,
     acuerdo:false,
   },
@@ -103,17 +97,18 @@ const metodosDePago = [
     cuenta: "Cuenta: 201800957218",
     detalle: "",
     monto: 0,
-     img:`@/assets/checkout/banesco.png`,
+     img:`checkout/banesco.png`,
      acuerdo:false,
   },
    {
     id: 3,
     nombre: "Acuerdo con El vendedor",
     propietario: "",
-    to:"https://www.banesco.com.pa/",
+    to:"",
     identificacion: "",
     cuenta: "",
     acuerdo:true,
+    img:null,
     detalle: "efectivo en el sitio de entrega y efectivo cuando retiro.",
     monto: 0,
   }
