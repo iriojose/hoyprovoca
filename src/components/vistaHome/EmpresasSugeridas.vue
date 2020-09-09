@@ -11,7 +11,7 @@
                     class="border mx-2 mb-8 pa-4"
                     :width="$vuetify.breakpoint.smAndDown ? 100:200" 
                     :height="$vuetify.breakpoint.smAndDown ? 100:200" 
-                    v-for="(n,i) in 8" :key="i"
+                    v-for="(n,i) in 7" :key="i"
                     @click="push(empresas[i])"
                 >
                     <v-img 

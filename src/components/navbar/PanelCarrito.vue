@@ -11,7 +11,11 @@
     >
         <v-toolbar width="100%" elevation="1" v-if="user.loggedIn" :color="theme.sidebar.primary">
             <v-toolbar-title>
-                <v-img contain width="50" height="50" :src="require('@/assets/2.png')"></v-img>
+                <v-img @click="init" contain width="50" height="50" :src="require('@/assets/2.png')"></v-img>
+            </v-toolbar-title>
+            <v-spacer></v-spacer>
+            <v-toolbar-title class="black--text font-weight-black title">
+                Pedidos Abiertos
             </v-toolbar-title>
             <v-spacer></v-spacer>
             <v-btn icon fab depressed @click="change" :elevation="0">
@@ -29,7 +33,7 @@
         <v-expansion-panels v-else class="my-1" v-model="panel">
             <v-expansion-panel v-for="(pedido,i) in pedidos" :key="i">
 
-                <v-expansion-panel-header :color="theme.sidebar.card">
+                <v-expansion-panel-header :color="theme.sidebar.card" style="padding-right:0px;padding-left:0px;">
                     <EncabezadoPedido :index="i" :pedido="pedido" :total="totalPedidos[i]" />
 
                     <template v-slot:actions>
@@ -104,6 +108,9 @@ import router from '@/router';
             },
             push(){
                 router.push('/checkout');
+            },
+            init(){
+                router.push("/");
             },
             modal(){
                 this.setModalCarrito(true);
