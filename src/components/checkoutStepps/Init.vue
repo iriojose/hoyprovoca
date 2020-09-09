@@ -51,9 +51,9 @@
             <v-card-text>
                 <v-row class="align" justify="center">
                     <v-col
-                        cols="8"
+                        cols="12"
                         md="7"
-                        sm="12"
+                        sm="20"
                         :class="
                             $vuetify.breakpoint.smAndDown
                                 ? 'products'
@@ -158,7 +158,7 @@
                             </v-list-item>
                         </v-list>
                     </v-col>
-                    <v-col cols="6" md="4" sm="12">
+                    <v-col cols="12" md="4" sm="12">
                         <v-row sm="12">
                             <v-col cols="12" md="6" sm="12">
                                 <div class="font-weight-bold title" :style="` color:${theme.background.font}`">

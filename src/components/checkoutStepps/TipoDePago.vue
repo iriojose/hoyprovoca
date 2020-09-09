@@ -61,6 +61,7 @@ const metodosDePago = [
     detalle: "",
      to:"https://www.banesco.com/",
     monto: 0,
+    acuerdo:false,
   },
   {
     id: 1,
@@ -72,6 +73,7 @@ const metodosDePago = [
     detalle:
       "Recuerde!, Transferencias de diferentes bancos tardan al menos 1 dia en ser confirmadas",
     monto: 0,
+    acuerdo:false,
   },
   {
     id: 2,
@@ -83,6 +85,7 @@ const metodosDePago = [
     detalle:
       "Recuerde!, Transferencias de diferentes bancos tardan al menos 1 dia en ser confirmadas",
     monto: 0,
+    acuerdo:false,
   },
   {
     id: 3,
@@ -93,15 +96,17 @@ const metodosDePago = [
     cuenta: "Cuenta: 201800957218",
     detalle: "",
     monto: 0,
+     acuerdo:false,
   },
    {
     id: 3,
     nombre: "Acuerdo con El vendedor",
-    propietario: "efectivo en el sitio de entrega y efectivo cuando retiro.",
+    propietario: "",
     to:"https://www.banesco.com.pa/",
     identificacion: "",
     cuenta: "",
-    detalle: "",
+    acuerdo:true,
+    detalle: "efectivo en el sitio de entrega y efectivo cuando retiro.",
     monto: 0,
   }
 ];

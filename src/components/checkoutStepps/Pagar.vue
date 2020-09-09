@@ -7,20 +7,20 @@
         <div class="font-weight-bold subtitle-1">{{ totalUSD }} $</div>
         <div class="text-center font-weight-bold title my-5">Datos de la cuenta</div>
         <div>
-          <strong>Nombre :</strong>
+          <strong v-if="!pago.acuerdo">Nombre :</strong>
           {{ pago.propietario }}
         </div>
         <div>
-          <strong>C.I :</strong>
+          <strong v-if="!pago.acuerdo">C.I :</strong>
           {{ pago.identificacion }}
         </div>
-        <div>
+        <div v-if="!pago.acuerdo">
           <strong>Detalles :</strong>
           {{ pago.cuenta }}
         </div>
         <div>
           <strong>Metodo :</strong>
-          <a :href="pago.to" target="_blank">{{ pago.nombre }}</a>
+          <a :href="pago.to" >{{ pago.nombre }}</a>
         </div>
         <div>
           <strong>{{ pago.detalle }}</strong>
