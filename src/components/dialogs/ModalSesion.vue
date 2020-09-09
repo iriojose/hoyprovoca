@@ -56,19 +56,12 @@
                         </v-text-field>
 
                         <v-text-field
-                            filled
-                            rounded
-                            dense
-                            :disabled="loading"
-                            v-model="data.password"
-                            single-line
-                            type="password"
-                            color="#0f2441"
-                            :rules="[
-                                required('Contraseña'),
-                                minLength('Contraseña', 6),
-                            ]"
-                            label="Contraseña"
+                            filled rounded dense
+                            :disabled="loading" v-model="data.password"
+                            single-line :type="showPassword ? 'text':'password'" color="#0f2441"
+                            :rules="[required('Contraseña'),minLength('Contraseña',6)]"
+                            label="Contraseña" @click:append="showPassword = !showPassword"
+                            :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                         ></v-text-field>
                         <div
                             :style="

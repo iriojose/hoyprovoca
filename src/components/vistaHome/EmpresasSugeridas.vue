@@ -11,16 +11,16 @@
                     class="border mx-2 mb-8 pa-4"
                     :width="$vuetify.breakpoint.smAndDown ? 100:200" 
                     :height="$vuetify.breakpoint.smAndDown ? 100:200" 
-                    v-for="(empresa,i) in empresas" :key="i"
-                    @click="push(empresa)"
+                    v-for="(n,i) in 8" :key="i"
+                    @click="push(empresas[i])"
                 >
                     <v-img 
                         contain 
                         :width="$vuetify.breakpoint.smAndDown ? 100:180" 
                         :height="$vuetify.breakpoint.smAndDown ? 80:150"
-                        :src="image+empresa.imagen" 
+                        :src="image+empresas[i].imagen" 
                     /> 
-                    <div :style="`color:${theme.background.font}`" class="mt-2 px-2 text-center text-truncate caption text-capitalize font-weight-black">{{empresa.nombre_comercial}}</div>
+                    <div :style="`color:${theme.background.font}`" class="mt-2 px-2 text-center text-truncate caption text-capitalize font-weight-black">{{empresas[i].nombre_comercial}}</div>
                 </v-card>
             </v-row>
         </v-card-text>

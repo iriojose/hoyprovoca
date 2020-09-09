@@ -143,7 +143,8 @@ export default {
         },
         getEmpresas() {
             //trae las empreasa
-            Empresa().get("/?limit=8").then((response) => {
+            Empresa().get("/?activo<0&limit=100").then((response) => {
+                console.log(response.data.data);
                 window.localStorage.setItem("empresasMasVendidas",JSON.stringify(response.data.data));
                 this.setEmpresas(response.data.data);
             }).catch((e) => {
