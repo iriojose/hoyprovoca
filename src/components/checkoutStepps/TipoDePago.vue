@@ -29,7 +29,7 @@
       </v-col>
     </v-row>
     <div class="stepper-buttons">
-      <v-btn :color="theme.buttons.primary" :style="`color:${theme.buttons.font}`" :disabled="bloqueo" @click="changeView('stepper', 2)">
+      <v-btn :color="theme.buttons.terceary" :style="`color:${theme.buttons.font}`" :disabled="bloqueo" @click="changeView('stepper', 2)">
         <span  >Continuar</span>
       </v-btn>
       <v-btn text @click="changeView('view', 1)">Atras</v-btn>
@@ -59,13 +59,15 @@ const metodosDePago = [
     identificacion: "V-17654976",
     cuenta: "movil : 04127955560",
     detalle: "",
+     to:"https://www.banesco.com/",
     monto: 0,
   },
   {
     id: 1,
-    nombre: "Transferencia Banco Nacional: Banplus",
+    nombre: "Banplus : Transferencia Banco Nacional",
     propietario: "Jesus Bellorin",
     identificacion: "V-17654976",
+     to:"https://www.banplus.com/site/p_contenido.php",
     cuenta: "Corriente : 01740112201124312701",
     detalle:
       "Recuerde!, Transferencias de diferentes bancos tardan al menos 1 dia en ser confirmadas",
@@ -73,9 +75,10 @@ const metodosDePago = [
   },
   {
     id: 2,
-    nombre: "Transferencia Banco Nacional: Banesco",
+    nombre: "Banesco : Transferencia Banco Nacional",
     propietario: "Jesus Bellorin",
     identificacion: "V-17654976",
+     to:"https://www.banesco.com/",
     cuenta: "Ahorro : 01340563895633049696",
     detalle:
       "Recuerde!, Transferencias de diferentes bancos tardan al menos 1 dia en ser confirmadas",
@@ -85,11 +88,22 @@ const metodosDePago = [
     id: 3,
     nombre: "Banesco Panama",
     propietario: "Jesus Bellorin",
+    to:"https://www.banesco.com.pa/",
     identificacion: "V-17654976",
     cuenta: "Cuenta: 201800957218",
     detalle: "",
     monto: 0,
   },
+   {
+    id: 3,
+    nombre: "Acuerdo con El vendedor",
+    propietario: "efectivo en el sitio de entrega y efectivo cuando retiro.",
+    to:"https://www.banesco.com.pa/",
+    identificacion: "",
+    cuenta: "",
+    detalle: "",
+    monto: 0,
+  }
 ];
 export default {
   props: {

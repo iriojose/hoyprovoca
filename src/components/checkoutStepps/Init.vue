@@ -199,7 +199,7 @@
                         </div>
                         <v-btn
                             block
-                            :color="theme.buttons.primary"
+                            :color="theme.buttons.terceary"
                             class="text-capitalize subtitle-2 my-5 font-weight-bold"
                             @click="next"
                             :style="` color:${theme.buttons.font}!important`"

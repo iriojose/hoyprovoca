@@ -20,7 +20,7 @@
         </div>
         <div>
           <strong>Metodo :</strong>
-          {{ pago.nombre }}
+          <a :href="pago.to" target="_blank">{{ pago.nombre }}</a>
         </div>
         <div>
           <strong>{{ pago.detalle }}</strong>
@@ -63,7 +63,7 @@
       <v-btn
         light
         :disabled="data.codigo_referencia === '' && loading"
-        :color="theme.buttons.primary"
+        :color="theme.buttons.terceary"
         class="lod"
         :style="`color:${theme.buttons.font}`"
         :loading="loading"
@@ -104,6 +104,7 @@ const metodosDePago = [
     identificacion: " 17654976",
     cuenta: "movil : 04127955560",
     detalle: "",
+    to:"https://www.banesco.com/",
     monto: 0,
   },
   {
@@ -111,6 +112,7 @@ const metodosDePago = [
     nombre: "Transferencia Banco Nacional Banplus",
     propietario: "Jesus Bellorin",
     identificacion: " 17654976",
+    to:"https://www.banplus.com/site/p_contenido.php",
     cuenta: "Corriente 01740112201124312701",
     detalle:
       "Recuerde!, Transferencias de diferentes bancos tardan al menos 1 dia en ser confirmadas",
@@ -120,6 +122,7 @@ const metodosDePago = [
     id: 2,
     nombre: "Transferencia Banco Nacional Banesco",
     propietario: "Jesus Bellorin",
+    to:"https://www.banesco.com/",
     identificacion: " 17654976",
     cuenta: "Ahorro 01340563895633049696",
     detalle:
@@ -129,6 +132,7 @@ const metodosDePago = [
   {
     id: 3,
     nombre: "Banesco Panama",
+   to:"https://www.banesco.com.pa/",
     propietario: "Jesus Bellorin",
     identificacion: " 17654976",
     cuenta: "Cuentas 201800957218",
@@ -213,7 +217,6 @@ export default {
       );
     },
     verificarMonto() {
-      console.log(this.total)
       const aCubrir = parseFloat(
         this.total.split(" ")[1].split(".").join("").replace(",", ".")
       );
@@ -235,7 +238,6 @@ export default {
         if (isNotValidMount) return;
       }
       this.loading = true;
-      console.log(this.data , "data")
       this.data.adm_status_id = 2;
       this.data.adm_tipo_pago_id = this.pago.id;
       const money = this.diferentes
@@ -300,7 +302,6 @@ export default {
       this.loading = true;
       formdata.append("image", file);
       abort();
-      console.log(this.pagoId);
       Images()
         .post(`/main/pagos/${this.pagoId[this.stepper - 3]}`, formdata)
         .then(() => {
@@ -339,11 +340,6 @@ export default {
             this.view = 3;
             localStorage.setItem("state", null);
             this.setModalPago(false);
-            console.log(
-              this.pedidos,
-              this.pedidos.indexOf(this.pedidoSelect),
-              "indices"
-            );
             const indexPedido = this.pedidos.indexOf(this.pedidoSelect);
             this.deletePedidoStore(indexPedido);
           }
