@@ -22,11 +22,18 @@
           single-line
           v-model="select"
           class="my-5"
-        ></v-select>
+        >
+         <template slot="item" slot-scope="{ item }">
+                    <v-avatar size="20" class="mr-5 mb-1">
+                        <v-img :src="item.img"></v-img>
+                    </v-avatar>  
+                    {{ item.nombre }} 
+                </template>
+        </v-select>
       </v-col>
     </v-row>
     <div class="stepper-buttons">
-      <v-btn :color="theme.buttons.primary" :style="`color:${theme.buttons.font}`" :disabled="bloqueo" @click="changeView('stepper', 2)">
+      <v-btn :color="theme.buttons.terceary" :style="`color:${theme.buttons.font}`" :disabled="bloqueo" @click="changeView('stepper', 2)">
         <span  >Continuar</span>
       </v-btn>
       <v-btn text @click="changeView('view', 1)">Atras</v-btn>
@@ -56,41 +63,60 @@ const metodosDePago = [
     identificacion: "17.654.976",
     cuenta: "04127955560 (Móvil)",
     detalle: "",
+     to:"https://www.banesco.com/",
     monto: 0,
-    moneda: "BS"
+    img:`@/assets/checkout/banesco.png`,
+    acuerdo:false,
   },
   {
     id: 1,
-    nombre: "Transferencia Banco Nacional Banplus",
+    nombre: "Banplus : Transferencia Banco Nacional",
     propietario: "Jesus Bellorin",
-    identificacion: " 17.654.976",
-    cuenta: "01740112201124312701 (Corriente)",
+    identificacion: "V-17654976",
+     to:"https://www.banplus.com/site/p_contenido.php",
+    cuenta: "Corriente : 01740112201124312701",
     detalle:
       "<br>Recuerde!, Transferencias de diferentes bancos tardan al menos 1 dia en ser confirmadas",
     monto: 0,
-    moneda: "BS"
+     img:`@/assets/checkout/banplus.jpg`,
+    acuerdo:false,
   },
   {
     id: 2,
-    nombre: "Transferencia Banco Nacional Banesco",
+    nombre: "Banesco : Transferencia Banco Nacional",
     propietario: "Jesus Bellorin",
-    identificacion: " 17.654.976",
-    cuenta: "01340563895633049696 (Ahorro)",
+    identificacion: "V-17654976",
+     to:"https://www.banesco.com/",
+      img:`@/assets/checkout/banesco.png`,
+    cuenta: "Ahorro : 01340563895633049696",
     detalle:
       "<br>Recuerde!, Transferencias de diferentes bancos tardan al menos 1 dia en ser confirmadas",
     monto: 0,
-    moneda: "BS"
+    acuerdo:false,
   },
   {
     id: 3,
     nombre: "Banesco Panama",
     propietario: "Jesus Bellorin",
-    identificacion: " 17.654.976",
-    cuenta: "201800957218",
+    to:"https://www.banesco.com.pa/",
+    identificacion: "V-17654976",
+    cuenta: "Cuenta: 201800957218",
     detalle: "",
     monto: 0,
-    moneda: "USD"
+     img:`@/assets/checkout/banesco.png`,
+     acuerdo:false,
   },
+   {
+    id: 3,
+    nombre: "Acuerdo con El vendedor",
+    propietario: "",
+    to:"https://www.banesco.com.pa/",
+    identificacion: "",
+    cuenta: "",
+    acuerdo:true,
+    detalle: "efectivo en el sitio de entrega y efectivo cuando retiro.",
+    monto: 0,
+  }
 ];
 export default {
   props: {

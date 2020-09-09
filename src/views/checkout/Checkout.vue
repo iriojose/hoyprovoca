@@ -47,12 +47,9 @@
       >
         <v-stepper :style="` background-color:${theme.background.light_2}`" :color="theme.background.light" v-model="stepper">
           <v-stepper-header >
+            <v-stepper-step :color="theme.buttons.terceary" :style="`color:${theme.background.font2}!important`"  :complete="stepper > 1" step="1"><span :style="`color:${theme.background.font2}`">tipos de pago</span></v-stepper-step>
             <v-divider></v-divider>
-            <v-stepper-step :color="theme.buttons.secondary" :style="`color:${theme.background.font2}!important`"  :complete="stepper > 1" step="1"><span :style="`color:${theme.background.font2}`">tipos de pago</span></v-stepper-step>
-            <v-divider></v-divider>
-            <v-divider></v-divider>
-            <v-stepper-step :color="theme.buttons.secondary" :style="`color:${theme.background.font2}!important`" :complete="stepper > 2" step="2"  ><span :style="`color:${theme.background}`">Pagar</span></v-stepper-step>
-            <v-divider></v-divider>
+            <v-stepper-step :color="theme.buttons.terceary" :style="`color:${theme.background.font2}!important`" :complete="stepper > 2" step="2"  ><span :style="`color:${theme.background}`">Pagar</span></v-stepper-step>
           </v-stepper-header>
 
           <v-stepper-items>

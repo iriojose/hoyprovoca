@@ -7,20 +7,20 @@
         <div v-if="pago.moneda === 'USD'" class="font-weight-bold subtitle-1">USD.{{ parseFloat(totalUSD).toFixed(2) }}</div>
         <div class="text-center font-weight-bold title my-5">Datos de la cuenta</div>
         <div>
-          <strong>Nombre :</strong>
+          <strong v-if="!pago.acuerdo">Nombre :</strong>
           {{ pago.propietario }}
         </div>
         <div>
-          <strong>C.I :</strong>
+          <strong v-if="!pago.acuerdo">C.I :</strong>
           {{ pago.identificacion }}
         </div>
-        <div>
+        <div v-if="!pago.acuerdo">
           <strong>Detalles :</strong>
           {{ pago.cuenta }}
         </div>
         <div>
           <strong>Metodo :</strong>
-          {{ pago.nombre }}
+          <a :href="pago.to" >{{ pago.nombre }}</a>
         </div>
         <div>
           <strong>{{ pago.detalle }}</strong>
@@ -63,7 +63,7 @@
       <v-btn
         light
         :disabled="data.codigo_referencia === '' && loading"
-        :color="theme.buttons.primary"
+        :color="theme.buttons.terceary"
         class="lod"
         :style="`color:${theme.buttons.font}`"
         :loading="loading"
@@ -104,6 +104,7 @@ const metodosDePago = [
     identificacion: "17654976",
     cuenta: "movil : 04127955560",
     detalle: "",
+    to:"https://www.banesco.com/",
     monto: 0,
     moneda: "BS"
   },
@@ -112,6 +113,7 @@ const metodosDePago = [
     nombre: "Transferencia Banco Nacional Banplus",
     propietario: "Jesus Bellorin",
     identificacion: " 17654976",
+    to:"https://www.banplus.com/site/p_contenido.php",
     cuenta: "Corriente 01740112201124312701",
     detalle:
       "<br>Recuerde!, Transferencias de diferentes bancos tardan al menos 1 dia en ser confirmadas",
@@ -122,6 +124,7 @@ const metodosDePago = [
     id: 2,
     nombre: "Transferencia Banco Nacional Banesco",
     propietario: "Jesus Bellorin",
+    to:"https://www.banesco.com/",
     identificacion: " 17654976",
     cuenta: "Ahorro 01340563895633049696",
     detalle:
@@ -132,6 +135,7 @@ const metodosDePago = [
   {
     id: 3,
     nombre: "Banesco Panama",
+   to:"https://www.banesco.com.pa/",
     propietario: "Jesus Bellorin",
     identificacion: " 17654976",
     cuenta: "Cuentas 201800957218",
@@ -342,11 +346,6 @@ export default {
             this.view = 3;
             localStorage.setItem("state", null);
             this.setModalPago(false);
-            console.log(
-              this.pedidos,
-              this.pedidos.indexOf(this.pedidoSelect),
-              "indices"
-            );
             const indexPedido = this.pedidos.indexOf(this.pedidoSelect);
             this.deletePedidoStore(indexPedido);
           }
