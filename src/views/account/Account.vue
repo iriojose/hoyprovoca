@@ -102,7 +102,7 @@ import variables from '@/services/variables_globales';
         methods: {
             onResize() {
                 if (window.innerWidth < 957) {
-                    this.clicked = false;
+                    this.clicked = true;
                     this.clickable = true;
                 }else {
                     this.clicked = true;

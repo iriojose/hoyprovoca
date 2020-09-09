@@ -1,48 +1,36 @@
 <template>
     <v-card width="100%" elevation="0" :color="theme.background.primary" height="100%">
-        <v-card-actions>
-            <v-btn fab small :color="theme.buttons.secondary" @click="home">
-                <v-icon :color="theme.buttons.font">mdi-home</v-icon>
-            </v-btn>
-            <v-spacer class="hidden-sm-and-down"></v-spacer>
-            <v-img v-if="theme.background.dark"
-	            alt="Hoyprovoca logo" class="shrink mr-2 cursor hidden-sm-and-down" contain
-              src='@/assets/logo6.png' transition="scale-transition"
+        <v-app-bar app color="#fff" :elevation="$vuetify.breakpoint.smAndDown ? 1:0" :class="$vuetify.breakpoint.smAndDown ? null:'px-12'">  
+            <v-spacer class="hidden-sm-and-up"></v-spacer>
+            <v-img
+                v-if="theme.background.dark" alt="Hoyprovoca logo"
+                class="shrink mr-2 cursor"
+                contain src="@/assets/logo6.png" transition="scale-transition"
                 width="200" height="100" @click="push2"
             />
-            <v-img v-else
-                    alt="Hoyprovoca logo" class="shrink mr-2 cursor hidden-sm-and-down" contain
-              src='@/assets/logo2.png' transition="scale-transition"
+            <v-img
+                v-else alt="Hoyprovoca logo" class="shrink mr-2 cursor"
+                contain src="@/assets/logo2.png" transition="scale-transition"
                 width="200" height="100" @click="push2"
             />
             <v-spacer></v-spacer>
-            <v-btn rounded :style="`color:${theme.buttons.font}`" :color="theme.buttons.secondary" class="text-capitalize  caption" @click="forgot">
-                ¿Olvido su contraseña?
+            <v-btn class="text-capitalize font-weight-bold mx-2" text to="/login" v-if="!$vuetify.breakpoint.smAndDown">
+                Inicia sesión
+                <v-icon class="mx-2">
+                    mdi-exit-to-app
+                </v-icon>
             </v-btn>
-        </v-card-actions>
+            <v-btn class="text-capitalize font-weight-bold mx-2" text to="/" v-if="!$vuetify.breakpoint.smAndDown">
+                Inicio
+                <v-icon class="mx-2">
+                    mdi-home
+                </v-icon>
+            </v-btn>
+        </v-app-bar>
+
         <v-card-text>
             <v-row justify="center"> 
                 <v-col cols="12" md="9" sm="12">
-                    <v-row justify="center" class="pb-4 hidden-sm-and-up">
-                         <v-img
-                        v-if="theme.background.dark"
-                        alt="Hoyprovoca logo"
-                        contain
-                        src="@/assets/logo6.png"
-                        transition="scale-transition"
-                        width="100"
-                        height="50"
-                        @click="push2"
-                    />
-                    <v-img v-else
-                        transition="scale-transition"
-                        contain
-                        width="100"
-                        height="50"
-                        :src="require('@/assets/logo2.png')"
-                    ></v-img>
-                    </v-row>
-
                     <v-card width="100%" :style="`background-color:${theme.background.light};color:${theme.background.font}!important`"  elevation="0" style="padding: 0 15px 0 30px">
                         <v-row justify="center" class="mt-5">
                             <v-col cols="12" md="6" class="hidden-sm-and-down" style="padding: 0 20px">
@@ -50,8 +38,8 @@
                                 <v-divider></v-divider>
                                 <div
                                 :style="`background:transparent;color:${theme.background.font2}!important;font-weight:bold`"
-                                    class="subtitle-2 text-center color my-5" @click="login"
-                                >¿Ya tienes una cuenta? ¡Inicia sesión!</div>
+                                    class="subtitle-2 text-center color my-5" @click="forgot"
+                                >¿Olvidaste tu contraseña? ¡Recuperala!</div>
                             </v-col>
                             
                             <v-col cols="12" md="6" sm="12" class="pa-8" :style="`background:${theme.background.light_2}`">
@@ -205,15 +193,15 @@
                                 <v-divider class="hidden-sm-and-up"></v-divider>
                                 <div
                                 :style="`background:transparent;color:${theme.background.font2}!important;font-weight:bold`"
-                                    class="subtitle-2 text-center color my-5 hidden-sm-and-up" @click="login"
-                                >¿Ya tienes una cuenta? ¡Inicia sesión!</div>
+                                    class="subtitle-2 text-center color my-5 hidden-sm-and-up" @click="forgot"
+                                >¿Olvidaste tu contraseña? ¡Recuperala!</div>
                             </v-col>
                         </v-row>
                     </v-card>
                 </v-col>
             </v-row>
 
-            <v-footer :fixed="$vuetify.breakpoint.smAndDown" class="font-weight-medium" elevation="0" :color="theme.background.primary">
+            <v-footer fixed class="font-weight-medium" elevation="0" :color="theme.background.primary">
                 <v-col class="text-center" :style="`color:${theme.background.font}`" cols="12">
                     {{ new Date().getFullYear() }} — <strong>Hoyprovoca</strong> 
                 </v-col>
@@ -282,9 +270,9 @@ import variables from "@/services/variables_globales";
 	},
 	methods: {
 		...mapActions(["logged"]),
-    push2(){
-      router.push("/");
-    },
+        push2(){
+            router.push("/");
+        },
 		login() {
 			router.push("/login");
         },

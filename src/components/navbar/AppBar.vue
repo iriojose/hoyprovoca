@@ -6,9 +6,9 @@
         :elevate-on-scroll="$vuetify.breakpoint.smAndDown ? false:true"
         :extended="$vuetify.breakpoint.smAndDown && $route.name !== 'home' ? true:false"
     >
-        <v-app-bar-nav-icon  :color="theme.navBar.font" class="mr-1" @click="change" v-if="dialog==false" />
+        <v-app-bar-nav-icon :color="theme.navBar.font" class="mr-1" @click="change" v-if="drawer==false" />
 
-        <v-btn fab v-else  @click="change" icon depressed class="mr-1">
+        <v-btn fab v-else @click="change" icon depressed class="mr-1">
             <v-icon :color="theme.navBar.font">
                 mdi-close
             </v-icon>
@@ -22,7 +22,7 @@
 				src='@/assets/logo2.png' transition="scale-transition"
 			    width="200" height="100" @click="push2"
 			/>
-      <v-img v-else
+            <v-img v-else
 	            alt="Hoyprovoca logo" class="shrink mr-2 cursor" contain
 				src='@/assets/logo6.png' transition="scale-transition"
 			    width="200" height="100" @click="push2"
@@ -57,13 +57,13 @@
 		<Notificaciones />
         <Carrito /> 
         <Perfil />
-        <MovilOpciones />
+        <MovilOpciones v-if="$vuetify.breakpoint.smAndDown && !user.loggedIn" />
 
         <v-text-field 
             v-if="$vuetify.breakpoint.smAndDown"
             class="mx-5 search" slot="extension"
            :style="`color:${theme.navBar.font}!important`"
-            label="¿Que te provoca?..." hide-details
+            label="¿Qué te provoca?" hide-details
             dense v-on:keyup.enter="push" light
             solo single-line v-model="busquedas"
         >
@@ -71,8 +71,6 @@
                 <v-icon color="#D32F2F">mdi-magnify</v-icon>
             </v-btn>
         </v-text-field>
-
-        <BarraLateral />
     </v-app-bar>
 </template>
 
@@ -82,7 +80,7 @@ import {mapState, mapActions} from 'vuex';
 
     export default {
         components:{
-            BarraLateral:() => import("@/components/navbar/BarraLateral"),
+            
             Carrito:() => import("./Carrito"),
             Perfil:() => import("./Perfil"),
             MovilOpciones:() => import("./MovilOpciones"),
@@ -92,9 +90,6 @@ import {mapState, mapActions} from 'vuex';
             return {
                 dialog:false,
             }
-        },
-        mounted(){
-          console.log(this?.theme);
         },
         computed:{
             ...mapState(['user','search','bandera','drawer','theme']),

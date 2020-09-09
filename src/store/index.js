@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import theme from "@/themes/themes"
+import theme from "@/themes/themes";
+import Talk from 'talkjs';
+
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -37,7 +39,10 @@ export default new Vuex.Store({
             existencias:[
                 {existencia:0}
             ]
-        }//bandera para un producto seleccionado
+        },//bandera para un producto seleccionado
+        me: null,
+        other: null,
+        image: process.env.VUE_APP_SERVICIO_IMAGES,
 	},
 	mutations: {
         //data global
@@ -140,23 +145,23 @@ export default new Vuex.Store({
         SET_PEDIDOS(state,val){//añade todos los pedidos que vengan de la api
             state.pedidos = val;
             state.pedidos.filter(a => a.detalles.filter(b => state.agregados.push(b.adm_conceptos_id)));
-            window.localStorage.setItem("pedidos",JSON.stringify(state.pedidos));
+            //window.localStorage.setItem("pedidos",JSON.stringify(state.pedidos));
         },
         ADD_PEDIDOS(state,val){//añade un pedido (solo cuando se crea el pedido se usa)
             state.agregados.push(val.detalles[0].adm_conceptos_id);//se añade el id del producto
             state.pedidos.push(val);
-            window.localStorage.setItem("pedidos",JSON.stringify(state.pedidos));
+            //window.localStorage.setItem("pedidos",JSON.stringify(state.pedidos));
         },
         ADD_DETALLE(state,val){//se añade un detalle a un pedido existente
             state.agregados.push(val.detalle.adm_conceptos_id);
             state.pedidos.filter(a=> a.id == val.detalle.rest_pedidos_id ? a.detalles.push(val.detalle):null);
             state.pedidos.filter(a => a.id == val.detalle.rest_pedidos_id ? a.conceptos.push(val.concepto):null);
-            window.localStorage.setItem("pedidos",JSON.stringify(state.pedidos));
+            //window.localStorage.setItem("pedidos",JSON.stringify(state.pedidos));
         },
         DELETE_CARRITO(state){
             state.pedidos = [];
             state.agregados = [];
-            window.localStorage.setItem("pedidos",JSON.stringify(state.pedidos));
+            //window.localStorage.setItem("pedidos",JSON.stringify(state.pedidos));
         },
         DELETE_PEDIDO(state,index){//se elimina un pedido
             let aux=[],aux2=[];
@@ -166,7 +171,7 @@ export default new Vuex.Store({
             state.agregados.filter(a => aux.filter(b => !a == b ? aux2.push(a):null));
             state.agregados = aux2;//se asigna los ids que quedan
             state.pedidos.splice(index,1);//se elimna el pedido
-            window.localStorage.setItem("pedidos",JSON.stringify(state.pedidos));
+            //window.localStorage.setItem("pedidos",JSON.stringify(state.pedidos));
         },
         DELETE_DETALLE(state,data){//se elimina el detalle de un pedido
             //se consigue el concepto a eliminar
@@ -175,12 +180,70 @@ export default new Vuex.Store({
             state.agregados.splice(state.agregados.indexOf(val),1);
             //se elimina del array de detalles del pedido
             state.pedidos[data.indexPedido].detalles.splice(data.indexDetalle,1);
-            window.localStorage.setItem("pedidos",JSON.stringify(state.pedidos));
+            //window.localStorage.setItem("pedidos",JSON.stringify(state.pedidos));
         },
         UPDATE_DETALLE(state,data){//actualiza la cantidad de un detalle
             state.pedidos[data.indexPedido].detalles[data.indexDetalle].cantidad = data.cantidad;
-            window.localStorage.setItem("pedidos",JSON.stringify(state.pedidos));
+            //window.localStorage.setItem("pedidos",JSON.stringify(state.pedidos));
         },
+        SET_CHAT_CONNECTION (state, val) {
+            try {
+                Talk.ready.then(async () => {
+                    let inbox;
+                    const iAmNotSupport = (state.user.data.id !== 2)
+                    state.me = new Talk.User({
+                            id: iAmNotSupport ? state.user.data.email : "teamlead@somossistemas.com",
+                            name: iAmNotSupport ? state.user.data.nombre + " " + state.user.data.apellido: "Soporte Hoyprovoca",
+                            email: iAmNotSupport ? state.user.data.email !== "" ? state.user.data.email : null : "teamlead@somossistemas.com", 
+                            photoUrl: iAmNotSupport ? state.user.data.imagen === 'default.png' ? require('@/assets/user.jpg') : state.image+state.user.data.imagen : require('@/assets/2.png'),
+                            welcomeMessage: iAmNotSupport ?  "Hola, soy "+state.user.data.nombre : "En Hoyprovoca, estamos encantados de ayudarte a solventar tus problemas. Déjanos un mensaje!",
+                            role: 'Customer',
+                            locale: 'es-ES'
+                    });
+                    
+                    window.talkSession = new Talk.Session({
+                        appId: process.env.VUE_APP_TALKJS_ID,
+                        me: state.me
+                    }); 
+                            
+                    if(iAmNotSupport){
+                        // Cambiar teamlead por cualquier otro correo de soporte
+                        state.other = new Talk.User({
+                            id: "teamlead@somossistemas.com",
+                            name: "Soporte Hoyprovoca",
+                            email: "teamlead@somossistemas.com",
+                            photoUrl: require('@/assets/2.png'),
+                            welcomeMessage: "En Hoyprovoca, estamos encantados de ayudarte a solventar tus problemas. Déjanos un mensaje!",
+                                role:'Support',
+                                locale: 'es-ES'
+                            });
+                            let conversation = window.talkSession.getOrCreateConversation(Talk.oneOnOneId(state.me, state.other));
+                            conversation.setParticipant(state.me);
+                            conversation.setParticipant(state.other);
+                            inbox = window.talkSession.createInbox({selected: conversation});
+                        }else{
+                            window.talkSession = new Talk.Session({
+                                appId: process.env.VUE_APP_TALKJS_ID,
+                                me: state.me
+                            });
+                            let conversation = window.talkSession.getOrCreateConversation(Talk.oneOnOneId(state.me));
+                            conversation.setParticipant(state.me);
+                                
+                            inbox = window.talkSession.createInbox({selected: conversation});
+                        }
+                        
+                    inbox.mount(document.getElementById(val));
+                    
+                    inbox.setPresence(true)
+
+                    inbox.on("sendMessage", function() {
+                        // CODIGO PARA ENVIAR NOTIFICACIONES
+                    })
+                });
+            } catch (error) {
+                null;
+            }
+        }
 	},
 	actions: {
         setMasVendidos({commit},val){
@@ -264,9 +327,12 @@ export default new Vuex.Store({
         },
         setModalPago({commit},val){
           commit('SET_MODAL_PAGO',val);
-      },
+        },
         setDrawer({commit},val){
             commit("SET_DRAWER",val);
+        },
+        setChatSession({commit},val){
+            commit("SET_CHAT_CONNECTION",val);
         }
 	},
 	modules: {

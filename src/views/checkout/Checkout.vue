@@ -22,7 +22,7 @@
         class="text-capitalize body-2 font-weight-bold"
       >Seguir comprando</v-btn>
     </v-toolbar>
-    <div :style="` color:${theme.background.font}`" class="text-center my-5 display-1 font-weight-bold">Checkout</div>
+    <div :style="` color:${theme.background.font}`" class="text-center my-5 display-1 font-weight-bold">Pagar</div>
     <v-scroll-x-transition>
       <Init
       v-if="view==1"
@@ -60,6 +60,7 @@
                 :pedidoSelect="pedidoSelect"
                 :stepper="stepper"
                 :pago="pago"
+                :totalUSD.sync="totalUSD"
                 @updatedState="updateState"
                 @setLocal="setLocal"
                 @setUserData="setUserData"
@@ -107,9 +108,10 @@
           </v-card-text>
           <v-card-subtitle class="containersub">
             <p class="success-description">
-              proceso de pago terminado se le notificara por correo electronico
-              si su pago fue verificado y como sera el proceso de entrega;
-              <strong>sera redigido en unos segundos</strong>
+              Proceso de pago finalizado. 
+              <br> <br>  
+              Recibirá una notificación por correo cuando su pago sea aprobado.
+              <strong>Será redigido en unos segundos...</strong>
             </p>
           </v-card-subtitle>
         </v-card>

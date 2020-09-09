@@ -1,59 +1,37 @@
 <template>
     <div :style="`background-color:${theme.background.primary};height:100%;width:100%;`">
-        <v-card-actions>
-            <v-btn fab small :color="theme.buttons.secondary" @click="home">
-                <v-icon :color="theme.buttons.font">mdi-home</v-icon>
-            </v-btn>
-            <v-spacer class="hidden-sm-and-down"></v-spacer>
+        <v-app-bar app color="#fff" :elevation="$vuetify.breakpoint.smAndDown ? 1:0" :class="$vuetify.breakpoint.smAndDown ? null:'px-12'">  
+            <v-spacer class="hidden-sm-and-up"></v-spacer>
             <v-img
                 v-if="theme.background.dark" alt="Hoyprovoca logo"
-                class="shrink mr-2 cursor hidden-sm-and-down"
+                class="shrink mr-2 cursor"
                 contain src="@/assets/logo6.png" transition="scale-transition"
                 width="200" height="100" @click="push2"
             />
             <v-img
-                v-else alt="Hoyprovoca logo" class="shrink mr-2 cursor hidden-sm-and-down"
+                v-else alt="Hoyprovoca logo" class="shrink mr-2 cursor"
                 contain src="@/assets/logo2.png" transition="scale-transition"
                 width="200" height="100" @click="push2"
             />
             <v-spacer></v-spacer>
-            <v-btn
-                rounded
-                :style="`color:${theme.buttons.font}!important`"
-                :color="theme.buttons.secondary"
-                class="text-capitalize caption"
-                @click="forgot"
-            >
-                ¿Olvido su contraseña?
+            <v-btn class="text-capitalize font-weight-bold mx-2" text to="/register" v-if="!$vuetify.breakpoint.smAndDown">
+                Registrate
+                <v-icon class="mx-2">
+                    mdi-text-box-minus
+                </v-icon>
             </v-btn>
-        </v-card-actions>
+            <v-btn class="text-capitalize font-weight-bold mx-2" text to="/" v-if="!$vuetify.breakpoint.smAndDown">
+                Inicio
+                <v-icon class="mx-2">
+                    mdi-home
+                </v-icon>
+            </v-btn>
+        </v-app-bar>
 
         <v-card
             color="transparent" elevation="0"
             width="100%" :style="`background:${theme.background.light}`"
         >
-            <v-card-text class="hidden-sm-and-up">
-                <v-row justify="center">
-                    <v-img
-                        v-if="theme.background.dark"
-                        alt="Hoyprovoca logo"
-                        contain
-                        src="@/assets/logo6.png"
-                        transition="scale-transition"
-                        width="100"
-                        height="50"
-                        @click="push2"
-                    />
-                    <v-img v-else
-                        transition="scale-transition"
-                        contain
-                        width="100"
-                        height="50"
-                        :src="require('@/assets/logo2.png')"
-                    ></v-img>
-                </v-row>
-            </v-card-text>
-
             <v-card-text>
                 <v-row justify="center" class="py-2">
                     <v-col cols="12" md="9" sm="12">
@@ -140,7 +118,7 @@
                                                     <v-progress-circular
                                                         v-if="loading2"
                                                         size="24"
-                                                        :color="theme.background.secondary"
+                                                        :color="theme.background.primary"
                                                         indeterminate
                                                     ></v-progress-circular>
                                                     <img
@@ -158,11 +136,12 @@
                                             filled
                                             rounded
                                             dense
-                                            :color="theme.background.light_2"
+                                            @click:append="showPassword = !showPassword"
+                                            :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                                             :disabled="loading"
                                             v-model="data.password"
                                             single-line
-                                            type="password"
+                                            :type="showPassword ? 'text':'password'"
                                             :rules="[
                                                 required('Contraseña'),
                                                 minLength('Contraseña', 6),
@@ -192,9 +171,9 @@
                                             `background-color:${theme.background.light_2} ;color:${theme.background.font}!important;font-weight:bold; `
                                         "
                                         class="subtitle-2 text-center color"
-                                        @click="register"
+                                        @click="forgot"
                                     >
-                                        ¿No tienes una cuenta? ¡Registrate!
+                                        ¿Olvidaste tu contraseña? ¡Recuperala!
                                     </div>
                                 </v-col>
                             </v-row>
@@ -231,6 +210,7 @@ export default {
             mensaje: "",
             type: "error",
             showMessage: false,
+            showPassword:false,
             loading: false,
             loading2: false,
             valid: false,
@@ -281,58 +261,43 @@ export default {
         async getUser(email) {
             this.errors = [];
             this.success = "";
-            if (email.length <= 0)
-                return this.errors.push("Debe ingresar un email");
+            if (email.length <= 0) return this.errors.push("Debe ingresar un email");
             // eslint-disable-next-line
             let regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/;
-            if (!regex.test(email))
-                return this.errors.push(`Debe ingresar un email válido`);
+            if (!regex.test(email)) return this.errors.push(`Debe ingresar un email válido`);
             this.loading2 = true;
-            await Usuario()
-                .get(`/?email=${email}`)
-                .then((response) => {
-                    this.loading2 = false;
-                    if (!response.data.data) {
-                        return this.errors.push(
-                            "Este email no esta registrado"
-                        );
+            await Usuario().get(`/?email=${email}`).then((response) => {
+                this.loading2 = false;
+                if (!response.data.data) {
+                    return this.errors.push("Este email no esta registrado");
+                } else {
+                    if (response.data.data[0].bloqueado == 1) {
+                        return this.errors.push("Esta cuenta se encuentra bloqueada.");
                     } else {
-                        if (response.data.data[0].bloqueado == 1) {
-                            return this.errors.push(
-                                "Esta cuenta se encuentra bloqueada."
-                            );
-                        } else {
-                            return (this.success = "Email verificado");
-                        }
+                        return (this.success = "Email verificado");
                     }
-                })
-                .catch((e) => {
-                    console.log(e);
-                    this.loading2 = false;
-                    return this.errors.push("Error de conexión");
-                });
+                }
+            }).catch((e) => {
+                console.log(e);
+                this.loading2 = false;
+                return this.errors.push("Error de conexión");
+            });
         },
         login() {
             this.loading = true;
-            Auth()
-                .post("/login", { data: this.data })
-                .then((response) => {
-                    if (response.data.data.bloqueado == 1) {
-                        this.setModalBloqueado(true);
-                        this.loading = false;
-                    } else if (response.data.data.perfil_id == 3) {
-                        this.getCliente(response.data);
-                    } else {
-                        this.respuesta(
-                            "Este usuario no es un cliente.",
-                            "error"
-                        );
-                    }
-                })
-                .catch((e) => {
-                    console.log(e);
-                    this.respuesta("Contraseña incorrecta.", "error");
-                });
+            Auth().post("/login", { data: this.data }).then((response) => {
+                if (response.data.data.bloqueado == 1) {
+                    this.setModalBloqueado(true);
+                    this.loading = false;
+                 } else if (response.data.data.perfil_id == 3) {
+                    this.getCliente(response.data);
+                } else {
+                    this.respuesta("Este usuario no es un cliente.","error");
+                }
+            }).catch((e) => {
+                console.log(e);
+                this.respuesta("Contraseña incorrecta.", "error");
+            });
         },
         getCliente(data) {
             Clientes().get(`/?usuario_id=${data.data.id}`).then((response) => {

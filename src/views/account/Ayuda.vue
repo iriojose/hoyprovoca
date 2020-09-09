@@ -3,7 +3,7 @@
         <div class="font-weight-black title" style="padding-top:10px;text-align:center;">Atención al cliente</div>
         <v-row justify="center" align="center" class="mt-3" style="padding-top:15px;">
             <v-scroll-x-transition>
-                <div v-show="!loading" id="talkjs-container" style="width: 100%;; height: 450px"><i><v-spacer></v-spacer><v-spacer></v-spacer></i></div>
+                <div v-show="!loading" id="chat-talkjs" style="width: 100%;; height: 450px"><i><v-spacer></v-spacer><v-spacer></v-spacer></i></div>
             </v-scroll-x-transition>
             <v-progress-circular
                 indeterminate
@@ -36,64 +36,18 @@ export default {
             ...w,
             me: null,
             other: null,
-            loading:false,
+            loading:true,
         }
     },
     computed:{
         ...mapState(['user',"theme"]),
     },
     methods:{
-        ...mapActions(['setSnackbar','setFoto','setFotoChanged']),
+        ...mapActions(['setSnackbar','setFoto','setFotoChanged', "setChatSession"]),
     },
     mounted() {
-        this.loading = true;
-        let inbox;
-        // cambiar teamlead por cualquier otro email de soporte
-        Talk.ready.then(async () => {
-        this.me = new Talk.User({
-                id: this.user.data.id !== 2 ? this.user.data.email : "teamlead@somossistemas.com",
-                name: this.user.data.id !== 2 ? this.user.data.nombre + " " + this.user.data.apellido: "Soporte Hoyprovoca",
-                email: this.user.data.id !== 2 ? this.user.data.email !== "" ? this.user.data.email : null : "teamlead@somossistemas.com", 
-                photoUrl: this.user.data.id !== 2 ? this.user.data.imagen === 'default.png' ? require('@/assets/user.jpg') : this.image+this.user.data.imagen : require('@/assets/AFTIM.png'),
-                welcomeMessage: this.user.data.id !== 2 ?  "Hola, soy "+this.user.data.nombre : "En Hoyprovoca, estamos encantados de ayudarte a solventar tus problemas. Déjanos un mensaje!",
-                role: 'Customer',
-                locale: 'es-ES'
-        });
-        window.talkSession = new Talk.Session({
-            appId: process.env.VUE_APP_TALKJS_ID,
-            me: this.me
-        });        
-        
-        if(this.user.data.id !== 2){
-            // Cambiar teamlead por cualquier otro correo de soporte
-            this.other = new Talk.User({
-                id: "teamlead@somossistemas.com",
-                name: "Soporte Hoyprovoca",
-                email: "teamlead@somossistemas.com",
-                photoUrl: require('@/assets/AFTIM.png'),
-                welcomeMessage: "En Hoyprovoca, estamos encantados de ayudarte a solventar tus problemas. Déjanos un mensaje!",
-                    role:'Support',
-                    locale: 'es-ES'
-                });
-                let conversation = window.talkSession.getOrCreateConversation(Talk.oneOnOneId(this.me, this.other));
-                conversation.setParticipant(this.me);
-                conversation.setParticipant(this.other);
-                inbox = window.talkSession.createInbox({selected: conversation});
-                this.loading = false;
-            }else{
-                window.talkSession = new Talk.Session({
-                    appId: process.env.VUE_APP_TALKJS_ID,
-                    me: this.me
-                });
-                let conversation = window.talkSession.getOrCreateConversation(Talk.oneOnOneId(this.me));
-                conversation.setParticipant(this.me);
-                    
-                inbox = window.talkSession.createInbox({selected: conversation});
-                this.loading = false;
-            }
-            inbox.mount(document.getElementById("talkjs-container"));
-            this.loading = false;
-        });
+        this.setChatSession("chat-talkjs")
+        setTimeout(() => this.loading = false,500)
     }
 }
 </script>

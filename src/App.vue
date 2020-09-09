@@ -1,7 +1,9 @@
 <template>
     <v-app>
-        <Navbar v-if="ruta() && !loading" />
+        <div v-show="false" id="talkjs-chat-global" style="width: 100%;; height: 450px"><i><v-spacer></v-spacer><v-spacer></v-spacer></i></div>
 
+        <Navbar v-if="ruta() && !loading" />
+        <BarraLateral style="z-index:4;" />
         <v-main
             v-if="!loading"
             :style="`background-color:${theme.background.light}`"
@@ -48,6 +50,8 @@
         <BottomNavigation
             v-if="ruta() && $vuetify.breakpoint.smAndDown && !loading"
         />
+
+        <BottomNavigationOff v-if="!ruta() && !loading" />
     </v-app>
 </template>
 
@@ -57,6 +61,7 @@ import Auth from "@/services/Auth";
 import Clientes from "@/services/Clientes";
 import Empresa from "@/services/Empresa";
 import Grupos from "@/services/Grupos";
+import Direcciones from '@/services/Direcciones';
 import { mapActions, mapState } from "vuex";
 
 export default {
@@ -68,7 +73,9 @@ export default {
         ModalSesion: () => import("@/components/dialogs/ModalSesion"),
         ModalProducto: () => import("@/components/dialogs/ModalProducto"),
         BottomNavigation: () => import("@/components/footer/BottomNavigation"),
-        Loading:() => import("@/components/loaders/Loading")
+        Loading:() => import("@/components/loaders/Loading"),
+        BottomNavigationOff:() => import("@/components/footer/FooterOff"),
+        BarraLateral:() => import("@/components/navbar/BarraLateral"),
     },
     data() {
         return {
@@ -81,21 +88,27 @@ export default {
     computed: {
         ...mapState(["user", "bloqueado", "theme"]),
     },
+    watch: {
+        user() {
+            this.setChatSession()
+        }
+    },
     created() {
         this.token = JSON.parse(window.sessionStorage.getItem("token_client"));
-        if (this.token != null && this.token != "" && this.token != undefined)
-            this.sesion(this.token);
+        if (this.token != null && this.token != "" && this.token != undefined) this.sesion(this.token);
         else this.loading = false;
-        let grupos = JSON.parse(
-            window.localStorage.getItem("gruposMasVendidos")
-        );
+
+        let grupos = JSON.parse(window.localStorage.getItem("gruposMasVendidos"));
         if (!grupos) this.getGrupos();
         else this.setGrupos(grupos);
-        let empresas = JSON.parse(
-            window.localStorage.getItem("empresasMasVendidas")
-        );
+
+        let empresas = JSON.parse(window.localStorage.getItem("empresasMasVendidas"));
         if (!empresas) this.getEmpresas();
         else this.setEmpresas(empresas);
+
+        let municipios = JSON.parse(window.localStorage.getItem('municipios'));
+        if(municipios) this.setMunicipios(municipios);
+        else this.getUbicaciones();
     },
     methods: {
         ...mapActions([
@@ -104,6 +117,8 @@ export default {
             "setGrupos",
             "setEmpresas",
             "setPedidos",
+            "setChatSession",
+            "setMunicipios"
         ]),
 
         ruta() {
@@ -141,6 +156,14 @@ export default {
                 window.localStorage.setItem("gruposMasVendidos",JSON.stringify(response.data.data));
                 this.setGrupos(response.data.data);
             }).catch((e) => {
+                console.log(e);
+            });
+        },
+        getUbicaciones(){
+            Direcciones().get("/16").then((response) => {
+                this.setMunicipios(response.data.data.detalles);
+                window.localStorage.setItem("municipios",JSON.stringify(response.data.data.detalles));
+            }).catch(e => {
                 console.log(e);
             });
         },
@@ -201,6 +224,12 @@ export default {
             this.getPedidos();
         },
     },
+    mounted() {
+        this.setChatSession("talkjs-chat-global")
+    },
+    beforeUpdated(){
+        this.setChatSession("talkjs-chat-global")
+    }
 };
 </script>
 

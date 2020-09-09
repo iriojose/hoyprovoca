@@ -1,11 +1,12 @@
 <template>
     <div v-if="user.loggedIn && !$vuetify.breakpoint.smAndDown">
         <v-menu
+            id="noShadow"
             :transition="transition()"
             bottom
             open-on-hover 
             offset-y
-            style="box-shadow: 0 5px 5px -3px rgba(0,0,0,0), 0 8px 10px 1px rgba(0,0,0,0), 0 3px 14px 2px rgba(0,0,0,0);padding: 2px 12px;"
+            elevation="0"
         >
             <template v-slot:activator="{ on }">
                 <v-btn v-on="on" fab class="mx-3" elevation="0" small color="transparent">
@@ -48,6 +49,16 @@
                             </v-list-item-icon>
                             <v-list-item-title :style="`color:${theme.background.font}`">
                                 Últimas ordenes
+                            </v-list-item-title>        
+                        </v-list-item>
+                    </v-hover>
+                    <v-hover v-slot:default="{hover}">
+                        <v-list-item to="/account/ayuda">   
+                            <v-list-item-icon>
+                                <v-icon :color="hover ? theme.background.font:null">mdi-help-circle</v-icon>
+                            </v-list-item-icon>
+                            <v-list-item-title :style="`color:${theme.background.font}`">
+                                Atención al cliente
                             </v-list-item-title>        
                         </v-list-item>
                     </v-hover>
@@ -96,6 +107,7 @@ import router from '@/router';
 <style lang="scss" scoped>
     .customized {
         margin-top: 10px;
+        box-shadow: 2px 2px 2px 2px solid rgba(0,0,0,.13)
     }
     .customized {
         border: 1px solid #d5cec8;
@@ -130,5 +142,9 @@ import router from '@/router';
         display: inline-block;
         position: absolute;
         top: -22px;
+    }
+
+    .v-menu__content {
+        box-shadow: none;
     }
 </style>

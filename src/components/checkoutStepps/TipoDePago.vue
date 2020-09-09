@@ -2,13 +2,10 @@
   <div class="container">
     <v-row justify="center" v-if="pedidoSelect">
       <v-col cols="12" md="6" sm="12">
-        <div class="font-weight-bold title">Tus productos</div>
-        <div v-if="pedidoSelect.detalles" class="font-weight-bold subtitle-1">
-          {{ pedidoSelect.detalles.length + " " }}
-          item
-        </div>
-        <div class="font-weight-bold pa-2 title">Subtotal a pagar</div>
-        <div class="font-weight-bold px-2 subtitle-1">{{ total }}</div>
+        <div class="font-weight-bold pa-2 title">Subtotal a pagar (Bolívares)</div>
+        <div class="font-weight-bold px-2 subtitle-1 indigo--text">Bs.{{ total }}</div>
+        <div class="font-weight-bold pa-2 title">Subtotal a pagar (Dólares)</div>
+        <div class="font-weight-bold px-2 subtitle-1 indigo--text">$.{{ parseFloat(totalUSD).toFixed(2) }}</div>
         <v-select
           :dark="theme.background.dark"
           :items="tiposDePago"
@@ -25,7 +22,14 @@
           single-line
           v-model="select"
           class="my-5"
-        ></v-select>
+        >
+         <template slot="item" slot-scope="{ item }">
+                    <v-avatar size="20" class="mr-5 mb-1">
+                        <v-img :src="item.img"></v-img>
+                    </v-avatar>  
+                    {{ item.nombre }} 
+                </template>
+        </v-select>
       </v-col>
     </v-row>
     <div class="stepper-buttons">
@@ -54,13 +58,14 @@ const pagoInsuficiente = "el monto ingresado es insuficiente";
 const metodosDePago = [
   {
     id: 0,
-    nombre: "Pago Movil : Banesco",
+    nombre: "Pago Movil Banesco",
     propietario: "Jesus Bellorin",
-    identificacion: "V-17654976",
-    cuenta: "movil : 04127955560",
+    identificacion: "17.654.976",
+    cuenta: "04127955560 (Móvil)",
     detalle: "",
      to:"https://www.banesco.com/",
     monto: 0,
+    img:`@/assets/checkout/banesco.png`,
     acuerdo:false,
   },
   {
@@ -71,8 +76,9 @@ const metodosDePago = [
      to:"https://www.banplus.com/site/p_contenido.php",
     cuenta: "Corriente : 01740112201124312701",
     detalle:
-      "Recuerde!, Transferencias de diferentes bancos tardan al menos 1 dia en ser confirmadas",
+      "<br>Recuerde!, Transferencias de diferentes bancos tardan al menos 1 dia en ser confirmadas",
     monto: 0,
+     img:`@/assets/checkout/banplus.jpg`,
     acuerdo:false,
   },
   {
@@ -81,9 +87,10 @@ const metodosDePago = [
     propietario: "Jesus Bellorin",
     identificacion: "V-17654976",
      to:"https://www.banesco.com/",
+      img:`@/assets/checkout/banesco.png`,
     cuenta: "Ahorro : 01340563895633049696",
     detalle:
-      "Recuerde!, Transferencias de diferentes bancos tardan al menos 1 dia en ser confirmadas",
+      "<br>Recuerde!, Transferencias de diferentes bancos tardan al menos 1 dia en ser confirmadas",
     monto: 0,
     acuerdo:false,
   },
@@ -96,6 +103,7 @@ const metodosDePago = [
     cuenta: "Cuenta: 201800957218",
     detalle: "",
     monto: 0,
+     img:`@/assets/checkout/banesco.png`,
      acuerdo:false,
   },
    {
@@ -125,6 +133,10 @@ export default {
       type: Object,
     },
     total: {
+      default: 0,
+      type: Number | String,
+    },
+    totalUSD: {
       default: 0,
       type: Number | String,
     },

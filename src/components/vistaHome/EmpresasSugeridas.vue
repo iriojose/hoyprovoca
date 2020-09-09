@@ -1,5 +1,5 @@
 <template>
-    <v-card style="height:76vh " class="mt-8" color="transparent" elevation="0" width="100%">
+    <v-card style="height:85vh " class="mt-8" color="transparent" elevation="0" width="100%">
         <v-card-text>
             <div :style="`color:${theme.background.font}`" class="text-center font-weight-black headline mt-12 mb-4">
                 {{title}}

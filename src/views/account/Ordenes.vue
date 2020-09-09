@@ -23,35 +23,38 @@
                             <v-expansion-panel-header>
                                 <v-card elevation="0" class="internal">
                                     <v-card-title style="position:relative;">
-                                        <span class="c-title subtitle-2">Proveedor</span>
-                                        <v-avatar size="60" style="transform:translateY(12px)">
-                                            <v-img :src="image+pedido.imagen"></v-img>
-                                        </v-avatar>
-                                        <v-spacer></v-spacer>
-                                        <div>
-                                            <span class="c-title subtitle-2">Total</span>
-                                            <div class="subtitle-1" style="font-weight:bold;">{{price(totales[i])}}</div>
-                                        </div>
-                                         <v-spacer></v-spacer>
-                                        <div>
-                                            <span class="c-title subtitle-2">Articulos</span>
-                                            <div class="subtitle-1">{{ pedido.detalles.length }}</div>
-                                        </div>
-                                        <v-spacer></v-spacer>
-                                        <v-chip
-                                            class="ma-1"
-                                            color="green"
-                                            text-color="white"
-                                        >
-                                            <div class="font-weight-black overline text-capitalize">{{ getEstado(pedido.rest_estatus_id) }}</div>
-                                        </v-chip>
+                                        <v-row justify="center">
+                                            <v-col cols="3" sm="3" style="text-align:center;">
+                                                <span class="c-title subtitle-2">Proveedor</span>
+                                                <v-avatar size="60" style="transform:translateY(12px)">
+                                                    <v-img :src="image+pedido.imagen"></v-img>
+                                                </v-avatar>
+                                            </v-col>
+                                            <v-col cols="8" sm="3" style="text-align:center;" class="xs-left">
+                                                <span class="c-title subtitle-2">Total</span>
+                                                <div class="title" style="font-weight:bold;">{{price(totales[i])}}</div>
+                                            </v-col>
+                                            <v-col cols="6" sm="3" class="d-none d-sm-flex " style="text-align:center!important;">
+                                                <span class="c-title subtitle-2">Articulos</span>
+                                                <div class="title">{{ pedido.detalles.length }}</div>
+                                            </v-col>
+                                            <v-col cols="12" sm="3" style="text-align:center;">
+                                                <v-chip
+                                                    class="ma-1"
+                                                    color="green"
+                                                    text-color="white"
+                                                >
+                                                    <div class="font-weight-black overline text-capitalize">{{ getEstado(pedido.rest_estatus_id) }}</div>
+                                                </v-chip>
+                                            </v-col>
+                                        </v-row>
                                         
                                     </v-card-title>
                                 </v-card>
                             </v-expansion-panel-header>
                             <v-expansion-panel-content>
                                 <v-row justify="start">
-                                    <v-col :cols="$vuetify.breakpoint.smAndDown ? 6:12" md="3" v-for="(detalle,e) in pedido.detalles" :key="e">
+                                    <v-col :cols="$vuetify.breakpoint.smAndDown ? 12:12" md="3" v-for="(detalle,e) in pedido.detalles" :key="e">
                                         <v-card class="mx-auto detalle" :max-width="'100%'" elevation="3">
                                             <v-img 
                                                 class="align-end" height="150px" contain
@@ -156,7 +159,7 @@ import accounting from 'accounting';
                 Clientes().get(`/${this.user.cliente.id}/pedidos/?rest_estatus_id > 1`).then((pedidos) => {
                     if(pedidos.data.data){
                         pedidos.data.data.filter(a => a.detalles.filter(b => b.precio_view = accounting.formatMoney(+b.precio,{symbol:"$ ",thousand:',',decimal:'.'})));
-                        this.aux = pedidos.data.data;
+                        this.aux = (pedidos.data.data || []).reverse();
                         let count = 0;
                         pedidos.data.data.forEach( (order, i) => {
                             Pedidos().get(`/${order.id}/conceptos`).then((conceptos) => {
@@ -209,5 +212,14 @@ import accounting from 'accounting';
 
     .orders-container {
         overflow: auto;
+    }
+
+    .xs-left {
+        @media only screen and (max-width: 500px) {
+            transform: translateX(30px);
+            div {
+                transform: translateY(20px);
+            }
+        }
     }
 </style>

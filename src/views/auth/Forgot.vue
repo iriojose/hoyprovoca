@@ -1,32 +1,36 @@
 <template>
     <v-card width="100%" elevation="0" :color="theme.background.primary" height="100%">
-        <v-card-actions>
-            <v-btn fab small :color="theme.buttons.primary" @click="home">
-                <v-icon :color="theme.buttons.font">mdi-home</v-icon>
-            </v-btn>
-            <v-spacer class="hidden-sm-and-down"></v-spacer>
-            <v-img v-if="theme.background.dark"
-	            alt="Hoyprovoca logo" class="shrink mr-2 cursor hidden-sm-and-down" contain
-              src='@/assets/logo6.png' transition="scale-transition"
+        <v-app-bar app color="#fff" :elevation="$vuetify.breakpoint.smAndDown ? 1:0" :class="$vuetify.breakpoint.smAndDown ? null:'px-12'">  
+            <v-spacer class="hidden-sm-and-up"></v-spacer>
+            <v-img
+                v-if="theme.background.dark" alt="Hoyprovoca logo"
+                class="shrink mr-2 cursor"
+                contain src="@/assets/logo6.png" transition="scale-transition"
                 width="200" height="100" @click="push2"
             />
-            <v-img v-else
-                    alt="Hoyprovoca logo" class="shrink mr-2 cursor hidden-sm-and-down" contain
-              src='@/assets/logo2.png' transition="scale-transition"
+            <v-img
+                v-else alt="Hoyprovoca logo" class="shrink mr-2 cursor"
+                contain src="@/assets/logo2.png" transition="scale-transition"
                 width="200" height="100" @click="push2"
             />
             <v-spacer></v-spacer>
-            <v-btn   :style="`color:${theme.buttons.font};font-weight:bold;padding: 0 15px`" rounded :color="theme.buttons.primary" class="text-capitalize caption" @click="register">
-                Registrarme
+            <v-btn class="text-capitalize font-weight-bold mx-2" text to="/login" v-if="!$vuetify.breakpoint.smAndDown">
+                Inicia sesión
+                <v-icon class="mx-2">
+                    mdi-exit-to-app
+                </v-icon>
             </v-btn>
-        </v-card-actions>
+            <v-btn class="text-capitalize font-weight-bold mx-2" text to="/" v-if="!$vuetify.breakpoint.smAndDown">
+                Inicio
+                <v-icon class="mx-2">
+                    mdi-home
+                </v-icon>
+            </v-btn>
+        </v-app-bar>
 
         <v-card-text>
             <v-row justify="center" class="py-4">
                 <v-col cols="12" md="9" sm="12" :class="$vuetify.breakpoint.smAndDown ? 'mx-4':null">
-                    <v-row justify="center" class="pb-4 hidden-sm-and-up">
-                        <v-img transition="scale-transition" contain width="100" height="50" :src="require('@/assets/logo2.png')"></v-img>
-                    </v-row>
                     <v-card :color="theme.background.light" width="100%" style="padding: 0 15px">
                         <v-row  justify="center">
                             <v-col  cols="12" md="6" class="hidden-sm-and-down" style="padding: 12px 40px">
