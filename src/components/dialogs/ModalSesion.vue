@@ -37,9 +37,10 @@
                         <v-text-field
                             filled rounded dense
                             :disabled="loading" v-model="data.password"
-                            single-line type="password" color="#0f2441"
+                            single-line :type="showPassword ? 'text':'password'" color="#0f2441"
                             :rules="[required('Contraseña'),minLength('Contraseña',6)]"
-                            label="Contraseña"
+                            label="Contraseña" @click:append="showPassword = !showPassword"
+                            :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                         ></v-text-field>
 
                         <v-btn
@@ -80,6 +81,7 @@ import router from '@/router';
                 mensaje:'',
                 type:'error',
                 showMessage:false,
+                showPassword:false,
                 loading:false,
                 loading2:false,
                 valid:false,
