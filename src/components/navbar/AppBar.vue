@@ -16,7 +16,7 @@
 
         <v-spacer v-if="$vuetify.breakpoint.smAndDown"></v-spacer>
 
-		<div class="d-flex align-center" v-if="!$vuetify.breakpoint.smAndDown ">
+		<div class="d-flex align-center">
 			<v-img v-if="!theme.navBar.navIconDark"
 	            alt="Hoyprovoca logo" class="shrink mr-2 cursor" contain
 				src='@/assets/logo2.png' transition="scale-transition"
@@ -28,11 +28,6 @@
 			    width="200" height="100" @click="push2"
 			/>
 		</div>
-        <v-img v-if="$vuetify.breakpoint.smAndDown"
-	        alt="Hoyprovoca logo" class="shrink mr-2 cursor" contain
-			src='@/assets/2.png' transition="scale-transition"
-			width="50" height="50" @click="push2"
-		/>
 
         <v-text-field
             label="¿Qué te provoca?" hide-details
@@ -62,7 +57,7 @@
 		<Notificaciones />
         <Carrito /> 
         <Perfil />
-        <MovilOpciones />
+        <MovilOpciones v-if="$vuetify.breakpoint.smAndDown && !user.loggedIn" />
 
         <v-text-field 
             v-if="$vuetify.breakpoint.smAndDown"

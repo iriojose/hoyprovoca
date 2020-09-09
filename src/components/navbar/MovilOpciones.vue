@@ -4,23 +4,12 @@
             <v-btn 
                 icon fab small 
                 v-on="on" 
-                v-if="$vuetify.breakpoint.smAndDown"
             >
                 <v-icon :color="theme.background.font">mdi-dots-vertical</v-icon>
             </v-btn>
         </template>
 
-        
-        <v-list dense flat v-if="user.loggedIn">
-            <v-list-item v-for="(item,i) in items" :key="i" @click="item.to">
-                <v-list-item-icon>
-                    <v-icon>{{item.icon}}</v-icon>
-                </v-list-item-icon>
-                <v-list-item-title>{{item.text}}</v-list-item-title>
-            </v-list-item>
-        </v-list>
-
-        <v-list dense flat v-if="!user.loggedIn">
+        <v-list dense flat>
             <v-list-item v-for="(item,i) in items2" :key="i" :to="item.to">
                 <v-list-item-icon>
                     <v-icon>{{item.icon}}</v-icon>
