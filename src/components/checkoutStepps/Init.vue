@@ -1,8 +1,8 @@
 <template>
-    <v-row justify="center" v-if="loading" >
+    <v-row justify="center" v-if="loading">
         <loader style="margin-top: 20vh" />
     </v-row>
-    <div v-else v-show="view == 1" >
+    <div v-else v-show="view == 1">
         <v-slide-group
             v-if="pedidos"
             multiple
@@ -26,7 +26,7 @@
         </v-slide-group>
 
         <v-card
-        :color="theme.background.light_2"
+            :color="theme.background.light_2"
             :class="$vuetify.breakpoint.smAndDown ? 'my-5 mx-2' : 'mx-10 my-5'"
             v-if="pedidoSelect"
         >
@@ -42,34 +42,49 @@
                                 : 'pa-5 products'
                         "
                     >
-                        <div class="font-weight-bold title titles" :style="` color:${theme.background.font}`">
+                        <div
+                            class="font-weight-bold title titles"
+                            :style="` color:${theme.background.font}`"
+                        >
                             Tus productos
                         </div>
                         <div
-                        :style="` color:${theme.background.font}`"
+                            :style="` color:${theme.background.font}`"
                             v-if="detalles"
                             class="font-weight-bold titles subtitle-1"
                         >
                             {{ detalles.length + " " }}
                             Unidad(es)
                         </div>
-                        <v-list :style="`background-color:${theme.background.light_2}; color:${theme.background.font}`">
+                        <v-list
+                            :style="
+                                `background-color:${theme.background.light_2}; color:${theme.background.font}`
+                            "
+                        >
                             <v-list-item class="products-row products line">
-                                <v-list-item-title :style="` color:${theme.background.font}`"  class="imag">
+                                <v-list-item-title
+                                    :style="` color:${theme.background.font}`"
+                                    class="imag"
+                                >
                                     <p class="center-text">Imagen</p>
                                 </v-list-item-title>
-                                <v-list-item-title :style="` color:${theme.background.font}`"
+                                <v-list-item-title
+                                    :style="` color:${theme.background.font}`"
                                     v-if="!$vuetify.breakpoint.smAndDown"
                                 >
                                     <p class="center-text">Nombre</p>
                                 </v-list-item-title>
-                                <v-list-item-title :style="` color:${theme.background.font}`">
+                                <v-list-item-title
+                                    :style="` color:${theme.background.font}`"
+                                >
                                     <p class="center-text">Precio</p>
                                 </v-list-item-title>
-                                <v-list-item-title :style="` color:${theme.background.font}`">
+                                <v-list-item-title
+                                    :style="` color:${theme.background.font}`"
+                                >
                                     <p class="center-text">Cantidad</p>
                                 </v-list-item-title>
-                              <!--  <v-list-item-title :style="` color:${theme.background.font}`">
+                                <!--  <v-list-item-title :style="` color:${theme.background.font}`">
                                     <p class="center-text">En Stock</p>
                                 </v-list-item-title>-->
                             </v-list-item>
@@ -78,14 +93,18 @@
                                 v-for="(detalle, i) in detalles"
                                 :key="i"
                             >
-                                <v-list-item-title :style="` color:${theme.background.font}`" class="center">
+                                <v-list-item-title
+                                    :style="` color:${theme.background.font}`"
+                                    class="center"
+                                >
                                     <v-list-item-avatar>
                                         <v-img
                                             :src="image + detalle.imagen"
                                         ></v-img>
                                     </v-list-item-avatar>
                                 </v-list-item-title>
-                                <v-list-item-title :style="` color:${theme.background.font}`"
+                                <v-list-item-title
+                                    :style="` color:${theme.background.font}`"
                                     v-if="!$vuetify.breakpoint.smAndDown"
                                     class="product-text"
                                 >
@@ -98,32 +117,41 @@
                                         }}
                                     </p>
                                 </v-list-item-title>
-                                <v-list-item-title :style="` color:${theme.background.font}`"
+                                <v-list-item-title
+                                    :style="` color:${theme.background.font}`"
                                     class="product-text caption font-weight-medium"
                                 >
                                     <span class="price center center-text">
                                         {{
-                                           pedidoSelect.conceptos[i]
-                                                .descuento ?pedidoSelect.conceptos[i]
-                                                .precio_dolar - (pedidoSelect.conceptos[i]
-                                                .precio_dolar * pedidoSelect.conceptos[i]
-                                                .decuento ) : pedidoSelect.conceptos[i]
-                                                .precio_dolar
+                                            pedidoSelect.conceptos[i].descuento
+                                                ? pedidoSelect.conceptos[i]
+                                                      .precio_dolar -
+                                                  pedidoSelect.conceptos[i]
+                                                      .precio_dolar *
+                                                      pedidoSelect.conceptos[i]
+                                                          .decuento
+                                                : pedidoSelect.conceptos[i]
+                                                      .precio_dolar
                                         }}
                                         $
                                     </span>
                                 </v-list-item-title>
-                                <v-list-item-title :style="` color:${theme.background.font}`" class="product-text center">
+                                <v-list-item-title
+                                    :style="` color:${theme.background.font}`"
+                                    class="product-text center"
+                                >
                                     <v-btn
                                         class=" onlyShow white--text"
                                         small
                                         v-if="detalle"
                                         :color="'green'"
-                                        :style="` color:${theme.background.font}`"
+                                        :style="
+                                            ` color:${theme.background.font}`
+                                        "
                                         >{{ parseInt(detalle.cantidad) }}</v-btn
                                     >
                                 </v-list-item-title>
-                              <!--  <v-list-item-title :style="` color:${theme.background.font}`" class="product-text center">
+                                <!--  <v-list-item-title :style="` color:${theme.background.font}`" class="product-text center">
                                     <v-btn
                                         class="onlyShow white--text"
                                         :loading="loadingExistence"
@@ -143,16 +171,22 @@
                     <v-col cols="12" md="4" sm="12">
                         <v-row sm="12">
                             <v-col cols="12" md="6" sm="12">
-                                <div class="font-weight-bold title" :style="` color:${theme.background.font}`">
+                                <div
+                                    class="font-weight-bold title"
+                                    :style="` color:${theme.background.font}`"
+                                >
                                     Subtotal
                                 </div>
                             </v-col>
                             <v-col cols="12" md="6" sm="12">
-                                <div class="font-weight-bold title" :style="` color:${theme.background.font}`">
+                                <div
+                                    class="font-weight-bold title"
+                                    :style="` color:${theme.background.font}`"
+                                >
                                     Empresa
                                 </div>
                                 <div
-                                :style="` color:${theme.background.font}`"
+                                    :style="` color:${theme.background.font}`"
                                     v-if="pedidoSelect.empresa"
                                     class="font-weight-bold subtitle-1"
                                 >
@@ -160,22 +194,37 @@
                                 </div>
                             </v-col>
                         </v-row>
-                        <div class="font-weight-bold subtitle-1" :style="` color:${theme.background.font}`">Bolívares:</div>
-                        <div
-                            :loading="dolar ? false : true"
-                            color="secondary"
-                            
-                            class="font-weight-bold subtitle-1 onlyShow indigo--text"
-                            ><span>Bs. {{ total }}</span>
-                        </div>
-                        <div style="margin: 10px 0;"> </div>
-                        <div  :style="` color:${theme.background.font}`" class="font-weight-bold subtitle-1">Dólares:</div>
-                        <div
-                            :loading="dolar ? false : true"
-                            color="secondary"
-                            
-                            class="font-weight-bold subtitle-1 onlyShow indigo--text"
-                            ><span>USD. {{ parseFloat(totalUSD).toFixed(2) }}</span>
+                        <div class="display">
+                            <div
+                                class="font-weight-bold subtitle-1"
+                                :style="` color:${theme.background.font}`"
+                            >
+                                Bolívares:
+                            </div>
+                            <div
+                                :loading="dolar ? false : true"
+                                color="secondary"
+                                class="font-weight-bold subtitle-1 onlyShow indigo--text"
+                            >
+                                <span>Bs. {{ total }}</span>
+                            </div>
+                            <div style="margin: 10px 0;"></div>
+                            <div
+                                :style="` color:${theme.background.font}`"
+                                class="font-weight-bold subtitle-1"
+                            >
+                                Dólares:
+                            </div>
+                            <div
+                                :loading="dolar ? false : true"
+                                color="secondary"
+                                class="font-weight-bold subtitle-1 onlyShow indigo--text"
+                            >
+                                <span
+                                    >USD.
+                                    {{ parseFloat(totalUSD).toFixed(2) }}</span
+                                >
+                            </div>
                         </div>
                         <v-btn
                             block
@@ -223,7 +272,7 @@ const checking = { message: "Checkeando existencias...", color: "gray" };
 
 export default {
     components: {
-        loader
+        loader,
     },
     props: {
         pedidosLoads: {
@@ -256,18 +305,18 @@ export default {
             stockNotifier: checking,
             stock: null,
             pedido: {},
-            priced:false,
+            priced: false,
             promedio: 0,
-            solicitado:false,
+            solicitado: false,
             messagePendiente: "Pagar",
         };
     },
     mounted() {
         this.loading = true;
-        if(this.pedidos){
-          this.checkStorage();
-          this.getPedidosUsuario();
-          this.solicitado = true;
+        if (this.pedidos) {
+            this.checkStorage();
+            this.getPedidosUsuario();
+            this.solicitado = true;
         }
     },
     watch: {
@@ -280,11 +329,9 @@ export default {
             }
         },
         pedidoSelect() {
-          
             if (!this.pedidoSelect.detalles[0].stock) {
                 this.checkExistence();
-            }else{
-               
+            } else {
             }
         },
         arrived() {
@@ -297,12 +344,12 @@ export default {
                     this.pedidos[0].conceptos,
                     this.pedidos[0].detalles
                 );
-                this.priced = true
+                this.priced = true;
             }
         },
     },
     computed: {
-        ...mapState(["user", "modalPago", "pedidos",'theme']),
+        ...mapState(["user", "modalPago", "pedidos", "theme"]),
     },
     methods: {
         ...mapActions(["setPedidos", "deletePedidoStore", "setModalPago"]),
@@ -310,13 +357,13 @@ export default {
             return Array.isArray(concepto.existencias)
                 ? concepto.existencias.length > 0
                     ? concepto.existencias
-                          .map((a) => Math.trunc(+a.existencia))
+                          .map(a => Math.trunc(+a.existencia))
                           .reduce((a, b) => a + b)
                     : 0
                 : concepto.existencias;
         },
-        checkStorage(){
-    /*      const savedData = localStorage.getItem("state");
+        checkStorage() {
+            /*      const savedData = localStorage.getItem("state");
                     if (savedData) {
                         let toLoad = JSON.parse(savedData);
                         if (toLoad.pedidoSelect == null) return;
@@ -333,15 +380,17 @@ export default {
         calcularTotal(concepto, detalles) {
             let suma = 0;
             let totalUSD = 0;
-            detalles.map((a) => (a.cantidad = Math.floor(a.cantidad)));
+            detalles.map(a => (a.cantidad = Math.floor(a.cantidad)));
             detalles.map((a, i) => {
-              let costo = concepto[i].precio_dolar;
-              let precio = concepto[i].descuento ? costo - (costo *+concepto[i].descuento)  : costo;
+                let costo = concepto[i].precio_dolar;
+                let precio = concepto[i].descuento
+                    ? costo - costo * +concepto[i].descuento
+                    : costo;
                 suma +=
                     this.checkValue(concepto[i].precio_dolar) *
                     a.cantidad *
                     +this.dolar;
-                totalUSD += (precio) * a.cantidad;
+                totalUSD += precio * a.cantidad;
             });
             this.priced = true;
             this.$emit("updatedState", {
@@ -368,7 +417,7 @@ export default {
             }
             this.getCripto();
             this.getDolar();
-           // this.checkExistence();
+            // this.checkExistence();
             this.$emit("updatedState", {
                 name: "pedidos",
                 content: this.pedidos,
@@ -380,7 +429,7 @@ export default {
         getEmpresas(id, i) {
             Empresa()
                 .get(`/${id}/?fields=nombre_comercial,imagen,id`)
-                .then((response) => {
+                .then(response => {
                     this.$emit("updatedSubState", {
                         name: "pedidos",
                         x: i,
@@ -394,7 +443,7 @@ export default {
                     });
                     this.detalles = this.pedidos[0].detalles;
                 })
-                .catch((e) => {
+                .catch(e => {
                     console.log(e);
                 });
         },
@@ -409,31 +458,30 @@ export default {
         },
         seleccionarPedido(evt, i) {
             this.$emit("updatedState", { name: "pedidoSelect", content: evt });
-        //    this.checkStock(evt);
+            //    this.checkStock(evt);
             this.messagePendiente = "Pagar";
             this.detalles = evt.detalles;
-      //      this.dolar && (this.arrived = (!evt.detalles?.stock) ? 1 : 2);
+            //      this.dolar && (this.arrived = (!evt.detalles?.stock) ? 1 : 2);
             this.calcularTotal(this.pedidos[i].conceptos, evt.detalles);
         },
 
-        checkStock(pedido){
-
-          pedido.detalles.map(element =>{
-             this.bloqueo = element.cantidad > element?.stock
-          })
+        checkStock(pedido) {
+            pedido.detalles.map(element => {
+                this.bloqueo = element.cantidad > element?.stock;
+            });
         },
         next() {
             this.$emit("updatedState", { name: "view", content: 2 });
-             this.$emit("updatedState", { name: "stepper", content: 1 });
+            this.$emit("updatedState", { name: "stepper", content: 1 });
         },
         async getCripto() {
             return Cripto()
                 .get("/pricemulti?fsyms=BTC,ETH&tsyms=USD")
-                .then((response) => {
+                .then(response => {
                     this.cripto = response.data;
                     this.arrived = ++this.arrived;
                 })
-                .catch((e) => {
+                .catch(e => {
                     console.log(e);
                 });
         },
@@ -441,7 +489,7 @@ export default {
             let prom = 0;
             return Dolar()
                 .get("/ve/venezuela/transfers-with-specific-bank/.json")
-                .then((response) => {
+                .then(response => {
                     let devider = 0;
                     for (let i = 0; i < response.data.data.ad_count; i++) {
                         if (
@@ -458,7 +506,7 @@ export default {
                     this.bolivar = this.promedio;
                     this.arrived = ++this.arrived;
                 })
-                .catch((e) => {
+                .catch(e => {
                     console.log(e);
                 });
         },
@@ -490,14 +538,14 @@ export default {
             this.loadingExistence = true;
             return await Conceptos()
                 .get(`/${item}/depositos`)
-                .then((response) => {
+                .then(response => {
                     const toParse = Object.assign({
                         existencias: response.data.data,
                     });
                     const existence = this.parseExistencia(toParse);
                     return existence;
                 })
-                .catch((e) => {
+                .catch(e => {
                     console.log(e);
                     this.error("Error al procesar existencia.");
                 });
@@ -508,9 +556,9 @@ export default {
             this.disponibilidad = 0;
             this.stockNotifier = checking;
             //empieza a cargar las existencias una vez temina la funcion  se modifica el total si faltan productos a la existencia
-            this.getCheck().then((checked) => {
+            this.getCheck().then(checked => {
                 this.loadingExistence = false;
-                
+
                 if (this.disponibilidad === this.pedidoSelect.detalles.length) {
                     this.stockNotifier = avaible;
                     this.bloqueo = false;
@@ -523,7 +571,7 @@ export default {
                     let suma = 0;
                     this.total = 0;
                     this.boqueo = true;
-                    this.pedidoSelect.detalles.map((a) => {
+                    this.pedidoSelect.detalles.map(a => {
                         suma +=
                             a.cantidad < a.stock
                                 ? this.checkValue(a.precio) * a.cantidad
@@ -537,14 +585,12 @@ export default {
                         }),
                         name: "total",
                     });
-                    
                 } else {
-                  this.bloqueo = true;
+                    this.bloqueo = true;
                     this.stockNotifier = isOut;
                 }
             });
         },
-        
     },
 };
 </script>
