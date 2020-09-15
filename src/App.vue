@@ -4,6 +4,7 @@
 
         <Navbar v-if="ruta() && !loading" />
         <BarraLateral style="z-index:4;" />
+        
         <v-main
             v-if="!loading"
             :style="`background-color:${theme.background.light}`"
@@ -47,11 +48,9 @@
         <ModalSesion />
         <ModalProducto />
 
-        <BottomNavigation
-            v-if="ruta() && $vuetify.breakpoint.smAndDown && !loading"
-        />
+        <BottomNavigation v-if="ruta() && $vuetify.breakpoint.smAndDown && !loading" />
 
-        <BottomNavigationOff v-if="!ruta() && !loading" />
+        <BottomNavigationOff v-if="!ruta() && !loading && $route.name !== 'checkout'" />
     </v-app>
 </template>
 

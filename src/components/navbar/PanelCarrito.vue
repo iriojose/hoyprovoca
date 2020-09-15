@@ -47,30 +47,35 @@
             </v-expansion-panel>
         </v-expansion-panels>
         
-        <v-footer absolute width="100%" height="60" :color="theme.sidebar.primary" class="pr-5 pl-5">
-            <v-card-actions>
-                <v-btn 
-                    rounded  :color="theme.buttons.terceary" @click="modal"
-                    class="text-capitalize" :style="`color:${theme.buttons.font}`"
-                    block :disabled="pedidos.length == 0 ? true:false"
-                    :width="$vuetify.breakpoint.smAndDown ? 80:100"
-
-                >
-                    Vaciar
-                    <v-icon class="mx-2" :color="theme.buttons.font" >mdi-delete</v-icon>
-                </v-btn>
-                <v-spacer class="mx-1"></v-spacer>
-                <v-btn 
-                    rounded :color="theme.buttons.terceary" @click="push()"
-                    class=" text-capitalize" 
-                    :style="`color:${theme.buttons.font}`"
-                    block :disabled="pedidos.length == 0 ? true:false"
-                    :width="$vuetify.breakpoint.smAndDown ? 80:100"
-                >
-                    Pagar
-                    <v-icon class="mx-2" :color="theme.buttons.font">mdi-cash</v-icon>
-                </v-btn>
-            </v-card-actions>
+        <v-footer absolute width="100%" :color="theme.sidebar.primary" class="pr-5 pl-5">
+            
+            <v-card elevation="0" color="transparent" width="100%">
+                <v-card-text>
+                    <div class="black--text font-weight-black text-center" style="">
+                        Total general: {{totales}}
+                    </div>
+                </v-card-text>
+                <v-card-actions>
+                    <v-btn 
+                        rounded  :color="theme.buttons.terceary" @click="modal"
+                        class="text-capitalize" :style="`color:${theme.buttons.font}`"
+                        :disabled="pedidos.length == 0 ? true:false"
+                    >
+                        Vaciar
+                        <v-icon class="mx-2" :color="theme.buttons.font" >mdi-delete</v-icon>
+                    </v-btn>
+                    <v-spacer class="mx-1"></v-spacer>
+                    <v-btn 
+                        rounded :color="theme.buttons.terceary" @click="push()"
+                        class=" text-capitalize" 
+                        :style="`color:${theme.buttons.font}`"
+                        :disabled="pedidos.length == 0 ? true:false"
+                    >
+                        Pagar
+                        <v-icon class="mx-2" :color="theme.buttons.font">mdi-cash</v-icon>
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
         </v-footer>
 
         <VaciarCarrito />
@@ -80,6 +85,7 @@
 <script>
 import {mapActions,mapState} from 'vuex';
 import router from '@/router';
+import accounting from 'accounting';
 
     export default {
         components:{
@@ -89,7 +95,8 @@ import router from '@/router';
         },
         data(){
             return {
-                panel:0
+                panel:0,
+                total:0
             }
         },
         computed: {
@@ -98,6 +105,11 @@ import router from '@/router';
             carritos:{
                 get(){ return this.carrito},
                 set(val){ this.setCarrito(val)}
+            },
+            totales(){
+                this.totalPedidos.filter(a => this.total+=+a);
+                this.total = accounting.formatMoney(+this.total,{symbol:"$ ",thousand:',',decimal:'.'});
+                return this.total;
             }
         },
         methods: {

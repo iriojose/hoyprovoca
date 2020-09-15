@@ -215,11 +215,17 @@ const routes = [
 		path: "*",
 		name: "notfound",
 		component:() => import("@/views/mistakes/404"),
+		meta: {
+			auth: false,
+		}
 	},
 	{
 		path: "/notAuthorized",
 		name:"notauthorized",
 		component:() => import("@/views/mistakes/403"),
+		meta: {
+			auth: false,
+		}
 	},
 ]
 
